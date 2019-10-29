@@ -1,0 +1,17 @@
+\newcommand {\fig} [5] {
+	\begin{figure} [h!]
+		\begin{center}
+         \includegraphics[width=#2,height=#3]{#1}
+			\caption{#4}
+			\label {fig:#5}
+		\end{center}
+	\end{figure}
+}
+
+\newcommand {\noreffig} [5] {
+	\begin{figure} [h!]
+		\begin{center}
+         \includegraphics[width=#2,height=#3]{#1}
+		\end{center}
+	\end{figure}
+}
