@@ -27,11 +27,11 @@ D'un coup d'œil, plusieurs problèmes majeurs se posent d'un point de vue techn
 Dans cette section, nous décrivons ces problèmes et les solutions que nous y apportons.
 }
 
-\subsection{Contrôle et communication}
+\subsection{Contrôle et communication} \label{subsec:ctrlComm}
 
-\subsection{Mappage de la labyrinthe}
+\subsection{Mappage de la labyrinthe} \label{subsec:mapMaze}
 
-\subsection{Recherche de plus court chemin}
+\subsection{Recherche de plus court chemin} \label{subsec:rechChem}
 
 \section{Environnement de travail} \label{sec:environnement}
 
@@ -40,6 +40,82 @@ Plusieurs outils et matériels ont été utilisés pour développer les différe
 de la micromouse. Ici ils sont décrits et leurs rôles dans la réalisation de chacune de ces parties.
 }
 
-\subsection{logiciels et environnements de développement}
+\subsection{logiciels et environnements de développement} \label{subsec:softDev}
+\paragraph{
+   Le simulateur de labyrinthe et l'interface temps réel de la micro mouse sont écrits en
+langage de programmation Processing. Le contrôleur principal de l'Arduino est écrit en C.
+}
 
-\subsection{matériel et composants électroniques}
+\paragraph{
+   Processing est un langage qui se concentre sur les graphiques et les interfaces 2D et 3D,
+il sera utilisé pour créer des courbes et des animations en temps réel très claires et 
+informatives, ainsi que des contrôles simples et faciles à utiliser. il fournit des 
+bibliothèques pour la communication serial pour le transfert de signals depuis et vers le
+micro contrôleur.
+}
+
+\paragraph{
+   Le IDE de Processing nous permettra d'organiser le projet, et d'exécuter le code de Processing.
+Il a également un débogueur intégré et d'autres outils de developpement, et des outils pour
+ajouter les bibliothèques et extensions.
+}
+
+\paragraph{
+   Box2D est une librairie de simulation physique 2D écrite pour C++, mais il existe des frameworks
+et wrappers pour cela en Java et Processing. elle sera utilisée pour simuler le véhicule et ses
+interactions avec son environnement. et pour générer en temps réel des signaux de capteurs
+artificiels pour tester la micro souris.
+}
+
+\paragraph{
+   Le IDE Arduino sera utilisé pour développer le microcontrôleur principal en C, il dispose d'outils
+qui permettent la compilation et le flashing des binaires dans le contrôleur arduino.
+}
+
+\subsection{matériel et composants électroniques} \label{subsec:hardDev}
+\paragraph{
+   la micromouse est composée de nombreuses parties qui lui permettent de fonctionner.
+}
+
+\paragraph{
+   Le plus important d'entre eux est le PCB (Printed Circuit Board) qui est le corps où tous les
+autres composants seront soudés, il sert également de connexion entre eux. Pour cela, nous avons
+trouvé un design conçu pour les micro-souris qui contient tous les modules nécessaires pour notre
+produit final. Nous avons trouvé un design qui correspond à nos besoins 
+}
+
+\paragraph{
+   Le cerveau de notre véhicule sera un microcontrôleur STM32F103 également connu sous le nom de
+   pilule bleue, il possède 64KB/128KB de mémoire flash et 20KB de RAM fonctionnant à 72MHz.
+}
+
+\paragraph{
+   Nous aurons également un module bluetooth qui est utilisé pour envoyer des données en direct
+   à l'interface afin de déboguer et de visualiser le processus de mappage des MMs.
+}
+
+\paragraph{
+   Il y a trois types de capteurs que nous utiliserons pour détecter les mouvements et la direction
+des MMs sur le labyrinthe, le premier est le gyroscope qui est utilisé pour détecter le changement
+de direction et d'angle de cap, ensuite l'accéléromètre qui détecte l'accélération non
+gravitationnelle, il est utilisé pour obtenir la position et le mouvement. Ces deux capteurs
+précédents sont généralement regroupés en une seule carte.
+}
+
+\paragraph{
+   Le dernier type de capteur que nous utilisons est un capteur infrarouge que nous utiliserons
+pour obtenir la distance du MM du mur et d'autres obstacles, nous les utiliserons de toutes les
+directions pour évaluer plus précisément les alentours du MM et avoir une meilleure cartographie
+du labyrinthe.
+}
+
+\paragraph{
+   Le contrôle du véhicule se fera avec deux moteurs Faulhaber 1524B009SR des deux côtés du
+PCB, les roues et les jantes sont imprimées en 3d pour s'adapter au design.
+}
+
+\paragraph{
+   Il y a d'autres petits composants électroniques ou SMD (Surface Mount Devices) tels que les
+résistances, les commutateurs de condensateurs, les diodes et un haut-parleur. qui sera soudé
+sur le circuit imprimé
+}
