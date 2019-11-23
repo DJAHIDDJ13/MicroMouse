@@ -1,10 +1,75 @@
 \section{Étude du marché} \label{sec:etudeMarche}
+Une compétition Micromouse est un évènement durant lequel plusieurs équipes
+s'affrontent en opposant leurs robot souris, l'objectif étant de résoudre un
+labyrinthe le plus rapidement possible.  Ces compétitions sont organisées
+depuis la fin des années 1970 et ont lieu un peu partout autour du monde.
+
+\paragraph{Historique et Origine}
 \paragraph{}
+Le magazine "IEE Spectrum magazine" est à l'origine de l'apparition des
+compétitions Micromouse. C'est un magazine anglophone qui vise à couvrir les
+tendances et avancés majeures dans les domaine des technologies, de
+l'ingénierie et des sciences. En 1977, le magazine mets au défi ses lecteurs en
+leur proposant de concevoir et construire un robot "micromouse" pouvant
+résoudre un labyrinthe. Le robot devait agir selon sa propre logique et
+résoudre un labyrinthe imaginé par les rédacteurs du magazine IEE Spectrum.
+Cette compétition fut appelée ‘The Amazing Micromouse Competition’. Elle pris
+place à New York lors de la conférence nationale sur l'informatique en 1979.
+Cet évènement couvert pas de grands médias tels que les chaines CBS et ABC
+ainsi que la journal The New York Times.  Le grand succès de cette première
+édition ainsi que sa large médiatisation participa au gain de popularité des
+compétions Micromouse pour les années à venir.  En quelques années, le défi des
+micromouse était devenu un événement mondial. En 1980, le premier concours
+européen a eu lieu à Londres, suivi un an plus tard par un une compétition
+organisée à Paris. Le Japon a annoncé l'organisation du premier tournoi mondial
+de Micromouse qui aura lieu à Tsubaka en Août 1985. La même année, l'IEE
+(devenue l'Institution of Engineering and Technology) a organisé un concours
+international à Londres.  Au début des année 1990 des clubs Micromouse ont
+commencé à faire leurs apparition au seins des écoles et universités. La "IEE
+Micromouse Competition" bénéficie au jours d'aujourd'hui d'une grande
+popularité auprès des étudiants du domaine informatique ou électronique.
+\newpage
+    
+\fig{pics/old_micromouse.jpg}{16cm}{12cm}
+{Ancienne génération de Micromouse (Pacific Northwest National Laborator, 1980}{mmcomp}
+
+\paragraph{Organistaions des compétitions}
+   Au vu du nombre importants de compétition Micromouse ayant lieu chaque année,
+certaines règles et conditions peuvent varier d'une compétition à l'autre.
+Néanmoins, ils existent des éléments généralement communs à toutes les
+compétitions : 
+\\ 
+
+\begin{itemize}
+
+\vspace{5mm}
+\item
+   Le labyrinthe standard de micromouse mesure environ $2.5m^2$
+et consiste en une grille de cellules (matrice) de 16 sur 16. Chaque micromouse
+est autorisée à effectuer un certain nombre de recherches afin de déterminer le
+chemin le plus court vers l'objectif.  La micromouse devra garder une trace de
+sa position, découvrir les murs en explorant le labyrinthe et détectez quand
+elle a atteint son l'objectif (sortie du labyrinthe).  
+
+\vspace{5mm}
+\item
+   La notation est basée à la fois sur la course la plus rapide et sur le temps
+total consommé pour toutes les courses. Les concurrents n'ont pas le droit de
+communiquer avec leurs micromouse.  Il existe de nombreuses versions de règles
+selon la compétition, et il existe un certain nombre de variations mineures sur
+la façon dont la le score de la souris est déterminé.
+
+\end{itemize}
 
 
 
 \section{Fonctionnalités attendues} \label{sec:foncAttendues}
-\paragraph{Dans la section [\ref{sec:miseEnScenario}] le lecteur peut observer que le produit proposé fournit plusieurs options ie:fonctionnalités pour tester et manipuler différentes entités dans les deux environnements, physique et simulé dans cette section nous allons introduire ces fonctionnalités et expliquer les cas d'utilisation de ces derniers.}
+\paragraph{
+   Dans la section [\ref{sec:miseEnScenario}] le lecteur peut observer que le
+produit proposé fournit plusieurs options ie:fonctionnalités pour tester et
+manipuler différentes entités dans les deux environnements, physique et
+simulé dans cette section nous allons introduire ces fonctionnalités et
+expliquer les cas d'utilisation de ces derniers.}
 
 \subsection{Vue d’ensemble du système} \label{subsec:vueEns}
 
@@ -15,7 +80,15 @@
 
 
 \section{Conception globale du projet} \label{sec:conception}
-\paragraph{après avoir illustré les différentes fonctionnalités du système sur la section [\ref{sec:foncAttendues}], il va falloir expliquer plus en détails la conception de ces fonctionnalités, en séparent la vue pour l'utilisateur on masquera les détails techniques informatiques et on illustrera seulement les composants ou modules fonctionnels, de l'architecturer technique et logiciel on va présenter les différentes parties techniques nécessaires permettant de réaliser les fonctionnalités décrites dans la section précédente [\ref{sec:foncAttendues}]}
+\paragraph{
+   après avoir illustré les différentes fonctionnalités du système sur la
+section [\ref{sec:foncAttendues}], il va falloir expliquer plus en détails
+la conception de ces fonctionnalités, en séparent la vue pour l'utilisateur
+on masquera les détails techniques informatiques et on illustrera seulement
+les composants ou modules fonctionnels, de l'architecturer technique et
+logiciel on va présenter les différentes parties techniques nécessaires
+permettant de réaliser les fonctionnalités décrites dans la section
+précédente [\ref{sec:foncAttendues}]}
 
 \subsection{Vue pour l’utilisateur} \label{subsec:vueUtil}
 
@@ -28,8 +101,9 @@
 \section{Problématiques identifiées et solutions envisagées} \label{sec:problemesSolutions}
 
 \paragraph{
-   D'un coup d'œil, plusieurs problèmes majeurs se posent d'un point de vue technique du projet.
-Dans cette section, nous décrivons ces problèmes et les solutions que nous y apportons.}
+   D'un coup d'œil, plusieurs problèmes majeurs se posent d'un point de vue
+technique du projet.  Dans cette section, nous décrivons ces problèmes et
+les solutions que nous y apportons.}
 
 \subsection{Contrôle et communication} \label{subsec:ctrlComm}
 
@@ -41,98 +115,110 @@ Dans cette section, nous décrivons ces problèmes et les solutions que nous y a
 
 \section{Environnement de travail} \label{sec:environnement}
 
-\paragraph{
-   Plusieurs outils et matériels ont été utilisés pour développer les différents composants
-de la micromouse. Ici ils sont décrits et leurs rôles dans la réalisation de chacune de ces parties.}
+\paragraph{ 
+   Plusieurs outils et matériels ont été utilisés pour développer les
+différents composants de la micromouse. Ici ils sont décrits et leurs rôles
+dans la réalisation de chacune de ces parties.}
 
-\subsection{logiciels et environnements de développement} \label{subsec:softDev}
+\subsection{logiciels et environnements de développement}
+\label{subsec:softDev}
    
-   Le simulateur de labyrinthe et l'interface temps réel de la micro mouse sont écrits en
-langage de programmation Processing. Le contrôleur principal de l'Arduino est
-écrit en C. \\
+   Le simulateur de labyrinthe et l'interface temps réel de la micro mouse sont
+écrits en langage de programmation Processing. Le contrôleur principal de
+l'Arduino est écrit en C. \\
 
-   Processing est un langage qui se concentre sur les graphiques et les interfaces 2D et 3D,
-il sera utilisé pour créer des courbes et des animations en temps réel très claires et 
-informatives, ainsi que des contrôles simples et faciles à utiliser. il fournit des 
-bibliothèques pour la communication serial pour le transfert de signals depuis et vers le
-micro contrôleur. \\
-
-
-   Le IDE de Processing nous permettra d'organiser le projet, et d'exécuter le code de Processing.
-Il a également un débogueur intégré et d'autres outils de developpement, et une interface simple pour
-ajouter les bibliothèques et extensions de langage. \\
+   \textbf{Processing} est un langage qui se concentre sur les graphiques et
+les interfaces 2D et 3D, il sera utilisé pour créer des courbes et des
+animations en temps réel très claires et informatives, ainsi que des
+contrôles simples et faciles à utiliser. il fournit des bibliothèques pour
+la communication serial pour le transfert de signals depuis et vers le micro
+contrôleur. \\
 
 
-   Box2D est une librairie de simulation physique 2D écrite pour C++, mais il existe des frameworks
-et wrappers pour cela en Java et Processing. elle sera utilisée pour simuler le véhicule et ses
-interactions avec son environnement. et pour générer en temps réel des signaux de capteurs
+   Le \textbf{IDE Processing} nous permettra d'organiser le projet, et
+d'exécuter le code de Processing.  Il a également un débogueur intégré et
+d'autres outils de developpement, et une interface simple pour ajouter les
+bibliothèques et extensions de langage. \\
+
+
+   \textbf{Box2D} est une librairie de simulation physique 2D écrite pour C++,
+mais il existe des frameworks et wrappers pour cela en Java et Processing.
+elle sera utilisée pour simuler le véhicule et ses interactions avec son
+environnement. et pour générer en temps réel des signaux de capteurs
 artificiels pour tester la micro souris. \\
 
 
-   Le IDE Arduino sera utilisé pour développer le microcontrôleur principal en
-C, il dispose d'outils qui permettent la compilation et l'ectiture des sorties
-binaires dans le micro contrôleur. \\
+   Le \textbf{IDE Arduino} sera utilisé pour développer le microcontrôleur
+principal en C, il dispose d'outils qui permettent la compilation et
+l'ectiture des sorties binaires dans le micro contrôleur. \\
 
 \subsection{matériel et composants électroniques} \label{subsec:hardDev}
 
-	la micromouse sera composée de nombreuses parties electronique qui vont lui
+   la micromouse sera composée de nombreuses parties electronique qui vont lui
 permettent de fonctionner. \\
 
 
-	Le plus important d'entre eux est le PCB (Printed Circuit Board) qui est le
-corps où tous les autres composants seront soudés, il sert aussi à les
-interconnecter et  leur faire communiquer. Pour cela, nous avons trouvé un
-design open source \cite{Bulebule:1} conçu pour les micro-souris qui
-contient tous les modules nécessaires pour notre produit final. \\
+   Le plus important d'entre eux est le \textbf{PCB} (Printed Circuit Board)
+qui est le corps où tous les autres composants seront soudés, il sert aussi
+à les interconnecter et  leur faire communiquer. Pour cela, nous avons
+trouvé un design open source \cite{Bulebule:1} conçu pour les micro-souris
+qui contient tous les modules nécessaires pour notre produit final. \\
 
 
-\fig{pics/PCBparts.pdf}{18cm}{10cm}{digramme de circuit}{pcb}
+\fig{pics/PCBparts.pdf}{18cm}{10cm}{digramme de composantes dans le PCB}{pcb}
 
 
-	Le cerveau de notre véhicule sera un micro contrôleur STM32F103 également connu 
-sous le nom de Blue Pill, il a 64KB/128KB de mémoire flash et 20KB de RAM fonctionnant 
-à 72MHz. \\
+   Le cerveau de notre véhicule sera un micro contrôleur \textbf{STM32F103}
+également connu sous le nom de Blue Pill, il a 64KB/128KB de mémoire flash
+et 20KB de RAM fonctionnant à 72MHz. \\
 
 
-   On passe ensuite aux capteurs, qui sont les composants utilisés pour recevoir les 
-informations du monde extérieur, qui est dans ce cas le labyrinthe. \\
-
-
-	Il y a trois types de capteurs que nous allons utiliser, le premier est le gyroscope 
-qui est employé pour détecter le changement de direction et l'angle de rotation, 
-c'est important pour bien tracer le labyrinthe puisque le MM va faire beaucoup de 
-manœuvres dans le labyrinthe et de petits coups de pouce dans celui-ci. \\
-
-
-	Ensuite, il y a l'accéléromètre qui, comme son nom l'indique, détecte l'accélération, 
-et avec le gyroscope il peut trouver la position ou plutôt les changements de position 
-du véhicule dans le labyrinthe.\\
-
-
-	Ces deux capteurs précédents sont généralement regroupés sur une seule circuit électronique 
-parce qu'ils sont utilisés ensemble et ont des fonctionnalités similaires, cela nous 
-économise également de la place sur le PCB. \\
-
-
-	Enfin, il y a le capteur infrarouge que nous utiliserons pour obtenir la distance 
-du véhicule des murs et autres obstacles, ils seront placés sur toutes les directions 
-pour évaluer plus précisément les alentours et avoir une meilleure cartographie du 
+   On passe ensuite aux capteurs, qui sont les composants utilisés pour
+recevoir les informations du monde extérieur, qui est dans ce cas le
 labyrinthe. \\
 
 
-	Nous disposerons également d'un module bluetooth, l'outil de communication principal. 
-Lequel est utilisé pour envoyer des données en direct à l'interface afin de déboguer 
-et de visualiser le processus de Mapping, ainsi que pour communiquer avec le simulateur 
-de labyrinthe afin de recevoir les signaux des capteurs artificiels. \\
+   Il y a trois types de capteurs que nous allons utiliser, le premier est le
+\textbf{gyroscope} qui est employé pour détecter le changement de direction
+et l'angle de rotation, c'est important pour bien tracer le labyrinthe
+puisque le MM va faire beaucoup de manœuvres dans le labyrinthe et de petits
+coups de pouce dans celui-ci. \\
 
 
-	Le contrôle du véhicule se fera avec deux moteurs des deux côtés du véhicule. Les 
-roues et leurs essieux sont imprimés en 3d pour s'adapter au design du circuit. Aucun 
-volant ne sera utilisé en raison du poids supplémentaire qu'ils apportent et aussi 
-parce que les deux que nous avons déjà peuvent faire des manœuvres très précises 
-avec un code conducteur minimal. \\
+   Ensuite, il y a \textbf{l'accéléromètre} qui, comme son nom l'indique,
+détecte l'accélération, et avec le gyroscope il peut trouver la position ou
+plutôt les changements de position du véhicule dans le labyrinthe.\\
 
 
-   Il existe d'autres petits composants électriques ou SMDs (Surface Mount Devices) 
-tels que les résistances, condensateurs, interrupteurs, diodes, LEDs etc... qui sont 
-utilisés pour contrôler le courant électrique sur le PCB.
+   Ces deux capteurs précédents sont généralement regroupés sur une seule
+circuit électronique parce qu'ils sont utilisés ensemble et ont des
+fonctionnalités similaires, cela nous économise également de la place sur le
+PCB. \\
+
+
+   Enfin, il y a le \textbf{capteur infrarouge} que nous utiliserons pour
+obtenir la distance du véhicule des murs et autres obstacles, ils seront
+placés sur toutes les directions pour évaluer plus précisément les alentours
+et avoir une meilleure cartographie du labyrinthe. \\
+
+
+   Nous disposerons également d'un \textbf{module bluetooth}, l'outil de
+communication principal.  Lequel est utilisé pour envoyer des données en
+direct à l'interface afin de déboguer et de visualiser le processus de
+Mapping, ainsi que pour communiquer avec le simulateur de labyrinthe afin de
+recevoir les signaux des capteurs artificiels. \\
+
+
+   Le contrôle du véhicule se fera avec deux \textbf{moteurs falhaber}
+\cite{faulhaber:1} des deux côtés du véhicule. Les roues et leurs essieux sont
+imprimés en 3d pour s'adapter au design du circuit. Aucun volant ne sera
+utilisé en raison du poids supplémentaire qu'ils apportent et aussi parce que
+les deux que nous avons déjà peuvent faire des manœuvres très précises avec un
+code conducteur minimal. \\
+
+
+   Il existe d'autres petits composants électriques ou \textbf{SMD}s (Surface
+Mount Devices) tels que les résistances, condensateurs, interrupteurs,
+diodes, LEDs etc... qui sont utilisés pour contrôler le courant électrique
+sur le PCB.
+
