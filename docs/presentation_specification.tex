@@ -41,106 +41,93 @@ de la micromouse. Ici ils sont décrits et leurs rôles dans la réalisation de 
 }
 
 \subsection{logiciels et environnements de développement} \label{subsec:softDev}
-\paragraph{
+   
    Le simulateur de labyrinthe et l'interface temps réel de la micro mouse sont écrits en
-langage de programmation Processing. Le contrôleur principal de l'Arduino est écrit en C.
-}
+langage de programmation Processing. Le contrôleur principal de l'Arduino est
+écrit en C. \\
 
-\paragraph{
    Processing est un langage qui se concentre sur les graphiques et les interfaces 2D et 3D,
 il sera utilisé pour créer des courbes et des animations en temps réel très claires et 
 informatives, ainsi que des contrôles simples et faciles à utiliser. il fournit des 
 bibliothèques pour la communication serial pour le transfert de signals depuis et vers le
-micro contrôleur.
-}
+micro contrôleur. \\
 
-\paragraph{
+
    Le IDE de Processing nous permettra d'organiser le projet, et d'exécuter le code de Processing.
-Il a également un débogueur intégré et d'autres outils de developpement, et des outils pour
-ajouter les bibliothèques et extensions.
-}
+Il a également un débogueur intégré et d'autres outils de developpement, et une interface simple pour
+ajouter les bibliothèques et extensions de langage. \\
 
-\paragraph{
+
    Box2D est une librairie de simulation physique 2D écrite pour C++, mais il existe des frameworks
 et wrappers pour cela en Java et Processing. elle sera utilisée pour simuler le véhicule et ses
 interactions avec son environnement. et pour générer en temps réel des signaux de capteurs
-artificiels pour tester la micro souris.
-}
+artificiels pour tester la micro souris. \\
 
-\paragraph{
-   Le IDE Arduino sera utilisé pour développer le microcontrôleur principal en C, il dispose d'outils
-qui permettent la compilation et le flashing des binaires dans le contrôleur arduino.
-}
+
+   Le IDE Arduino sera utilisé pour développer le microcontrôleur principal en
+C, il dispose d'outils qui permettent la compilation et l'ectiture des sorties
+binaires dans le micro contrôleur. \\
 
 \subsection{matériel et composants électroniques} \label{subsec:hardDev}
 
-\paragraph{
-	la micromouse est composée de nombreuses parties qui lui permettent de fonctionner.
-}
+	la micromouse sera composée de nombreuses parties electronique qui vont lui
+permettent de fonctionner. \\
 
-\paragraph{
-	Le plus important d'entre eux est le PCB (Printed Circuit Board) qui est le corps 
-où tous les autres composants seront soudés, il sert aussi à les interconnecter et 
-à les câbler. Pour cela, nous avons trouvé un design conçu pour les micro-souris 
-qui contient tous les modules nécessaires pour notre produit final.
-}
 
-\fig{pics/PCB.png}{18cm}{10cm}{digramme de circuit}{pcb}
+	Le plus important d'entre eux est le PCB (Printed Circuit Board) qui est le
+corps où tous les autres composants seront soudés, il sert aussi à les
+interconnecter et  leur faire communiquer. Pour cela, nous avons trouvé un
+design open source \cite{Bulebule:1} conçu pour les micro-souris qui
+contient tous les modules nécessaires pour notre produit final. \\
 
-\paragraph{
+
+\fig{pics/PCBparts.pdf}{18cm}{10cm}{digramme de circuit}{pcb}
+
+
 	Le cerveau de notre véhicule sera un micro contrôleur STM32F103 également connu 
 sous le nom de Blue Pill, il a 64KB/128KB de mémoire flash et 20KB de RAM fonctionnant 
-à 72MHz.
-}
+à 72MHz. \\
 
-\paragraph{
-	On passe ensuite aux capteurs, qui sont les composants utilisés pour recevoir les 
-informations du monde extérieur, qui est dans ce cas le labyrinthe.
-}
 
-\paragraph{
+   On passe ensuite aux capteurs, qui sont les composants utilisés pour recevoir les 
+informations du monde extérieur, qui est dans ce cas le labyrinthe. \\
+
+
 	Il y a trois types de capteurs que nous allons utiliser, le premier est le gyroscope 
 qui est employé pour détecter le changement de direction et l'angle de rotation, 
 c'est important pour bien tracer le labyrinthe puisque le MM va faire beaucoup de 
-manœuvres dans le labyrinthe et de petits coups de pouce dans celui-ci.
-}
+manœuvres dans le labyrinthe et de petits coups de pouce dans celui-ci. \\
 
-\paragraph{
+
 	Ensuite, il y a l'accéléromètre qui, comme son nom l'indique, détecte l'accélération, 
 et avec le gyroscope il peut trouver la position ou plutôt les changements de position 
-du véhicule dans le labyrinthe. 
-}
+du véhicule dans le labyrinthe.\\
 
-\paragraph{
+
 	Ces deux capteurs précédents sont généralement regroupés sur une seule circuit électronique 
 parce qu'ils sont utilisés ensemble et ont des fonctionnalités similaires, cela nous 
-économise également de la place sur le PCB.
-}
+économise également de la place sur le PCB. \\
 
-\paragraph{
+
 	Enfin, il y a le capteur infrarouge que nous utiliserons pour obtenir la distance 
 du véhicule des murs et autres obstacles, ils seront placés sur toutes les directions 
 pour évaluer plus précisément les alentours et avoir une meilleure cartographie du 
-labyrinthe.
-}
+labyrinthe. \\
 
-\paragraph{
+
 	Nous disposerons également d'un module bluetooth, l'outil de communication principal. 
 Lequel est utilisé pour envoyer des données en direct à l'interface afin de déboguer 
 et de visualiser le processus de Mapping, ainsi que pour communiquer avec le simulateur 
-de labyrinthe afin de recevoir les signaux des capteurs artificiels.
-}
+de labyrinthe afin de recevoir les signaux des capteurs artificiels. \\
 
-\paragraph{
+
 	Le contrôle du véhicule se fera avec deux moteurs des deux côtés du véhicule. Les 
 roues et leurs essieux sont imprimés en 3d pour s'adapter au design du circuit. Aucun 
 volant ne sera utilisé en raison du poids supplémentaire qu'ils apportent et aussi 
 parce que les deux que nous avons déjà peuvent faire des manœuvres très précises 
-avec un code conducteur minimal.
-}
+avec un code conducteur minimal. \\
 
-\paragraph{
-	Il existe d'autres petits composants électriques ou SMDs (Surface Mount Devices) 
+
+   Il existe d'autres petits composants électriques ou SMDs (Surface Mount Devices) 
 tels que les résistances, condensateurs, interrupteurs, diodes, LEDs etc... qui sont 
 utilisés pour contrôler le courant électrique sur le PCB.
-}

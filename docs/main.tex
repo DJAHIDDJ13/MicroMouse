@@ -8,7 +8,7 @@
 \usepackage{textcomp}
 \usepackage{macro}
 \usepackage{eso-pic,graphicx,transparent}
-
+\usepackage{hyperref}
 %La mise en page du rapport, NE PAS MODIFIER.
 \usepackage{geometry}
 \geometry{
@@ -16,11 +16,10 @@
    left=20mm,
    right=20mm,
    top=20mm,
-   bottom=20mm,
+   bottom=20mm
 }
 
 \begin{document}
-
 \input{page_de_garde.tex}
 \clearpage
 
@@ -48,7 +47,7 @@
 
 \chapter{Présentation et spécification du projet}
 \paragraph{Chapeau du chapitre}
-\input{presentation_et_specification_du_proje.tex}
+\input{presentation_specification.tex}
 \clearpage
 
 \chapter{Partie technique I}
@@ -68,7 +67,7 @@
 
 \chapter{Conclusion et perspectives}
 \paragraph{Chapeau du chapitre}
-\input{conclusion_et_perspectives.tex}
+\input{conclusion_perspectives.tex}
 \clearpage
 
 \bibliographystyle{plain}
