@@ -85,6 +85,8 @@ où tous les autres composants seront soudés, il sert aussi à les interconnect
 qui contient tous les modules nécessaires pour notre produit final.
 }
 
+\fig{pics/PCB.png}{18cm}{10cm}{digramme de circuit}{pcb}
+
 \paragraph{
 	Le cerveau de notre véhicule sera un micro contrôleur STM32F103 également connu 
 sous le nom de Blue Pill, il a 64KB/128KB de mémoire flash et 20KB de RAM fonctionnant 
@@ -98,9 +100,9 @@ informations du monde extérieur, qui est dans ce cas le labyrinthe.
 
 \paragraph{
 	Il y a trois types de capteurs que nous allons utiliser, le premier est le gyroscope 
-qui est utilisé pour détecter le changement de direction et l'angle de cap, c'est 
-important pour pouvoir cartographier le labyrinthe correctement puisque la véhicule 
-va faire beaucoup de tours et de petits coups dans le dédale.
+qui est employé pour détecter le changement de direction et l'angle de rotation, 
+c'est important pour bien tracer le labyrinthe puisque le MM va faire beaucoup de 
+manœuvres dans le labyrinthe et de petits coups de pouce dans celui-ci.
 }
 
 \paragraph{
@@ -110,35 +112,35 @@ du véhicule dans le labyrinthe.
 }
 
 \paragraph{
-	Ces deux capteurs précédents sont généralement regroupés sur une seule carte car 
-ils sont généralement utilisés ensemble et ont des fonctionnalités similaires, ce 
-qui nous permet également de gagner de la place sur le PCB.
+	Ces deux capteurs précédents sont généralement regroupés sur une seule circuit électronique 
+parce qu'ils sont utilisés ensemble et ont des fonctionnalités similaires, cela nous 
+économise également de la place sur le PCB.
 }
 
 \paragraph{
-	Le dernier type de capteur que nous utilisons est le capteur infrarouge que nous 
-utiliserons pour obtenir la distance du MM des murs et autres obstacles, nous les 
-utiliserons de toutes les directions pour évaluer plus précisément les alentours 
-du MM et avoir une meilleure cartographie du dédale.
+	Enfin, il y a le capteur infrarouge que nous utiliserons pour obtenir la distance 
+du véhicule des murs et autres obstacles, ils seront placés sur toutes les directions 
+pour évaluer plus précisément les alentours et avoir une meilleure cartographie du 
+labyrinthe.
 }
 
 \paragraph{
 	Nous disposerons également d'un module bluetooth, l'outil de communication principal. 
-Qui est utilisé pour envoyer des données en direct à l'interface afin de déboguer 
-et de visualiser le processus de cartographie des MMs, ainsi que pour communiquer 
-avec le simulateur de labyrinthe afin de recevoir les signaux des capteurs artificiels.
+Lequel est utilisé pour envoyer des données en direct à l'interface afin de déboguer 
+et de visualiser le processus de Mapping, ainsi que pour communiquer avec le simulateur 
+de labyrinthe afin de recevoir les signaux des capteurs artificiels.
 }
 
 \paragraph{
-	Le contrôle du véhicule se fera avec deux moteurs des deux côtés du circuit imprimé. 
-Les roues et les jantes sont imprimées en 3d pour s'adapter au circuit imprimé. Aucun 
+	Le contrôle du véhicule se fera avec deux moteurs des deux côtés du véhicule. Les 
+roues et leurs essieux sont imprimés en 3d pour s'adapter au design du circuit. Aucun 
 volant ne sera utilisé en raison du poids supplémentaire qu'ils apportent et aussi 
-parce que les deux roues que nous avons peuvent faire des virages très précis et 
-raides avec un code conducteur minimal.
+parce que les deux que nous avons déjà peuvent faire des manœuvres très précises 
+avec un code conducteur minimal.
 }
 
 \paragraph{
-	Il existe d'autres petits composants électriques ou CMS (Surface Mount Devices) 
+	Il existe d'autres petits composants électriques ou SMDs (Surface Mount Devices) 
 tels que les résistances, condensateurs, interrupteurs, diodes, LEDs etc... qui sont 
 utilisés pour contrôler le courant électrique sur le PCB.
 }
