@@ -73,49 +73,72 @@ qui permettent la compilation et le flashing des binaires dans le contrôleur ar
 }
 
 \subsection{matériel et composants électroniques} \label{subsec:hardDev}
+
 \paragraph{
-   la micromouse est composée de nombreuses parties qui lui permettent de fonctionner.
+	la micromouse est composée de nombreuses parties qui lui permettent de fonctionner.
 }
 
 \paragraph{
-   Le plus important d'entre eux est le PCB (Printed Circuit Board) qui est le corps où tous les
-autres composants seront soudés, il sert également de connexion entre eux. Pour cela, nous avons
-trouvé un design conçu pour les micro-souris qui contient tous les modules nécessaires pour notre
-produit final. Nous avons trouvé un design qui correspond à nos besoins 
+	Le plus important d'entre eux est le PCB (Printed Circuit Board) qui est le corps 
+où tous les autres composants seront soudés, il sert aussi à les interconnecter et 
+à les câbler. Pour cela, nous avons trouvé un design conçu pour les micro-souris 
+qui contient tous les modules nécessaires pour notre produit final.
 }
 
 \paragraph{
-   Le cerveau de notre véhicule sera un microcontrôleur STM32F103 également connu sous le nom de
-   pilule bleue, il possède 64KB/128KB de mémoire flash et 20KB de RAM fonctionnant à 72MHz.
+	Le cerveau de notre véhicule sera un micro contrôleur STM32F103 également connu 
+sous le nom de Blue Pill, il a 64KB/128KB de mémoire flash et 20KB de RAM fonctionnant 
+à 72MHz.
 }
 
 \paragraph{
-   Nous aurons également un module bluetooth qui est utilisé pour envoyer des données en direct
-   à l'interface afin de déboguer et de visualiser le processus de mappage des MMs.
+	On passe ensuite aux capteurs, qui sont les composants utilisés pour recevoir les 
+informations du monde extérieur, qui est dans ce cas le labyrinthe.
 }
 
 \paragraph{
-   Il y a trois types de capteurs que nous utiliserons pour détecter les mouvements et la direction
-des MMs sur le labyrinthe, le premier est le gyroscope qui est utilisé pour détecter le changement
-de direction et d'angle de cap, ensuite l'accéléromètre qui détecte l'accélération non
-gravitationnelle, il est utilisé pour obtenir la position et le mouvement. Ces deux capteurs
-précédents sont généralement regroupés en une seule carte.
+	Il y a trois types de capteurs que nous allons utiliser, le premier est le gyroscope 
+qui est utilisé pour détecter le changement de direction et l'angle de cap, c'est 
+important pour pouvoir cartographier le labyrinthe correctement puisque la véhicule 
+va faire beaucoup de tours et de petits coups dans le dédale.
 }
 
 \paragraph{
-   Le dernier type de capteur que nous utilisons est un capteur infrarouge que nous utiliserons
-pour obtenir la distance du MM du mur et d'autres obstacles, nous les utiliserons de toutes les
-directions pour évaluer plus précisément les alentours du MM et avoir une meilleure cartographie
-du labyrinthe.
+	Ensuite, il y a l'accéléromètre qui, comme son nom l'indique, détecte l'accélération, 
+et avec le gyroscope il peut trouver la position ou plutôt les changements de position 
+du véhicule dans le labyrinthe. 
 }
 
 \paragraph{
-   Le contrôle du véhicule se fera avec deux moteurs Faulhaber 1524B009SR des deux côtés du
-PCB, les roues et les jantes sont imprimées en 3d pour s'adapter au design.
+	Ces deux capteurs précédents sont généralement regroupés sur une seule carte car 
+ils sont généralement utilisés ensemble et ont des fonctionnalités similaires, ce 
+qui nous permet également de gagner de la place sur le PCB.
 }
 
 \paragraph{
-   Il y a d'autres petits composants électroniques ou SMD (Surface Mount Devices) tels que les
-résistances, les commutateurs de condensateurs, les diodes et un haut-parleur. qui sera soudé
-sur le circuit imprimé
+	Le dernier type de capteur que nous utilisons est le capteur infrarouge que nous 
+utiliserons pour obtenir la distance du MM des murs et autres obstacles, nous les 
+utiliserons de toutes les directions pour évaluer plus précisément les alentours 
+du MM et avoir une meilleure cartographie du dédale.
+}
+
+\paragraph{
+	Nous disposerons également d'un module bluetooth, l'outil de communication principal. 
+Qui est utilisé pour envoyer des données en direct à l'interface afin de déboguer 
+et de visualiser le processus de cartographie des MMs, ainsi que pour communiquer 
+avec le simulateur de labyrinthe afin de recevoir les signaux des capteurs artificiels.
+}
+
+\paragraph{
+	Le contrôle du véhicule se fera avec deux moteurs des deux côtés du circuit imprimé. 
+Les roues et les jantes sont imprimées en 3d pour s'adapter au circuit imprimé. Aucun 
+volant ne sera utilisé en raison du poids supplémentaire qu'ils apportent et aussi 
+parce que les deux roues que nous avons peuvent faire des virages très précis et 
+raides avec un code conducteur minimal.
+}
+
+\paragraph{
+	Il existe d'autres petits composants électriques ou CMS (Surface Mount Devices) 
+tels que les résistances, condensateurs, interrupteurs, diodes, LEDs etc... qui sont 
+utilisés pour contrôler le courant électrique sur le PCB.
 }
