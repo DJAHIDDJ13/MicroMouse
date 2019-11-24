@@ -260,7 +260,35 @@ sur le PCB.
 
 \subsection{Architecture logicielle} \label{sec:vueLogicielle}
 
+\paragraph{Contrôle du véhicule :}à un moment de la simulation notre véhicule 
+va décider de faire des virages, des marches arrière ...etc., des prises de 
+décisions floues. \\
 
+   Pour gérer ça on utilise la logique floue. La logique floue (fuzzy logic, en anglais) 
+est une logique polyvalente où les valeurs de vérité des variables - au lieu d'être 
+vrai ou faux - sont des réels entre 0 et 1. En ce sens, elle étend la logique booléenne 
+classique avec des valeurs de vérités partielles1. Elle consiste à tenir compte de divers 
+facteurs numériques pour aboutir à une décision qu'on souhaite acceptable. \\
+
+\paragraph{Mappage et navigation :} Le véhicule a le droit de faire un repérage du labyrinthe 
+pour déterminer le chemin vers le point d'arrivée, puis de retourner au point de départ pour 
+réaliser l'épreuve en utilisant le chemin le plus court qu'elles ont déterminé.
+
+Ce qui nous introduit au mappage et navigation du véhicule ie:La localisation 
+et cartographie simultanées; La localisation et cartographie simultanées connue en 
+anglais sous le nom de SLAM (simultaneous localization and mapping) ou CML (concurrent mapping 
+and localization), consiste, pour un robot ou véhicule autonome, à simultanément construire ou 
+améliorer une carte de son environnement et de s’y localiser.
+
+\paragraph{Calcul du plus court chemin :}après avoir fait le mappage le robot se place sur la 
+case départ, en le relançant le robot ne va pas refaire les mêmes pas il va calculer le plus court 
+chemin entre la case de départ et la case d'arriver en utilisant toutes les données récupérer à 
+l'étape de mappage et en utilisant un algorithme de calcul de plus court chemin. \\
+
+   En théorie des graphes, le problème de plus court chemin est le problème algorithmique qui 
+consiste à trouver un chemin d'un sommet à un autre de façon que la somme des poids des arcs de ce chemin soit minimale. \\
+
+\paragraph{Communication :}Pour déboguer et visualiser les données du véhicule ou bien pour recevoir les signaux artificiels des capteurs de la simulation une communication entre les composants est nécessaire, ainsi le transfert de données se fait en temps réel.
 
 \section{Problématiques identifiées et solutions envisagées} \label{sec:problemesSolutions}
 
