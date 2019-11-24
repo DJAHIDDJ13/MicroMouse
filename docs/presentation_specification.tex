@@ -5,7 +5,6 @@ labyrinthe le plus rapidement possible.  Ces compétitions sont organisées
 depuis la fin des années 1970 et ont lieu un peu partout autour du monde.
 
 \paragraph{Historique et Origine}
-\paragraph{}
 Le magazine "IEE Spectrum magazine" est à l'origine de l'apparition des
 compétitions Micromouse. C'est un magazine anglophone qui vise à couvrir les
 tendances et avancés majeures dans les domaine des technologies, de
@@ -31,7 +30,7 @@ popularité auprès des étudiants du domaine informatique ou électronique.
 \newpage
     
 \fig{pics/old_micromouse.jpg}{16cm}{12cm}
-{Ancienne génération de Micromouse (Pacific Northwest National Laborator, 1980}{mmcomp}
+{Ancienne génération de Micromouse (Pacific Northwest National Laborator, 1980)}{mmcomp}
 
 \paragraph{Organistaions des compétitions}
    Au vu du nombre importants de compétition Micromouse ayant lieu chaque année,
@@ -42,27 +41,25 @@ compétitions :
 
 \begin{itemize}
 
-\vspace{5mm}
 \item
    Le labyrinthe standard de micromouse mesure environ $2.5m^2$
 et consiste en une grille de cellules (matrice) de 16 sur 16. Chaque micromouse
 est autorisée à effectuer un certain nombre de recherches afin de déterminer le
 chemin le plus court vers l'objectif.  La micromouse devra garder une trace de
 sa position, découvrir les murs en explorant le labyrinthe et détectez quand
-elle a atteint son l'objectif (sortie du labyrinthe).  
+elle a atteint son l'objectif (sortie du labyrinthe). \\
 
-\vspace{5mm}
 \item
    La notation est basée à la fois sur la course la plus rapide et sur le temps
 total consommé pour toutes les courses. Les concurrents n'ont pas le droit de
 communiquer avec leurs micromouse.  Il existe de nombreuses versions de règles
 selon la compétition, et il existe un certain nombre de variations mineures sur
-la façon dont la le score de la souris est déterminé.
+la façon dont la le score de la souris est déterminé. \\
 
 \end{itemize}
 
 
-
+\clearpage
 \section{Fonctionnalités attendues} \label{sec:foncAttendues}
 \paragraph{
    Dans la section [\ref{sec:miseEnScenario}] le lecteur peut observer que le
@@ -73,9 +70,38 @@ expliquer les cas d'utilisation de ces derniers.}
 
 \subsection{Vue d’ensemble du système} \label{subsec:vueEns}
 
-\subsection{Services fournis par le logiciel} \label{subsec:serLogiciel}
+\vspace{5mm}
+Le produit permet à l'utilisateur de simulé un véhicule autonome se 
+déplaçant dans un labyrinthe et de trancher le point d'arriver, le 
+labyrinthe est créé soit manuellement ou en insérant un fichier de 
+configuration, ainsi la simulation pourra se lancer et l'utilisateur 
+pourra observer le déplacement de la micro mouse et en même temps d'observer 
+le journal et les statistiques de la simulation ainsi que les valeurs des différents 
+composants de l'engin. \\
+
+En outre, l'utilisateur du produit pour modifier le labyrinthe réel et d'y mettre le 
+véhicule dedans pour lancer une observation physique et observer en temps réel les valeurs 
+des composants de l'engin, ainsi on pourra comparer les deux univers.
+
+\subsection{Services fournis par le produit} \label{subsec:serLogiciel}
+
+\paragraph{Simulation :}La simulation offre à l'utilisateur une diversité de choix et d'API comme 
+la création du labyrinthe soit avec un fichier de configuration ou manuellement 
+et le choix de la complexité de l'algorithme de recherche du plus court chemin, 
+en outre l'utilisateur peut visualiser le journal de la simulation et les statistiques 
+sur la partie information sur la simulation, finalement l'utilisateur pourra observer 
+les valeurs des différents composants de la micro mouse. \\
+
+
+\fig{pics/SimGUI.pdf}{17cm}{10cm}{Interface homme-machine pour la simulation}{ihmSim}
+
+\paragraph{Véhicule réel :}
 
 \subsection{Fonctionnalités supplémentaires} \label{subsec:foncSupplementaires}
+
+\paragraph{Simulation en temps réel :}
+
+\paragraph{Multi-véhicule :}
 
 
 
@@ -91,68 +117,46 @@ permettant de réaliser les fonctionnalités décrites dans la section
 précédente [\ref{sec:foncAttendues}]}
 
 \subsection{Vue pour l’utilisateur} \label{subsec:vueUtil}
+   
+   Le système offre à l'utilisateur deux choix pour l'exploiter: \\
+\begin{enumerate}
+
+   \item Le système réalisé permet à l'utilisateur d'observer le fonctionnement
+ et l'évolution de la micro mouse ie:véhicule autonome dans sans monde un 
+ labyrinthe de 12x12 case dans un monde physique, pour but de résoudre ce 
+ labyrinthe et trouver le plus court chemin du point de départ au point final; \\
+
+\begin{itemize}
+      \item \textbf{Le labyrinthe} \\
+
+      \item \textbf{La micro mouse} \\
+\end{itemize}
+
+   \item Le système permet aussi de simuler les fonctionnalités physiques 
+dans un monde simulé, un labyrinthe de taille variante et des chemins à 
+définir par l'utilisateur, aussi on peut charger un fichier de configuration 
+pour créer le labyrinthe; \\
+
+\begin{itemize}
+      \item \textbf{Le labyrinthe} \\
+
+      \item \textbf{La micro mouse} \\
+\end{itemize}
+
+   \item Finalement, l'utilisateur peut observer en temps réel l'évolution 
+de la micro mouse dans son univers, cette partie permet aussi d'afficher 
+les valeurs des différents composants du véhicule comme les capteurs infrarouges 
+et l'accéléromètre ainsi que d'autres informations sur la simulation. \\
+
+\begin{itemize}
+   \item \textbf{Le labyrinthe} \\
+
+   \item \textbf{La micro mouse} \\
+\end{itemize}
+
+\end{enumerate}
 
 \subsection{Architecture technique} \label{subsec:archTechnique}
-
-\subsection{Architecture logicielle} \label{subsec:vueLogicielle}
-
-
-
-\section{Problématiques identifiées et solutions envisagées} \label{sec:problemesSolutions}
-
-\paragraph{
-   D'un coup d'œil, plusieurs problèmes majeurs se posent d'un point de vue
-technique du projet.  Dans cette section, nous décrivons ces problèmes et
-les solutions que nous y apportons.}
-
-\subsection{Contrôle et communication} \label{subsec:ctrlComm}
-
-\subsection{Mappage de la labyrinthe} \label{subsec:mapMaze}
-
-\subsection{Recherche de plus court chemin} \label{subsec:rechChem}
-
-
-
-\section{Environnement de travail} \label{sec:environnement}
-
-\paragraph{ 
-   Plusieurs outils et matériels ont été utilisés pour développer les
-différents composants de la micromouse. Ici ils sont décrits et leurs rôles
-dans la réalisation de chacune de ces parties.}
-
-\subsection{logiciels et environnements de développement}
-\label{subsec:softDev}
-   
-   Le simulateur de labyrinthe et l'interface temps réel de la micro mouse sont
-écrits en langage de programmation Processing. Le contrôleur principal de
-l'Arduino est écrit en C. \\
-
-   \textbf{Processing} est un langage qui se concentre sur les graphiques et
-les interfaces 2D et 3D, il sera utilisé pour créer des courbes et des
-animations en temps réel très claires et informatives, ainsi que des
-contrôles simples et faciles à utiliser. il fournit des bibliothèques pour
-la communication serial pour le transfert de signals depuis et vers le micro
-contrôleur. \\
-
-
-   Le \textbf{IDE Processing} nous permettra d'organiser le projet, et
-d'exécuter le code de Processing.  Il a également un débogueur intégré et
-d'autres outils de developpement, et une interface simple pour ajouter les
-bibliothèques et extensions de langage. \\
-
-
-   \textbf{Box2D} est une librairie de simulation physique 2D écrite pour C++,
-mais il existe des frameworks et wrappers pour cela en Java et Processing.
-elle sera utilisée pour simuler le véhicule et ses interactions avec son
-environnement. et pour générer en temps réel des signaux de capteurs
-artificiels pour tester la micro souris. \\
-
-
-   Le \textbf{IDE Arduino} sera utilisé pour développer le microcontrôleur
-principal en C, il dispose d'outils qui permettent la compilation et
-l'ectiture des sorties binaires dans le micro contrôleur. \\
-
-\subsection{matériel et composants électroniques} \label{subsec:hardDev}
 
    la micromouse sera composée de nombreuses parties electronique qui vont lui
 permettent de fonctionner. \\
@@ -165,7 +169,7 @@ trouvé un design open source \cite{Bulebule:1} conçu pour les micro-souris
 qui contient tous les modules nécessaires pour notre produit final. \\
 
 
-\fig{pics/PCBparts.pdf}{18cm}{10cm}{digramme de composantes dans le PCB}{pcb}
+\fig{pics/PCBparts.pdf}{14cm}{10cm}{digramme de composantes dans le PCB}{pcb}
 
 
    Le cerveau de notre véhicule sera un micro contrôleur \textbf{STM32F103}
@@ -222,3 +226,60 @@ Mount Devices) tels que les résistances, condensateurs, interrupteurs,
 diodes, LEDs etc... qui sont utilisés pour contrôler le courant électrique
 sur le PCB.
 
+\subsection{Architecture logicielle} \label{subsec:vueLogicielle}
+
+
+
+\section{Problématiques identifiées et solutions envisagées} \label{sec:problemesSolutions}
+
+\paragraph{
+   D'un coup d'œil, plusieurs problèmes majeurs se posent d'un point de vue
+technique du projet.  Dans cette section, nous décrivons ces problèmes et
+les solutions que nous y apportons.}
+
+\subsection{Contrôle et communication} \label{subsec:ctrlComm}
+
+\subsection{Mappage de la labyrinthe} \label{subsec:mapMaze}
+
+\subsection{Recherche de plus court chemin} \label{subsec:rechChem}
+
+
+\section{Environnement de travail} \label{sec:environnement}
+
+\paragraph{ 
+   Plusieurs outils et matériels ont été utilisés pour développer les
+différents composants de la micromouse. Ici ils sont décrits et leurs rôles
+dans la réalisation de chacune de ces parties.}
+
+\vspace{5mm}
+\begin{itemize}
+ 
+   \item Le simulateur de labyrinthe et l'interface temps réel de la micro mouse sont
+écrits en langage de programmation Processing. Le contrôleur principal de
+l'Arduino est écrit en C. \\
+
+   \item \textbf{Processing} est un langage qui se concentre sur les graphiques et
+les interfaces 2D et 3D, il sera utilisé pour créer des courbes et des
+animations en temps réel très claires et informatives, ainsi que des
+contrôles simples et faciles à utiliser. il fournit des bibliothèques pour
+la communication serial pour le transfert de signals depuis et vers le micro
+contrôleur. \\
+
+ 
+   \item Le \textbf{IDE Processing} nous permettra d'organiser le projet, et
+d'exécuter le code de Processing.  Il a également un débogueur intégré et
+d'autres outils de developpement, et une interface simple pour ajouter les
+bibliothèques et extensions de langage. \\
+
+ 
+   \item \textbf{Box2D} est une librairie de simulation physique 2D écrite pour C++,
+mais il existe des frameworks et wrappers pour cela en Java et Processing.
+elle sera utilisée pour simuler le véhicule et ses interactions avec son
+environnement. et pour générer en temps réel des signaux de capteurs
+artificiels pour tester la micro souris. \\
+
+
+   \item Le \textbf{IDE Arduino} sera utilisé pour développer le microcontrôleur
+principal en C, il dispose d'outils qui permettent la compilation et
+l'ectiture des sorties binaires dans le micro contrôleur. \\
+\end{itemize}
