@@ -102,10 +102,9 @@ les valeurs des différents composants de la micro mouse.
 
 \fig{pics/SimGUI.pdf}{17cm}{10cm}{Interface homme-machine pour la simulation}{ihmSim}
 
-\paragraph{Véhicule réel :}
+\paragraph{Véhicule réel :}Notre système sera réalisé sur un prototype minimisé de micromouse appelé quarter-micromouse, le labyrinthe est constitué d'un quadrillage de cellules 8×8 de 180 mm de côté avec des murs de 50 mm de haut[2] les souris sont des robots complètement autonomes qui doivent trouver leur chemin d'une position de départ prédéterminée à la zone centrale du labyrinthe sans aide. La souris doit savoir où elle se trouve, découvrir les murs en explorant, cartographier le labyrinthe et détecter quand elle a atteint son but. Une fois l'objectif atteint, la souris effectuera généralement des recherches supplémentaires dans le labyrinthe jusqu'à ce qu'elle ait trouvé un itinéraire optimal du début à la fin. Une fois que l'itinéraire optimal a été trouvé, la souris exécute cet itinéraire dans les plus brefs délais. 
 
 
-\newpage
 \subsection{Fonctionnalités supplémentaires} \label{sec:foncSupplementaires}
 
 \paragraph{Visualisation en temps réel :}La visualisation des résultats au fur et à mesure 
@@ -114,7 +113,7 @@ logiciel de visualisation des résultats de l'expérience, il permet à l'utilis
 la vue du véhicule et les valeurs des capteurs au fur et à mesure de l'exploration, aussi de 
 visualiser le journal de la simulation et les statistiques.
 
-\fig{pics/visLogiciel.png}{15cm}{6cm}
+\fig{pics/visLogiciel.png}{15cm}{8cm}
 {Maquette du logiciel de visualisation}{visLogiciel}
 
 \paragraph{Multi-véhicule :} Un mini-jeu est mis en place pour les 
@@ -124,7 +123,7 @@ labyrinthe et à la fin se situer dans la case d'arriver par un véhicule autono
 intelligent en évitant les autres véhicules gradient communiquant entre eux. 
 Ceci en utilisant les modules déjà abordés tels que la simulation et l'univers réel.
 
-\fig{pics/GamePacman.pdf}{14cm}{7cm}
+\fig{pics/GamePacman.pdf}{16cm}{10cm}
 {Pac-Man avec l'entité micro mouse (Pac-Micro)}{pacMicro}
 
 La figure [\ref{fig:pacMicro}] représente une illustration du mini-jeu, les trois chats représentent 
@@ -263,7 +262,6 @@ sur le PCB.
    D'un coup d'œil, plusieurs problèmes majeurs se posent d'un point de vue
 technique du projet.  Dans cette section, nous décrivons ces problèmes et
 les solutions que nous y apportons.}
-
 
 
 \subsection{Mappage et navigation} \label{sec:rechChem} 
