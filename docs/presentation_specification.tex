@@ -290,6 +290,9 @@ consiste à trouver un chemin d'un sommet à un autre de façon que la somme des
 
 \paragraph{Communication :}Pour déboguer et visualiser les données du véhicule ou bien pour recevoir les signaux artificiels des capteurs de la simulation une communication entre les composants est nécessaire, ainsi le transfert de données se fait en temps réel.
 
+\fig{pics/pbSchema.png}{14cm}{10cm}
+{schéma illustrant l’enchaînement des différentes parties}{pbSchema}
+
 \section{Problématiques identifiées et solutions envisagées} \label{sec:problemesSolutions}
 
 \paragraph{
@@ -309,10 +312,7 @@ principales informations que nous allons utiliser pour le traçage de la mappe. 
 commencer par déterminer la position et la direction du véhicule. Pour cela,
 nous utiliserons les informations du gyroscope afin de garder une copie de la
 position et de la direction et de les actualiser a chaque iteration en
-utilisant les données reçues.
-
-\fig{pics/FloodAlg.png}{7cm}{7cm}
-{Algorithme de Flood fill, Micromouse competition US 1982}{floodalg}
+utilisant les données reçues. \\
 
    Après avoir obtenu ces entrées, nous allons les utiliser avec les informations
 restantes des capteurs infrarouges pour faire la mappage proprement dite, nous
@@ -326,6 +326,9 @@ vient à l'esprit est l'algorithme A* qu'il est souvent utilisé dans les
 labyrinthes et qui est alors idéale pour notre projet. Bien sûr, l'algorithme
 doit être modifié pour tenir compte des erreurs occasionnelles de contrôle qui
 surviennent à cause des irrégularités du monde physique.
+
+\fig{pics/FloodAlg.png}{7cm}{7cm}
+{Algorithme de Flood fill, Micromouse competition US 1982}{floodalg}
 
 \subsection{Contrôle du véhicule} \label{sec:ctrlComm}
 
