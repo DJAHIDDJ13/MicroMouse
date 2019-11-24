@@ -102,7 +102,16 @@ les valeurs des différents composants de la micro mouse.
 
 \fig{pics/SimGUI.pdf}{17cm}{10cm}{Interface homme-machine pour la simulation}{ihmSim}
 
-\paragraph{Véhicule réel :}Notre système sera réalisé sur un prototype minimisé de micromouse appelé quarter-micromouse, le labyrinthe est constitué d'un quadrillage de cellules 8×8 de 180 mm de côté avec des murs de 50 mm de haut[2] les souris sont des robots complètement autonomes qui doivent trouver leur chemin d'une position de départ prédéterminée à la zone centrale du labyrinthe sans aide. La souris doit savoir où elle se trouve, découvrir les murs en explorant, cartographier le labyrinthe et détecter quand elle a atteint son but. Une fois l'objectif atteint, la souris effectuera généralement des recherches supplémentaires dans le labyrinthe jusqu'à ce qu'elle ait trouvé un itinéraire optimal du début à la fin. Une fois que l'itinéraire optimal a été trouvé, la souris exécute cet itinéraire dans les plus brefs délais. 
+\paragraph{Véhicule réel :}Notre système sera réalisé sur un prototype minimisé 
+de micromouse appelé quarter-micromouse, le labyrinthe est constitué d'un quadrillage 
+de cellules 8×8 de 180 mm de côté avec des murs de 50 mm de haut les souris sont des 
+robots complètement autonomes qui doivent trouver leur chemin d'une position de départ 
+prédéterminée à la zone centrale du labyrinthe sans aide. La souris doit savoir où elle 
+se trouve, découvrir les murs en explorant, cartographier le labyrinthe et détecter quand 
+elle a atteint son but. Une fois l'objectif atteint, la souris effectuera généralement des 
+recherches supplémentaires dans le labyrinthe jusqu'à ce qu'elle ait trouvé un itinéraire 
+optimal du début à la fin. Une fois que l'itinéraire optimal a été trouvé, la souris exécute 
+cet itinéraire dans les plus brefs délais. 
 
 
 \subsection{Fonctionnalités supplémentaires} \label{sec:foncSupplementaires}
@@ -128,7 +137,7 @@ Ceci en utilisant les modules déjà abordés tels que la simulation et l'univer
 
 La figure [\ref{fig:pacMicro}] représente une illustration du mini-jeu, les trois chats représentent 
 les gardiens du labyrinthe et le carré noir représente le véhicule intelligent qui 
-doit résoudre le labyrinthe en parcourant toutes les cases tous en évitant de croiser un gradient.
+doit résoudre le labyrinthe en parcourant toutes les cases tout en évitant de croiser un gradient.
 
 
 \section{Conception globale du projet} \label{sec:conception}
@@ -149,13 +158,16 @@ précédente [\ref{sec:foncAttendues}]}
 
    \item Le système réalisé permet à l'utilisateur d'observer le fonctionnement
  et l'évolution de la micro mouse ie:véhicule autonome dans sans monde un 
- labyrinthe de 12x12 case dans un monde physique, pour but de résoudre ce 
- labyrinthe et trouver le plus court chemin du point de départ au point final; \\
+ labyrinthe de 8x8 [\ref{sec:serLogiciel}] case dans un monde physique, pour 
+ but de résoudre ce labyrinthe et trouver le plus court chemin du point de départ au point final; \\
 
 \begin{itemize}
-      \item \textbf{Le labyrinthe} \\
+   \item \textbf{Le labyrinthe} est un carré de 1,44 m2 de surface composé de seize 
+« cellules » carrées de 180 millimètres de côté et de 50 millimètres de haut. 
+Il peut y avoir 8×8 cellules. \\
 
-      \item \textbf{La micro mouse} \\
+   \item \textbf{Le robot} ne doit pas faire plus de 250 millimètres de large 
+et de long (il n’y a pas de hauteur limite).
 \end{itemize}
 
    \item Le système permet aussi de simuler les fonctionnalités physiques 
@@ -164,23 +176,17 @@ définir par l'utilisateur, aussi on peut charger un fichier de configuration
 pour créer le labyrinthe; \\
 
 \begin{itemize}
-      \item \textbf{Le labyrinthe} \\
+   \item \textbf{Le labyrinthe} peut être créé par l'utilisateur manuellement 
+   ou bien en passant un fichier de configuration.\\
 
-      \item \textbf{La micro mouse} \\
+   \item \textbf{Le robot} Le robot est défini comme une entité qui se déplace dans le labyrinthe, il est sous la forme d'un cercle, surface du cercle ne dépasse pas la surface d'une case du labyrinthe.\\
 \end{itemize}
+\end{enumerate}
 
-   \item Finalement, l'utilisateur peut observer en temps réel l'évolution 
+   Finalement, l'utilisateur peut observer en temps réel l'évolution 
 de la micro mouse dans son univers, cette partie permet aussi d'afficher 
 les valeurs des différents composants du véhicule comme les capteurs infrarouges 
 et l'accéléromètre ainsi que d'autres informations sur la simulation. \\
-
-\begin{itemize}
-   \item \textbf{Le labyrinthe} \\
-
-   \item \textbf{La micro mouse} \\
-\end{itemize}
-
-\end{enumerate}
 
 \subsection{Architecture technique} \label{sec:archTechnique}
 
@@ -275,15 +281,16 @@ principales informations que nous allons utiliser pour le traçage de la mappe. 
 commencer par déterminer la position et la direction du véhicule. Pour cela,
 nous utiliserons les informations du gyroscope afin de garder une copie de la
 position et de la direction et de les actualiser a chaque iteration en
-utilisant les données reçues. \\
+utilisant les données reçues.
+
+\fig{pics/FloodAlg.png}{7cm}{7cm}
+{Algorithme de Flood fill, Micromouse competition US 1982}{floodalg}
 
    Après avoir obtenu ces entrées, nous allons les utiliser avec les informations
 restantes des capteurs infrarouges pour faire la mappage proprement dite, nous
 pouvons utiliser un algorithme de Flood fill pour déterminer la géométrie des
 murs et/ou des obstacles. Après un peu de nettoyage et interpolation nous
 devrions avoir une carte finale du labyrinthe. \\
-
-\fig{pics/FloodAlg.png}{7cm}{7cm}{Algorithme de Flood fill, Micromouse competition US 1982}{floodalg}
 
    Une fois le tour de mapping est terminé, nous devrons trouver le chemin le plus
 court entre la position du véhicule et le point d'arrivée. Une solution qui
