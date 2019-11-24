@@ -68,7 +68,7 @@ manipuler différentes entités dans les deux environnements, physique et
 simulé dans cette section nous allons introduire ces fonctionnalités et
 expliquer les cas d'utilisation de ces derniers.}
 
-\subsection{Vue d’ensemble du système} \label{subsec:vueEns}
+\subsection{Vue d’ensemble du système} \label{sec:vueEns}
 
 \vspace{5mm}
 Le produit permet à l'utilisateur de simulé un véhicule autonome se 
@@ -83,7 +83,7 @@ En outre, l'utilisateur du produit pour modifier le labyrinthe réel et d'y mett
 véhicule dedans pour lancer une observation physique et observer en temps réel les valeurs 
 des composants de l'engin, ainsi on pourra comparer les deux univers.
 
-\subsection{Services fournis par le produit} \label{subsec:serLogiciel}
+\subsection{Services fournis par le produit} \label{sec:serLogiciel}
 
 \paragraph{Simulation :}La simulation offre à l'utilisateur une diversité de choix et d'API comme 
 la création du labyrinthe soit avec un fichier de configuration ou manuellement 
@@ -97,7 +97,7 @@ les valeurs des différents composants de la micro mouse. \\
 
 \paragraph{Véhicule réel :}
 
-\subsection{Fonctionnalités supplémentaires} \label{subsec:foncSupplementaires}
+\subsection{Fonctionnalités supplémentaires} \label{sec:foncSupplementaires}
 
 \paragraph{Simulation en temps réel :}
 
@@ -116,7 +116,7 @@ logiciel on va présenter les différentes parties techniques nécessaires
 permettant de réaliser les fonctionnalités décrites dans la section
 précédente [\ref{sec:foncAttendues}]}
 
-\subsection{Vue pour l’utilisateur} \label{subsec:vueUtil}
+\subsection{Vue pour l’utilisateur} \label{sec:vueUtil}
    
    Le système offre à l'utilisateur deux choix pour l'exploiter: \\
 \begin{enumerate}
@@ -156,7 +156,7 @@ et l'accéléromètre ainsi que d'autres informations sur la simulation. \\
 
 \end{enumerate}
 
-\subsection{Architecture technique} \label{subsec:archTechnique}
+\subsection{Architecture technique} \label{sec:archTechnique}
 
    la micromouse sera composée de nombreuses parties electronique qui vont lui
 permettent de fonctionner. \\
@@ -226,7 +226,7 @@ Mount Devices) tels que les résistances, condensateurs, interrupteurs,
 diodes, LEDs etc... qui sont utilisés pour contrôler le courant électrique
 sur le PCB.
 
-\subsection{Architecture logicielle} \label{subsec:vueLogicielle}
+\subsection{Architecture logicielle} \label{sec:vueLogicielle}
 
 
 
@@ -239,7 +239,7 @@ les solutions que nous y apportons.}
 
 
 
-\subsection{Mappage et navigation} \label{subsec:rechChem} 
+\subsection{Mappage et navigation} \label{sec:rechChem} 
 
    Pour notre véhicule, les seules données qu'il reçoit du monde extérieur sont
 celles des capteurs, ce sont des signaux en temps réel des changements de
@@ -265,7 +265,7 @@ labyrinthes et qui estalors idéale pour notre projet. Bien sûr, l'algorithme
 doit être modifié pourtenir compte des erreurs occasionnelles de contrôle qui
 surviennent à cause des irrégularités du monde physique.
 
-\subsection{Contrôle du véhicule} \label{subsec:ctrlComm}
+\subsection{Contrôle du véhicule} \label{sec:ctrlComm}
 
 Notre véhicule se compose de deux moteurs que nous devrons contrôler pour
 parcourir les chemins avec fluidité, il devra faire des virages et éviter les
@@ -280,7 +280,7 @@ en se déplaçant, et le moteur utilisera ces règles ainsi que les données du
 capteurs pour générer les signaux de sortie des moteurs qui seront sa décision
 finale.
 
-\subsection{Communication} \label{subsec:mapMaze}
+\subsection{Communication} \label{sec:mapMaze}
 Un problème qui se pose à cause des besoins de certaines fonctionnalités du
 projet est la communication, que ce soit pour déboguer et visualiser les
 données du véhicule ou bien pour recevoir les signaux artificiels des capteurs
