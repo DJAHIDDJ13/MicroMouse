@@ -237,10 +237,6 @@ sur le PCB.
 technique du projet.  Dans cette section, nous décrivons ces problèmes et
 les solutions que nous y apportons.}
 
-\subsection{Contrôle du véhicule} \label{subsec:ctrlComm}
-
-
-\subsection{Communication} \label{subsec:mapMaze}
 
 
 \subsection{Mappage et navigation} \label{subsec:rechChem} 
@@ -262,12 +258,40 @@ pouvons utiliser un algorithme de Flood fill pour déterminer la géométrie des
 murs et/ou des obstacles. Après un peu de nettoyage et interpolation nous
 devrions avoir une carte finale du labyrinthe. \\
 
-   Après le premier tour, nous devrons trouver le chemin le plus court entre la
-position du véhicule et le point d'arrivée. Une solution qui vient à l'esprit
-est l'algorithme A* qu'il est souvent utilisé dans les labyrinthes et qui est
-alors idéale pour notre projet. Bien sûr, l'algorithme doit être modifié pour
-tenir compte des erreurs occasionnelles de contrôle qui surviennent a cause des
-imperfections du monde physique
+   Une fois le tour de mapping est terminé, nous devrons trouver le chemin le plus
+court entre la position du véhicule et le point d'arrivée. Une solution qui
+vient à l'espritest l'algorithme A* qu'il est souvent utilisé dans les
+labyrinthes et qui estalors idéale pour notre projet. Bien sûr, l'algorithme
+doit être modifié pourtenir compte des erreurs occasionnelles de contrôle qui
+surviennent à cause des irrégularités du monde physique.
+
+\subsection{Contrôle du véhicule} \label{subsec:ctrlComm}
+
+Notre véhicule se compose de deux moteurs que nous devrons contrôler pour
+parcourir les chemins avec fluidité, il devra faire des virages et éviter les
+collisions avec les murs et autres obstacles, tout en suivant le chemin créé
+pour lui. \\
+
+Pour résoudre ces problèmes, nous allons utiliser la logique floue qui servira
+à générer des signaux pour les puissances des moteurs en temps réel. La façon
+dont cela fonctionne est que nous créons un moteur d'inférence et lui
+fournissons des règles qui décrivent la façon dont la véhicule doit se comporter 
+en se déplaçant, et le moteur utilisera ces règles ainsi que les données du
+capteurs pour générer les signaux de sortie des moteurs qui seront sa décision
+finale.
+
+\subsection{Communication} \label{subsec:mapMaze}
+Un problème qui se pose à cause des besoins de certaines fonctionnalités du
+projet est la communication, que ce soit pour déboguer et visualiser les
+données du véhicule ou bien pour recevoir les signaux artificiels des capteurs
+de la simulation. 
+
+Tous deux auront besoin de leur propre protocole de communication respectif
+à être efficaces, fiables et rapides puisque le transfert de données se fait en
+temps réel, et ce en du fait des ressources limitées du micro contrôleur. et
+pour cela nous allons utiliser une communication serial entre le module
+Bluetooth de Micromouse et les autres parties communicant
+
 
 \section{Environnement de travail} \label{sec:environnement}
 
