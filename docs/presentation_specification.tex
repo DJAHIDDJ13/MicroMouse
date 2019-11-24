@@ -287,9 +287,9 @@ devrions avoir une carte finale du labyrinthe. \\
 
    Une fois le tour de mapping est terminé, nous devrons trouver le chemin le plus
 court entre la position du véhicule et le point d'arrivée. Une solution qui
-vient à l'espritest l'algorithme A* qu'il est souvent utilisé dans les
-labyrinthes et qui estalors idéale pour notre projet. Bien sûr, l'algorithme
-doit être modifié pourtenir compte des erreurs occasionnelles de contrôle qui
+vient à l'esprit est l'algorithme A* qu'il est souvent utilisé dans les
+labyrinthes et qui est alors idéale pour notre projet. Bien sûr, l'algorithme
+doit être modifié pour tenir compte des erreurs occasionnelles de contrôle qui
 surviennent à cause des irrégularités du monde physique.
 
 \subsection{Contrôle du véhicule} \label{sec:ctrlComm}
@@ -311,14 +311,13 @@ finale.
 Un problème qui se pose à cause des besoins de certaines fonctionnalités du
 projet est la communication, que ce soit pour déboguer et visualiser les
 données du véhicule ou bien pour recevoir les signaux artificiels des capteurs
-de la simulation. 
+de la simulation. \\
 
 Tous deux auront besoin de leur propre protocole de communication respectif
 à être efficaces, fiables et rapides puisque le transfert de données se fait en
-temps réel, et ce en du fait des ressources limitées du micro contrôleur. et
-pour cela nous allons utiliser une communication serial entre le module
-Bluetooth de Micromouse et les autres parties communicant
-
+temps réel, avec les ressources limitées de micro contrôleur. et pour cela nous
+allons utiliser une communication serial entre le module Bluetooth de Micromouse
+et les autres parties communicantes.
 
 \section{Environnement de travail} \label{sec:environnement}
 
@@ -327,14 +326,14 @@ Bluetooth de Micromouse et les autres parties communicant
 différents composants de la micromouse. Ici ils sont décrits et leurs rôles
 dans la réalisation de chacune de ces parties.} \hfill
 
-\vspace{5mm}
-\begin{itemize}
- 
-   \item Le simulateur de labyrinthe et l'interface temps réel de la micro mouse sont
+\subsection{logiciels et environnements de développement} \label{subsec:softDev} 
+
+   Le simulateur de labyrinthe et l'interface temps réel de la micro mouse sont
 écrits en langage de programmation Processing. Le contrôleur principal de
 l'Arduino est écrit en C. \\
 
-   \item \textbf{Processing} est un langage qui se concentre sur les graphiques et
+
+   \textbf{Processing} est un langage qui se concentre sur les graphiques et
 les interfaces 2D et 3D, il sera utilisé pour créer des courbes et des
 animations en temps réel très claires et informatives, ainsi que des
 contrôles simples et faciles à utiliser. il fournit des bibliothèques pour
@@ -342,20 +341,28 @@ la communication serial pour le transfert de signals depuis et vers le micro
 contrôleur. \\
 
  
-   \item Le \textbf{IDE Processing} nous permettra d'organiser le projet, et
-d'exécuter le code de Processing.  Il a également un débogueur intégré et
-d'autres outils de developpement, et une interface simple pour ajouter les
-bibliothèques et extensions de langage. \\
+   Le \textbf{IDE} \footnote{Integrated Development Environment}
+\textbf{Processing} nous permettra d'organiser le projet, etd'exécuter le
+code de Processing.  Il a également un débogueur intégré etd'autres
+outils de developpement, et une interface simple pour ajouter
+les bibliothèques et extensions de langage. \\ 
 
- 
-   \item \textbf{Box2D} est une librairie de simulation physique 2D écrite pour C++,
+
+   \textbf{Box2D} est une librairie de simulation physique 2D écrite pour C++,
 mais il existe des frameworks et wrappers pour cela en Java et Processing.
 elle sera utilisée pour simuler le véhicule et ses interactions avec son
 environnement. et pour générer en temps réel des signaux de capteurs
 artificiels pour tester la micro souris. \\
 
 
-   \item Le \textbf{IDE Arduino} sera utilisé pour développer le microcontrôleur
+   Le \textbf{IDE Arduino} sera utilisé pour développer le microcontrôleur
 principal en C, il dispose d'outils qui permettent la compilation et
 l'ectiture des sorties binaires dans le micro contrôleur. \\
-\end{itemize}
+
+\subsection{Matériel informatique} \label{subsec:hardDev}
+Dans ce projet, nous avions une carte de circuit imprimé utilisée pour
+connecter les pièces de notre véhicule, celle qui devait être imprimée à l'aide
+d'une \textbf{imprimante PCB} qui grave les circuits de la carte pour pouvoir
+ensuite souder les pièces ensemble. Nous avons également des pièces qui
+nécessitent une \textbf{imprimante 3D} pour fabriquer les formes des roues et
+essieux du véhicule pour qu'ils s'adaptent au design du corps.    
