@@ -15,7 +15,7 @@ Réalisation d'une simulation permettant d'illustrer l'algorithme utilisé.
 * Architectures des systèmes à micro-processeurs 
 
 
-### université de cergy pontoise
+### Université de Cergy-Pontoise
 ### Encadrant technique : PITTI Alexandre
 ### Encadrant de gestion de projet : LIU Tianxiao
 ### Membres de l'équipe
