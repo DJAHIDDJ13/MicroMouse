@@ -71,39 +71,65 @@ expliquer les cas d'utilisation de ces derniers.}
 \subsection{Vue d’ensemble du système} \label{sec:vueEns}
 
 \vspace{5mm}
-Le produit permet à l'utilisateur de simulé un véhicule autonome se 
-déplaçant dans un labyrinthe et de trancher le point d'arriver, le 
-labyrinthe est créé soit manuellement ou en insérant un fichier de 
-configuration, ainsi la simulation pourra se lancer et l'utilisateur 
-pourra observer le déplacement de la micro mouse et en même temps d'observer 
-le journal et les statistiques de la simulation ainsi que les valeurs des différents 
-composants de l'engin. \\
+Le produit permet à l'utilisateur de simuler un véhicule autonome se déplaçant 
+dans un labyrinthe et en essayant de trancher le point d'arriver, le labyrinthe 
+est créé soit manuellement ou en insérant un fichier de configuration, ainsi la 
+simulation pourra se lancer et l'utilisateur pourra observer le déplacement de 
+la micro mouse et en même temps d'observer le journal et les statistiques de la 
+simulation qui sont modifiées et stockées au fur et à mesure de la simulation, 
+ainsi que les valeurs des différents composants de l'engin. \\
 
-En outre, l'utilisateur du produit pour modifier le labyrinthe réel et d'y mettre le 
-véhicule dedans pour lancer une observation physique et observer en temps réel les valeurs 
-des composants de l'engin, ainsi on pourra comparer les deux univers.
+En outre, l'utilisateur du produit peut modifier le labyrinthe réel et d'y mettre 
+le véhicule dedans pour lancer une observation physique, ainsi qu'il pourra voir 
+sur sa machine sur un autre logiciel de visualisation le déplacement et les valeurs 
+retournées par l'engin. \\
+
+Le schéma suivant illustre le diagramme de cas d'utilisation du produit.
+
+
+\fig{pics/UC_micromouse.png}{20cm}{12.5cm}
+{Le diagramme de cas d'utilisation du système}{UCMicromouse}
 
 \subsection{Services fournis par le produit} \label{sec:serLogiciel}
 
-\paragraph{Simulation :}La simulation offre à l'utilisateur une diversité de choix et d'API comme 
-la création du labyrinthe soit avec un fichier de configuration ou manuellement 
-et le choix de la complexité de l'algorithme de recherche du plus court chemin, 
+\paragraph{Simulation :}La simulation offre à l'utilisateur une diversité de choix 
+et d'API comme la création du labyrinthe soit avec un fichier de configuration ou 
+manuellement et le choix de la complexité de l'algorithme de recherche du plus court chemin, 
 en outre l'utilisateur peut visualiser le journal de la simulation et les statistiques 
 sur la partie information sur la simulation, finalement l'utilisateur pourra observer 
-les valeurs des différents composants de la micro mouse. \\
+les valeurs des différents composants de la micro mouse.
 
 
 \fig{pics/SimGUI.pdf}{17cm}{10cm}{Interface homme-machine pour la simulation}{ihmSim}
 
 \paragraph{Véhicule réel :}
 
+
+\newpage
 \subsection{Fonctionnalités supplémentaires} \label{sec:foncSupplementaires}
 
-\paragraph{Simulation en temps réel :}
+\paragraph{Visualisation en temps réel :}La visualisation des résultats au fur et à mesure 
+du temps, au moment du lancement du système l'utilisateur peut lancer un logiciel, c'est le 
+logiciel de visualisation des résultats de l'expérience, il permet à l'utilisateur de visualiser 
+la vue du véhicule et les valeurs des capteurs au fur et à mesure de l'exploration, aussi de 
+visualiser le journal de la simulation et les statistiques.
 
-\paragraph{Multi-véhicule :} Un mini-jeu est mis en place pour les deux univers, simulé et réel permettant d'introduire la notion de communication entre différents véhicules, le jeu consiste à parcourir toutes les cases du labyrinthe et à la fin se situer dans la case d'arriver par un véhicule autonome intelligent en évitant les autres véhicules gradient communiquant entre eux. Ceci en utilisant les modules déjà abordés tels que la simulation et l'univers réel.
+\fig{pics/visLogiciel.png}{15cm}{6cm}
+{Maquette du logiciel de visualisation}{visLogiciel}
 
-\fig{pics/GamePacman.pdf}{17cm}{10cm}{Pac-Man avec l'entité micro mouse (Pac-Micro)}{pacmicro}
+\paragraph{Multi-véhicule :} Un mini-jeu est mis en place pour les 
+deux univers, simulé et réel permettant d'introduire la notion de communication 
+entre différents véhicules, le jeu consiste à parcourir toutes les cases du 
+labyrinthe et à la fin se situer dans la case d'arriver par un véhicule autonome 
+intelligent en évitant les autres véhicules gradient communiquant entre eux. 
+Ceci en utilisant les modules déjà abordés tels que la simulation et l'univers réel.
+
+\fig{pics/GamePacman.pdf}{14cm}{7cm}
+{Pac-Man avec l'entité micro mouse (Pac-Micro)}{pacMicro}
+
+La figure [\ref{fig:pacMicro}] représente une illustration du mini-jeu, les trois chats représentent 
+les gardiens du labyrinthe et le carré noir représente le véhicule intelligent qui 
+doit résoudre le labyrinthe en parcourant toutes les cases tous en évitant de croiser un gradient.
 
 
 \section{Conception globale du projet} \label{sec:conception}
@@ -299,7 +325,7 @@ Bluetooth de Micromouse et les autres parties communicant
 \paragraph{ 
    Plusieurs outils et matériels ont été utilisés pour développer les
 différents composants de la micromouse. Ici ils sont décrits et leurs rôles
-dans la réalisation de chacune de ces parties.}
+dans la réalisation de chacune de ces parties.} \hfill
 
 \vspace{5mm}
 \begin{itemize}
