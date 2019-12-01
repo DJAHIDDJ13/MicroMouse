@@ -16,7 +16,7 @@ Réalisation d'une simulation permettant d'illustrer l'algorithme utilisé.
 
 
 ### Université de Cergy-Pontoise
-### Encadrant technique : PITTI Alexandre
+### Tuteur technique : PITTI Alexandre
 ### Encadrant de gestion de projet : LIU Tianxiao
 ### Membres de l'équipe
 * Amine AGRANE
