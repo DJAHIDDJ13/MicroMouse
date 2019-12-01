@@ -1,9 +1,13 @@
-abstract class Box{
+// A rectangular box
+class Box{
  
   private Coordinates position;
+  private BoxType type;
   
-  Box(Coordinates position){
+  // Constructor
+  Box(Coordinates position, BoxType type){
     this.position = position;
+    this.type = type;
   }
   
   Coordinates getPosition(){
@@ -14,6 +18,15 @@ abstract class Box{
     this.position = newPosition;
   }
   
-  abstract boolean isFree();
+  BoxType getType(){
+    return type;
+  }
   
+  void setBoxType(BoxType type){
+    this.type = type;
+  }
+  
+  boolean isFreeBox(){
+    return this.type.isFree();
+  }
 }
