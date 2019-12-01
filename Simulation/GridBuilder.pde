@@ -18,6 +18,6 @@ class GridBuilder{
   }
   
   boolean isTakenBoxByInitial(int i, int j, int rows, int cols){
-     return ((i == 0 && (j == 0 || j == cols-1)) || (i == rows-1 && (j == 0 || j == cols-1)));
+     return (i == 0) || i == rows-1 || (j == 0) || (j == cols-1);
   }
 }
