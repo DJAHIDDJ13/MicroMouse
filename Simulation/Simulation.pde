@@ -13,8 +13,8 @@ Box2DProcessing box2d;
 static final int cols = 28;
 static final int rows = 20;
 
-static final float boxH = 17.5;
-static final float boxW = 35;
+static final float boxW = 35; //the perfect size is 35.
+static final float boxH = boxW/2; //it has to be boxH = boxW*2 to work well
 static final float worldH = rows*boxW;
 static final float worldW = cols*boxW;
 
