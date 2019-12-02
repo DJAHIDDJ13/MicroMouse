@@ -10,13 +10,16 @@ import org.jbox2d.dynamics.joints.*;
 // A reference to our box2d world
 Box2DProcessing box2d;
 
-static final int worldH = 700;
-static final int worldW = 1000;
-static final int boxH = 45;
-static final int boxW = 60;
+static final float worldH = 700;
+static final float worldW = 1000;
+static final float boxH = 25;
+static final float boxW = 50;
+static final float shift = 5;
 
 SimulationEntry systemEntry;
 Engine engine;
+World world;
+ArrayList<Object> objects;
 
 void setup(){
   size(1500,800);
@@ -26,7 +29,7 @@ void setup(){
   box2d = new Box2DProcessing(this);
   box2d.createWorld();
   
-  systemEntry = new SimulationEntry(worldH, worldW);
+  systemEntry = new SimulationEntry(worldH, worldW, boxH, boxW, shift);
   engine = new Engine(systemEntry);
   
 }
@@ -37,5 +40,17 @@ void setup(){
   // We must always step through time!
   box2d.step();
   
-  engine.getWorld().display();
+  world = engine.getWorld();
+  world.display();
+  objects = world.getObjects();
+  Object obj;
+  for(int i = 0; i < objects.size(); i++){
+    obj = objects.get(i);
+    if(obj.isWall()){
+      fill(127,0,0);
+      rect(obj.getX(), obj.getY(), obj.getW(), obj.getH());
+      fill(255);
+    }
+  }
+
 }

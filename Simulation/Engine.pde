@@ -8,8 +8,11 @@ class Engine{
     this.systemEntry = systemEntry;
     float worldH = systemEntry.getWorldH();
     float worldW = systemEntry.getWorldW();
+    float boxH = systemEntry.getBoxH();
+    float boxW = systemEntry.getBoxW();
+    float shift = systemEntry.getShift(); 
     builder = new WorldBuilder();
-    world = builder.builderInitialWorld(worldH, worldW);
+    world = builder.builderInitialWorld(worldH, worldW, boxH, boxW, shift);
     turn = 0;
   }
   

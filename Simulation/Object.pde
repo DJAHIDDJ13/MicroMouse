@@ -44,6 +44,10 @@ abstract class Object{
     this.w = w; 
   }
   
+  boolean equals(Object object){
+    return this.x == object.getX() && this.y == object.getY()
+            && this.h == object.getH() && this.w == object.getW();
+  }
+  
   abstract boolean isWall();
-  abstract void display();
 }

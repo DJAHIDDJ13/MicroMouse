@@ -8,8 +8,4 @@ class Wall extends Object{
   boolean isWall(){
     return true;
   }
-  
-  void display(){
-      
-  }
 }
