@@ -61,8 +61,8 @@ class World{
   }
   
   // Drawing the grid
-  void display(){
+  void display(float shiftX, float shiftY){
     strokeWeight(2);
-    rect(5, 5, worldW, worldH);
+    rect(shiftX, shiftY, worldW, worldH);
   }
 }

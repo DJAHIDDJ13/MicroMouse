@@ -4,6 +4,10 @@ abstract class Object{
   float x,y;
   float h,w; 
   
+  // But we also have to make a body for box2d to know about it
+  Body b;
+
+  
   // Constructor
   Object(float x, float y, float h, float w){
     this.x = x;

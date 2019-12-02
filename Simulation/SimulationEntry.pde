@@ -2,24 +2,27 @@ class SimulationEntry{
   String file;
   float worldH,worldW;
   float boxH,boxW;
-  float shift;
+  float shiftX,shiftY;
   //add here all the variable that can be used for simulation
   
-  SimulationEntry(String file, float worldH, float worldW, float boxH, float boxW, float shift){
+  SimulationEntry(String file, float worldH, float worldW, 
+                  float boxH, float boxW, float shiftX, float shiftY){
     this.file = file;
     this.worldH = worldH;
     this.worldW = worldW;
     this.boxH = boxH;
     this.boxW = boxW;
-    this.shift = shift;
+    this.shiftX = shiftX;
+    this.shiftY = shiftY;
   }
   
-  SimulationEntry(float worldH, float worldW, float boxH, float boxW, float shift){
+  SimulationEntry(float worldH, float worldW, float boxH, float boxW, float shiftX, float shiftY){
     this.worldH = worldH;
     this.worldW = worldW;
     this.boxH = boxH;
     this.boxW = boxW;
-    this.shift = shift;
+    this.shiftX = shiftX;
+    this.shiftY = shiftY;
   }
   
   SimulationEntry(String file){
@@ -66,11 +69,19 @@ class SimulationEntry{
     this.boxW = boxW;
   }
   
-   float getShift(){
-    return shift;
+   float getShiftX(){
+    return shiftX;
   }
   
-  void setShift(float shift){
-    this.shift = shift;
+  void setShiftX(float shiftX){
+    this.shiftX = shiftX;
+  }
+
+   float getShiftY(){
+    return shiftY;
+  }
+  
+  void setShiftY(float shiftY){
+    this.shiftY = shiftY;
   }
 }

@@ -14,7 +14,8 @@ static final float worldH = 700;
 static final float worldW = 1000;
 static final float boxH = 25;
 static final float boxW = 50;
-static final float shift = 5;
+static final float shiftX = 5;
+static final float shiftY = 5;
 
 SimulationEntry systemEntry;
 Engine engine;
@@ -29,7 +30,7 @@ void setup(){
   box2d = new Box2DProcessing(this);
   box2d.createWorld();
   
-  systemEntry = new SimulationEntry(worldH, worldW, boxH, boxW, shift);
+  systemEntry = new SimulationEntry(worldH, worldW, boxH, boxW, shiftX, shiftY);
   engine = new Engine(systemEntry);
   
 }
@@ -41,7 +42,7 @@ void setup(){
   box2d.step();
   
   world = engine.getWorld();
-  world.display();
+  world.display(shiftX,shiftY);
   objects = world.getObjects();
   Object obj;
   for(int i = 0; i < objects.size(); i++){

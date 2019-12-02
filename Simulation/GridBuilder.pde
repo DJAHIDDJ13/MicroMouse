@@ -1,6 +1,7 @@
 class WorldBuilder{
   
-  World builderInitialWorld(float worldH, float worldW, float boxH, float boxW, float shift){
+  World builderInitialWorld(float worldH, float worldW, 
+                            float boxH, float boxW, float shiftX, float shiftY){
     Wall wall;
     
     int wallBases = (int)(worldW/boxW);
@@ -8,8 +9,8 @@ class WorldBuilder{
     World world = new World(worldH, worldW);
 
     //create top wall
-    float xWall = shift;
-    float yWall = shift;
+    float xWall = shiftX;
+    float yWall = shiftY;
     for(int i = 0; i < wallBases; i++){
       wall = SimulationFactory.createWall(xWall, yWall, boxH, boxW);
       world.addObject(wall);
@@ -17,8 +18,8 @@ class WorldBuilder{
     }
     
     //create bottom wall
-    xWall = shift;
-    yWall = worldH-boxH+shift;
+    xWall = shiftX;
+    yWall = worldH-boxH+shiftY;
     for(int i = 0; i < wallBases; i++){
       wall = SimulationFactory.createWall(xWall, yWall, boxH, boxW);
       world.addObject(wall);
@@ -26,8 +27,8 @@ class WorldBuilder{
     }
     
     //create left wall
-    xWall = shift;
-    yWall = shift+boxH;
+    xWall = shiftX;
+    yWall = shiftY+boxH;
     for(int i = 0; i < wallLR; i++){
       wall = SimulationFactory.createWall(xWall, yWall, boxW, boxH);
       world.addObject(wall);
@@ -35,8 +36,8 @@ class WorldBuilder{
     }
     
     //create right wall
-    xWall = worldW-boxH+shift;
-    yWall = shift+boxH;
+    xWall = worldW-boxH+shiftX;
+    yWall = shiftY+boxH;
     for(int i = 0; i < wallLR; i++){
       wall = SimulationFactory.createWall(xWall, yWall, boxW, boxH);
       world.addObject(wall);
