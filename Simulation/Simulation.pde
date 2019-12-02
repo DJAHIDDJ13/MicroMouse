@@ -10,10 +10,14 @@ import org.jbox2d.dynamics.joints.*;
 // A reference to our box2d world
 Box2DProcessing box2d;
 
-static final float worldH = 700;
-static final float worldW = 1000;
-static final float boxH = 25;
-static final float boxW = 50;
+static final int cols = 28;
+static final int rows = 20;
+
+static final float boxH = 17.5;
+static final float boxW = 35;
+static final float worldH = rows*boxW;
+static final float worldW = cols*boxW;
+
 static final float shiftX = 5;
 static final float shiftY = 5;
 
@@ -53,5 +57,4 @@ void setup(){
       fill(255);
     }
   }
-
 }
