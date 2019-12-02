@@ -1,23 +1,17 @@
 class SimulationEntry{
   String file;
-  int cols;
-  int rows;
-  int boxH,boxW;
+  float worldH,worldW;
   //add here all the variable that can be used for simulation
   
-  SimulationEntry(String file, int cols, int rows, int boxH, int boxW){
+  SimulationEntry(String file, float worldH, float worldW){
     this.file = file;
-    this.cols = cols;
-    this.rows = rows;
-    this.boxH = boxH;
-    this.boxW = boxW;
+    this.worldH = worldH;
+    this.worldW = worldW;
   }
   
-  SimulationEntry(int cols, int rows, int boxH, int boxW){
-    this.cols = cols;
-    this.rows = rows;
-    this.boxH = boxH;
-    this.boxW = boxW;
+  SimulationEntry(float worldH, float worldW){
+    this.worldH = worldH;
+    this.worldW = worldW;
   }
   
   SimulationEntry(String file){
@@ -32,35 +26,19 @@ class SimulationEntry{
     this.file = file;
   }
   
-  int getCols(){
-    return cols;
+  float getWorldH(){
+    return worldH;
   }
   
-  void setCols(int cols){
-    this.cols = cols;
+  void setWorldH(float worldH){
+    this.worldH = worldH;
   }
   
-  int getRows(){
-    return rows;
+  float getWorldW(){
+    return worldW;
   }
   
-  void setRows(int rows){
-    this.rows = rows;
-  }
-  
-  int getBoxH(){
-    return boxH;
-  }
-  
-  void setBoxH(int boxH){
-    this.boxH = boxH;
-  }
-  
-  int getBoxW(){
-    return boxW;
-  }
-  
-  void setBoxW(int boxW){
-    this.boxW = boxW;
+  void setWorldW(float worldW){
+    this.worldW = worldW;
   }
 }

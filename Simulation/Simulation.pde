@@ -10,11 +10,11 @@ import org.jbox2d.dynamics.joints.*;
 // A reference to our box2d world
 Box2DProcessing box2d;
 
-static final int cols = 16;
-static final int rows = 16;
+static final int worldH = 700;
+static final int worldW = 1000;
 static final int boxH = 45;
 static final int boxW = 60;
-static final int shift = 5;
+
 SimulationEntry systemEntry;
 Engine engine;
 
@@ -26,16 +26,16 @@ void setup(){
   box2d = new Box2DProcessing(this);
   box2d.createWorld();
   
-  systemEntry = new SimulationEntry(cols, rows, boxH, boxW);
+  systemEntry = new SimulationEntry(worldH, worldW);
   engine = new Engine(systemEntry);
   
 }
 
  void draw() {
-  background(255);
+  background(150);
 
   // We must always step through time!
   box2d.step();
   
-  engine.getGrid().display(shift);
+  engine.getWorld().display();
 }

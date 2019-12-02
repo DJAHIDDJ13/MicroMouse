@@ -1,17 +1,15 @@
 class Engine{
   int turn;
-  Grid grid;
-  GridBuilder builder;
+  World world;
+  WorldBuilder builder;
   SimulationEntry systemEntry;
   
   Engine(SimulationEntry systemEntry){
     this.systemEntry = systemEntry;
-    int cols = systemEntry.getCols();
-    int rows = systemEntry.getRows();
-    int boxH = systemEntry.getBoxH();
-    int boxW = systemEntry.getBoxW();
-    builder = new GridBuilder();
-    grid = builder.builderInitialGrid(cols, rows, boxH, boxW);
+    float worldH = systemEntry.getWorldH();
+    float worldW = systemEntry.getWorldW();
+    builder = new WorldBuilder();
+    world = builder.builderInitialWorld(worldH, worldW);
     turn = 0;
   }
   
@@ -20,12 +18,12 @@ class Engine{
     turn++;
   }
   
-  Grid getGrid(){
-    return grid;
+  World getWorld(){
+    return world;
   }
   
-  void setGrid(Grid grid){
-    this.grid = grid;
+  void setWorld(World world){
+    this.world = world;
   }
   
   int getTurn(){
