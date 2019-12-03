@@ -17,7 +17,6 @@ static final int rows = 32;
 SimulationEntry systemEntry;
 Engine engine;
 World world;
-ArrayList<Object> objects;
 
 void setup(){
   size(1500,900);
@@ -40,14 +39,4 @@ void setup(){
   
   world = engine.getWorld();
   world.display(systemEntry.getShiftX(),systemEntry.getShiftY());
-  objects = world.getObjects();
-  Object obj;
-  for(int i = 0; i < objects.size(); i++){
-    obj = objects.get(i);
-    if(obj.isWall()){
-      fill(127,0,0);
-      rect(obj.getX(), obj.getY(), obj.getW(), obj.getH());
-      fill(255);
-    }
-  }
 }

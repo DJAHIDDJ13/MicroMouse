@@ -2,18 +2,20 @@
 abstract class Object{
   
   float x,y;
-  float h,w; 
+  float h,w;
+  float alpha;
   
   // But we also have to make a body for box2d to know about it
   Body b;
 
   
   // Constructor
-  Object(float x, float y, float h, float w){
+  Object(float x, float y, float h, float w, float alpha){
     this.x = x;
     this.y = y;
     this.h = h;
     this.w = w;
+    this.alpha = alpha;
   }
   
   float getX(){
@@ -32,6 +34,10 @@ abstract class Object{
     return w; 
   }
   
+  float getAlpha(){
+    return alpha;
+  }
+  
   void setX(float x){
     this.x = x; 
   }
@@ -46,6 +52,10 @@ abstract class Object{
   
   void setW(float w){
     this.w = w; 
+  }
+  
+  void setAlpha(float alpha){
+    this.alpha = alpha;
   }
   
   boolean equals(Object object){
