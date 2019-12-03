@@ -14,7 +14,7 @@ static final int cols = 32;
 static final int rows = 32;
 
 static final float boxW = 25; //the perfect size is 35.
-static final float boxH = boxW/2; //it has to be boxH = boxW*2 to work well
+static final float boxH = boxW/2; //it has to be boxH = boxW/2 to work well
 static final float worldH = rows*boxW;
 static final float worldW = cols*boxW;
 
