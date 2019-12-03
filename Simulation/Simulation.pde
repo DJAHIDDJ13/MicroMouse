@@ -10,10 +10,10 @@ import org.jbox2d.dynamics.joints.*;
 // A reference to our box2d world
 Box2DProcessing box2d;
 
-static final int cols = 28;
-static final int rows = 20;
+static final int cols = 32;
+static final int rows = 32;
 
-static final float boxW = 35; //the perfect size is 35.
+static final float boxW = 25; //the perfect size is 35.
 static final float boxH = boxW/2; //it has to be boxH = boxW*2 to work well
 static final float worldH = rows*boxW;
 static final float worldW = cols*boxW;
@@ -27,7 +27,7 @@ World world;
 ArrayList<Object> objects;
 
 void setup(){
-  size(1500,800);
+  size(1500,900);
   smooth();
   
   // Initialize box2d physics and create the world
