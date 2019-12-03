@@ -55,9 +55,16 @@ class World{
        removeObjectAt(i);
   }
   
+  boolean ObjectExist(Object object){
+    int i;
+      for(i = 0; i < objects.size() && !object.equals(objects.get(i)); i++);
+    return i < objects.size();
+  }
+  
   void addObject(Object object){
-     if(!objects.contains(object))
+    if(!ObjectExist(object)){
        objects.add(object);
+    }
   }
   
   // Drawing the grid
@@ -93,5 +100,9 @@ class World{
         endShape();
       fill(255);
     }
+    
+    stroke(255);
+    line(0, 812, 812, 812);
+    line(812, 812, 812, 0);
   }
 }
