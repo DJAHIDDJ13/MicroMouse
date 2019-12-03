@@ -14,8 +14,8 @@ Box2DProcessing box2d;
 ControlP5 cp5;
 
 //There can be 16×16 cells, or 32×32 cells. 
-static final int cols = 32;
-static final int rows = 32;
+static final int cols = 16;
+static final int rows = 16;
 
 SimulationEntry systemEntry;
 Engine engine;
@@ -83,10 +83,10 @@ void wallProcess(){
 
 void controlEvent(ControlEvent theEvent) {
   if(theEvent.getController().getName().equals("Turn+")){
-    rotate+=0.1;
+    rotate += 0.1;
   } 
   else if(theEvent.getController().getName().equals("Turn-")){
-    rotate-=0.1;
+    rotate -= 0.1;
   }
 }
 
@@ -113,8 +113,8 @@ void objectPanel(){
   stroke(0);
   rect(5, 830, 70, 70); 
         fill(127,0,0);
-        dw=wall.getW()/(worldS*2);
-        dh=wall.getH()/(worldS*2);  
+        dw = wall.getW()/(worldS*2);
+        dh = wall.getH()/(worldS*2);  
         dx = wall.getX()+wall.getW()/2;
         dy = wall.getY()+wall.getH()/2;
         alpha = wall.getAlpha();

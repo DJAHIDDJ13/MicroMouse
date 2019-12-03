@@ -13,7 +13,7 @@ class Engine{
     float shiftX = systemEntry.getShiftX();
     float shiftY = systemEntry.getShiftY();
     builder = new WorldBuilder();
-    world = builder.builderInitialWorld(worldH, worldW, boxH, boxW, shiftX, shiftY);
+    world = builder.builderInitialWorld(worldH,worldW,boxH,boxW,shiftX,shiftY);
     turn = 0;
   }
   
