@@ -25,6 +25,15 @@ class SimulationEntry{
     this.shiftY = shiftY;
   }
   
+  SimulationEntry(float cols, float rows){
+    this.boxW = 800/rows; //the perfect size is 25.
+    this.boxH = boxW/2; //it has to be boxH = boxW/2 to work well
+    this.worldH = rows*boxW;
+    this.worldW = cols*boxW;
+    this.shiftX = 5;
+    this.shiftY = 5;
+  }
+  
   SimulationEntry(String file){
     this.file = file;
   }

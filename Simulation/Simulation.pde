@@ -10,16 +10,9 @@ import org.jbox2d.dynamics.joints.*;
 // A reference to our box2d world
 Box2DProcessing box2d;
 
+//There can be 16×16 cells, or 32×32 cells. 
 static final int cols = 32;
 static final int rows = 32;
-
-static final float boxW = 25; //the perfect size is 35.
-static final float boxH = boxW/2; //it has to be boxH = boxW/2 to work well
-static final float worldH = rows*boxW;
-static final float worldW = cols*boxW;
-
-static final float shiftX = 5;
-static final float shiftY = 5;
 
 SimulationEntry systemEntry;
 Engine engine;
@@ -34,7 +27,7 @@ void setup(){
   box2d = new Box2DProcessing(this);
   box2d.createWorld();
   
-  systemEntry = new SimulationEntry(worldH, worldW, boxH, boxW, shiftX, shiftY);
+  systemEntry = new SimulationEntry(cols, rows);
   engine = new Engine(systemEntry);
   
 }
@@ -46,7 +39,7 @@ void setup(){
   box2d.step();
   
   world = engine.getWorld();
-  world.display(shiftX,shiftY);
+  world.display(systemEntry.getShiftX(),systemEntry.getShiftY());
   objects = world.getObjects();
   Object obj;
   for(int i = 0; i < objects.size(); i++){
