@@ -67,6 +67,14 @@ class World{
     }
   }
   
+  int IsWall(float mX, float mY){
+   int index = -1;
+   for(int i = 0; i < objects.size() && index == -1; i++)
+     if(objects.get(i).coordinatesInPerimeter(mX,mY))
+       index = i;
+   return index;
+  }
+  
   // Drawing the grid
   void display(float shiftX, float shiftY){
     float dh,dw;

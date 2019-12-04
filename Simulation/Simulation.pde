@@ -14,8 +14,8 @@ Box2DProcessing box2d;
 ControlP5 cp5;
 
 //There can be 16×16 cells, or 32×32 cells. 
-static final int cols = 16;
-static final int rows = 16;
+static final int cols = 12;
+static final int rows = 12;
 
 SimulationEntry systemEntry;
 Engine engine;
@@ -24,7 +24,7 @@ World world;
 //Object controler to add a wall
 Wall wall;
 float rotate,xWall,yWall,hWall,wWall;
-boolean addClick,correctCords;
+boolean addClick,removeClick,correctCords;
 
 void setup(){
   size(1500,950);
@@ -48,7 +48,7 @@ void setup(){
   systemEntry = new SimulationEntry(cols, rows);
   engine = new Engine(systemEntry);
   wall = SimulationFactory.createWall(xWall,yWall,hWall,wWall,rotate);
-  addClick = correctCords = false;
+  addClick = correctCords = removeClick = false;
 }
 
 void draw() {
@@ -79,6 +79,11 @@ void wallProcess(){
       correctCords = false;
     }
   }
+  else if(removeClick){
+     if(mouseX < systemEntry.getWorldW() && mouseY < systemEntry.getWorldH()){
+        correctCords = true;
+    }   
+  }
 }
 
 void controlEvent(ControlEvent theEvent) {
@@ -96,14 +101,29 @@ void Add() {
   addClick = !addClick;
 }
 
+// function Add will receive changes from 
+// controller with name Add
+void Remove() {
+  removeClick = !removeClick;
+}
+
 void mousePressed() {
-  if(correctCords && addClick){
-    engine.getWorld().addObject(wall);
+  if(correctCords){
+    if(addClick){
+      engine.getWorld().addObject(wall);
     
-    wall = SimulationFactory.createWall(xWall,yWall,hWall,wWall,rotate);
-    correctCords = false;
-    addClick = false;
-    rotate = 0;
+      wall = SimulationFactory.createWall(xWall,yWall,hWall,wWall,rotate);
+      correctCords = false;
+      addClick = false;
+      rotate = 0;
+    }
+    else if(removeClick){
+      int wallRemoveIndex = world.IsWall(mouseX,mouseY);
+      if(wallRemoveIndex != -1){
+        world.removeObjectAt(wallRemoveIndex);
+      }
+      removeClick = false;
+    }
   }
 }
 
@@ -136,19 +156,25 @@ void objectPanel(){
 void createButtons(){
   cp5.addButton("Turn+")
      .setValue(0)
-     .setPosition(90,840)
-     .setSize(40,20)
+     .setPosition(90,830)
+     .setSize(40,30)
      ;
   
   cp5.addButton("Turn-")
      .setValue(0)
      .setPosition(90,870)
-     .setSize(40,20)
+     .setSize(40,30)
      ;
      
   cp5.addButton("Add")
      .setValue(0)
      .setPosition(140,855)
-     .setSize(40,20)
+     .setSize(40,30)
+     ;
+  
+  cp5.addButton("Remove")
+     .setValue(0)
+     .setPosition(190,855)
+     .setSize(40,30)
      ; 
 }

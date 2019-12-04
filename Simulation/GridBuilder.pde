@@ -27,7 +27,7 @@ class WorldBuilder{
     }
     
     //create left wall
-    xWall = shiftX+1;
+    xWall = shiftX;
     yWall = shiftY+boxH;
     for(int i = 0; i < wallLR; i++){
       wall = SimulationFactory.createWall(xWall,yWall,boxW,boxH,0);

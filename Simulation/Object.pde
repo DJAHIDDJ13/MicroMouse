@@ -58,6 +58,10 @@ abstract class Object{
     this.alpha = alpha;
   }
   
+  boolean coordinatesInPerimeter(float mX, float mY){
+   return (mX >= x && mX <= w+x) && (mY >= y && mY <= h+y); 
+  }
+  
   boolean equals(Object object){
     return this.x == object.getX() && this.y == object.getY()
             && this.h == object.getH() && this.w == object.getW();
