@@ -2,11 +2,12 @@
 import controlP5.*;
 
 import shiffman.box2d.*;
-
+import org.jbox2d.common.*;
+import org.jbox2d.dynamics.joints.*;
 import org.jbox2d.collision.shapes.*;
+import org.jbox2d.collision.shapes.Shape;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
-import org.jbox2d.dynamics.joints.*;
 
 // A reference to our box2d world
 Box2DProcessing box2d;
@@ -14,8 +15,8 @@ Box2DProcessing box2d;
 ControlP5 cp5;
 
 //There can be 16×16 cells, or 32×32 cells. 
-static final int cols = 12;
-static final int rows = 12;
+static final int cols = 32;
+static final int rows = 32;
 
 SimulationEntry systemEntry;
 Engine engine;
@@ -27,7 +28,7 @@ float rotate,xWall,yWall,hWall,wWall;
 boolean addClick,removeClick,correctCords;
 
 void setup(){
-  size(1500,950);
+  size(1500,920);
   smooth();
   
   // Initialize box2d physics and create the world
@@ -113,16 +114,12 @@ void mousePressed() {
       engine.getWorld().addObject(wall);
     
       wall = SimulationFactory.createWall(xWall,yWall,hWall,wWall,rotate);
-      correctCords = false;
-      addClick = false;
-      rotate = 0;
     }
     else if(removeClick){
       int wallRemoveIndex = world.IsWall(mouseX,mouseY);
       if(wallRemoveIndex != -1){
         world.removeObjectAt(wallRemoveIndex);
       }
-      removeClick = false;
     }
   }
 }
