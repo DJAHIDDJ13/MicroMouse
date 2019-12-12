@@ -100,12 +100,14 @@ void controlEvent(ControlEvent theEvent) {
 // controller with name Add
 void Add() {
   addClick = !addClick;
+  removeClick = false;
 }
 
 // function Add will receive changes from 
 // controller with name Add
 void Remove() {
   removeClick = !removeClick;
+  addClick = false;
 }
 
 void mousePressed() {
