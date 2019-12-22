@@ -83,10 +83,10 @@ void wallProcess(){
 
 void controlEvent(ControlEvent theEvent) {
   if(theEvent.getController().getName().equals("Turn+")){
-    rotate += 0.1;
+    rotate += 0.112;
   } 
   else if(theEvent.getController().getName().equals("Turn-")){
-    rotate -= 0.1;
+    rotate -= 0.112;
   }
    else if(theEvent.getController().getName().equals("Maze size")){
     println("here");
