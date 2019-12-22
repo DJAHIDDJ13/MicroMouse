@@ -1,6 +1,4 @@
 // This seems to be broken with the Box2D 2.1.2 version I'm using
-import controlP5.*;
-
 import shiffman.box2d.*;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.joints.*;
@@ -12,15 +10,15 @@ import org.jbox2d.dynamics.*;
 // A reference to our box2d world
 Box2DProcessing box2d;
 
-ControlP5 cp5;
-
 //There can be 16×16 cells, or 32×32 cells. 
-static final int cols = 32;
-static final int rows = 32;
+int cols = 16;
+int rows = cols;
 
 SimulationEntry systemEntry;
 Engine engine;
 World world;
+
+SimulationControler cp5 = new SimulationControler();
 
 //Object controler to add a wall
 Wall wall;
@@ -35,19 +33,15 @@ void setup(){
   box2d = new Box2DProcessing(this);
   box2d.createWorld();
   
-  // Initialize ControlP5
-  cp5 = new ControlP5(this);
-  
-  createButtons();
-  
   rotate = 0;
   xWall = 20;
   yWall = 855;
   hWall = 20;
   wWall = 40;
   
-  systemEntry = new SimulationEntry(cols, rows);
-  engine = new Engine(systemEntry);
+  cp5.setControler(new ControlP5(this));
+  cp5.createControlers();
+  
   wall = SimulationFactory.createWall(xWall,yWall,hWall,wWall,rotate);
   addClick = correctCords = removeClick = false;
 }
@@ -94,6 +88,9 @@ void controlEvent(ControlEvent theEvent) {
   else if(theEvent.getController().getName().equals("Turn-")){
     rotate -= 0.1;
   }
+   else if(theEvent.getController().getName().equals("Maze size")){
+    println("here");
+  }
 }
 
 // function Add will receive changes from 
@@ -103,9 +100,23 @@ void Add() {
 }
 
 // function Add will receive changes from 
-// controller with name Add
+// controller with name Remove
 void Remove() {
   removeClick = !removeClick;
+}
+
+// function Add will receive changes from 
+// controller with name Refresh
+void Refresh(){
+  systemEntry = new SimulationEntry(cols, rows);
+  engine = new Engine(systemEntry);
+}
+
+// function Add will receive changes from 
+// controller with name Size
+void Size(int size){
+  rows = size;
+  cols = size;
 }
 
 void mousePressed() {
@@ -148,30 +159,4 @@ void objectPanel(){
                 dy+(int)floor(0.5+dh*cos(alpha))+ (int)floor(0.5+dw*sin(alpha)));
         endShape();
       fill(255);
-}
-
-void createButtons(){
-  cp5.addButton("Turn+")
-     .setValue(0)
-     .setPosition(90,830)
-     .setSize(40,30)
-     ;
-  
-  cp5.addButton("Turn-")
-     .setValue(0)
-     .setPosition(90,870)
-     .setSize(40,30)
-     ;
-     
-  cp5.addButton("Add")
-     .setValue(0)
-     .setPosition(140,855)
-     .setSize(40,30)
-     ;
-  
-  cp5.addButton("Remove")
-     .setValue(0)
-     .setPosition(190,855)
-     .setSize(40,30)
-     ; 
 }

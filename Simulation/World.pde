@@ -1,6 +1,5 @@
 class World{
-  float worldH;
-  float worldW;
+  float worldH,worldW;
   ArrayList<Object> objects;
   
   World(float worldH, float worldW){
@@ -113,4 +112,5 @@ class World{
     line(0, 812, 812, 812);
     line(812, 812, 812, 0);
   }
+  
 }

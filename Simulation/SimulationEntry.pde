@@ -38,6 +38,13 @@ class SimulationEntry{
     this.file = file;
   }
   
+  void setParameters(int rows, int cols){
+    this.boxW = 800/rows; //the perfect size is 25.
+    this.boxH = boxW/2; //it has to be boxH = boxW/2 to work well
+    this.worldH = rows*boxW;
+    this.worldW = cols*boxW;    
+  }
+  
   String getFile(){
     return file;
   }
