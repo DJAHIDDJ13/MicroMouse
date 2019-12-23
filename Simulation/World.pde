@@ -76,36 +76,11 @@ public class World{
   
   // Drawing the grid
   public void display(float shiftX, float shiftY){
-    float dh,dw;
-    float dx,dy;
-    float alpha;
-    float worldS = 1;
     strokeWeight(2);
     rect(shiftX, shiftY, worldW, worldH);
     
-    Object obj;
-    for(int i = 0; i < objects.size(); i++){
-      obj = objects.get(i);
-      dw=obj.getW()/(worldS*2);
-      dh=obj.getH()/(worldS*2);      
-      if(obj.isWall())
-        fill(127,0,0);
-        dx = obj.getX()+obj.getW()/2;
-        dy = obj.getY()+obj.getH()/2;
-        alpha = obj.getAlpha();
-        beginShape();
-          vertex(dx+(int)floor(0.5+dw*cos(alpha))-(int)floor(0.5+dh*sin(alpha)),
-                dy+(int)floor(0.5+dh*cos(alpha))+(int)floor(0.5+dw*sin(alpha)));
-          vertex(dx-(int)floor(0.5+dw*cos(alpha))-(int)floor(0.5+dh*sin(alpha)),
-                dy+(int)floor(0.5+dh*cos(alpha))-(int)floor(0.5+dw*sin(alpha)));
-          vertex(dx-(int)floor(0.5+dw*cos(alpha))+(int)floor(0.5+dh*sin(alpha)),
-                dy-(int)floor(0.5+dh*cos(alpha))-(int)floor(0.5+dw*sin(alpha)));
-          vertex(dx+(int)floor(0.5+dw*cos(alpha))+(int)floor(0.5+dh*sin(alpha)),
-                dy-(int)floor(0.5+dh*cos(alpha))+(int)floor(0.5+dw*sin(alpha)));
-          vertex(dx+(int)floor(0.5+dw*cos(alpha))-(int)floor(0.5+dh*sin(alpha)),
-                dy+(int)floor(0.5+dh*cos(alpha))+ (int)floor(0.5+dw*sin(alpha)));
-        endShape();
-      fill(255);
+    for(Object obj : objects){
+      obj.display();
     }
     
     stroke(255);

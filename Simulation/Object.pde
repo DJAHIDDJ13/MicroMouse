@@ -67,5 +67,14 @@ public abstract class Object{
             && this.h == object.getH() && this.w == object.getW();
   }
   
+  public Body getBody(){
+    return b;
+  }
+  
+  public void setBody(Body b){
+    this.b = b;
+  }
+  
   public abstract boolean isWall();
+  public abstract void display();
 }

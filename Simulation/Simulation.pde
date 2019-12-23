@@ -42,7 +42,7 @@ void setup(){
   cp5.setControler(new ControlP5(this));
   cp5.createControlers();
   
-  wall = SimulationFactory.createWall(xWall,yWall,hWall,wWall,rotate);
+  wall = new Wall(xWall,yWall,hWall,wWall,rotate);
   addClick = correctCords = removeClick = false;
 }
 
@@ -126,7 +126,7 @@ void mousePressed() {
     if(addClick){
       engine.getWorld().addObject(wall);
     
-      wall = SimulationFactory.createWall(xWall,yWall,hWall,wWall,rotate);
+      wall = new Wall(xWall,yWall,hWall,wWall,rotate);
     }
     else if(removeClick){
       int wallRemoveIndex = world.IsWall(mouseX,mouseY);
@@ -164,5 +164,5 @@ private void objectPanel(){
 }
 
 public static Box2DProcessing getBox2D(){
-   return  box2d;
+   return box2d;
 }
