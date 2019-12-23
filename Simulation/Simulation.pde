@@ -64,20 +64,21 @@ private void wallProcess(){
   wall.setAlpha(rotate);
   if(addClick){
     if(mouseX < systemEntry.getWorldW() && mouseY < systemEntry.getWorldH()){
-      wall.setH(systemEntry.getBoxH()); wall.setW(systemEntry.getBoxW());
-      wall.setX(mouseX); wall.setY(mouseY);
+      wall.setPosition(mouseX,mouseY,systemEntry.getBoxH(),systemEntry.getBoxW(),rotate);
       correctCords = true;
     }
     else{
-      wall.setH(hWall); wall.setW(wWall);
-      wall.setX(xWall); wall.setY(yWall);
+      wall.setPosition(xWall,yWall,hWall,wWall,rotate);
       correctCords = false;
     }
   }
   else if(removeClick){
      if(mouseX < systemEntry.getWorldW() && mouseY < systemEntry.getWorldH()){
         correctCords = true;
-    }   
+    } 
+    else{
+     correctCords = false; 
+    }
   }
 }
 
@@ -138,29 +139,14 @@ void mousePressed() {
 }
 
 private void objectPanel(){
-  float dx,dy,dw,dh,alpha;
-  float worldS = 1;
   stroke(0);
   rect(5, 830, 70, 70); 
-        fill(127,0,0);
-        dw = wall.getW()/(worldS*2);
-        dh = wall.getH()/(worldS*2);  
-        dx = wall.getX()+wall.getW()/2;
-        dy = wall.getY()+wall.getH()/2;
-        alpha = wall.getAlpha();
-        beginShape();
-          vertex(dx+(int)floor(0.5+dw*cos(alpha))-(int)floor(0.5+dh*sin(alpha)),
-                dy+(int)floor(0.5+dh*cos(alpha))+(int)floor(0.5+dw*sin(alpha)));
-          vertex(dx-(int)floor(0.5+dw*cos(alpha))-(int)floor(0.5+dh*sin(alpha)),
-                dy+(int)floor(0.5+dh*cos(alpha))-(int)floor(0.5+dw*sin(alpha)));
-          vertex(dx-(int)floor(0.5+dw*cos(alpha))+(int)floor(0.5+dh*sin(alpha)),
-                dy-(int)floor(0.5+dh*cos(alpha))-(int)floor(0.5+dw*sin(alpha)));
-          vertex(dx+(int)floor(0.5+dw*cos(alpha))+(int)floor(0.5+dh*sin(alpha)),
-                dy-(int)floor(0.5+dh*cos(alpha))+(int)floor(0.5+dw*sin(alpha)));
-          vertex(dx+(int)floor(0.5+dw*cos(alpha))-(int)floor(0.5+dh*sin(alpha)),
-                dy+(int)floor(0.5+dh*cos(alpha))+ (int)floor(0.5+dw*sin(alpha)));
-        endShape();
-      fill(255);
+  if(!correctCords || removeClick){
+    wall.displayVertex();
+  }
+  else{
+   wall.display(); 
+  }
 }
 
 public static Box2DProcessing getBox2D(){

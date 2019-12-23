@@ -40,8 +40,10 @@ public class World{
   }
   
   public void removeObjectAt(int i){
-     if(getObjectAt(i) != null)
+     if(getObjectAt(i) != null){
+       objects.get(i).killBody();
        objects.remove(i);
+     }
   }
   
   public void removeObject(Object object){
