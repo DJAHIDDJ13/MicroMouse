@@ -1,22 +1,22 @@
 import controlP5.*;
 
-class SimulationControler{
+public class SimulationControler{
 
-  ControlP5 cp5;
+  private ControlP5 cp5;
   
-  SimulationControler(){  
+  public SimulationControler(){  
     
   }
   
- void setControler(ControlP5 cp5){
+ public void setControler(ControlP5 cp5){
    this.cp5 = cp5;
  }
  
- ControlP5 getControler(){
+ public ControlP5 getControler(){
    return this.cp5;
  }
   
- void createControlers(){
+ public void createControlers(){
     cp5.addButton("Turn+")
        .setValue(1)
        .setPosition(90,830)

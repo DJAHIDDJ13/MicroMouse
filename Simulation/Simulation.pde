@@ -8,7 +8,7 @@ import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 
 // A reference to our box2d world
-Box2DProcessing box2d;
+public static Box2DProcessing box2d;
 
 //There can be 16×16 cells, or 32×32 cells. 
 int cols = 16;
@@ -60,7 +60,7 @@ void draw() {
   wallProcess();
 }
 
-void wallProcess(){
+private void wallProcess(){
   wall.setAlpha(rotate);
   if(addClick){
     if(mouseX < systemEntry.getWorldW() && mouseY < systemEntry.getWorldH()){
@@ -137,7 +137,7 @@ void mousePressed() {
   }
 }
 
-void objectPanel(){
+private void objectPanel(){
   float dx,dy,dw,dh,alpha;
   float worldS = 1;
   stroke(0);
@@ -161,4 +161,8 @@ void objectPanel(){
                 dy+(int)floor(0.5+dh*cos(alpha))+ (int)floor(0.5+dw*sin(alpha)));
         endShape();
       fill(255);
+}
+
+public static Box2DProcessing getBox2D(){
+   return  box2d;
 }

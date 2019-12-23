@@ -1,50 +1,50 @@
-class World{
+public class World{
   float worldH,worldW;
   ArrayList<Object> objects;
   
-  World(float worldH, float worldW){
+  public World(float worldH, float worldW){
     this.worldH = worldH;
     this.worldW = worldW;
     objects = new ArrayList<Object>();
   }
   
-  float getWorldH(){
+  public float getWorldH(){
     return worldH;
   }
   
-  void setWorldH(float worldH){
+  public void setWorldH(float worldH){
     this.worldH = worldH;
   }
   
-  float getWorldW(){
+  public float getWorldW(){
     return worldW;
   }
   
-  void setWorldW(float worldW){
+  public void setWorldW(float worldW){
     this.worldW = worldW;
   }
   
-  ArrayList<Object> getObjects(){
+  public ArrayList<Object> getObjects(){
     return objects;
   }
   
-  void setObjects(ArrayList<Object> objects){
+  public void setObjects(ArrayList<Object> objects){
     this.objects = objects;
   }
   
-  Object getObjectAt(int i){
+  public Object getObjectAt(int i){
    Object object = null;
      if(i < objects.size())
        object = objects.get(i);
    return object;
   }
   
-  void removeObjectAt(int i){
+  public void removeObjectAt(int i){
      if(getObjectAt(i) != null)
        objects.remove(i);
   }
   
-  void removeObject(Object object){
+  public void removeObject(Object object){
      int i = 0;
      
      while(i < objects.size() && !getObjectAt(i).equals(object))
@@ -54,19 +54,19 @@ class World{
        removeObjectAt(i);
   }
   
-  boolean ObjectExist(Object object){
+  public boolean ObjectExist(Object object){
     int i;
       for(i = 0; i < objects.size() && !object.equals(objects.get(i)); i++);
     return i < objects.size();
   }
   
-  void addObject(Object object){
+  public void addObject(Object object){
     if(!ObjectExist(object)){
        objects.add(object);
     }
   }
   
-  int IsWall(float mX, float mY){
+  public int IsWall(float mX, float mY){
    int index = -1;
    for(int i = 0; i < objects.size() && index == -1; i++)
      if(objects.get(i).coordinatesInPerimeter(mX,mY))
@@ -75,7 +75,7 @@ class World{
   }
   
   // Drawing the grid
-  void display(float shiftX, float shiftY){
+  public void display(float shiftX, float shiftY){
     float dh,dw;
     float dx,dy;
     float alpha;
@@ -111,6 +111,5 @@ class World{
     stroke(255);
     line(0, 812, 812, 812);
     line(812, 812, 812, 0);
-  }
-  
+  } 
 }

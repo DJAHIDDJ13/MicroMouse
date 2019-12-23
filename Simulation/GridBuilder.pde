@@ -1,6 +1,6 @@
-class WorldBuilder{
+public class WorldBuilder{
   
-  World builderInitialWorld(float worldH, float worldW, 
+  public World builderInitialWorld(float worldH, float worldW, 
                             float boxH, float boxW, float shiftX, float shiftY){
     Wall wall;
     

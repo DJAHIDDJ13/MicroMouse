@@ -1,16 +1,16 @@
 // A rectangular box
-abstract class Object{
+public abstract class Object{
   
-  float x,y;
-  float h,w;
-  float alpha;
+  private float x,y;
+  private float h,w;
+  private float alpha;
   
   // But we also have to make a body for box2d to know about it
-  Body b;
+  private Body b;
 
   
   // Constructor
-  Object(float x, float y, float h, float w, float alpha){
+  public Object(float x, float y, float h, float w, float alpha){
     this.x = x;
     this.y = y;
     this.h = h;
@@ -18,54 +18,54 @@ abstract class Object{
     this.alpha = alpha;
   }
   
-  float getX(){
+  public float getX(){
     return x; 
   }
   
-  float getY(){
+  public float getY(){
     return y; 
   }
   
-  float getH(){
+  public float getH(){
     return h; 
   }
   
-  float getW(){
+  public float getW(){
     return w; 
   }
   
-  float getAlpha(){
+  public float getAlpha(){
     return alpha;
   }
   
-  void setX(float x){
+  public void setX(float x){
     this.x = x; 
   }
   
-  void setY(float y){
+  public void setY(float y){
     this.y = y;
   }
   
-  void setH(float h){
+  public void setH(float h){
     this.h = h; 
   }
   
-  void setW(float w){
+  public void setW(float w){
     this.w = w; 
   }
   
-  void setAlpha(float alpha){
+  public void setAlpha(float alpha){
     this.alpha = alpha;
   }
   
-  boolean coordinatesInPerimeter(float mX, float mY){
+  public boolean coordinatesInPerimeter(float mX, float mY){
    return (mX >= x && mX <= w+x) && (mY >= y && mY <= h+y); 
   }
   
-  boolean equals(Object object){
+  public boolean equals(Object object){
     return this.x == object.getX() && this.y == object.getY()
             && this.h == object.getH() && this.w == object.getW();
   }
   
-  abstract boolean isWall();
+  public abstract boolean isWall();
 }

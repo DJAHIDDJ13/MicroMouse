@@ -1,10 +1,10 @@
-class Engine{
-  int turn;
-  World world;
-  WorldBuilder builder;
-  SimulationEntry systemEntry;
+public class Engine{
+  private int turn;
+  private World world;
+  private WorldBuilder builder;
+  private SimulationEntry systemEntry;
   
-  Engine(SimulationEntry systemEntry){
+  public Engine(SimulationEntry systemEntry){
     this.systemEntry = systemEntry;
     float worldH = systemEntry.getWorldH();
     float worldW = systemEntry.getWorldW();
@@ -17,24 +17,32 @@ class Engine{
     turn = 0;
   }
   
-  void simulate(){
+  public void simulate(){
    
     turn++;
   }
   
-  World getWorld(){
+  public World getWorld(){
     return world;
   }
   
-  void setWorld(World world){
+  public void setWorld(World world){
     this.world = world;
   }
   
-  int getTurn(){
+  public int getTurn(){
     return turn;
   }
   
-  void setTurn(int turn){
+  public void setTurn(int turn){
    this.turn = turn; 
   }
+  
+  public SimulationEntry getSimulationEntry(){
+     return systemEntry; 
+  }
+  
+  public void setSimulationEntry(SimulationEntry systemEntry){
+     this.systemEntry = systemEntry;
+  }     
 }

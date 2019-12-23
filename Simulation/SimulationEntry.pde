@@ -1,11 +1,11 @@
-class SimulationEntry{
-  String file;
-  float worldH,worldW;
-  float boxH,boxW;
-  float shiftX,shiftY;
+public class SimulationEntry{
+  private String file;
+  private float worldH,worldW;
+  private float boxH,boxW;
+  private float shiftX,shiftY;
   //add here all the variable that can be used for simulation
   
-  SimulationEntry(String file, float worldH, float worldW, 
+  public SimulationEntry(String file, float worldH, float worldW, 
                   float boxH, float boxW, float shiftX, float shiftY){
     this.file = file;
     this.worldH = worldH;
@@ -16,7 +16,7 @@ class SimulationEntry{
     this.shiftY = shiftY;
   }
   
-  SimulationEntry(float worldH, float worldW, float boxH, float boxW, float shiftX, float shiftY){
+  public SimulationEntry(float worldH, float worldW, float boxH, float boxW, float shiftX, float shiftY){
     this.worldH = worldH;
     this.worldW = worldW;
     this.boxH = boxH;
@@ -25,7 +25,7 @@ class SimulationEntry{
     this.shiftY = shiftY;
   }
   
-  SimulationEntry(float cols, float rows){
+  public SimulationEntry(float cols, float rows){
     this.boxW = 800/rows; //the perfect size is 25.
     this.boxH = boxW/2; //it has to be boxH = boxW/2 to work well
     this.worldH = rows*boxW;
@@ -34,70 +34,70 @@ class SimulationEntry{
     this.shiftY = 5;
   }
   
-  SimulationEntry(String file){
+  public SimulationEntry(String file){
     this.file = file;
   }
   
-  void setParameters(int rows, int cols){
+  public void setParameters(int rows, int cols){
     this.boxW = 800/rows; //the perfect size is 25.
     this.boxH = boxW/2; //it has to be boxH = boxW/2 to work well
     this.worldH = rows*boxW;
     this.worldW = cols*boxW;    
   }
   
-  String getFile(){
+  public String getFile(){
     return file;
   }
   
-  void setFile(String file){
+  public void setFile(String file){
     this.file = file;
   }
   
-  float getWorldH(){
+  public float getWorldH(){
     return worldH;
   }
   
-  void setWorldH(float worldH){
+  public void setWorldH(float worldH){
     this.worldH = worldH;
   }
   
-  float getWorldW(){
+  public float getWorldW(){
     return worldW;
   }
   
-  void setWorldW(float worldW){
+  public void setWorldW(float worldW){
     this.worldW = worldW;
   }
   
-  float getBoxH(){
+  public float getBoxH(){
     return boxH;
   }
   
-  void setBoxH(float boxH){
+  public void setBoxH(float boxH){
     this.boxH = boxH;
   }
   
-  float getBoxW(){
+  public float getBoxW(){
     return boxW;
   }
   
-  void setBoxW(float boxW){
+  public void setBoxW(float boxW){
     this.boxW = boxW;
   }
   
-   float getShiftX(){
+   public float getShiftX(){
     return shiftX;
   }
   
-  void setShiftX(float shiftX){
+  public void setShiftX(float shiftX){
     this.shiftX = shiftX;
   }
 
-   float getShiftY(){
+   public float getShiftY(){
     return shiftY;
   }
   
-  void setShiftY(float shiftY){
+  public void setShiftY(float shiftY){
     this.shiftY = shiftY;
   }
 }
