@@ -5,13 +5,26 @@ public class Wall extends Box{
     super(x,y,h,w,alpha);
   }
   
+  public void setPosition(float x, float y, float h, float w, float alpha, float r){
+    setX(x);
+    setY(y);
+    setH(h);
+    setW(w);
+    setAlpha(alpha);
+    makeBody();   
+  }
+  
   public boolean isWall(){
     return true;
   }
   
+  public boolean isTarget(){
+    return false;
+  }
+  
   public void display(){
     // We look at each body and get its screen position
-    Vec2 pos = box2d.getBodyPixelCoord(getBody());
+    Vec2 pos = Simulation.getBox2D().getBodyPixelCoord(getBody());
     // Get its angle of rotation
     float a = getBody().getAngle();      
     
@@ -27,13 +40,13 @@ public class Wall extends Box{
   
   void displayVertex(){
     float dx,dy,dw,dh,alpha;
-    float worldS = 1;    
+    float worldS = 1;
     
     fill(127,0,0);
     dw = getW()/(worldS*2);
     dh = getH()/(worldS*2);  
-    dx = getX()+wall.getW()/2;
-    dy = getY()+wall.getH()/2;
+    dx = getX()+getW()/2;
+    dy = getY()+getH()/2;
     alpha = -getAlpha();
     beginShape();
       vertex(dx+(int)floor(0.5+dw*cos(alpha))-(int)floor(0.5+dh*sin(alpha)),

@@ -13,6 +13,9 @@ public static Box2DProcessing box2d;
 //There can be 16×16 cells, or 32×32 cells. 
 int cols = 16;
 int rows = cols;
+private int NUMBER_OBJECT_EXISTING;
+private int INDEX_CURRENT_OBJECT_TO_ADD = 1;
+private ArrayList<Box> boxToAdd;
 
 SimulationEntry systemEntry;
 Engine engine;
@@ -20,9 +23,7 @@ World world;
 
 SimulationControler cp5 = new SimulationControler();
 
-//Object controler to add a wall
-Wall wall;
-float rotate,xWall,yWall,hWall,wWall;
+float rotate,xAdd,yAdd,hAdd,wAdd,rAdd;
 boolean addClick,removeClick,correctCords;
 
 void setup(){
@@ -34,15 +35,20 @@ void setup(){
   box2d.createWorld();
   
   rotate = 0;
-  xWall = 20;
-  yWall = 855;
-  hWall = 20;
-  wWall = 40;
+  xAdd = 20;
+  yAdd = 855;
+  hAdd = 20;
+  wAdd = 40;
+  rAdd = hAdd / 2;
   
   cp5.setControler(new ControlP5(this));
   cp5.createControlers();
   
-  wall = new Wall(xWall,yWall,hWall,wWall,rotate);
+  boxToAdd = new ArrayList<Box>();
+  makeListObject();
+  
+  NUMBER_OBJECT_EXISTING = boxToAdd.size() - 1;
+  
   addClick = correctCords = removeClick = false;
 }
 
@@ -57,18 +63,23 @@ void draw() {
   world.display(systemEntry.getShiftX(),systemEntry.getShiftY());
   
   objectPanel();
-  wallProcess();
+  ObjectToAddProcess();
 }
 
-private void wallProcess(){
-  wall.setAlpha(rotate);
+private void ObjectToAddProcess(){
+  Box box = boxToAdd.get(INDEX_CURRENT_OBJECT_TO_ADD);
+  
+  box.setAlpha(rotate);
   if(addClick){
     if(mouseX < systemEntry.getWorldW() && mouseY < systemEntry.getWorldH()){
-      wall.setPosition(mouseX,mouseY,systemEntry.getBoxH(),systemEntry.getBoxW(),rotate);
-      correctCords = true;
+        box.setPosition(mouseX,mouseY,systemEntry.getBoxH(),systemEntry.getBoxW(),rotate,systemEntry.getBoxH() / 2);
+        correctCords = true;
     }
     else{
-      wall.setPosition(xWall,yWall,hWall,wWall,rotate);
+      if(box.isWall())
+         box.setPosition(xAdd,yAdd,hAdd,wAdd,rotate,rAdd);
+       else if(box.isTarget())
+         box.setPosition(xAdd+20,yAdd+10,hAdd,wAdd,rotate,rAdd);
       correctCords = false;
     }
   }
@@ -89,8 +100,13 @@ void controlEvent(ControlEvent theEvent) {
   else if(theEvent.getController().getName().equals("Turn-")){
     rotate -= 0.112;
   }
-   else if(theEvent.getController().getName().equals("Maze size")){
-    println("here");
+  else if(theEvent.getController().getName().equals("+")){
+    INDEX_CURRENT_OBJECT_TO_ADD = (INDEX_CURRENT_OBJECT_TO_ADD - NUMBER_OBJECT_EXISTING != 0) ?  
+                                  INDEX_CURRENT_OBJECT_TO_ADD + 1 : 0;
+  }
+  else if(theEvent.getController().getName().equals("-")){
+    INDEX_CURRENT_OBJECT_TO_ADD = (INDEX_CURRENT_OBJECT_TO_ADD == 0) ?  
+                                   NUMBER_OBJECT_EXISTING : INDEX_CURRENT_OBJECT_TO_ADD - 1;
   }
 }
 
@@ -125,9 +141,8 @@ void Size(int size){
 void mousePressed() {
   if(correctCords){
     if(addClick){
-      engine.getWorld().addBox(wall);
-    
-      wall = new Wall(xWall,yWall,hWall,wWall,rotate);
+      engine.getWorld().addBox(boxToAdd.get(INDEX_CURRENT_OBJECT_TO_ADD));
+      makeListObject();
     }
     else if(removeClick){
       int wallRemoveIndex = world.IsWall(mouseX,mouseY);
@@ -141,14 +156,24 @@ void mousePressed() {
 private void objectPanel(){
   stroke(0);
   rect(5, 830, 70, 70); 
-  if(!correctCords || removeClick){
-    wall.displayVertex();
+  if((!correctCords || removeClick) && boxToAdd.get(INDEX_CURRENT_OBJECT_TO_ADD).isWall()){
+    boxToAdd.get(INDEX_CURRENT_OBJECT_TO_ADD).displayVertex();
   }
   else{
-   wall.display(); 
+    boxToAdd.get(INDEX_CURRENT_OBJECT_TO_ADD).display(); 
   }
 }
 
 public static Box2DProcessing getBox2D(){
    return box2d;
+}
+
+public void makeListObject(){
+  boxToAdd.clear();
+      
+  Wall wall = new Wall(xAdd,yAdd,hAdd,wAdd,rotate);
+  Target target = new Target(xAdd+20,yAdd+10,hAdd,wAdd,rotate,rAdd);
+  
+  boxToAdd.add(wall);
+  boxToAdd.add(target); 
 }

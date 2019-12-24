@@ -44,6 +44,20 @@ public class WorldBuilder{
       yWall += boxW;
     }
     
+    Target defaultTarget = makeDefaultTarget(worldH,worldW,boxH,boxW,shiftX,shiftY);
+    world.addBox(defaultTarget);
+    
     return world;
+  }
+  
+  public Target makeDefaultTarget(float worldH, float worldW, 
+                            float boxH, float boxW, float shiftX, float shiftY){
+                              
+        float xTarget = (worldW+shiftX) / 2;
+        float yTarget = (worldH+shiftY) / 2;
+        float rTarget = boxH / 2;
+        
+        return new Target(xTarget, yTarget, boxH, boxW, 0, rTarget);
+       
   }
 }

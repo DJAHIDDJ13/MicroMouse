@@ -19,14 +19,7 @@ public abstract class Box{
     makeBody();
   }
   
-  public void setPosition(float x, float y, float h, float w, float alpha){
-    this.x = x;
-    this.y = y;
-    this.h = h;
-    this.w = w;
-    this.alpha = alpha;
-    makeBody();   
-  }
+  abstract public void setPosition(float x, float y, float h, float w, float alpha, float r);
   
   public float getX(){
     return x; 
@@ -93,5 +86,7 @@ public abstract class Box{
   // This function adds the rectangle to the box2d world
   abstract void makeBody();
   public abstract boolean isWall();
+  public abstract boolean isTarget();
   public abstract void display();
+  public abstract void displayVertex();
 }
