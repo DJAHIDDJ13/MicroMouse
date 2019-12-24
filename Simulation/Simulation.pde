@@ -28,14 +28,15 @@ float rotate,xWall,yWall,hWall,wWall;
 boolean addClick,removeClick,correctCords;
 
 // Communication
-final int COM_PORT = 5432;
+final int TX_PORT = 5432;
+final int RX_PORT = 5433;
 final String REMOTE_SRV = "127.0.0.1";
 
 UDP udpClient;
 
 void setup(){
   // Initialize communication pipe on port <COM_PORT>
-  udpClient = new UDP(this, COM_PORT);
+  udpClient = new UDP(this, RX_PORT);
   //udpClient = new UDP(this);
   
   size(1500,920);
@@ -134,7 +135,7 @@ void Size(int size){
 }
 
 void mousePressed() {
-  udpClient.send("PING\n", REMOTE_SRV, COM_PORT);
+  udpClient.send("PING\n", REMOTE_SRV, TX_PORT);
   
   if(correctCords){
     if(addClick){
