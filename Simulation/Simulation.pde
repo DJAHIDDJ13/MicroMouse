@@ -45,6 +45,7 @@ void setup(){
   cp5.createControlers();
   
   boxToAdd = new ArrayList<Box>();
+  
   makeListObject();
   
   NUMBER_OBJECT_EXISTING = boxToAdd.size() - 1;
@@ -72,14 +73,18 @@ private void ObjectToAddProcess(){
   box.setAlpha(rotate);
   if(addClick){
     if(mouseX < systemEntry.getWorldW() && mouseY < systemEntry.getWorldH()){
+      if(box.isWall())
         box.setPosition(mouseX,mouseY,systemEntry.getBoxH(),systemEntry.getBoxW(),rotate,systemEntry.getBoxH() / 2);
-        correctCords = true;
+      else if(box.isTarget())
+        box.setPosition(mouseX,mouseY,systemEntry.getBoxH(),systemEntry.getBoxW(),0,systemEntry.getBoxH() / 2);
+      
+      correctCords = true;
     }
     else{
       if(box.isWall())
          box.setPosition(xAdd,yAdd,hAdd,wAdd,rotate,rAdd);
        else if(box.isTarget())
-         box.setPosition(xAdd+20,yAdd+10,hAdd,wAdd,rotate,rAdd);
+         box.setPosition(xAdd+20,yAdd+10,hAdd,wAdd,0,rAdd);
       correctCords = false;
     }
   }
