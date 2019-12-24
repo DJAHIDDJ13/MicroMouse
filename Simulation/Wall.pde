@@ -1,4 +1,4 @@
-public class Wall extends Object{
+public class Wall extends Box{
  
   // Constructor
   public Wall(float x, float y, float h, float w, float alpha){

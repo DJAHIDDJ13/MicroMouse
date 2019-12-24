@@ -13,7 +13,7 @@ public class WorldBuilder{
     float yWall = shiftY;
     for(int i = 0; i < wallBases; i++){
       wall = new Wall(xWall,yWall,boxH,boxW,0);
-      world.addObject(wall);
+      world.addBox(wall);
       xWall += boxW;
     }
     
@@ -22,7 +22,7 @@ public class WorldBuilder{
     yWall = worldH-boxH+shiftY;
     for(int i = 0; i < wallBases; i++){
       wall = new Wall(xWall,yWall,boxH,boxW,0);
-      world.addObject(wall);
+      world.addBox(wall);
       xWall += boxW;
     }
     
@@ -31,7 +31,7 @@ public class WorldBuilder{
     yWall = shiftY+boxH;
     for(int i = 0; i < wallLR; i++){
       wall = new Wall(xWall,yWall,boxW,boxH,0);
-      world.addObject(wall);
+      world.addBox(wall);
       yWall+=boxW;
     }
     
@@ -40,7 +40,7 @@ public class WorldBuilder{
     yWall = shiftY+boxH;
     for(int i = 0; i < wallLR; i++){
       wall = new Wall(xWall,yWall,boxW,boxH,0);
-      world.addObject(wall);
+      world.addBox(wall);
       yWall += boxW;
     }
     

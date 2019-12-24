@@ -1,5 +1,5 @@
 // A rectangular box
-public abstract class Object{
+public abstract class Box{
   
   private float x,y;
   private float h,w;
@@ -10,7 +10,7 @@ public abstract class Object{
 
   
   // Constructor
-  public Object(float x, float y, float h, float w, float alpha){
+  public Box(float x, float y, float h, float w, float alpha){
     this.x = x;
     this.y = y;
     this.h = h;
@@ -72,9 +72,9 @@ public abstract class Object{
    return (mX >= x && mX <= w+x) && (mY >= y && mY <= h+y); 
   }
   
-  public boolean equals(Object object){
-    return this.x == object.getX() && this.y == object.getY()
-            && this.h == object.getH() && this.w == object.getW();
+  public boolean equals(Box box){
+    return this.x == box.getX() && this.y == box.getY()
+            && this.h == box.getH() && this.w == box.getW();
   }
   
   public Body getBody(){

@@ -125,14 +125,14 @@ void Size(int size){
 void mousePressed() {
   if(correctCords){
     if(addClick){
-      engine.getWorld().addObject(wall);
+      engine.getWorld().addBox(wall);
     
       wall = new Wall(xWall,yWall,hWall,wWall,rotate);
     }
     else if(removeClick){
       int wallRemoveIndex = world.IsWall(mouseX,mouseY);
       if(wallRemoveIndex != -1){
-        world.removeObjectAt(wallRemoveIndex);
+        world.removeBoxAt(wallRemoveIndex);
       }
     }
   }

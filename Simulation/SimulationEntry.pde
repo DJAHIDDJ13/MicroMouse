@@ -26,12 +26,12 @@ public class SimulationEntry{
   }
   
   public SimulationEntry(float cols, float rows){
-    this.boxW = 800/rows; //the perfect size is 25.
+    this.boxW = SimulationUtility.WORLD_SIZE/rows; //the perfect size is 25.
     this.boxH = boxW/2; //it has to be boxH = boxW/2 to work well
     this.worldH = rows*boxW;
     this.worldW = cols*boxW;
-    this.shiftX = 5;
-    this.shiftY = 5;
+    this.shiftX = SimulationUtility.WORLD_SHIFTX;
+    this.shiftY = SimulationUtility.WORLD_SHIFTY;
   }
   
   public SimulationEntry(String file){

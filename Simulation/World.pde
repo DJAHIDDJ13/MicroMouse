@@ -1,11 +1,11 @@
 public class World{
   float worldH,worldW;
-  ArrayList<Object> objects;
+  ArrayList<Box> boxes;
   
   public World(float worldH, float worldW){
     this.worldH = worldH;
     this.worldW = worldW;
-    objects = new ArrayList<Object>();
+    boxes = new ArrayList<Box>();
   }
   
   public float getWorldH(){
@@ -24,69 +24,73 @@ public class World{
     this.worldW = worldW;
   }
   
-  public ArrayList<Object> getObjects(){
-    return objects;
+  public ArrayList<Box> getBoxes(){
+    return boxes;
   }
   
-  public void setObjects(ArrayList<Object> objects){
-    this.objects = objects;
+  public void setBoxes(ArrayList<Box> boxes){
+    this.boxes = boxes;
   }
   
-  public Object getObjectAt(int i){
-   Object object = null;
-     if(i < objects.size())
-       object = objects.get(i);
-   return object;
+  public Box getBoxAt(int i){
+   Box box = null;
+     if(i < boxes.size())
+       box = boxes.get(i);
+   return box;
   }
   
-  public void removeObjectAt(int i){
-     if(getObjectAt(i) != null){
-       objects.get(i).killBody();
-       objects.remove(i);
+  public void removeBoxAt(int i){
+     if(getBoxAt(i) != null){
+       boxes.get(i).killBody();
+       boxes.remove(i);
      }
   }
   
-  public void removeObject(Object object){
+  public void removeBox(Box box){
      int i = 0;
      
-     while(i < objects.size() && !getObjectAt(i).equals(object))
+     while(i < boxes.size() && !getBoxAt(i).equals(box))
        i++;
      
-     if(i < objects.size())
-       removeObjectAt(i);
+     if(i < boxes.size())
+       removeBoxAt(i);
   }
   
-  public boolean ObjectExist(Object object){
+  public boolean BoxExist(Box box){
     int i;
-      for(i = 0; i < objects.size() && !object.equals(objects.get(i)); i++);
-    return i < objects.size();
+      for(i = 0; i < boxes.size() && !box.equals(boxes.get(i)); i++);
+    return i < boxes.size();
   }
   
-  public void addObject(Object object){
-    if(!ObjectExist(object)){
-       objects.add(object);
+  public void addBox(Box box){
+    if(!BoxExist(box)){
+       boxes.add(box);
     }
   }
   
   public int IsWall(float mX, float mY){
    int index = -1;
-   for(int i = 0; i < objects.size() && index == -1; i++)
-     if(objects.get(i).coordinatesInPerimeter(mX,mY))
+   for(int i = 0; i < boxes.size() && index == -1; i++)
+     if(boxes.get(i).coordinatesInPerimeter(mX,mY))
        index = i;
    return index;
   }
   
   // Drawing the grid
   public void display(float shiftX, float shiftY){
+    float size = SimulationUtility.WORLD_SIZE;
+    float shiftx = SimulationUtility.WORLD_SHIFTX+7;
+    float shifty = SimulationUtility.WORLD_SHIFTY+7;
+    
     strokeWeight(2);
     rect(shiftX, shiftY, worldW, worldH);
     
-    for(Object obj : objects){
-      obj.display();
+    for(Box box : boxes){
+      box.display();
     }
     
     stroke(255);
-    line(0, 812, 812, 812);
-    line(812, 812, 812, 0);
+    line(0, size+shifty, size+shiftx, size+shifty);
+    line(size+shiftx, size+shifty, size+shiftx, 0);
   } 
 }
