@@ -19,8 +19,6 @@ public abstract class Box{
     makeBody();
   }
   
-  abstract public void setPosition(float x, float y, float h, float w, float alpha, float r);
-  
   public float getX(){
     return x; 
   }
@@ -61,10 +59,6 @@ public abstract class Box{
     this.alpha = alpha;
   }
   
-  public boolean coordinatesInPerimeter(float mX, float mY){
-   return (mX >= x && mX <= w+x) && (mY >= y && mY <= h+y); 
-  }
-  
   public boolean equals(Box box){
     return this.x == box.getX() && this.y == box.getY()
             && this.h == box.getH() && this.w == box.getW();
@@ -83,8 +77,11 @@ public abstract class Box{
     Simulation.getBox2D().destroyBody(body);
   }
 
+  public abstract void setPosition(float x, float y, float h, float w, float alpha, float r);
+  public abstract boolean coordinatesInPerimeter(float mX, float mY);
+  
   // This function adds the rectangle to the box2d world
-  abstract void makeBody();
+  public abstract void makeBody();
   public abstract boolean isWall();
   public abstract boolean isTarget();
   public abstract void display();

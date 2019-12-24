@@ -24,6 +24,15 @@ public class Target extends Box{
     this.r = r;
   }
   
+  public boolean coordinatesInPerimeter(float mX, float mY){
+    float x1 = getX();
+    float y1 = getY();
+    
+    float d = sqrt(pow((mX-x1),2)+pow((mY-y1),2));
+    
+    return d < r;
+  }
+  
   public void setPosition(float x, float y, float h, float w, float alpha, float r){
     setX(x);
     setY(y);
