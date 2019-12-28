@@ -11,15 +11,7 @@ public class Wall extends Box{
     float x2 = x1+getW();
     float y2 = y1+getH();
     
-    float a = getAlpha()*PI/180;
-    
-    float X1 = x1*cos(a)+y1*sin(a);
-    float Y1 = -x1*sin(a)+y1*cos(a);
-    
-    float X2 = x2*cos(a)+y2*sin(a);
-    float Y2 = -x2*sin(a)+y2*cos(a);
-    
-    return mX > X1 && mX < X2 && mY > Y1 && mY < Y2;
+    return mX > x1 && mX < x2 && mY > y1 && mY < y2;
   }
   
   public void setPosition(float x, float y, float h, float w, float alpha, float r){

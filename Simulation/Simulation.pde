@@ -23,7 +23,8 @@ World world;
 
 SimulationControler cp5 = new SimulationControler();
 
-float rotate,xAdd,yAdd,hAdd,wAdd,rAdd;
+float xAdd,yAdd,hAdd,wAdd,rAdd;
+boolean pos;
 boolean addClick,removeClick,correctCords;
 
 void setup(){
@@ -34,7 +35,7 @@ void setup(){
   box2d = new Box2DProcessing(this);
   box2d.createWorld();
   
-  rotate = 0;
+  pos = false;
   xAdd = 20;
   yAdd = 855;
   hAdd = 20;
@@ -70,21 +71,30 @@ void draw() {
 private void ObjectToAddProcess(){
   Box box = boxToAdd.get(INDEX_CURRENT_OBJECT_TO_ADD);
   
-  box.setAlpha(rotate);
-  if(addClick){
-    if(mouseX < systemEntry.getWorldW() && mouseY < systemEntry.getWorldH()){
-      if(box.isWall())
-        box.setPosition(mouseX,mouseY,systemEntry.getBoxH(),systemEntry.getBoxW(),rotate,systemEntry.getBoxH() / 2);
+  if(mouseX < systemEntry.getWorldW() && mouseY < systemEntry.getWorldH() && addClick){
+    if(box.isWall())
+      if(pos)
+        box.setPosition(mouseX,mouseY,systemEntry.getBoxH(),systemEntry.getBoxW(),0,systemEntry.getBoxH() / 2);
+      else
+        box.setPosition(mouseX,mouseY,systemEntry.getBoxW(),systemEntry.getBoxH(),0,systemEntry.getBoxH() / 2);
       else if(box.isTarget())
         box.setPosition(mouseX,mouseY,systemEntry.getBoxH(),systemEntry.getBoxW(),0,systemEntry.getBoxH() / 2);
-      
+  }
+  else{
+    if(box.isWall()){
+      if(pos)
+        box.setPosition(xAdd,yAdd,hAdd,wAdd,0,rAdd);
+      else
+        box.setPosition(xAdd+10,yAdd-10,wAdd,hAdd,0,rAdd);
+      }else if(box.isTarget())
+        box.setPosition(xAdd+20,yAdd+10,hAdd,wAdd,0,rAdd);
+  }
+  
+  if(addClick){
+    if(mouseX < systemEntry.getWorldW() && mouseY < systemEntry.getWorldH()){      
       correctCords = true;
     }
     else{
-      if(box.isWall())
-         box.setPosition(xAdd,yAdd,hAdd,wAdd,rotate,rAdd);
-       else if(box.isTarget())
-         box.setPosition(xAdd+20,yAdd+10,hAdd,wAdd,0,rAdd);
       correctCords = false;
     }
   }
@@ -99,11 +109,9 @@ private void ObjectToAddProcess(){
 }
 
 void controlEvent(ControlEvent theEvent) {
-  if(theEvent.getController().getName().equals("Turn+")){
-    rotate += 0.112;
-  } 
-  else if(theEvent.getController().getName().equals("Turn-")){
-    rotate -= 0.112;
+  if(theEvent.getController().getName().equals("Turn+")
+    || theEvent.getController().getName().equals("Turn-")){
+    pos = !pos;
   }
   else if(theEvent.getController().getName().equals("+")){
     INDEX_CURRENT_OBJECT_TO_ADD = (INDEX_CURRENT_OBJECT_TO_ADD - NUMBER_OBJECT_EXISTING != 0) ?  
@@ -161,12 +169,8 @@ void mousePressed() {
 private void objectPanel(){
   stroke(0);
   rect(5, 830, 70, 70); 
-  if((!correctCords || removeClick) && boxToAdd.get(INDEX_CURRENT_OBJECT_TO_ADD).isWall()){
-    boxToAdd.get(INDEX_CURRENT_OBJECT_TO_ADD).displayVertex();
-  }
-  else{
-    boxToAdd.get(INDEX_CURRENT_OBJECT_TO_ADD).display(); 
-  }
+  
+  boxToAdd.get(INDEX_CURRENT_OBJECT_TO_ADD).display(); 
 }
 
 public static Box2DProcessing getBox2D(){
@@ -176,8 +180,8 @@ public static Box2DProcessing getBox2D(){
 public void makeListObject(){
   boxToAdd.clear();
       
-  Wall wall = new Wall(xAdd,yAdd,hAdd,wAdd,rotate);
-  Target target = new Target(xAdd+20,yAdd+10,hAdd,wAdd,rotate,rAdd);
+  Wall wall = new Wall(xAdd,yAdd,hAdd,wAdd,0);
+  Target target = new Target(xAdd+20,yAdd+10,hAdd,wAdd,0,rAdd);
   
   boxToAdd.add(wall);
   boxToAdd.add(target); 

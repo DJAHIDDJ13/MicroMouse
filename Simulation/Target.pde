@@ -53,7 +53,6 @@ public class Target extends Box{
     translate(pos.x, pos.y);
     rotate(a);
     fill(127);
-      stroke(0);
       strokeWeight(1);
       ellipse(0, 0, r*2, r*2);
       line(-r, 0, r, 0);
