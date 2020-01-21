@@ -86,8 +86,8 @@ private void ObjectToAddProcess(){
         box.setPosition(xAdd,yAdd,hAdd,wAdd,0,rAdd);
       else
         box.setPosition(xAdd+10,yAdd-10,wAdd,hAdd,0,rAdd);
-      }else if(box.isTarget())
-        box.setPosition(xAdd+20,yAdd+10,hAdd,wAdd,0,rAdd);
+   }else if(box.isTarget())
+      box.setPosition(xAdd+20,yAdd+10,hAdd,wAdd,0,rAdd);
   }
   
   if(addClick){
@@ -154,7 +154,13 @@ void Size(int size){
 void mousePressed() {
   if(correctCords){
     if(addClick){
-      engine.getWorld().addBox(boxToAdd.get(INDEX_CURRENT_OBJECT_TO_ADD));
+      Box boxAdd = boxToAdd.get(INDEX_CURRENT_OBJECT_TO_ADD);
+      if(boxAdd.isTarget()){
+        engine.getWorld().setTarget(boxAdd);
+      }
+      else{
+        engine.getWorld().addBox(boxAdd);
+      }
       makeListObject();
     }
     else if(removeClick){

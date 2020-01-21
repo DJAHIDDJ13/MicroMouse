@@ -1,11 +1,31 @@
 public class World{
-  float worldH,worldW;
-  ArrayList<Box> boxes;
+  private float worldH,worldW;
+  private ArrayList<Box> boxes;
+  private boolean haveTarget;
+  private Box target;
   
   public World(float worldH, float worldW){
     this.worldH = worldH;
     this.worldW = worldW;
     boxes = new ArrayList<Box>();
+    haveTarget = false;
+  }
+    
+  public Box getTarget(){
+    return target;
+  }
+  
+  public void setTarget(Box target){
+    haveTarget = true;
+    this.target = target; 
+  }
+    
+  public boolean haveTarget(){
+    return haveTarget;
+  }
+  
+  public void setHaveTarget(boolean haveTarget){
+    this.haveTarget = haveTarget;
   }
   
   public float getWorldH(){
@@ -88,6 +108,8 @@ public class World{
     for(Box box : boxes){
       box.display();
     }
+    
+    target.display();
     
     stroke(255);
     line(0, size+shifty, size+shiftx, size+shifty);

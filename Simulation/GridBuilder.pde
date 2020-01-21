@@ -45,7 +45,7 @@ public class WorldBuilder{
     }
     
     Target defaultTarget = makeDefaultTarget(worldH,worldW,boxH,boxW,shiftX,shiftY);
-    world.addBox(defaultTarget);
+    world.setTarget(defaultTarget);
     
     return world;
   }
