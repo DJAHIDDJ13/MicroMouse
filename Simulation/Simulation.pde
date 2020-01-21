@@ -1,4 +1,4 @@
-// This seems to be broken with the Box2D 2.1.2 version I'm using
+//control// This seems to be broken with the Box2D 2.1.2 version I'm using
 import shiffman.box2d.*;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.joints.*;
