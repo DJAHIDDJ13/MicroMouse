@@ -168,6 +168,9 @@ void mousePressed() {
       if(wallRemoveIndex != -1){
         world.removeBoxAt(wallRemoveIndex);
       }
+      else if(world.IsTarget(mouseX, mouseY)){
+        world.setTarget(null);
+      }
     }
   }
 }

@@ -96,6 +96,13 @@ public class World{
    return index;
   }
   
+  public boolean IsTarget(float mX, float mY){
+    if(target == null)
+      return false;
+    else
+     return target.coordinatesInPerimeter(mX,mY);
+  }
+  
   // Drawing the grid
   public void display(float shiftX, float shiftY){
     float size = SimulationUtility.WORLD_SIZE;
@@ -109,7 +116,8 @@ public class World{
       box.display();
     }
     
-    target.display();
+    if(target != null)
+      target.display();
     
     stroke(255);
     line(0, size+shifty, size+shiftx, size+shifty);
