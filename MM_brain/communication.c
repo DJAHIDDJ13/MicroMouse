@@ -2,62 +2,90 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <errno.h>
 #include <sys/types.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <netinet/ip.h>
+#include <sys/stat.h>
 
 #include "communication.h"
 #include "utils.h"
 
-/* Socket initialization
- * ---
+/* FIFO appoach as shared memory (/dev/shm) 
+ * for interprocess communication
+ * i.e. /!\ Only Linux compatible atm
  */
-int initSocket(int *socketDescriptor) {
-    /* TO_REMOVE : int socket(int domain, int type, int protocol);
-     * domain : AF_INET (IPv4)
-     * type : SOCK_STREAM (TCP) | SOCK_DGRAM (UDP)
-     */
-    *socketDescriptor = socket(AF_INET, SOCK_DGRAM, 0);
-    if (*socketDescriptor == -1) {
-        perror("Socket initialization has failed");
-        return 1;
-    }
 
-    return 0;
+int get_tx_fifo_path(char *path) {
+	strcat(path, FIFO_PATH);
+	strcat(path, FIFO_TX_FILENAME);
+	return 0;
 }
 
-/* Bind the socket
- * ---
- */
-int configSocket(int socketDescriptor) {
-    struct sockaddr_in srvAddress;
-
-    memset(&srvAddress, 0, sizeof(struct sockaddr_in));
-
-    srvAddress.sin_family = AF_INET;
-    srvAddress.sin_addr.s_addr = htonl(INADDR_ANY);
-    srvAddress.sin_port = htons(PORT);
-    
-    if ( bind(socketDescriptor, (struct sockaddr *) &srvAddress, sizeof(struct sockaddr_in)) == -1 ) {
-        perror("Socket configuration has failed");
-        return 1;
-    }
-
-    return 0;
+int get_rx_fifo_path(char *path) {
+	strcat(path, FIFO_PATH);
+	strcat(path, FIFO_RX_FILENAME);
+	return 0;
 }
 
-void listenComm(int socketDescriptor) {
-    unsigned char buffer[BUFFER_SIZE];
-    int recvLen;
-    // Interlocutor's infos.
-    struct sockaddr_in srcAddr;
-    socklen_t addrLen = sizeof(srcAddr);
+/* Bidirectionnal communication
+ * => two FIFOs are being created
+ */
+int create_fifo() {
+	char 	full_path_tx[BUFFER_SIZE] = "",
+		full_path_rx[BUFFER_SIZE] = "";
+	get_tx_fifo_path(full_path_tx);
+	get_rx_fifo_path(full_path_rx);
 
-    recvLen = recvfrom(socketDescriptor, buffer, BUFFER_SIZE, 0, (struct sockaddr *)&srcAddr, &addrLen);
-    if (recvLen > 0) {
-        buffer[recvLen] = 0;
-        printf("%s\n", buffer);
-    }
+	// /!\ remove first
+	remove(full_path_tx);
+	if (errno == EACCES || errno == EINVAL) {
+		perror("remove");
+		return 1;
+	}
+	remove(full_path_rx);
+	if (errno == EACCES || errno == EINVAL) {
+		perror("remove");
+		return 1;
+	}
+
+	// mode : -rw-rw-rw
+	if (mkfifo(full_path_tx, 0666) != 0 || mkfifo(full_path_rx, 0660) != 0) {
+		perror("mkfifo");
+		return 1;
+	}
+
+	return 0;
+}
+
+int write_fifo(char *input) {
+	char full_path[BUFFER_SIZE] = "";
+	get_tx_fifo_path(full_path);
+
+	FILE *fp = fopen(full_path, "w");
+	if (fp == 0) {
+		perror("fopen");
+		return 1;
+	}
+	
+	fputs(input, fp);
+
+	fclose(fp);
+
+	return 0;
+}
+
+int read_fifo(char *output) {
+	char full_path[BUFFER_SIZE] = "";
+	get_rx_fifo_path(full_path);
+
+	FILE *fp = fopen(full_path, "r");
+	if (fp == 0) {
+		perror("fopen");
+		return 1;
+	}
+	
+	while (fgets(output, BUFFER_SIZE, fp) != NULL);
+
+	fclose(fp);
+
+	return 0;
 }
