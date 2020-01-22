@@ -142,6 +142,8 @@ void Remove() {
 void Refresh(){
   systemEntry = new SimulationEntry(cols, rows);
   engine = new Engine(systemEntry);
+  removeClick = false;
+  addClick = false;
 }
 
 // function Add will receive changes from 

@@ -85,5 +85,4 @@ public abstract class Box{
   public abstract boolean isWall();
   public abstract boolean isTarget();
   public abstract void display();
-  public abstract void displayVertex();
 }

@@ -61,10 +61,6 @@ public class Target extends Box{
     popMatrix();
   }
   
-  public void displayVertex(){
-    
-  }
-  
   public void makeBody(){
     // box2d circle shape of radius r
     CircleShape cs = new CircleShape();
