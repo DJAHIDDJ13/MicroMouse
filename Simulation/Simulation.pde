@@ -7,8 +7,6 @@ import org.jbox2d.collision.shapes.Shape;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 
-import hypermedia.net.*;
-
 // A reference to our box2d world
 Box2DProcessing box2d;
 
@@ -28,16 +26,9 @@ float rotate,xWall,yWall,hWall,wWall;
 boolean addClick,removeClick,correctCords;
 
 // Communication
-final int TX_PORT = 5432;
-final int RX_PORT = 5433;
-final String REMOTE_SRV = "127.0.0.1";
-
-UDP udpClient;
+Communication comm = new Communication();
 
 void setup(){
-  // Initialize communication pipe on port <COM_PORT>
-  udpClient = new UDP(this, RX_PORT);
-  //udpClient = new UDP(this);
   
   size(1500,920);
   smooth();
@@ -135,7 +126,10 @@ void Size(int size){
 }
 
 void mousePressed() {
-  udpClient.send("PING\n", REMOTE_SRV, TX_PORT);
+  
+   //comm.write_fifo("PING");
+  comm.read_fifo();
+  System.out.println(comm.getOutput());
   
   if(correctCords){
     if(addClick){
