@@ -1,62 +1,67 @@
-public class Wall extends Box{
- 
+public class Wall {
+  private float h, w;
+  private Body body;
+
   // Constructor
-  public Wall(float x, float y, float h, float w, float alpha){
-    super(x,y,h,w,alpha);
+  public Wall(float x, float y, float h, float w, float angle) {
+    this.h = h;
+    this.w = w;
+    makeBody(x, y, angle);
   }
   
-  public boolean coordinatesInPerimeter(float mX, float mY){
-    float x1 = getX();
-    float y1 = getY();
-    float x2 = x1+getW();
-    float y2 = y1+getH();
-    
-    return mX > x1 && mX < x2 && mY > y1 && mY < y2;
+  public Vec2 getPosition() {
+    Vec2 pos = box2d.getBodyPixelCoord(body);
+    return pos;
   }
   
-  public void setPosition(float x, float y, float h, float w, float alpha, float r){
-    setX(x);
-    setY(y);
-    setH(h);
-    setW(w);
-    setAlpha(alpha);
-    makeBody();   
+  public float getAngle() {
+    return body.getAngle(); 
   }
   
-  public boolean isWall(){
-    return true;
+  public void setPosition(float x, float y) {
+    body.setTransform(new Vec2(x, y), getAngle());
   }
   
-  public boolean isTarget(){
-    return false;
+  public void setAngle(float angle) {
+    body.setTransform(getPosition(), angle);
   }
-  
-  public void display(){
+
+  public void setTransform(float x, float y, float angle) {
+    body.setTransform(new Vec2(x, y), angle);
+  }
+
+  public Body getBody() {
+    return body; 
+  }
+
+  public void display() {
     // We look at each body and get its screen position
-    Vec2 pos = Simulation.getBox2D().getBodyPixelCoord(getBody());
+    Vec2 pos = getPosition();
+    
     // Get its angle of rotation
-    float a = getBody().getAngle();      
+    float a = getAngle();
     
     pushMatrix();
     fill(127,0,0);
       translate(pos.x, pos.y);
       rotate(-a);
       stroke(0);
-      rect(0, 0, getW(), getH());
+      rect(0, 0, w, h);
     fill(255);
     popMatrix();
   }
   
-  public void makeBody(){
+  public void makeBody(float x, float y, float angle) {
     // Define a polygon (this is what we use for a rectangle)
     PolygonShape sd = new PolygonShape();
-    float box2dW = Simulation.getBox2D().scalarPixelsToWorld(getW()/2);
-    float box2dH = Simulation.getBox2D().scalarPixelsToWorld(getH()/2);
+    float box2dW = box2d.scalarPixelsToWorld(w);
+    float box2dH = box2d.scalarPixelsToWorld(h);
     sd.setAsBox(box2dW, box2dH);
     
     // Define a fixture
     FixtureDef fd = new FixtureDef();
     fd.shape = sd;
+    
     // Parameters that affect physics
     fd.density = 1;
     fd.friction = 0.3;
@@ -65,12 +70,12 @@ public class Wall extends Box{
     // Define the body and make it from the shape
     BodyDef bd = new BodyDef();
     bd.type = BodyType.STATIC;
-    bd.position.set(Simulation.getBox2D().coordPixelsToWorld(getX(),getY()));
-    bd.setAngle(getAlpha());
+    bd.position.set(box2d.coordPixelsToWorld(x, y));
+    bd.setAngle(angle);
 
-    setBody(Simulation.getBox2D().createBody(bd));
-    getBody().createFixture(fd);
+    this.body = box2d.createBody(bd);
+    this.body.createFixture(fd);
     
-    getBody().setGravityScale(0.0);
+    this.body.setGravityScale(1.0);
   }
 }

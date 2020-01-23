@@ -1,31 +1,25 @@
-public class World{
-  private float worldH,worldW;
-  private ArrayList<Box> boxes;
-  private boolean haveTarget;
-  private Box target;
+import org.jbox2d.collision.shapes.Shape;
+import org.jbox2d.collision.AABB;
+import org.jbox2d.callbacks.QueryCallback;
+import java.util.*;
+
+public class World {
+  private float worldH, worldW;
+  private HashMap<Body, Wall> walls;
+  private Target target;
   
-  public World(float worldH, float worldW){
+  public World(float worldH, float worldW) {
     this.worldH = worldH;
     this.worldW = worldW;
-    boxes = new ArrayList<Box>();
-    haveTarget = false;
+    walls = new HashMap<Body, Wall>();
   }
     
-  public Box getTarget(){
+  public Target getTarget() {
     return target;
   }
   
-  public void setTarget(Box target){
-    haveTarget = true;
+  public void setTarget(Target target) {
     this.target = target; 
-  }
-    
-  public boolean haveTarget(){
-    return haveTarget;
-  }
-  
-  public void setHaveTarget(boolean haveTarget){
-    this.haveTarget = haveTarget;
   }
   
   public float getWorldH(){
@@ -44,63 +38,52 @@ public class World{
     this.worldW = worldW;
   }
   
-  public ArrayList<Box> getBoxes(){
-    return boxes;
+  public Collection<Wall> getWalls(){
+    return walls.values();
   }
   
-  public void setBoxes(ArrayList<Box> boxes){
-    this.boxes = boxes;
+  public void setWalls(HashMap<Body, Wall> walls){
+    this.walls = walls;
+  }
+  /*
+  public Wall getWallAt(int i){
+   Wall wall = null;
+     if(i < walls.size())
+       wall = walls.get(i);
+   return wall;
+  }
+  */
+
+  public boolean wallExist(Wall wall){
+    return walls.containsValue(wall);
   }
   
-  public Box getBoxAt(int i){
-   Box box = null;
-     if(i < boxes.size())
-       box = boxes.get(i);
-   return box;
+  public void addWall(Wall wall){
+    walls.put(wall.getBody(), wall);
   }
   
-  public void removeBoxAt(int i){
-     if(getBoxAt(i) != null){
-       boxes.get(i).killBody();
-       boxes.remove(i);
-     }
+  ArrayList<Body> getBodyAtPoint(float x, float y) {
+    // Create a small box at mouse point
+    org.jbox2d.dynamics.World world = box2d.getWorld();
+    Vec2 v = box2d.coordPixelsToWorld(x, y);
+    final float EPSILON = 0.01;
+    AABB aabb = new AABB(new Vec2(v.x - EPSILON, v.y - EPSILON), new Vec2(v.x + EPSILON, v.y + EPSILON));
+    
+    // Look at the shapes intersecting this box (max.: 10)
+    final BodyQueryCallback bodyQueryCallback = new BodyQueryCallback();
+    world.queryAABB(bodyQueryCallback, aabb);
+   
+    // TODO: find a better way to do this
+    return bodyQueryCallback.getBodies();
   }
-  
-  public void removeBox(Box box){
-     int i = 0;
-     
-     while(i < boxes.size() && !getBoxAt(i).equals(box))
-       i++;
-     
-     if(i < boxes.size())
-       removeBoxAt(i);
-  }
-  
-  public boolean BoxExist(Box box){
-    int i;
-      for(i = 0; i < boxes.size() && !box.equals(boxes.get(i)); i++);
-    return i < boxes.size();
-  }
-  
-  public void addBox(Box box){
-    if(!BoxExist(box)){
-       boxes.add(box);
+
+  public void removeBodyAt(float x, float y) {
+    ArrayList<Body> bodies = getBodyAtPoint(x, y);
+    println("Deleting bodies");
+    for(Body body: bodies) {
+      println(body);
+      walls.remove(body);
     }
-  }
-  
-  public int IsWall(float mX, float mY){
-   int index = -1;
-   for(int i = 0; i < boxes.size() && index == -1; i++)
-     if(boxes.get(i).coordinatesInPerimeter(mX,mY))
-       index = i;
-   return index;
-  }
-  
-  public boolean IsTarget(float mX, float mY){
-    if(target == null)
-      return false;
-    else
-     return target.coordinatesInPerimeter(mX,mY);
   }
   
   // Drawing the grid
@@ -112,8 +95,8 @@ public class World{
     strokeWeight(2);
     rect(shiftX, shiftY, worldW, worldH);
     
-    for(Box box : boxes){
-      box.display();
+    for(Wall wall : walls.values()){
+      wall.display();
     }
     
     if(target != null)
@@ -123,4 +106,18 @@ public class World{
     line(0, size+shifty, size+shiftx, size+shifty);
     line(size+shiftx, size+shifty, size+shiftx, 0);
   } 
+}
+
+class BodyQueryCallback implements QueryCallback {
+  ArrayList<Body> bodies = new ArrayList<Body>();
+  
+  @Override
+  public boolean reportFixture(Fixture fixture) {
+    bodies.add(fixture.getBody());
+    return false;
+  }
+  
+  public ArrayList<Body> getBodies() {
+    return bodies;
+  }
 }
