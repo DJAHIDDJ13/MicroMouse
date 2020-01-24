@@ -11,8 +11,8 @@ public class SimulationController{
   
   private final float panelX = 40;
   private final float panelY = 865;
-  private final float panelW = 20;
-  private final float panelH = 40;
+  private final float panelW = 40;
+  private final float panelH = 20;
   private final float panelR = 10;
   
   private Maze maze;
@@ -95,7 +95,7 @@ public class SimulationController{
     // diplay wall at mouseX, mouseY
     pushMatrix();
     translate(toAddX, toAddY);
-    rotate(toAddA + HALF_PI);
+    rotate(toAddA);
     
     if(objectPanelState == 0) {
       fill(127,0,0);
@@ -167,6 +167,7 @@ public class SimulationController{
       toAddY = mouseY;
       toAddH = simulationEntry.getBoxH();
       toAddW = simulationEntry.getBoxW();
+      toAddR = toAddH / 2;
     } else {
       toAddX = panelX;
       toAddY = panelY;

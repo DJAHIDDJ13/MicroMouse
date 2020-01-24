@@ -14,7 +14,7 @@ public class MazeBuilder{
     float xWall = 0;
     float yWall = 0;
     for(int i = 0; i < wallBases; i++){
-      wall = new Wall(xWall + boxW / 2 + shiftX, yWall + boxH / 2 + shiftY, boxH, boxW, 0);
+      wall = new Wall(xWall + boxW / 2 + shiftX, yWall + boxH / 2 + shiftY, boxW, boxH, 0);
       maze.addWall(wall);
       xWall += boxW;
     }
@@ -23,7 +23,7 @@ public class MazeBuilder{
     xWall = 0;
     yWall = mazeH - boxH;
     for(int i = 0; i < wallBases; i++){
-      wall = new Wall(xWall + boxW / 2 + shiftX, yWall + boxH / 2 + shiftY, boxH, boxW, 0);
+      wall = new Wall(xWall + boxW / 2 + shiftX, yWall + boxH / 2 + shiftY, boxW, boxH, 0);
       maze.addWall(wall);
       xWall += boxW;
     }
@@ -32,7 +32,7 @@ public class MazeBuilder{
     xWall = 0;
     yWall = boxH;
     for(int i = 0; i < wallLR; i++){
-      wall = new Wall(xWall + boxH / 2 + shiftX, yWall + boxW / 2 + shiftY, boxH, boxW, HALF_PI);
+      wall = new Wall(xWall + boxH / 2 + shiftX, yWall + boxW / 2 + shiftY, boxW, boxH, HALF_PI);
       maze.addWall(wall);
       yWall += boxW;
     }
@@ -41,7 +41,7 @@ public class MazeBuilder{
     xWall = mazeW - boxH;
     yWall = boxH;
     for(int i = 0; i < wallLR; i++){
-      wall = new Wall(xWall + boxH / 2 + shiftX, yWall + boxW / 2 + shiftY, boxH, boxW, HALF_PI);
+      wall = new Wall(xWall + boxH / 2 + shiftX, yWall + boxW / 2 + shiftY, boxW, boxH, HALF_PI);
       maze.addWall(wall);
       yWall += boxW;
     }

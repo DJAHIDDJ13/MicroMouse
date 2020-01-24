@@ -3,7 +3,7 @@ public class Wall {
   private Body body;
 
   // Constructor
-  public Wall(float x, float y, float h, float w, float angle) {
+  public Wall(float x, float y, float w, float h, float angle) {
     this.h = h;
     this.w = w;
     makeBody(x, y, angle);
