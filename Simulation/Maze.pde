@@ -3,14 +3,14 @@ import org.jbox2d.collision.AABB;
 import org.jbox2d.callbacks.QueryCallback;
 import java.util.*;
 
-public class World {
-  private float worldH, worldW;
+public class Maze {
+  private float mazeH, mazeW;
   private HashMap<Body, Wall> walls;
   private Target target;
   
-  public World(float worldH, float worldW) {
-    this.worldH = worldH;
-    this.worldW = worldW;
+  public Maze(float mazeH, float mazeW) {
+    this.mazeH = mazeH;
+    this.mazeW = mazeW;
     walls = new HashMap<Body, Wall>();
   }
 
@@ -22,20 +22,20 @@ public class World {
     this.target = target; 
   }
   
-  public float getWorldH(){
-    return worldH;
+  public float getMazeH(){
+    return mazeH;
   }
   
-  public void setWorldH(float worldH){
-    this.worldH = worldH;
+  public void setMazeH(float mazeH){
+    this.mazeH = mazeH;
   }
   
-  public float getWorldW(){
-    return worldW;
+  public float getMazeW(){
+    return mazeW;
   }
   
-  public void setWorldW(float worldW){
-    this.worldW = worldW;
+  public void setMazeW(float mazeW){
+    this.mazeW = mazeW;
   }
   
   public Collection<Wall> getWalls(){
@@ -88,16 +88,16 @@ public class World {
   
   // Drawing the grid
   public void display(){
-    float size = SimulationUtility.WORLD_SIZE;
+    float size = SimulationUtility.MAZE_SIZE;
     
     // maze canvas
     strokeWeight(2);
-    rect(SimulationUtility.WORLD_SHIFTX, SimulationUtility.WORLD_SHIFTY, worldW, worldH);
+    rect(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY, mazeW, mazeH);
 
     
     // everything draw here starts at the edge maze
     push();
-    translate(SimulationUtility.WORLD_SHIFTX, SimulationUtility.WORLD_SHIFTY);
+    translate(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY);
 
     // draw border line
     line(0, size, size, size);

@@ -1,25 +1,25 @@
 public class SimulationEntry{
   
   private String file;
-  private float worldH,worldW;
+  private float mazeH,mazeW;
   private float boxH,boxW;
   private float shiftX,shiftY;
   //add here all the variable that can be used for simulation
   
-  public SimulationEntry(String file, float worldH, float worldW, 
+  public SimulationEntry(String file, float mazeH, float mazeW, 
                   float boxH, float boxW, float shiftX, float shiftY){
     this.file = file;
-    this.worldH = worldH;
-    this.worldW = worldW;
+    this.mazeH = mazeH;
+    this.mazeW = mazeW;
     this.boxH = boxH;
     this.boxW = boxW;
     this.shiftX = shiftX;
     this.shiftY = shiftY;
   }
   
-  public SimulationEntry(float worldH, float worldW, float boxH, float boxW, float shiftX, float shiftY){
-    this.worldH = worldH;
-    this.worldW = worldW;
+  public SimulationEntry(float mazeH, float mazeW, float boxH, float boxW, float shiftX, float shiftY){
+    this.mazeH = mazeH;
+    this.mazeW = mazeW;
     this.boxH = boxH;
     this.boxW = boxW;
     this.shiftX = shiftX;
@@ -27,12 +27,12 @@ public class SimulationEntry{
   }
   
   public SimulationEntry(float cols, float rows){
-    this.boxW = SimulationUtility.WORLD_SIZE/rows; //the perfect size is 25.
+    this.boxW = SimulationUtility.MAZE_SIZE/rows; //the perfect size is 25.
     this.boxH = boxW/2; //it has to be boxH = boxW/2 to work well
-    this.worldH = rows*boxW;
-    this.worldW = cols*boxW;
-    this.shiftX = SimulationUtility.WORLD_SHIFTX;
-    this.shiftY = SimulationUtility.WORLD_SHIFTY;
+    this.mazeH = rows*boxW;
+    this.mazeW = cols*boxW;
+    this.shiftX = SimulationUtility.MAZE_SHIFTX;
+    this.shiftY = SimulationUtility.MAZE_SHIFTY;
   }
   
   public SimulationEntry(String file){
@@ -42,8 +42,8 @@ public class SimulationEntry{
   public void setParameters(int rows, int cols){
     this.boxW = 800/rows; //the perfect size is 25.
     this.boxH = boxW/2; //it has to be boxH = boxW/2 to work well
-    this.worldH = rows*boxW;
-    this.worldW = cols*boxW;    
+    this.mazeH = rows*boxW;
+    this.mazeW = cols*boxW;    
   }
   
   public String getFile(){
@@ -54,20 +54,20 @@ public class SimulationEntry{
     this.file = file;
   }
   
-  public float getWorldH(){
-    return worldH;
+  public float getMazeH(){
+    return mazeH;
   }
   
-  public void setWorldH(float worldH){
-    this.worldH = worldH;
+  public void setMazeH(float mazeH){
+    this.mazeH = mazeH;
   }
   
-  public float getWorldW(){
-    return worldW;
+  public float getMazeW(){
+    return mazeW;
   }
   
-  public void setWorldW(float worldW){
-    this.worldW = worldW;
+  public void setMazeW(float mazeW){
+    this.mazeW = mazeW;
   }
   
   public float getBoxH(){
