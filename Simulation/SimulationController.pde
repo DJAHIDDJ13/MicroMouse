@@ -9,8 +9,8 @@ public class SimulationController{
   private boolean showingMovingObject;
   private boolean deleteMode;
   
-  private final float panelX = 20;
-  private final float panelY = 855;
+  private final float panelX = 40;
+  private final float panelY = 865;
   private final float panelW = 20;
   private final float panelH = 40;
   private final float panelR = 10;
@@ -91,29 +91,30 @@ public class SimulationController{
   
   
   public void displayMovingObject() {
+    rectMode(CENTER);
     // diplay wall at mouseX, mouseY
+    pushMatrix();
+    translate(toAddX, toAddY);
+    rotate(toAddA + HALF_PI);
+    
     if(objectPanelState == 0) {
-      pushMatrix();
       fill(127,0,0);
-        translate(toAddX, toAddY);
-        rotate(-toAddA);
         stroke(0);
         rect(0, 0, toAddW, toAddH);
-        fill(255);
-      popMatrix();
+      fill(255);
     } // display target
     else {
-      pushMatrix();
-      translate(toAddX, toAddY);
-      rotate(toAddA);
       fill(127);
         strokeWeight(1);
         ellipse(0, 0, toAddR*2, toAddR*2);
         line(-toAddR, 0, toAddR, 0);
         line(0, -toAddR, 0, toAddR);
       fill(255);
-      popMatrix();
     }
+    
+    popMatrix();
+    
+    rectMode(CORNER);
   }
 
   public void displayPanel() {

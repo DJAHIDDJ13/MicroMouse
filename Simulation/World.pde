@@ -13,7 +13,7 @@ public class World {
     this.worldW = worldW;
     walls = new HashMap<Body, Wall>();
   }
-    
+
   public Target getTarget() {
     return target;
   }
@@ -66,7 +66,7 @@ public class World {
     // Create a small box at mouse point
     org.jbox2d.dynamics.World world = box2d.getWorld();
     Vec2 v = box2d.coordPixelsToWorld(x, y);
-    final float EPSILON = 0.01;
+    final float EPSILON = 0.001;
     AABB aabb = new AABB(new Vec2(v.x - EPSILON, v.y - EPSILON), new Vec2(v.x + EPSILON, v.y + EPSILON));
     
     // Look at the shapes intersecting this box (max.: 10)
@@ -87,24 +87,31 @@ public class World {
   }
   
   // Drawing the grid
-  public void display(float shiftX, float shiftY){
+  public void display(){
     float size = SimulationUtility.WORLD_SIZE;
-    float shiftx = SimulationUtility.WORLD_SHIFTX+7;
-    float shifty = SimulationUtility.WORLD_SHIFTY+7;
     
+    // maze canvas
     strokeWeight(2);
-    rect(shiftX, shiftY, worldW, worldH);
+    rect(SimulationUtility.WORLD_SHIFTX, SimulationUtility.WORLD_SHIFTY, worldW, worldH);
+
     
+    // everything draw here starts at the edge maze
+    push();
+    translate(SimulationUtility.WORLD_SHIFTX, SimulationUtility.WORLD_SHIFTY);
+
+    // draw border line
+    line(0, size, size, size);
+    line(size, size, size, 0);
+ 
+    // draw all the walls
     for(Wall wall : walls.values()){
       wall.display();
     }
     
+    // draw the target
     if(target != null)
       target.display();
-    
-    stroke(255);
-    line(0, size+shifty, size+shiftx, size+shifty);
-    line(size+shiftx, size+shifty, size+shiftx, 0);
+    pop();
   } 
 }
 

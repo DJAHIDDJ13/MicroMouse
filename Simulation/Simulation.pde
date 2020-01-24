@@ -25,9 +25,7 @@ void setup(){
   world = worldBuilder.builderInitialWorld(simulationEntry.getWorldH(), 
                                            simulationEntry.getWorldW(), 
                                            simulationEntry.getBoxH(),
-                                           simulationEntry.getBoxW(),
-                                           simulationEntry.getShiftX(),
-                                           simulationEntry.getShiftY());
+                                           simulationEntry.getBoxW());
   
   simCon = new SimulationController(world);
   simCon.setController(new ControlP5(this));
@@ -42,7 +40,7 @@ void draw() {
   box2d.step();
   simCon.update();
 
-  simCon.getWorld().display(simulationEntry.getShiftX(), simulationEntry.getShiftY());
+  world.display();
   simCon.display();
 }
 

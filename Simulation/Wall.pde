@@ -11,6 +11,9 @@ public class Wall {
   
   public Vec2 getPosition() {
     Vec2 pos = box2d.getBodyPixelCoord(body);
+    // adjust for the maze canvas shift
+    pos.x -= SimulationUtility.WORLD_SHIFTX;
+    pos.y -= SimulationUtility.WORLD_SHIFTY;
     return pos;
   }
   
@@ -42,6 +45,7 @@ public class Wall {
     float a = getAngle();
     
     pushMatrix();
+    rectMode(CENTER);
     fill(127,0,0);
       translate(pos.x, pos.y);
       rotate(-a);
@@ -54,8 +58,8 @@ public class Wall {
   public void makeBody(float x, float y, float angle) {
     // Define a polygon (this is what we use for a rectangle)
     PolygonShape sd = new PolygonShape();
-    float box2dW = box2d.scalarPixelsToWorld(w);
-    float box2dH = box2d.scalarPixelsToWorld(h);
+    float box2dW = box2d.scalarPixelsToWorld(w / 2);
+    float box2dH = box2d.scalarPixelsToWorld(h / 2);
     sd.setAsBox(box2dW, box2dH);
     
     // Define a fixture
