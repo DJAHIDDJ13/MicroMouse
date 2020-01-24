@@ -15,17 +15,17 @@ public class SimulationController{
   private final float panelH = 40;
   private final float panelR = 10;
   
-  private World world;
+  private Maze maze;
   
-  public SimulationController(World world){
-    this.world = world;
+  public SimulationController(Maze maze){
+    this.maze = maze;
     objectPanelState = 0;
     showingMovingObject = false;
     deleteMode = false;
   }
   
-  public World getWorld() {
-    return world;
+  public Maze getMaze() {
+    return maze;
   }
   
  public void setController(ControlP5 cp5) {
@@ -145,23 +145,23 @@ public class SimulationController{
   
   public void mousePressedHandler() {
     // if the click was on the canvas
-    if(mouseX < world.getWorldW() && mouseY < world.getWorldH()) {
+    if(mouseX < maze.getMazeW() && mouseY < maze.getMazeH()) {
       // if showing moving object , means we're adding
       if(showingMovingObject) {
         if(objectPanelState == 0) {
           Wall toAdd = new Wall((float) mouseX, (float) mouseY, toAddW, toAddH, toAddA);
-          world.addWall(toAdd);
+          maze.addWall(toAdd);
         } else {
-          world.getTarget().setPosition((float) mouseX, (float) mouseY);
+          maze.getTarget().setPosition((float) mouseX, (float) mouseY);
         }
       } else if(deleteMode) { // otherwise we're deleting
-        world.removeBodyAt((float) mouseX, (float) mouseY);
+        maze.removeBodyAt((float) mouseX, (float) mouseY);
       }
     }
   }
   
   public void update() {
-    if(showingMovingObject && mouseX < world.getWorldW() && mouseY < world.getWorldH()) {
+    if(showingMovingObject && mouseX < maze.getMazeW() && mouseY < maze.getMazeH()) {
       toAddX = mouseX;
       toAddY = mouseY;
       toAddH = simulationEntry.getBoxH();

@@ -3,14 +3,14 @@ import org.jbox2d.collision.AABB;
 import org.jbox2d.callbacks.QueryCallback;
 import java.util.*;
 
-public class World {
-  private float worldH, worldW;
+public class Maze {
+  private float mazeH, mazeW;
   private HashMap<Body, Wall> walls;
   private Target target;
   
-  public World(float worldH, float worldW) {
-    this.worldH = worldH;
-    this.worldW = worldW;
+  public Maze(float mazeH, float mazeW) {
+    this.mazeH = mazeH;
+    this.mazeW = mazeW;
     walls = new HashMap<Body, Wall>();
   }
     
@@ -22,20 +22,20 @@ public class World {
     this.target = target; 
   }
   
-  public float getWorldH(){
-    return worldH;
+  public float getMazeH(){
+    return mazeH;
   }
   
-  public void setWorldH(float worldH){
-    this.worldH = worldH;
+  public void setMazeH(float mazeH){
+    this.mazeH = mazeH;
   }
   
-  public float getWorldW(){
-    return worldW;
+  public float getMazeW(){
+    return mazeW;
   }
   
-  public void setWorldW(float worldW){
-    this.worldW = worldW;
+  public void setMazeW(float mazeW){
+    this.mazeW = mazeW;
   }
   
   public Collection<Wall> getWalls(){
@@ -88,12 +88,12 @@ public class World {
   
   // Drawing the grid
   public void display(float shiftX, float shiftY){
-    float size = SimulationUtility.WORLD_SIZE;
-    float shiftx = SimulationUtility.WORLD_SHIFTX+7;
-    float shifty = SimulationUtility.WORLD_SHIFTY+7;
+    float size = SimulationUtility.MAZE_SIZE;
+    float shiftx = SimulationUtility.MAZE_SHIFTX+7;
+    float shifty = SimulationUtility.MAZE_SHIFTY+7;
     
     strokeWeight(2);
-    rect(shiftX, shiftY, worldW, worldH);
+    rect(shiftX, shiftY, mazeW, mazeH);
     
     for(Wall wall : walls.values()){
       wall.display();

@@ -9,8 +9,8 @@ import org.jbox2d.dynamics.*;
 public static Box2DProcessing box2d;
 SimulationController simCon;
 SimulationEntry simulationEntry;
-WorldBuilder worldBuilder;
-World world;
+MazeBuilder mazeBuilder;
+Maze maze;
 
 void setup(){
   size(1500,920);
@@ -21,15 +21,15 @@ void setup(){
   box2d.createWorld();
     
   simulationEntry = new SimulationEntry(16, 16);
-  worldBuilder = new WorldBuilder();
-  world = worldBuilder.builderInitialWorld(simulationEntry.getWorldH(), 
-                                           simulationEntry.getWorldW(), 
+  mazeBuilder = new MazeBuilder();
+  maze = mazeBuilder.builderInitialMaze(simulationEntry.getMazeH(), 
+                                           simulationEntry.getMazeW(), 
                                            simulationEntry.getBoxH(),
                                            simulationEntry.getBoxW(),
                                            simulationEntry.getShiftX(),
                                            simulationEntry.getShiftY());
   
-  simCon = new SimulationController(world);
+  simCon = new SimulationController(maze);
   simCon.setController(new ControlP5(this));
   simCon.createControllers();
 }
@@ -42,7 +42,7 @@ void draw() {
   box2d.step();
   simCon.update();
 
-  simCon.getWorld().display(simulationEntry.getShiftX(), simulationEntry.getShiftY());
+  simCon.getMaze().display(simulationEntry.getShiftX(), simulationEntry.getShiftY());
   simCon.display();
 }
 
