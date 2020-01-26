@@ -45,14 +45,6 @@ public class Maze {
   public void setWalls(HashMap<Body, Wall> walls){
     this.walls = walls;
   }
-  /*
-  public Wall getWallAt(int i){
-   Wall wall = null;
-     if(i < walls.size())
-       wall = walls.get(i);
-   return wall;
-  }
-  */
 
   public boolean wallExist(Wall wall){
     return walls.containsValue(wall);

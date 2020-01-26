@@ -2,12 +2,17 @@ import controlP5.*;
 
 public class SimulationController{
   
+  private SimulationEntry simulationEntry;
+  private MazeBuilder mazeBuilder;
+  
   private ControlP5 cp5;
   private float toAddX, toAddY, toAddR, toAddW, toAddH, toAddA;
   
   private int objectPanelState;
   private boolean showingMovingObject;
   private boolean deleteMode;
+  
+  private int size;
   
   private final float panelX = 40;
   private final float panelY = 865;
@@ -17,16 +22,32 @@ public class SimulationController{
   
   private Maze maze;
   
-  public SimulationController(Maze maze){
-    this.maze = maze;
+  public SimulationController(int size){
+    this.size = size;
+    
+    refreshMaze();
+    
     objectPanelState = 0;
     showingMovingObject = false;
     deleteMode = false;
   }
   
+  public SimulationEntry getSimulationEntry(){
+    return simulationEntry;
+  }
+  
   public Maze getMaze() {
     return maze;
   }
+  
+ private void refreshMaze() {
+   simulationEntry = new SimulationEntry(size, size);
+   mazeBuilder = new MazeBuilder();
+   maze = mazeBuilder.builderInitialMaze(simulationEntry.getMazeH(),
+                                        simulationEntry.getMazeW(),
+                                        simulationEntry.getBoxH(),
+                                        simulationEntry.getBoxW());
+ }
   
  public void setController(ControlP5 cp5) {
    this.cp5 = cp5;
@@ -95,7 +116,7 @@ public class SimulationController{
     // diplay wall at mouseX, mouseY
     pushMatrix();
     translate(toAddX, toAddY);
-    rotate(toAddA);
+    rotate(-toAddA);
     
     if(objectPanelState == 0) {
       fill(127,0,0);
@@ -138,9 +159,9 @@ public class SimulationController{
       showingMovingObject = false;
       deleteMode = true;
     } else if(event.getController().getName().equals("Refresh")) {
-      showingMovingObject = false;      
+      refreshMaze();
     } else if(event.getController().getName().equals("Size")) {
-      showingMovingObject = false;
+      size = (int)cp5.get("Size").getValue();
     }
   }
   

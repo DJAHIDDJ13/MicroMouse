@@ -8,9 +8,6 @@ import org.jbox2d.dynamics.*;
 // A reference to our box2d world
 public static Box2DProcessing box2d;
 SimulationController simCon;
-SimulationEntry simulationEntry;
-MazeBuilder mazeBuilder;
-Maze maze;
 
 void setup(){
   size(1500,920);
@@ -19,15 +16,8 @@ void setup(){
   // Initialize box2d physics and create the world
   box2d = new Box2DProcessing(this);
   box2d.createWorld();
-    
-  simulationEntry = new SimulationEntry(16, 16);
-  mazeBuilder = new MazeBuilder();
-  maze = mazeBuilder.builderInitialGrid(simulationEntry.getMazeH(),
-                                        simulationEntry.getMazeW(),
-                                        simulationEntry.getBoxH(),
-                                        simulationEntry.getBoxW());
   
-  simCon = new SimulationController(maze);
+  simCon = new SimulationController(16);
   simCon.setController(new ControlP5(this));
   simCon.createControllers();
 }
@@ -40,7 +30,7 @@ void draw() {
   box2d.step();
   simCon.update();
 
-  maze.display();
+  simCon.getMaze().display();
   simCon.display();
 }
 

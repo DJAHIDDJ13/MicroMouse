@@ -1,6 +1,6 @@
 public class MazeBuilder{
   
-  public Maze builderInitialGrid(float mazeH, float mazeW, float boxH, float boxW){
+  public Maze builderInitialMaze(float mazeH, float mazeW, float boxH, float boxW){
     Wall wall;
     
     int wallBases = (int)(mazeW/boxW);

@@ -95,12 +95,6 @@ public class Box2DProcessing {
   public void createWorld(Vec2 gravity) {
     createWorld(gravity,true,true);
   }
-
-//  public void createWorld(Vec2 gravity, boolean doSleep, boolean warmStarting, boolean continous) {
-//    world = new World(gravity, doSleep);
-//    setWarmStarting(warmStarting);
-//    setContinuousPhysics(continous);
-//  }
   
   public void createWorld(Vec2 gravity, boolean warmStarting, boolean continous) {
     world = new World(gravity);
@@ -114,8 +108,6 @@ public class Box2DProcessing {
   public Body getGroundBody() {
     return groundBody;
   }
-
-  
 
   // Set the gravity (this can change in real-time)
   public void setGravity(float x, float y) {
