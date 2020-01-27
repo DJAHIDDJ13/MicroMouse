@@ -4,7 +4,6 @@ static final int hauteur = 10;        // nombre de lignes
 static final int largeur = 10;        // nombre de colonnes
 
 
-//Declaration of stack and maze matrix
 Stack stack = new Stack();
 static Cellule mat[][];
 Cellule current;
@@ -13,7 +12,6 @@ int debug =0;
 void setup()
 
 {
-  //Change dimensions to make screen bigger or smaller
   size(400,400);
   background(255);
  
@@ -30,20 +28,16 @@ void setup()
 void draw()
 
 {
-  //saveFrame("output/frame######.png");
   //frameRate(15);
   affichageLabyrinthe();
-  
-  //Fill rectangle of current Cellule
   fill(0,255,0,100);
   rect(current.x,current.y,w,w);
   noFill();
   
-  //Mark current as visited
+  //La cellule corrante et marquée comme visitée
   current.visited = true;
   
-  //Pick randomly the next cell
-  //Cellule next = current.pickNeighbour();
+  // election d'une cellule voisine nos visitée de façon aléatoir
   Cellule next = randomVoisin(current);
   
   if(next==null && stack.empty()){
@@ -54,7 +48,7 @@ void draw()
   }
   else{
     stack.push(current);
-    //Remove Wall between current and next cell
+    // supprimmer mur
     removeWall(current,next);
     current = next;
   }
@@ -68,7 +62,7 @@ void affichageLabyrinthe()
       mat[i][j].affichageCellule();
 }
 
-//Remove wall between two cells
+// supprimer mur
 void removeWall(Cellule current, Cellule next)
 {
   int app = current.x-next.x;
@@ -84,7 +78,9 @@ void removeWall(Cellule current, Cellule next)
     {current.bas=false; next.haut=false;}
 }
 
- //Randomly choose a neighbour cell among the accesible ones
+// Retourne une cellule voisine aléatoire qui n'a pas encore été visitée
+// On stack toutes les cellules vosines non visitées
+// On retourne une d'entre elle de manière aléatoire
   public Cellule randomVoisin(Cellule current)
   {
     int i=current.x/w, 

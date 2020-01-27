@@ -6,8 +6,8 @@ class Cellule
   // Cellule visitée ou pas
   boolean visited;
   
-  //Object characteristics
-  static final int w = MazeGenerator.w;
+  // Taille de la cellule
+  static final int taille = 30;
   
   // Murs de la cellule
   public boolean haut,bas,droite,gauche;
@@ -15,8 +15,8 @@ class Cellule
   //Constructeur
   Cellule(int x, int y)
   {
-    this.x=x*w;
-    this.y=y*w;
+    this.x=x*taille;
+    this.y=y*taille;
     this.haut = true;
     this.bas = true;
     this.gauche = true;
@@ -31,20 +31,20 @@ class Cellule
     {
       fill(#2E8B57);
       noStroke();
-      rect(x,y,w,w);
+      rect(x,y,taille,taille);
       noFill();
     }
     
     strokeWeight(3);
     stroke(1);
     if(haut)
-      line(x,  y,  x+w,  y);
+      line(x,  y,  x+taille,  y);
     if(bas)
-      line(x,  y+w,  x+w,  y+w);
+      line(x,  y+taille,  x+taille,  y+taille);
     if(droite)
-      line(x+w,  y,  x+w,  y+w);
+      line(x+taille,  y,  x+taille,  y+taille);
     if(gauche)
-      line(x,  y,  x,  y+w);
+      line(x,  y,  x,  y+taille);
   }
   
 }
