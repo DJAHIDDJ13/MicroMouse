@@ -1,5 +1,4 @@
 import java.util.Stack;
-static final int w = 30;   // taille de chaque cellule
 static final int hauteur = 10;        // nombre de lignes
 static final int largeur = 10;        // nombre de colonnes
 
@@ -12,17 +11,20 @@ int debug =0;
 void setup()
 
 {
-  size(400,400);
+
+  size(800,800);
   background(255);
+
  
   mat = new Cellule[largeur][hauteur];
-  
+ 
+ 
   // On initialise notre matrice
   for(int i=0;i<largeur;i++)
     for(int j=0;j<hauteur;j++)
       mat[i][j] = new Cellule(i,j);
   
-  current = mat[0][0];
+    current = mat[0][0];
 }
 
 void draw()
@@ -31,7 +33,7 @@ void draw()
   //frameRate(15);
   affichageLabyrinthe();
   fill(0,255,0,100);
-  rect(current.x,current.y,w,w);
+  rect(current.x,current.y,current.taille,current.taille);
   noFill();
   
   //La cellule corrante et marquée comme visitée
@@ -83,8 +85,8 @@ void removeWall(Cellule current, Cellule next)
 // On retourne une d'entre elle de manière aléatoire
   public Cellule randomVoisin(Cellule current)
   {
-    int i=current.x/w, 
-        j=current.y/w;
+    int i=current.x/current.taille, 
+        j=current.y/current.taille;
     Stack neighbours = new Stack();
     
     // Cellule de haut existe et non visitée

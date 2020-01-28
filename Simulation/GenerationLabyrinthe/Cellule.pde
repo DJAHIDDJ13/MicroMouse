@@ -7,12 +7,12 @@ class Cellule
   boolean visited;
   
   // Taille de la cellule
-  static final int taille = 30;
+  static final int taille = 80;
   
   // Murs de la cellule
   public boolean haut,bas,droite,gauche;
           
-  //Constructeur
+  // Constructeur
   Cellule(int x, int y)
   {
     this.x=x*taille;
