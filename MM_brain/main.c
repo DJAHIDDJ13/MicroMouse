@@ -9,7 +9,7 @@
 #include "utils.h"
 #include "communication.h"
 
-int main(int argc, char *argv[]) {
+int main(void) {
 	
 	char output[BUFFER_SIZE] = "";
 

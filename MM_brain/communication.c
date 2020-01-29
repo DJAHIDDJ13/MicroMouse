@@ -36,7 +36,7 @@ int create_fifo() {
 	get_tx_fifo_path(full_path_tx);
 	get_rx_fifo_path(full_path_rx);
 
-	// /!\ remove first
+	/* /!\ remove first */
 	remove(full_path_tx);
 	if (errno == EACCES || errno == EINVAL) {
 		perror("remove");
@@ -48,7 +48,7 @@ int create_fifo() {
 		return 1;
 	}
 
-	// mode : -rw-rw-rw
+	/* mode : -rw-rw-rw */
 	if (mkfifo(full_path_tx, 0666) != 0 || mkfifo(full_path_rx, 0660) != 0) {
 		perror("mkfifo");
 		return 1;
@@ -58,10 +58,11 @@ int create_fifo() {
 }
 
 int write_fifo(char *input) {
+	FILE *fp;
 	char full_path[BUFFER_SIZE] = "";
 	get_tx_fifo_path(full_path);
 
-	FILE *fp = fopen(full_path, "w");
+	fp = fopen(full_path, "w");
 	if (fp == 0) {
 		perror("fopen");
 		return 1;
@@ -75,10 +76,11 @@ int write_fifo(char *input) {
 }
 
 int read_fifo(char *output) {
+	FILE *fp;
 	char full_path[BUFFER_SIZE] = "";
 	get_rx_fifo_path(full_path);
 
-	FILE *fp = fopen(full_path, "r");
+	fp = fopen(full_path, "r");
 	if (fp == 0) {
 		perror("fopen");
 		return 1;
