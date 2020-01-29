@@ -14,8 +14,13 @@ int main(int argc, char *argv[]) {
 	char output[BUFFER_SIZE] = "";
 
 	create_fifo();
-	//write_fifo("test");
-	read_fifo(output);
+	if (fork() == 0) {
+		/* listener */
+		read_fifo(output);
+	} else {
+		printf("Hello\n");
+		/* write_fifo("test"); */
+	}
 
 	printf("%s\n", output);
 
