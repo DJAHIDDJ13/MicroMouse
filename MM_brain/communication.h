@@ -1,6 +1,6 @@
 #include "utils.h"
 
-#define FIFO_PATH "/dev/shm/"
+#define FIFO_PATH "/tmp/"
 #define FIFO_TX_FILENAME "c_tx"
 #define FIFO_RX_FILENAME "java_tx"
 #define BUFFER_SIZE 512

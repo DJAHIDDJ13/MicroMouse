@@ -9,9 +9,10 @@
 #include "communication.h"
 #include "utils.h"
 
-/* FIFO appoach as shared memory (/dev/shm) 
- * for interprocess communication
- * i.e. /!\ Only Linux compatible atm
+/* FIFO approach on /tmp/ file for interprocess communication
+ * TO_DO : 	to change as shared memory (/dev/shm) if the speed 
+ * 			doesn't fit our usecase : 
+ * 			i.e. /!\ Only Linux compatible atm
  */
 
 int get_tx_fifo_path(char *path) {

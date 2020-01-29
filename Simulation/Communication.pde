@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class Communication extends Thread {
   
-  final String FIFO_PATH = "/dev/shm/";
+  final String FIFO_PATH = "/tmp/";
   final String FIFO_TX_FILENAME = "java_tx";
   final String FIFO_RX_FILENAME = "c_tx";
   
