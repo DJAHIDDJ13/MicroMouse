@@ -5,6 +5,8 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <signal.h>
+#include <pthread.h>
 
 #include "communication.h"
 #include "utils.h"
@@ -33,8 +35,14 @@ int get_rx_fifo_path(char *path) {
 int create_fifo() {
 	char 	full_path_tx[BUFFER_SIZE] = "",
 		full_path_rx[BUFFER_SIZE] = "";
+	struct stat stats = {0};
 	get_tx_fifo_path(full_path_tx);
 	get_rx_fifo_path(full_path_rx);
+	
+	/* ensure parent directory exists */
+	if (stat(FIFO_PATH, &stats) == -1) {
+		mkdir(FIFO_PATH, 0700);
+	}
 
 	/* /!\ remove first */
 	remove(full_path_tx);
