@@ -142,6 +142,18 @@ public class SimulationController{
     stroke(0);
     rect(5, 830, 70, 70); 
   }
+  
+  public void keyPressedHandler() {
+    if(key == 'z')
+      maze.moveVehicle(500, 500);
+    else if(key == 's')
+      maze.moveVehicle(-500, -500);
+    else if(key == 'q')
+      maze.moveVehicle(0, -500);
+    else if(key == 'd')
+      maze.moveVehicle(-500, 0);
+    
+  }
 
   public void controlEventHandler(ControlEvent event) {
     deleteMode = false;
@@ -182,7 +194,8 @@ public class SimulationController{
     }
   }
   
-  public void update() {
+  // updates the gui
+  public void updateController() {
     if(showingMovingObject && mouseX < maze.getMazeW() && mouseY < maze.getMazeH()) {
       toAddX = mouseX;
       toAddY = mouseY;
@@ -196,6 +209,11 @@ public class SimulationController{
       toAddH = panelH;
       toAddR = panelR;
     }
+  }
+  
+  public void update() {
+    updateController();
+    maze.update();
   }
   
   public void display() {

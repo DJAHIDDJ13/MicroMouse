@@ -49,6 +49,9 @@ public class MazeBuilder{
     Target defaultTarget = makeDefaultTarget(mazeH,  mazeW, boxH, boxW);
     maze.setTarget(defaultTarget);
     
+    Vehicle vehicle = new Vehicle(mazeW / 2, mazeH / 2, 0);
+    maze.setVehicle(vehicle);
+    
     return maze;
   }
   

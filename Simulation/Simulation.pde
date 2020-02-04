@@ -11,11 +11,12 @@ SimulationController simCon;
 
 void setup(){
   size(1500,920);
-  smooth();
+  // smooth();
   
   // Initialize box2d physics and create the world
   box2d = new Box2DProcessing(this);
-  box2d.createWorld();
+  Vec2 gravity = new Vec2(0, 0);
+  box2d.createWorld(gravity);
   
   simCon = new SimulationController(16);
   simCon.setController(new ControlP5(this));
@@ -40,4 +41,8 @@ void controlEvent(ControlEvent event) {
 
 void mousePressed() {
   simCon.mousePressedHandler();
+}
+
+void keyPressed() {
+  simCon.keyPressedHandler();
 }

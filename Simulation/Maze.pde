@@ -5,13 +5,14 @@ import java.util.*;
 
 public class Maze {
   private float mazeH, mazeW;
-  private HashMap<Body, Wall> walls;
+  private LinkedList<Wall> walls; // using linked list since there will be a lot of inserts/delete
   private Target target;
+  private Vehicle vehicle;
   
   public Maze(float mazeH, float mazeW) {
     this.mazeH = mazeH;
     this.mazeW = mazeW;
-    walls = new HashMap<Body, Wall>();
+    walls = new LinkedList<Wall>();
   }
 
   public Target getTarget() {
@@ -38,22 +39,27 @@ public class Maze {
     this.mazeW = mazeW;
   }
   
-  public Collection<Wall> getWalls(){
-    return walls.values();
+  public void setVehicle(Vehicle vehicle) {
+    this.vehicle = vehicle; 
   }
   
-  public void setWalls(HashMap<Body, Wall> walls){
+  public Collection<Wall> getWalls(){
+    return walls;
+  }
+  
+  public void setWalls(LinkedList<Wall> walls){
     this.walls = walls;
   }
 
   public boolean wallExist(Wall wall){
-    return walls.containsValue(wall);
+    return walls.contains(wall);
   }
   
   public void addWall(Wall wall){
-    walls.put(wall.getBody(), wall);
+    walls.push(wall);
   }
   
+  // TODO: change this
   ArrayList<Body> getBodyAtPoint(float x, float y) {
     // Create a small box at mouse point
     org.jbox2d.dynamics.World world = box2d.getWorld();
@@ -73,9 +79,19 @@ public class Maze {
     ArrayList<Body> bodies = getBodyAtPoint(x, y);
     println("Deleting bodies");
     for(Body body: bodies) {
-      println(body);
-      walls.remove(body);
+      println(body, body.getTransform().p.x, body.getTransform().p.y);
+      walls.remove(body.getUserData());
+      box2d.destroyBody(body);
     }
+  }
+  
+  public void moveVehicle(float l, float r) {
+    vehicle.move(l, r);
+  }
+    
+  
+  public void update() {
+    vehicle.update();
   }
   
   // Drawing the grid
@@ -96,13 +112,17 @@ public class Maze {
     line(size, size, size, 0);
  
     // draw all the walls
-    for(Wall wall : walls.values()){
+    for(Wall wall : walls){
       wall.display();
     }
     
     // draw the target
     if(target != null)
       target.display();
+      
+    // draw the vehicle
+    vehicle.display();
+    
     pop();
   } 
 }

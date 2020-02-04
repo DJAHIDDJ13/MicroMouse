@@ -54,7 +54,7 @@ public class Wall {
     fill(255);
     popMatrix();
   }
-  
+    
   public void makeBody(float x, float y, float angle) {
     // Define a polygon (this is what we use for a rectangle)
     PolygonShape sd = new PolygonShape();
@@ -81,5 +81,8 @@ public class Wall {
     this.body.createFixture(fd);
     
     this.body.setGravityScale(1.0);
+    
+    // set the current wall object as data for the body
+    this.body.setUserData(this);
   }
 }
