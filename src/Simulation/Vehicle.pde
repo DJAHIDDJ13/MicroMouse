@@ -32,6 +32,7 @@ public class Vehicle {
 
     makeWheels(x, y, angle);
     makeBody(x, y, angle);
+    createJoints();
   }
   
   public Vec2 getPosition() {
@@ -67,7 +68,22 @@ public class Vehicle {
 
   }
   
+  // calculates forward velocity
+  Vec2 getForwardVelocity() {
+    Vec2 currentRightNormal = body.getWorldVector(new Vec2(0, 1));
+    return currentRightNormal.mul(Vec2.dot(currentRightNormal, body.getLinearVelocity()));
+  }
+  
+  public void updateDrag() {
+    // apply drag force
+    Vec2 currentForwardNormal = getForwardVelocity();
+    float currentForwardSpeed = currentForwardNormal.normalize();
+    float dragForceMagnitude = -2 * currentForwardSpeed;
+    body.applyForce(currentForwardNormal.mul(dragForceMagnitude), body.getWorldCenter()); 
+  }
+  
   public void update() {
+    updateDrag();
     FRWheel.updateFriction();
     FLWheel.updateFriction();
     BRWheel.updateFriction();
@@ -163,8 +179,8 @@ public class Vehicle {
     top_fd.shape = top_s;
 
     // Parameters that affect physics (Surface)
-    top_fd.density = 1;
-    top_fd.friction = 0;
+    top_fd.density = 0.1;
+    top_fd.friction = 0.3;
     top_fd.restitution = 0.5; 
     
     
@@ -173,8 +189,8 @@ public class Vehicle {
     middle_fd.shape = middle_s;
 
     // Parameters that affect physics (Surface)
-    middle_fd.density = 1;
-    middle_fd.friction = 0;
+    middle_fd.density = 0.1;
+    middle_fd.friction = 0.3;
     middle_fd.restitution = 0.5; 
 
     // Define a fixture bottom
@@ -182,8 +198,8 @@ public class Vehicle {
     bottom_fd.shape = bottom_s;
     
     // Parameters that affect physics (Surface)
-    bottom_fd.density = 1;
-    bottom_fd.friction = 0;
+    bottom_fd.density = 0.1;
+    bottom_fd.friction = 0.3;
     bottom_fd.restitution = 0.5; 
     
     // Define the body and make it from the shape
@@ -196,5 +212,22 @@ public class Vehicle {
     this.body.createFixture(top_fd);
     this.body.createFixture(middle_fd);
     this.body.createFixture(bottom_fd);
+  }
+  
+  void createJoints() {
+    Vec2 vehicleCentroid = body.getWorldCenter();
+    WeldJointDef FRJoint = new WeldJointDef();
+    FRJoint.initialize(body, FRWheel.getBody(), FRWheel.getBody().getWorldCenter());
+    WeldJointDef FLJoint = new WeldJointDef();
+    FLJoint.initialize(body, FLWheel.getBody(), FLWheel.getBody().getWorldCenter());
+    WeldJointDef BRJoint = new WeldJointDef();
+    BRJoint.initialize(body, BRWheel.getBody(), BRWheel.getBody().getWorldCenter());
+    WeldJointDef BLJoint = new WeldJointDef();
+    BLJoint.initialize(body, BLWheel.getBody(), BLWheel.getBody().getWorldCenter());
+    
+    box2d.createJoint(FRJoint);
+    box2d.createJoint(FLJoint);
+    box2d.createJoint(BRJoint);
+    box2d.createJoint(BLJoint);
   }
 }

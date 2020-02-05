@@ -52,15 +52,15 @@ public class Wheel {
   
   void updateFriction() {
     // cancelling lateral velocity
-    float maxLateralImpulse = 1;
+    float maxLateralImpulse = 0.1;
     Vec2 impulse = getLateralVelocity().mul(-body.getMass());
     if ( impulse.length() > maxLateralImpulse ) // allow skidding at after a certain point
       impulse.mul(maxLateralImpulse / impulse.length());
     body.applyLinearImpulse(impulse, body.getWorldCenter(), true);
-    
+
     // limiting angular velocity
     body.applyAngularImpulse(0.1f * body.getAngularVelocity() * -body.getInertia());
-    
+
     // apply drag force
     Vec2 currentForwardNormal = getForwardVelocity();
     float currentForwardSpeed = currentForwardNormal.normalize();
@@ -77,9 +77,9 @@ public class Wheel {
       //apply necessary force
       float force = 0;
       if (desiredSpeed > currentSpeed)
-          force = 100;
+          force = 500;
       else if (desiredSpeed < currentSpeed)
-          force = -100;
+          force = -500;
       else
           return;
       body.applyForce(currentForwardNormal.mul(force), body.getWorldCenter());
