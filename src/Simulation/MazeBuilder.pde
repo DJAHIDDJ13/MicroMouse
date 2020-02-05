@@ -9,7 +9,6 @@ public class MazeBuilder{
     float shiftX = SimulationUtility.MAZE_SHIFTX;
     float shiftY = SimulationUtility.MAZE_SHIFTY;
 
-    
     //create top wall
     float xWall = 0;
     float yWall = 0;

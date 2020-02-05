@@ -11,9 +11,6 @@ public class Wall {
   
   public Vec2 getPosition() {
     Vec2 pos = box2d.getBodyPixelCoord(body);
-    // adjust for the maze canvas shift
-    pos.x -= SimulationUtility.MAZE_SHIFTX;
-    pos.y -= SimulationUtility.MAZE_SHIFTY;
     return pos;
   }
   
@@ -48,6 +45,8 @@ public class Wall {
     rectMode(CENTER);
     fill(127,0,0);
       translate(pos.x, pos.y);
+      // adjust for the maze canvas shift
+      translate(-SimulationUtility.MAZE_SHIFTX, -SimulationUtility.MAZE_SHIFTY);
       rotate(-a);
       stroke(0);
       rect(0, 0, w, h);

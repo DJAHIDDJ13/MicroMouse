@@ -77,7 +77,7 @@ public class Maze {
 
   public void removeBodyAt(float x, float y) {
     ArrayList<Body> bodies = getBodyAtPoint(x, y);
-    println("Deleting bodies");
+    println("Deleting bodies at " + x + " AND " + y + " " + box2d.coordPixelsToWorld(new Vec2(x, y)));
     for(Body body: bodies) {
       println(body, body.getTransform().p.x, body.getTransform().p.y);
       walls.remove(body.getUserData());
@@ -116,13 +116,13 @@ public class Maze {
       wall.display();
     }
     
+    // draw the vehicle
+    vehicle.display();   
+   
     // draw the target
     if(target != null)
       target.display();
-      
-    // draw the vehicle
-    vehicle.display();
-    
+          
     pop();
   } 
 }

@@ -101,8 +101,8 @@ public class Box2DProcessing {
     setWarmStarting(warmStarting);
     setContinuousPhysics(continous);
     
-      BodyDef bodyDef = new BodyDef();
-      groundBody = world.createBody(bodyDef);
+    BodyDef bodyDef = new BodyDef();
+    groundBody = world.createBody(bodyDef);
   }
   
   public Body getGroundBody() {

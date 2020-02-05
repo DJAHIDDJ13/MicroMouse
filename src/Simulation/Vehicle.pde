@@ -10,36 +10,39 @@ public class Vehicle {
   public Vehicle(float x, float y, float angle) {
     // top
     topShape = new Vec2[5];
-    topShape[0] = new Vec2(4, 48);
-    topShape[1] = new Vec2(12, 20);
-    topShape[2] = new Vec2(62, 4);
-    topShape[3] = new Vec2(111, 20);
-    topShape[4] = new Vec2(121, 48);
+    topShape[0] = new Vec2(-54, -17);
+    topShape[1] = new Vec2(-46, -45);
+    topShape[2] = new Vec2(4, -61);
+    topShape[3] = new Vec2(53, -45);
+    topShape[4] = new Vec2(63, -17);
     
     // middle
     middleShape = new Vec2[4];
-    middleShape[0] = new Vec2(101, 48);
-    middleShape[1] = new Vec2(101, 117);    
-    middleShape[2] = new Vec2(24, 118);
-    middleShape[3] = new Vec2(24, 48);
+    middleShape[0] = new Vec2(43, -17);
+    middleShape[1] = new Vec2(43, 52);    
+    middleShape[2] = new Vec2(-34, 53);
+    middleShape[3] = new Vec2(-34, -17);
     
     // bottom
     bottomShape = new Vec2[4];
-    bottomShape[0] = new Vec2(114, 117);
-    bottomShape[1] = new Vec2(114, 134);
-    bottomShape[2] = new Vec2(10, 134);
-    bottomShape[3] = new Vec2(10, 118);
+    bottomShape[0] = new Vec2(56, 52);
+    bottomShape[1] = new Vec2(56, 69);
+    bottomShape[2] = new Vec2(-48, 69);
+    bottomShape[3] = new Vec2(-48, 53);
 
-
+/*
     for(Vec2 v: topShape) {
-      println(v); 
+      println(v.x - (121 - 4) / 2, v.y - (134 - 4) / 2);
     }
-    // wheels
-    FRWheel = new Wheel(110, 97, 8, 27, 0);
-    FLWheel = new Wheel(14, 97, 8, 27, 0);
-    BRWheel = new Wheel(110, 68, 8, 27, 0);
-    BLWheel = new Wheel(14, 68, 8, 27, 0);
-    
+    for(Vec2 v: middleShape) {
+      println(v.x - (121 - 4) / 2, v.y - (134 - 4) / 2);
+    }
+    for(Vec2 v: bottomShape) {
+      println(v.x - (121 - 4) / 2, v.y - (134 - 4) / 2);
+    }
+*/
+
+    makeWheels(x, y, angle);
     makeBody(x, y, angle);
   }
   
@@ -115,8 +118,7 @@ public class Vehicle {
         vertex(bottomShape[2].x, bottomShape[2].y);
         vertex(bottomShape[3].x, bottomShape[3].y);
         vertex(middleShape[2].x, middleShape[2].y);
-        vertex(middleShape[3].x, middleShape[3].y);
-      endShape();
+        vertex(middleShape[3].x, middleShape[3].y);      endShape();
     fill(255);
     popMatrix();
     
@@ -124,6 +126,14 @@ public class Vehicle {
     FLWheel.display();
     BRWheel.display();
     BLWheel.display();
+  }
+  
+  public void makeWheels(float x, float y, float angle) {
+    // wheels
+    FRWheel = new Wheel(51.5 + x, 32 + y, 8, 27, angle);
+    FLWheel = new Wheel(-44.5+ x, 32 + y, 8, 27, angle);
+    BRWheel = new Wheel(51.5 + x, 3 + y, 8, 27, angle);
+    BLWheel = new Wheel(-44.5+ x, 3 + y, 8, 27, angle);
   }
   
   public void makeBody(float x, float y, float angle) {
@@ -136,35 +146,25 @@ public class Vehicle {
       topShapeWorld[i] = box2d.coordPixelsToWorld(topShapeWorld[i]);
     }
     top_s.set(topShapeWorld, topShapeWorld.length);
-
+    
     // middle
     PolygonShape middle_s = new PolygonShape();
     Vec2[] middleShapeWorld = middleShape.clone();
     for(int i = 0; i < middleShapeWorld.length; i++) {
       middleShapeWorld[i] = box2d.coordPixelsToWorld(middleShapeWorld[i]);
     }
+    println(middleShapeWorld);
     middle_s.set(middleShapeWorld, middleShapeWorld.length);
 
     // bottom
     PolygonShape bottom_s = new PolygonShape();
     Vec2[] bottomShapeWorld = bottomShape.clone();
-    println(bottomShapeWorld);
     for(int i = 0; i < bottomShapeWorld.length; i++) {
       bottomShapeWorld[i] = box2d.coordPixelsToWorld(bottomShapeWorld[i]);
     }
     println(bottomShapeWorld);
     bottom_s.set(bottomShapeWorld, bottomShapeWorld.length);
-    println("Centroid " + bottom_s.centroid(new Transform())); 
     
-    // PolygonShape test_s = new PolygonShape();
-    // test_s.setAsBox(box2d.scalarPixelsToWorld(5), box2d.scalarPixelsToWorld(5));
-    //FixtureDef test_fd = new FixtureDef();
-    //test_fd.shape = test_s;
-    // Parameters that affect physics (Surface)
-    //test_fd.density = 1;
-    //test_fd.friction = 0.3;
-    //test_fd.restitution = 0.5; 
-
     // Define a fixture
     FixtureDef top_fd = new FixtureDef();
     top_fd.shape = top_s;
@@ -173,7 +173,8 @@ public class Vehicle {
     top_fd.density = 1;
     top_fd.friction = 0.3;
     top_fd.restitution = 0.5; 
-
+    
+    
     // Define a fixture middle
     FixtureDef middle_fd = new FixtureDef();
     middle_fd.shape = middle_s;
@@ -195,11 +196,11 @@ public class Vehicle {
     // Define the body and make it from the shape
     BodyDef bd = new BodyDef();
     bd.type = BodyType.DYNAMIC;
-    //bd.position.set(box2d.coordPixelsToWorld(x, y));
-    bd.position.set(new Vec2(0, 0));
+    bd.position.set(box2d.coordPixelsToWorld(x, y));
     bd.setAngle(angle);
 
     this.body = box2d.createBody(bd);
+    println(body.getPosition());
     this.body.createFixture(top_fd);
     this.body.createFixture(middle_fd);
     this.body.createFixture(bottom_fd);

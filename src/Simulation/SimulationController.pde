@@ -41,6 +41,9 @@ public class SimulationController{
   }
   
  private void refreshMaze() {
+   Vec2 gravity = new Vec2(0, 0);
+   box2d.createWorld(gravity);
+
    simulationEntry = new SimulationEntry(size, size);
    mazeBuilder = new MazeBuilder();
    maze = mazeBuilder.builderInitialMaze(simulationEntry.getMazeH(),
