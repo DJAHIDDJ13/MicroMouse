@@ -4,23 +4,14 @@ s'affrontent en opposant leur robot souris, l'objectif étant de résoudre un
 labyrinthe le plus rapidement possible.  Ces compétitions sont organisées
 depuis la fin des années 1970 et ont lieu un peu partout autour du monde.
 
-\paragraph{Historique et Origine}
-Le magazine "IEE Spectrum magazine" est à l'origine de l'apparition des
-compétitions Micromouse. C'est un magazine anglophone qui vise à couvrir les
-tendances et avancées majeures dans les domaines des technologies, de
-l'ingénierie et des sciences. En 1977, le magazine met au défi ses lecteurs en
-leurs proposant de concevoir et construire un robot "micromouse" pouvant
-résoudre un labyrinthe. Le robot devait agir selon sa propre logique et
-résoudre un labyrinthe imaginé par les rédacteurs du magazine IEE Spectrum.
-Cette compétition fut appelée ‘The Amazing Micromouse Competition’. Elle prit
-place à New York lors de la conférence nationale sur l'informatique en 1979.
-Cet évènement couvert par de grands médias tels que les chaînes CBS et ABC
-ainsi que le journal The New York Times.  Le grand succès de cette première
-édition ainsi que sa large médiatisation participa au gain de popularité des
-compétitions Micromouse pour les années à venir.  En quelques années, le défi des
-micromouses était devenu un événement mondial. En 1980, le premier concours
-européen a eu lieu à Londres, suivi un an plus tard par un une compétition
-organisée à Paris. Le Japon a annoncé l'organisation du premier tournoi mondial
+\paragraph{Historique et Origine:} Le magazine "IEE Spectrum magazine" est à l'origine de l'apparition des compétitions Micromouse. C'est un magazine anglophone qui vise à couvrir les tendances et avancées majeures dans les domaines des technologies, de l'ingénierie et des sciences. En 1977, le magazine met au défi ses lecteurs en leurs proposant de concevoir et construire un robot "Micromouse". Le robot devait agir selon sa propre logique et résoudre un labyrinthe imaginé par les rédacteurs du magazine IEE Spectrum. 
+\\
+
+Cette compétition fut appelée ‘The Amazing Micromouse Competition’. Elle prit place à New York lors de la conférence nationale sur l'informatique en 1979.
+Cet évènement fut couvert par de grands médias tels que les chaînes CBS et ABC ainsi que le journal The New York Times. Le grand succès de cette première édition ainsi que sa large médiatisation participa au gain de popularité des compétitions Micromouse pour les années à venir.  En quelques années, le défi des Micromouses était devenu un événement mondial. 
+\\
+
+En 1980, le premier concours européen eu lieu à Londres, suivi un an plus tard par un une compétition organisée à Paris. Le Japon a annoncé l'organisation du premier tournoi mondial
 de Micromouse qui aura lieu à Tsubaka en août 1985. La même année, l'IEE
 (devenue l'Institution of Engineering and Technology) a organisé un concours
 international à Londres.  Au début des années 1990 des clubs Micromouse ont
@@ -58,7 +49,8 @@ la façon dont le score de la souris est déterminé. \\
 
 \end{itemize}
 
-
+Il existe un plétore de vidéos disponibles sur Internet qui illustrent le déroulement des compétitions Microumouse partout à travers le globe. Certaines de ses vidéos cumulent plusieurs millions de vus.
+Ces vidéos ont grandement susictées notres interêt, et nous ont poussées à implementer notre propre version de la Micromouse en tant que projet de synthèse.
 \clearpage
 \section{Fonctionnalités attendues} \label{sec:foncAttendues}
    Dans la section [\ref{sec:miseEnScenario}] le lecteur peut observer que le
@@ -297,8 +289,6 @@ technique du projet.  Dans cette section, nous décrivons ces problèmes et
 les solutions que nous y apportons.
 
 
-\subsection{Mappage et navigation} \label{sec:rechChem} 
-
    Pour notre véhicule, les seules données qu'il reçoit du monde extérieur sont
 celles des capteurs, ce sont des signaux en temps réel des changements de
 rotation et d'accélération, ainsi que les distances des murs qui sont les
@@ -352,6 +342,11 @@ Tous deux auront besoin de leur propre protocole de communication respectif
 temps réel, avec les ressources limitées de micro contrôleur. et pour cela nous
 allons utiliser une communication serial entre le module Bluetooth de Micromouse
 et les autres parties communicantes.
+
+\subsection{Génération du labyrinthe}
+Le labyrinthe constitue un élément import du projet, ce dernier représente l’environnement externe dans lequelle va se mouvoir notre Micromouse. Il existe un certain nombre de problématiques liées à la construction de notre labyrinthe. Des problématiques logiques : Quel algorithme utiliser afin de générer notre labyrinthe ? Quelle sont les spécificités architecturales que notre labyrinthe devra respectre ? 
+Ainsi que des problématique liées au monde physique : Quel matériaux utiliser pour la construction de notre labyrinthe ? (prendre en compte l’adhérence avec les roues de la Micromouse).
+\subsection{Mappage et navigation} \label{sec:rechChem} 
 
 \section{Environnement de travail} \label{sec:environnement}
    Plusieurs outils et matériels ont été utilisés pour développer les
