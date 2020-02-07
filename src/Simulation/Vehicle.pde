@@ -10,8 +10,9 @@ public class Vehicle {
   public Vehicle(float x, float y, float angle) {
     // top
     topShape = new Vec2[5];
+    
     topShape[0] = new Vec2(-58, -35);
-    topShape[1] = new Vec2(-50, -63);
+    topShape[1] = new Vec2(-50 ,-63);
     topShape[2] = new Vec2(0, -79);
     topShape[3] = new Vec2(49, -63);
     topShape[4] = new Vec2(59, -35);
@@ -37,9 +38,11 @@ public class Vehicle {
   
   public Vec2 getPosition() {
     Vec2 pos = box2d.getBodyPixelCoord(body);
+    
     // adjust for the maze canvas shift
     pos.x -= SimulationUtility.MAZE_SHIFTX;
     pos.y -= SimulationUtility.MAZE_SHIFTY;
+    
     return pos;
   }
   
@@ -103,7 +106,6 @@ public class Vehicle {
   public void display() {
     // We look at each body and get its screen position
     Vec2 pos = getPosition();
-    //Vec2 centeroid = body.centroid(new Transform());
     // Get its angle of rotation
     float a = getAngle();
     
@@ -116,20 +118,28 @@ public class Vehicle {
       stroke(0);
       
       beginShape();
+        //Drawing of top shape
         for(Vec2 vec: topShape)
           vertex(vec.x, vec.y);
+        
         vertex(middleShape[0].x, middleShape[0].y);
         vertex(middleShape[1].x, middleShape[1].y);
+        
         vertex(bottomShape[0].x, bottomShape[0].y);
         vertex(bottomShape[1].x, bottomShape[1].y);
         vertex(bottomShape[2].x, bottomShape[2].y);
         vertex(bottomShape[3].x, bottomShape[3].y);
+        
         vertex(middleShape[2].x, middleShape[2].y);
-        vertex(middleShape[3].x, middleShape[3].y);      
+        vertex(middleShape[3].x, middleShape[3].y); 
+        
+        vertex(topShape[0].x, topShape[0].y);
+        
       endShape();
     fill(255);
     popMatrix();
     
+    //Drawing of the wheels
     FRWheel.display();
     FLWheel.display();
     BRWheel.display();
@@ -140,19 +150,22 @@ public class Vehicle {
     // wheels
     FRWheel = new Wheel(48 + x, -14 + y, 8, 27, angle);
     FLWheel = new Wheel(-48 + x, -14 + y, 8, 27, angle);
-    BRWheel = new Wheel(48 + x, 15 + y, 8, 27, angle);
-    BLWheel = new Wheel(-48 + x, 15 + y, 8, 27, angle);
-
+    BRWheel = new Wheel(48 + x, 16 + y, 8, 27, angle);
+    BLWheel = new Wheel(-48 + x, 16 + y, 8, 27, angle);
   }
   
   public void makeBody(float x, float y, float angle) {
-    // print("test");
+    float x_, y_;
+    
     // Define a polygon
     // top shape
     PolygonShape top_s = new PolygonShape();
     Vec2[] topShapeWorld = topShape.clone();
     for(int i = 0; i < topShapeWorld.length; i++) {
-      topShapeWorld[i] = new Vec2(box2d.scalarPixelsToWorld(topShapeWorld[i].x), -box2d.scalarPixelsToWorld(topShapeWorld[i].y));
+      x_ = box2d.scalarPixelsToWorld(topShapeWorld[i].x);
+      y_ = -box2d.scalarPixelsToWorld(topShapeWorld[i].y);
+      
+      topShapeWorld[i] = new Vec2(x_, y_);
     }
     top_s.set(topShapeWorld, topShapeWorld.length);
     
@@ -160,18 +173,22 @@ public class Vehicle {
     PolygonShape middle_s = new PolygonShape();
     Vec2[] middleShapeWorld = middleShape.clone();
     for(int i = 0; i < middleShapeWorld.length; i++) {
-      middleShapeWorld[i] = new Vec2(box2d.scalarPixelsToWorld(middleShapeWorld[i].x), -box2d.scalarPixelsToWorld(middleShapeWorld[i].y));
+      x_ = box2d.scalarPixelsToWorld(middleShapeWorld[i].x);
+      y_ = -box2d.scalarPixelsToWorld(middleShapeWorld[i].y);
+      
+      middleShapeWorld[i] = new Vec2(x_, y_);
     }
-    println(middleShapeWorld);
     middle_s.set(middleShapeWorld, middleShapeWorld.length);
 
     // bottom
     PolygonShape bottom_s = new PolygonShape();
     Vec2[] bottomShapeWorld = bottomShape.clone();
     for(int i = 0; i < bottomShapeWorld.length; i++) {
-      bottomShapeWorld[i] = new Vec2(box2d.scalarPixelsToWorld(bottomShapeWorld[i].x), -box2d.scalarPixelsToWorld(bottomShapeWorld[i].y));
+      x_ = box2d.scalarPixelsToWorld(bottomShapeWorld[i].x);
+      y_ = -box2d.scalarPixelsToWorld(bottomShapeWorld[i].y);
+      
+      bottomShapeWorld[i] = new Vec2(x_, y_);
     }
-    println(bottomShapeWorld);
     bottom_s.set(bottomShapeWorld, bottomShapeWorld.length);
     
     // Define a fixture
