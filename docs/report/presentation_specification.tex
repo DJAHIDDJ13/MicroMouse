@@ -91,12 +91,12 @@ Le schéma suivant illustre le diagramme de cas d'utilisation du produit.
 
 \subsection{Services fournis par le produit} \label{sec:serLogiciel}
 
-\paragraph{Simulation :}La simulation offre à l'utilisateur une diversité de choix 
-et d'API comme la création du labyrinthe soit avec un fichier de configuration ou 
-manuellement et le choix de la complexité de l'algorithme de recherche du plus court chemin, 
-en outre l'utilisateur peut visualiser le journal de la simulation et les statistiques 
-sur la partie information sur la simulation, finalement l'utilisateur pourra observer 
-les valeurs des différents composants de la micro mouse.
+\paragraph{Simulation :}La simulation offre à l'utilisateur un ensemble de fonctionnalités 
+pour paramétrer le monde, comme la création du labyrinthe soit avec un fichier de configuration 
+ou manuellement et le choix de la complexité de l'algorithme de recherche du plus court chemin, 
+en outre l'utilisateur peut visualiser le journal de la simulation et les statistiques sur la 
+partie information sur la simulation, finalement l'utilisateur pourra observer les valeurs des 
+différents composants de la micro mouse.
 
 
 \fig{pics/SimGUI.pdf}{17cm}{10cm}{Interface homme-machine pour la simulation}{ihmSim}
@@ -206,6 +206,8 @@ qui contient tous les modules nécessaires pour notre produit final. \\
 \cite{Bluepill:1} également connu sous le nom de Blue Pill, il a 64KB/128KB de
 mémoire flash et 20KB de RAM fonctionnant à 72MHz. \\
 
+\fig{pics/stm32.png}{16cm}{8cm}{Microcontrôleur, 32bit, STM32}{stm32}
+
 
    On passe ensuite aux capteurs, qui sont les composants utilisés pour
 recevoir les informations du monde extérieur, qui est dans ce cas le
@@ -241,6 +243,9 @@ communication principal.  Lequel est utilisé pour envoyer des données en
 direct à l'interface afin de déboguer et de visualiser le processus de
 Mapping, ainsi que pour communiquer avec le simulateur de labyrinthe pour
 recevoir les signaux des capteurs artificiels. \\
+
+
+\fig{pics/composantElectronique.png}{16cm}{8cm}{Ensemble des composantes électroniques}{compo}
 
 
    Le contrôle du véhicule se fera avec deux \textbf{moteurs falhaber}
