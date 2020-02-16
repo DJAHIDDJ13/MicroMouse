@@ -8,6 +8,7 @@ public class Vehicle {
   private final float[] sensorAngles;
   
   private Wheel FRWheel, BRWheel, FLWheel, BLWheel;
+  private Sensor[] sensors;
   
   private float vehicleSize;
   private Body body;
@@ -58,6 +59,7 @@ public class Vehicle {
 
     vehicleSize = size;
 
+    makeSensors(4);
     makeWheels(x, y, angle);
     makeBody(x, y, angle);
     createJoints();
@@ -120,6 +122,13 @@ public class Vehicle {
     BLWheel.updateFriction();
   }
   
+  public void sensorActivation() {
+   for(int i = 0; i < sensors.length; i++) {
+      sensors[i].sensorDetect();
+      println("Sensor [",i,"] -> ",sensors[i].getDegree());
+   }
+  }
+  
   public void move(float left_m, float right_m) {
     FRWheel.move(right_m);
     BRWheel.move(right_m);
@@ -128,16 +137,12 @@ public class Vehicle {
     FLWheel.move(left_m);
     
     body.applyForce(new Vec2(0, 500), body.getWorldCenter());
+    sensorActivation();
   }
   
   private void displaySensors() {
-      for(int i = 0; i < sensorPos.length; i++) {
-        Vec2 p1 = sensorPos[i];
-        float ang = radians(sensorAngles[i]);
-        float len = 200;
-        Vec2 p2 = new Vec2(p1.x + len*cos(ang), p1.y + len*sin(ang));
-        
-        line(p1.x ,p1.y, p2.x, p2.y);
+      for(int i = 0; i < sensors.length; i++) {
+        sensors[i].display();
       } 
   }
   
@@ -185,13 +190,23 @@ public class Vehicle {
     BLWheel.display();
   }
   
+  public void makeSensors(int nbSensors) {
+    sensors = new Sensor[nbSensors];
+    for(int i = 0; i < nbSensors; i++) {
+        Vec2 p1 = sensorPos[i];
+        float ang = radians(sensorAngles[i]);
+        float len = 100;
+        
+        sensors[i] = new Sensor(p1, ang, len);
+    } 
+  }
+  
   public void makeWheels(float x, float y, float angle) {
     // wheels
     FRWheel = new Wheel(wheelPos[0].x + x, wheelPos[0].y + y, wheelSize.x, wheelSize.y, angle);
     FLWheel = new Wheel(wheelPos[1].x + x, wheelPos[1].y + y, wheelSize.x, wheelSize.y, angle);
     BRWheel = new Wheel(wheelPos[2].x + x, wheelPos[2].y + y, wheelSize.x, wheelSize.y, angle);
     BLWheel = new Wheel(wheelPos[3].x + x, wheelPos[3].y + y, wheelSize.x, wheelSize.y, angle);
-
   }
   
   public void makeBody(float x, float y, float angle) {
@@ -272,7 +287,6 @@ public class Vehicle {
   }
   
   void createJoints() {
-    Vec2 vehicleCentroid = body.getWorldCenter();
     WeldJointDef FRJoint = new WeldJointDef();
     FRJoint.initialize(body, FRWheel.getBody(), FRWheel.getBody().getWorldCenter());
     WeldJointDef FLJoint = new WeldJointDef();

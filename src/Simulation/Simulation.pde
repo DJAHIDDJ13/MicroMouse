@@ -6,6 +6,7 @@ import org.jbox2d.collision.shapes.*;
 import org.jbox2d.collision.shapes.Shape;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
+import org.jbox2d.callbacks.RayCastCallback;
 
 // A reference to our box2d world
 public static Box2DProcessing box2d;
