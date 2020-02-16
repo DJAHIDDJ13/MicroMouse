@@ -62,14 +62,13 @@ public class Maze {
   // TODO: change this
   ArrayList<Body> getBodyAtPoint(float x, float y) {
     // Create a small box at mouse point
-    org.jbox2d.dynamics.World world = box2d.getWorld();
     Vec2 v = box2d.coordPixelsToWorld(x, y);
     final float EPSILON = 0.001;
     AABB aabb = new AABB(new Vec2(v.x - EPSILON, v.y - EPSILON), new Vec2(v.x + EPSILON, v.y + EPSILON));
     
     // Look at the shapes intersecting this box (max.: 10)
     final BodyQueryCallback bodyQueryCallback = new BodyQueryCallback();
-    world.queryAABB(bodyQueryCallback, aabb);
+    box2d.world.queryAABB(bodyQueryCallback, aabb);
    
     // TODO: find a better way to do this
     return bodyQueryCallback.getBodies();

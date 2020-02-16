@@ -27,6 +27,7 @@ public class SimulationController{
     
     refreshMaze();
     
+    box2d.setScaleFactor(size / 1.6f);
     objectPanelState = 0;
     showingMovingObject = false;
     deleteMode = false;
@@ -152,9 +153,9 @@ public class SimulationController{
     else if(key == 's')
       maze.moveVehicle(-500, -500);
     else if(key == 'q')
-      maze.moveVehicle(0, -500);
+      maze.moveVehicle(-500, 10);
     else if(key == 'd')
-      maze.moveVehicle(-500, 0);
+      maze.moveVehicle(10, -500);
     
   }
 

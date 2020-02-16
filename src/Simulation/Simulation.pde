@@ -1,3 +1,5 @@
+import shiffman.box2d.*;
+
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.joints.*;
 import org.jbox2d.collision.shapes.*;
@@ -14,7 +16,7 @@ void setup(){
   // smooth();
   
   // Initialize box2d physics and create the world
-  box2d = new Box2DProcessing(this);
+  box2d = new Box2DProcessing(this, 10.0f);
   Vec2 gravity = new Vec2(0, 0);
   box2d.createWorld(gravity);
   
