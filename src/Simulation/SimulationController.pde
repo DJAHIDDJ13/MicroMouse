@@ -12,6 +12,8 @@ public class SimulationController{
   private boolean showingMovingObject;
   private boolean deleteMode;
   
+  private int dashed;
+  
   private int size;
   
   private final float panelX = 40;
@@ -31,6 +33,11 @@ public class SimulationController{
     objectPanelState = 0;
     showingMovingObject = false;
     deleteMode = false;
+    dashed = 0;
+  }
+  
+  public int getDashed() {
+    return dashed;
   }
   
   public SimulationEntry getSimulationEntry(){
@@ -216,6 +223,7 @@ public class SimulationController{
   }
   
   public void update() {
+    dashed++;
     updateController();
     maze.update();
   }

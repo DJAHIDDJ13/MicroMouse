@@ -121,13 +121,6 @@ public class Vehicle {
     }
   }
   
-  public void sensorActivation() {
-   for(int i = 0; i < sensors.length; i++) {
-      sensors[i].sensorDetect();
-      //println("Sensor [",i,"] -> ", sensors[i].getAngle());
-   }
-  }
-  
   public void move(float left_m, float right_m) {
     FRWheel.move(right_m);
     BRWheel.move(right_m);
