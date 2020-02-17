@@ -95,11 +95,6 @@ public class Vehicle {
     return body; 
   }
   
-  //tire class function
-  void move(float desiredSpeed) {      
-
-  }
-  
   // calculates forward velocity
   Vec2 getForwardVelocity() {
     Vec2 currentRightNormal = body.getWorldVector(new Vec2(0, 1));
@@ -120,12 +115,16 @@ public class Vehicle {
     FLWheel.updateFriction();
     BRWheel.updateFriction();
     BLWheel.updateFriction();
+    
+    for(Sensor sensor: sensors) {
+      sensor.update(getPosition(), getAngle());
+    }
   }
   
   public void sensorActivation() {
    for(int i = 0; i < sensors.length; i++) {
       sensors[i].sensorDetect();
-      println("Sensor [",i,"] -> ",sensors[i].getDegree());
+      //println("Sensor [",i,"] -> ", sensors[i].getAngle());
    }
   }
   
@@ -137,13 +136,14 @@ public class Vehicle {
     FLWheel.move(left_m);
     
     body.applyForce(new Vec2(0, 500), body.getWorldCenter());
-    sensorActivation();
   }
   
   private void displaySensors() {
-      for(int i = 0; i < sensors.length; i++) {
-        sensors[i].display();
-      } 
+    for(int i = 0; i < sensors.length; i++) {
+      sensors[i].display();
+      println("Sensor " + i + ": " + sensors[i].getValue());
+    } 
+    println();
   }
   
   public void display() {
@@ -179,7 +179,6 @@ public class Vehicle {
         vertex(topShape[0].x, topShape[0].y);
         
       endShape();
-      displaySensors();
     fill(255);
     popMatrix();
     
@@ -188,7 +187,9 @@ public class Vehicle {
     FLWheel.display();
     BRWheel.display();
     BLWheel.display();
-  }
+
+    displaySensors();
+}
   
   public void makeSensors(int nbSensors) {
     sensors = new Sensor[nbSensors];
