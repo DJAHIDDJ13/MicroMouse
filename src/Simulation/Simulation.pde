@@ -15,7 +15,7 @@ SimulationController simCon;
 
 // My vars
 BackTracking BT;
-Cell cell, next;
+Cell cell, next, cell1, cell2;
 
 void setup(){
   size(1500,920);
@@ -33,6 +33,10 @@ void setup(){
   //MY CODE
   BT = new BackTracking(800,800,80,20);
   cell = BT.mat[0][5];
+  
+  cell1 = BT.mat[1][2];
+  cell2 = BT.mat[1][1];
+ 
   BT.randomVoisin(cell);
 }
 
@@ -52,8 +56,9 @@ void draw() {
   //BT.display();
   //BT.mat[4][4].display();
   //BT.mat[4][5].display();
-  next = BT.randomVoisin(cell);
-  next.display();
+  //next = BT.randomVoisin(cell);
+  BT.removeWall(cell1,cell2);
+  //next.display();
   
 }
 

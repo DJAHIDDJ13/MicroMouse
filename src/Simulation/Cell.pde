@@ -52,6 +52,7 @@ public class Cell
   public Cell(int x, int y, boolean haut,boolean bas,boolean droite,boolean gauche)
   {   
     // Only god know why this works 
+    // edit : know why but flemme to recode it now
     this.yCell = x*w;
     this.xCell = y*w;
     
@@ -87,7 +88,6 @@ public class Cell
     this.setBas(bas);
     this.setGauche(gauche);
     this.setDroite(droite);
-    
   }
 
   public void showWallTerminal()

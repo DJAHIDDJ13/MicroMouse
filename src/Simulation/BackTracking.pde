@@ -78,14 +78,13 @@ public class BackTracking {
   
   // Retourne une cellule voisine aléatoire qui n'a pas encore été visitée
   // On stack toutes les cellules vosines non visitées
-  // On retourne une d'entre elle de manière aléatoire
+  // On retourne l'une d'entre elle de manière aléatoire
   public Cell randomVoisin(Cell current)
   {
     int i=current.yCell/(int)this.wallWidth, j=current.xCell/(int)this.wallWidth;
     //System.out.println("i is :"+i+" and j is : "+j);
     Stack neighbours = new Stack();
     Cell next;
-    
     
     // Cellule de haut existe et non visitée
     if(i-1>=0 && !this.mat[i-1][j].visited) { 
@@ -111,6 +110,31 @@ public class BackTracking {
     else {
       return null; }
   }
+  
+  
+// Delete a wall between two cells 
+public void removeWall(Cell current, Cell next)
+{
+  int currentI = current.yCell/(int)this.wallWidth; 
+  int currentJ = current.xCell/(int)this.wallWidth;
+  int nextI=next.yCell/(int)this.wallWidth;
+  int nextJ=next.xCell/(int)this.wallWidth;
+  
+  System.out.println("Current i : "+currentI+","+"Current j : "+currentJ);
+  System.out.println("Next i : "+nextI+","+"Next j : "+nextJ);
+  /*
+  int app = current.x-next.x;
+  if(app>0)
+    {current.gauche=false; next.droite=false;}
+  else if(app<0)
+    {current.droite=false; next.gauche=false;}
+  
+  app = current.y-next.y;
+  if(app>0)
+    {current.haut=false; next.bas=false;}
+  if(app<0)
+    {current.bas=false; next.haut=false;}*/
+}
   
   
 }
