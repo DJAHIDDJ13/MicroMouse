@@ -79,33 +79,37 @@ public class BackTracking {
   // Retourne une cellule voisine aléatoire qui n'a pas encore été visitée
   // On stack toutes les cellules vosines non visitées
   // On retourne une d'entre elle de manière aléatoire
-  public void randomVoisin(Cell current)
+  public Cell randomVoisin(Cell current)
   {
-    int i=current.xCell/(int)this.wallWidth, j=current.yCell/(int)this.wallWidth;
-    System.out.println(i+" and "+j);
+    int i=current.yCell/(int)this.wallWidth, j=current.xCell/(int)this.wallWidth;
+    //System.out.println("i is :"+i+" and j is : "+j);
     Stack neighbours = new Stack();
     Cell next;
     
-    /*
-    // Cellule de haut existe et non visitée
-    if(j-1>=0 && !this.mat[i][j-1].visited) neighbours.push(mat[i][j-1]);
     
+    // Cellule de haut existe et non visitée
+    if(i-1>=0 && !this.mat[i-1][j].visited) { 
+      neighbours.push(mat[i-1][j]); }
+
     // Cellule de bas existe et non visitée
-    if(j+1<hauteur && !mat[i][j+1].visited) neighbours.push(mat[i][j+1]);
+    if(i+1<(int)(this.mazeHeight/this.wallWidth) && !mat[i+1][j].visited) { 
+      neighbours.push(mat[i+1][j]); }
     
     // Cellule de gauche existe et non visitée
-    if(i-1>=0 && !mat[i-1][j].visited) neighbours.push(mat[i-1][j]);
+    if(j-1>=0 && !mat[i][j-1].visited) { 
+      neighbours.push(mat[i][j-1]); }
     
     // Cellule de droite existe et non visitée
-    if(i+1<largeur && !mat[i+1][j].visited) neighbours.push(mat[i+1][j]);
+    if(j+1<(int)(this.mazeWidth/this.wallWidth) && !mat[i][j+1].visited) { 
+      neighbours.push(mat[i][j+1]); }
    
     
-    if(!neighbours.empty())
-      return (Cellule)neighbours.elementAt((int)random(neighbours.size()));
-    else
-      return null;
-      
-      */
+    if(!neighbours.empty()) {
+      next = (Cell) neighbours.elementAt((int)random(neighbours.size()));
+      System.out.println("ligne : "+next.yCell/(int)this.wallWidth+"    colonne is : "+next.xCell/(int)this.wallWidth);
+      return next; }
+    else {
+      return null; }
   }
   
   

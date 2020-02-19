@@ -74,7 +74,6 @@ public class Sensor {
    
    public void display() {
      stroke(180);
-     dash.line(source.x ,source.y, target.x, target.y);
      stroke(255, 0, 0);
      if(value != -1)
        ellipse(castPoint.x, castPoint.y, 10, 10);

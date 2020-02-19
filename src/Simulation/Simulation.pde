@@ -8,12 +8,14 @@ import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.callbacks.RayCastCallback;
 
-import garciadelcastillo.dashedlines.*;
 
 // A reference to our box2d world
 public static Box2DProcessing box2d;
-public static DashedLines dash;
 SimulationController simCon;
+
+// My vars
+BackTracking BT;
+Cell cell, next;
 
 void setup(){
   size(1500,920);
@@ -24,14 +26,14 @@ void setup(){
   Vec2 gravity = new Vec2(0, 0);
   box2d.createWorld(gravity);
   
-  // Initialize it, passing a reference to the current PApplet
-  dash = new DashedLines(this);
-  // Set the dash-gap pattern in pixels
-  dash.pattern(30, 10, 15, 10);  
-  
   simCon = new SimulationController(16);
   simCon.setController(new ControlP5(this));
   simCon.createControllers();
+  
+  //MY CODE
+  BT = new BackTracking(800,800,80,20);
+  cell = BT.mat[0][5];
+  BT.randomVoisin(cell);
 }
 
 void draw() {
@@ -41,12 +43,18 @@ void draw() {
   // We must always step through time!
   box2d.step();
   simCon.update();
-  
-  // Animate dashes with 'walking ants' effect
-  dash.offset(simCon.getDashed());
 
-  simCon.getMaze().display();
-  simCon.display();
+  //simCon.getMaze().display();
+  //simCon.display();
+  
+  //MY CODE
+  //BT.randomChange();
+  //BT.display();
+  //BT.mat[4][4].display();
+  //BT.mat[4][5].display();
+  next = BT.randomVoisin(cell);
+  next.display();
+  
 }
 
 void controlEvent(ControlEvent event) {

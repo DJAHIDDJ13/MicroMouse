@@ -1,15 +1,14 @@
 public class Cell 
-{
+{  
   // Cell constants height and width
   static final int h = 20;
   static final int w = 80;
-
+  
   // Cell position
   int xCell,yCell;
   
   // Cell visited or not yet
   boolean visited;
-  
   
   // Cell walls
   // Do we get over those fucking booleans and use directly the null value for of the walls ? Need more time/testing to decide
@@ -51,13 +50,12 @@ public class Cell
   
   // Constructor
   public Cell(int x, int y, boolean haut,boolean bas,boolean droite,boolean gauche)
-  { 
-    
+  {   
     // Only god know why this works 
     this.yCell = x*w;
     this.xCell = y*w;
     
-    this.visited = true;
+    this.visited = false;
     this.haut = haut;
     this.bas = bas;
     this.gauche = gauche;
@@ -80,7 +78,6 @@ public class Cell
     if(droite){
     wallDroite = new Wall(this.xCell+w+h/2, this.yCell+w/2,   w, h, HALF_PI);;
     }
-  
   }
 
   // Modifie les murs de la cellules selon les valeurs qu'on lui passe en arguments
