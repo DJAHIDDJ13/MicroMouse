@@ -84,6 +84,7 @@ public class BackTracking {
     int i=current.xCell/(int)this.wallWidth, j=current.yCell/(int)this.wallWidth;
     System.out.println(i+" and "+j);
     Stack neighbours = new Stack();
+    Cell next;
     
     /*
     // Cellule de haut existe et non visitée

@@ -97,6 +97,7 @@ public class Cell
   {
   System.out.println("haut : "+this.haut);
   System.out.println("bas : "+this.bas);
+  // hyes
   System.out.println("gauche : "+this.gauche);
   System.out.println("droite : "+this.droite);
   }
