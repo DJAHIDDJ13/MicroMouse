@@ -18,6 +18,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
+#include <math.h>
 
 /* Marcos to to index the four sides of a maze box */
 #define BOX_LEFT_SIDE		0 /* Left side index   */
@@ -46,6 +48,8 @@ struct Box {
 							x-th side of the square 
 							is occupied by a wall */
 
+	int value;			  /* The value of the case */
+
 };
 
 /*        Structure representing the maze        */
@@ -65,19 +69,25 @@ struct Maze {
 struct Maze initMaze(int N);
 
 /* Create a box with (OX, OY) coordinates in the maze */
-struct Box createBox(int OX, int OY, int wallIndicator);
+struct Box createBox(int OX, int OY, int wallIndicator[]);
 
 /* Insert a box with (OX, OY) coordinates in the maze */
-int insertBox(int OX, int OY, int wallIndicator[], struct Maze maze);
+int insertBox(struct Box box, struct Maze maze);
 
 /* Check if the x-th side of a box is occupied by a wall */
 bool X_TH_wallCheck(int x, struct Box box);
 
-/* display a box */
-void displayBox(struct Box box);
-
-/* display a maze */
+/* Display a maze */
 void displayMaze(struct Maze maze);
+
+/* String box to logical box */
+struct Box convertStringBox(int OX, int OY, char* displayM, int size);
+
+/* String maze to logical maze */
+struct Maze convertStringMaze(char* displayM, int size);
+
+/* Parse string maze from a file */
+char* parseMaze(const char* file, int* size);
 
 /* Free the memory occupied by a maze */
 void freeMaze(struct Maze* maze);
