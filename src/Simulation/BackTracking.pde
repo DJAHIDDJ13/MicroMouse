@@ -113,6 +113,8 @@ public class BackTracking {
   
   
 // Delete a wall between two cells 
+// Quand on fait le passafe en parametres de la fonctions on passe une copie
+// On actualise la matrice, how ????
 public void removeWall(Cell current, Cell next)
 {
   int currentI = current.yCell/(int)this.wallWidth; 
@@ -122,18 +124,28 @@ public void removeWall(Cell current, Cell next)
   
   System.out.println("Current i : "+currentI+","+"Current j : "+currentJ);
   System.out.println("Next i : "+nextI+","+"Next j : "+nextJ);
-  /*
-  int app = current.x-next.x;
-  if(app>0)
-    {current.gauche=false; next.droite=false;}
-  else if(app<0)
-    {current.droite=false; next.gauche=false;}
   
-  app = current.y-next.y;
-  if(app>0)
-    {current.haut=false; next.bas=false;}
-  if(app<0)
-    {current.bas=false; next.haut=false;}*/
+  
+  int decal = currentI - nextI;
+  
+  // Le next se trouve en haut 
+  if(decal>0) {
+  current.haut=false; next.bas=false; }
+ 
+  // Le next se trouve en bas 
+  else if(decal<0)
+    {current.bas=false; next.haut=false;}
+  
+  decal = currentJ - nextJ;
+  
+  // Le next se trouve à gauche
+  if(decal>0)
+    {current.gauche=false; next.droite=false;}
+  
+  // Le next se trouve à droite
+  if(decal<0)
+    {current.droite=false; next.gauche=false;
+  }
 }
   
   
