@@ -20,6 +20,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <math.h>
+#include <stdint.h>
 
 /* Marcos to to index the four sides of a maze box */
 #define BOX_LEFT_SIDE		0 /* Left side index   */
@@ -38,24 +39,24 @@ struct Box {
 	   y
 	*/  
 
-	int OX; 			  /* The abscissa of the box 
+	int16_t OX; 			  /* The abscissa of the box 
 							      in the maze     */
 	
-	int OY; 			  /* The ordinate of the box  
+	int16_t OY; 			  /* The ordinate of the box  
 							      in the maze     */
 	
-	int wallIndicator[4]; /* Used to find out if the 
-							x-th side of the square 
-							is occupied by a wall */
+	int8_t wallIndicator[4]; /* Used to find out if the 
+								x-th side of the square 
+								is occupied by a wall */
 
-	int value;			  /* The value of the case */
+	int16_t value;			  /* The value of the case */
 
 };
 
 /*        Structure representing the maze        */
 struct Maze {
 
-	int 	size; 		/*		 Maze size		*/
+	int16_t 	size; 		/*		 Maze size		*/
 
 	struct  Box* maze;  /* Our maze is supposed 
 						   to exist in the form 
@@ -66,28 +67,28 @@ struct Maze {
 /* --------------------------------------------- */
 
 /* Initialize a maze of size N */
-struct Maze initMaze(int N);
+struct Maze initMaze(int16_t N);
 
 /* Create a box with (OX, OY) coordinates in the maze */
-struct Box createBox(int OX, int OY, int wallIndicator[]);
+struct Box createBox(int16_t OX, int16_t OY, int8_t wallIndicator[]);
 
 /* Insert a box with (OX, OY) coordinates in the maze */
 int insertBox(struct Box box, struct Maze maze);
 
 /* Check if the x-th side of a box is occupied by a wall */
-bool X_TH_wallCheck(int x, struct Box box);
+bool X_TH_wallCheck(int8_t x, struct Box box);
 
 /* Display a maze */
 void displayMaze(struct Maze maze);
 
 /* String box to logical box */
-struct Box convertStringBox(int OX, int OY, char* displayM, int size);
+struct Box convertStringBox(int16_t OX, int16_t OY, char* displayM, int16_t size);
 
 /* String maze to logical maze */
-struct Maze convertStringMaze(char* displayM, int size);
+struct Maze convertStringMaze(char* displayM, int16_t size);
 
 /* Parse string maze from a file */
-char* parseMaze(const char* file, int* size);
+char* parseMaze(const char* file, int16_t* size);
 
 /* Free the memory occupied by a maze */
 void freeMaze(struct Maze* maze);

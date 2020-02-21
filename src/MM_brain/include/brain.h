@@ -20,6 +20,6 @@
 
 #include <maze.h>
 #include <micromouse.h>
-
+#include <stdint.h>
 
 #endif

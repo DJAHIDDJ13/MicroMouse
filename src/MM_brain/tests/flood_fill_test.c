@@ -11,6 +11,7 @@
    \date 2020
 */
 #include <stdio.h>
+#include <stdint.h>
 #include <brain.h>
 
 int main(int argc, char **argv) {   
@@ -23,7 +24,7 @@ int main(int argc, char **argv) {
 
    char* file = argv[1];
 
-   int size;
+   int16_t size;
    char* charMaze = parseMaze(file, &size);
 
    for(int y = 0; y < size; y++) {
@@ -36,6 +37,10 @@ int main(int argc, char **argv) {
    printf("\n---------------\n\n");
 
    struct Maze logicalMaze = convertStringMaze(charMaze, size);
+   displayMaze(logicalMaze);
+
+   printf("\n---------------\n\n");
+
    displayMaze(logicalMaze);
 
    if(charMaze)

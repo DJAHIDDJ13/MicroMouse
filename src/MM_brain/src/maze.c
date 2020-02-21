@@ -14,7 +14,7 @@
 #include <maze.h>
 
 /* Initialize a maze of size N*N */
-struct Maze initMaze(int N) {
+struct Maze initMaze(int16_t N) {
 	struct Maze maze;
 
 	maze.size = N;
@@ -25,22 +25,22 @@ struct Maze initMaze(int N) {
 }
 
 /* Create a box with (OX, OY) coordinates in the maze */
-struct Box createBox(int OX, int OY, int* wallIndicator) {
+struct Box createBox(int16_t OX, int16_t OY, int8_t* wallIndicator) {
 	struct Box box;
 
 	box.OX 	  = OX;
 	box.OY 	  = OY;
-	box.value = 256;
-	memcpy(box.wallIndicator, wallIndicator, sizeof(int) * 4);
+	box.value = -1;
+	memcpy(box.wallIndicator, wallIndicator, sizeof(int8_t) * 4);
 
 	return box;
 }
 
 /* Insert a box with (OX, OY) coordinates in the maze */
 int insertBox(struct Box box, struct Maze maze) {
-	int OX = box.OX;
-	int OY = box.OY;
-	int size = maze.size;
+	int16_t OX = box.OX;
+	int16_t OY = box.OY;
+	int16_t size = maze.size;
 
 	if(OX >= size || OY >= size)  {
 		fprintf(stderr, "dbg: entering %s %d\n", __FUNCTION__, __LINE__);
@@ -53,7 +53,7 @@ int insertBox(struct Box box, struct Maze maze) {
 }
 
 /* Check if the x-th side of a box is occupied by a wall */
-bool X_TH_wallCheck(int x, struct Box box) {
+bool X_TH_wallCheck(int8_t x, struct Box box) {
 	if(x >= 4) {
 		fprintf(stderr, "dbg: entering %s %d\n", __FUNCTION__, __LINE__);
 		return false;		
@@ -66,21 +66,21 @@ bool X_TH_wallCheck(int x, struct Box box) {
 
 /* Display a maze */
 void displayMaze(struct Maze maze) {	
-	for(int y = 0; y < maze.size; y++) {
-		for(int x = 0; x < maze.size; x++) {
-			printf("%d ", maze.maze[y*maze.size+x].value);
+	for(int16_t y = 0; y < maze.size; y++) {
+		for(int16_t x = 0; x < maze.size; x++) {
+			printf("%d\t", maze.maze[y*maze.size+x].value);
 		}
 		printf("\n");
 	}
 }
 
 /* String box to logical box */
-struct Box convertStringBox(int OX, int OY, char* displayM, int size) {
+struct Box convertStringBox(int16_t OX, int16_t OY, char* displayM, int16_t size) {
 	struct Box box;
-	int wallIndicator[4] = {0, 0, 0, 0};
+	int8_t wallIndicator[4] = {0, 0, 0, 0};
 	
-	int x = OX*3;
-	int y = OY*3;
+	int16_t x = OX*3;
+	int16_t y = OY*3;
 	
 	// Top side
 	if(displayM[y*size+x] == '#' && displayM[y*size+(x+1)] == '#' && displayM[y*size+(x+2)] == '#')
@@ -104,14 +104,14 @@ struct Box convertStringBox(int OX, int OY, char* displayM, int size) {
 }
 
 /* String maze to logical maze */
-struct Maze convertStringMaze(char* displayM, int size) {
+struct Maze convertStringMaze(char* displayM, int16_t size) {
 	struct Maze maze;
 
 	if(displayM != NULL) {
 		maze = initMaze(size/3);
 
-		for(int y = 0; y < maze.size; y++) {
-			for(int x = 0; x < maze.size; x++) {
+		for(int16_t y = 0; y < maze.size; y++) {
+			for(int16_t x = 0; x < maze.size; x++) {
 				insertBox(convertStringBox(x, y, displayM, size), maze);
 			}
 		}
@@ -121,7 +121,7 @@ struct Maze convertStringMaze(char* displayM, int size) {
 }
 
 /* Parse string maze from a file */
-char* parseMaze(const char* file, int* size) {
+char* parseMaze(const char* file, int16_t* size) {
 	FILE* fp;
 	char* displayM;
 	char value;
@@ -138,7 +138,7 @@ char* parseMaze(const char* file, int* size) {
 		exit(0);
 	}
 	
-	fscanf(fp, "size = %d\n", size);
+	fscanf(fp, "size = %hd\n", size);
 	displayM = (char *) malloc((*size) * (*size) * sizeof(char));
 
 	for(int i = 0; i < *size; i++) {

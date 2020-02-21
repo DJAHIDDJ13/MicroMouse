@@ -14,6 +14,8 @@
 
 #define MICROMOUSE_H
 
+#include <stdint.h>
+
 #define NB_ENGINE	2 /*       The total number of engines        */
 #define NB_SENSOR	4 /*       The total number of sensors        */
 
@@ -21,16 +23,16 @@
 struct Engine {
 	/*    Value of the motor, it will be turned into a vote
 	      value to activate the motor                             */
-	short int value;
+	int16_t value;
 };
 
 /*   Structure representing a infrared sensor of the micromouse   */
 struct Sensor {
 	/*   Value of the distance returned by the infrared sensor    */
-	short int distanceValue;
+	int16_t distanceValue;
 
 	/* Light value "light level" returned by the infrared sensor  */
-	short int lightValue;
+	int16_t lightValue;
 };
 
 /*            Main structure for the micromouse "robot"           */
