@@ -32,7 +32,7 @@ void setup(){
   simCon.createControllers();
   
   //MY CODE
-  BT = new BackTracking(800,800,40,10);
+  BT = new BackTracking();
   current = BT.mat[0][0];
   cell = BT.mat[0][5];
   cell1 = BT.mat[1][2];
@@ -43,7 +43,7 @@ void setup(){
 void draw() {
   background(150);
   stroke(0);
-  frameRate(60800);
+  frameRate(16000800);
   // We must always step through time!
   box2d.step();
   simCon.update();

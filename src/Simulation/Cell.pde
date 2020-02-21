@@ -1,11 +1,11 @@
 public class Cell 
 {  
   // Cell constants height and width
-  static final int h = 10;
-  static final int w = 40;
+  static final int h = (int) BackTracking.wallHeight;
+  static final int w = (int) BackTracking.wallWidth;
   
   // Cell position
-  int xCell,yCell;
+  int iCell,jCell;
   
   // Cell visited or not yet
   boolean visited;
@@ -16,8 +16,8 @@ public class Cell
   public Wall wallHaut, wallBas, wallDroite, wallGauche;
   
   // Getters 
-  public int getxCell() {return this.xCell;}
-  public int getyCell() {return this.yCell;}
+  public int getiCell() {return this.iCell;}
+  public int getjCell() {return this.jCell;}
   
   public boolean getVisited() { return this.visited;} 
   public boolean getHaut() { return this.haut;} 
@@ -32,8 +32,8 @@ public class Cell
   
   
   // Setters
-  public void setxCell(int x) { this.xCell = x;}
-  public void setyCell(int y) { this.yCell = y;}
+  public void setiCell(int x) { this.iCell = x;}
+  public void setjCell(int y) { this.jCell = y;}
   
   public void setVisited(boolean visited) { this.visited = visited;} 
   public void setHaut(boolean haut) { this.haut = haut;} 
@@ -53,8 +53,8 @@ public class Cell
   {   
     // Only god know why this works 
     // edit : know why but flemme to recode it now
-    this.yCell = x*w;
-    this.xCell = y*w;
+    this.jCell = x*w;
+    this.iCell = y*w;
     
     this.visited = false;
     this.haut = haut;
@@ -68,16 +68,16 @@ public class Cell
     this.wallDroite = null;
     
     if(haut) { 
-    wallHaut = new Wall(this.xCell+w/2,   this.yCell+h/2,   w, h, 0);
+    wallHaut = new Wall(this.iCell+w/2,   this.jCell+h/2,   w, h, 0);
     }
     if(bas) {
-    wallBas = new Wall(this.xCell+w/2,   this.yCell+w+h/2-h, w, h, 0);
+    wallBas = new Wall(this.iCell+w/2,   this.jCell+w+h/2-h, w, h, 0);
     }
     if(gauche){
-    wallGauche = new Wall(this.xCell+h/2,   this.yCell+w/2,   w, h, HALF_PI) ;
+    wallGauche = new Wall(this.iCell+h/2,   this.jCell+w/2,   w, h, HALF_PI) ;
     }
     if(droite){
-    wallDroite = new Wall(this.xCell+w+h/2, this.yCell+w/2,   w, h, HALF_PI);;
+    wallDroite = new Wall(this.iCell+w+h/2, this.jCell+w/2,   w, h, HALF_PI);;
     }
   }
 

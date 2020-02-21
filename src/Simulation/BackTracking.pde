@@ -1,21 +1,16 @@
 public class BackTracking {
-
-  public float mazeWidth;
-  public float mazeHeight;
-  public float wallWidth;
-  public float wallHeight;
   
+  // Maze and Cells constants
+  public static final float mazeWidth  = 800.0;
+  public static final float mazeHeight = 800.0;;
+  public static final float wallWidth  = 50;
+  public static final float wallHeight = 10;
+ 
   public Cell mat[][];
   
-  // Constructor and initial generation of our Maze
-  public BackTracking(float mazeWidth, float mazeHeight, float wallWidth, float wallHeight)
-  {
-
-    this.mazeWidth = mazeWidth;
-    this.mazeHeight = mazeHeight;
-    this.wallWidth = wallWidth;
-    this.wallHeight = wallHeight;
-    
+  // Constructor and generation of the initial maze
+  public BackTracking()
+  { 
     int lignes = (int)(mazeHeight/wallWidth);
     int colonnes = (int)(mazeWidth/wallWidth);
     
@@ -48,6 +43,10 @@ public class BackTracking {
        this.mat[x][y] = new Cell(x,y,false,true,true,false);}
     }
    }
+   
+   // Entrance and exit of the maze 
+   this.mat[0][0].haut = false;
+   this.mat[lignes-1][colonnes-1].bas = false;
   }
   
   // Display maze : We loop over the cells inside the mat and we show them 
@@ -67,13 +66,10 @@ public class BackTracking {
   
   public void randomChange()
   {
-    int min = 0;
-    int max = 10;
     Random r = new Random();
     int i = r.nextInt((9 - 0) + 1) + 0;
     int j = r.nextInt((9- 0) + 1) + 0;
     this.mat[i][j].setCellWalls(false,false,false,false);
-    
   }
   
   // Retourne une cellule voisine aléatoire qui n'a pas encore été visitée
@@ -81,31 +77,31 @@ public class BackTracking {
   // On retourne l'une d'entre elle de manière aléatoire
   public Cell randomVoisin(Cell current)
   {
-    int i=current.yCell/(int)this.wallWidth, j=current.xCell/(int)this.wallWidth;
+    int i=current.jCell/(int)this.wallWidth, j=current.iCell/(int)this.wallWidth;
     //System.out.println("i is :"+i+" and j is : "+j);
     Stack neighbours = new Stack();
     Cell next;
     
-    // Cellule de haut existe et non visitée
+    // Top Cell exist and not visited 
     if(i-1>=0 && !this.mat[i-1][j].visited) { 
       neighbours.push(mat[i-1][j]); }
 
-    // Cellule de bas existe et non visitée
+    // Bottom Cell exist and not visited
     if(i+1<(int)(this.mazeHeight/this.wallWidth) && !mat[i+1][j].visited) { 
       neighbours.push(mat[i+1][j]); }
     
-    // Cellule de gauche existe et non visitée
+    // Left Cell exist and not visited
     if(j-1>=0 && !mat[i][j-1].visited) { 
       neighbours.push(mat[i][j-1]); }
     
-    // Cellule de droite existe et non visitée
+    // Right Cell exist and not visited
     if(j+1<(int)(this.mazeWidth/this.wallWidth) && !mat[i][j+1].visited) { 
       neighbours.push(mat[i][j+1]); }
    
     
     if(!neighbours.empty()) {
       next = (Cell) neighbours.elementAt((int)random(neighbours.size()));
-      System.out.println("ligne : "+next.yCell/(int)this.wallWidth+"    colonne is : "+next.xCell/(int)this.wallWidth);
+      System.out.println("ligne : "+next.jCell/(int)this.wallWidth+"    colonne is : "+next.iCell/(int)this.wallWidth);
       return next; }
     else {
       return null; }
@@ -113,14 +109,12 @@ public class BackTracking {
   
   
 // Delete a wall between two cells 
-// Quand on fait le passafe en parametres de la fonctions on passe une copie
-// On actualise la matrice, how ????
 public void removeWall(Cell current, Cell next)
 {
-  int currentI = current.yCell/(int)this.wallWidth; 
-  int currentJ = current.xCell/(int)this.wallWidth;
-  int nextI=next.yCell/(int)this.wallWidth;
-  int nextJ=next.xCell/(int)this.wallWidth;
+  int currentI = current.jCell/(int)this.wallWidth; 
+  int currentJ = current.iCell/(int)this.wallWidth;
+  int nextI=next.jCell/(int)this.wallWidth;
+  int nextJ=next.iCell/(int)this.wallWidth;
   
   System.out.println("Current i : "+currentI+","+"Current j : "+currentJ);
   System.out.println("Next i : "+nextI+","+"Next j : "+nextJ);
@@ -128,21 +122,21 @@ public void removeWall(Cell current, Cell next)
   
   int decal = currentI - nextI;
   
-  // Le next se trouve en haut 
+  // We go top 
   if(decal>0) {
   current.haut=false; next.bas=false; }
  
-  // Le next se trouve en bas 
+  // We go down
   else if(decal<0)
     {current.bas=false; next.haut=false;}
   
   decal = currentJ - nextJ;
   
-  // Le next se trouve à gauche
+  // We go left
   if(decal>0)
     {current.gauche=false; next.droite=false;}
   
-  // Le next se trouve à droite
+  // We go right
   if(decal<0)
     {current.droite=false; next.gauche=false;
   }

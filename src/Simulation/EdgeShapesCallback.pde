@@ -1,4 +1,5 @@
 public class EdgeShapesCallback implements RayCastCallback {
+
   private Fixture m_fixture;
   private Vec2 m_point;
   private Vec2 m_normal;
