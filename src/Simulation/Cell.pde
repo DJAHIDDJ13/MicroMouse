@@ -1,8 +1,8 @@
 public class Cell 
 {  
   // Cell constants height and width
-  static final int h = 20;
-  static final int w = 80;
+  static final int h = 10;
+  static final int w = 40;
   
   // Cell position
   int xCell,yCell;

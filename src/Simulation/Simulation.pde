@@ -15,6 +15,8 @@ SimulationController simCon;
 // My vars
 BackTracking BT;
 Cell cell, next, cell1, cell2, current;
+Stack stack = new Stack();
+boolean tour = true;
 
 void setup(){
   size(1500,920);
@@ -30,7 +32,7 @@ void setup(){
   simCon.createControllers();
   
   //MY CODE
-  BT = new BackTracking(800,800,80,20);
+  BT = new BackTracking(800,800,40,10);
   current = BT.mat[0][0];
   cell = BT.mat[0][5];
   cell1 = BT.mat[1][2];
@@ -41,7 +43,7 @@ void setup(){
 void draw() {
   background(150);
   stroke(0);
-
+  frameRate(60800);
   // We must always step through time!
   box2d.step();
   simCon.update();
@@ -55,10 +57,35 @@ void draw() {
   //BT.mat[4][4].display();
   //BT.mat[4][5].display();
   //next = BT.randomVoisin(cell);
-  BT.removeWall(cell1,cell2);
+  //BT.removeWall(cell1,cell2);
   //next.display();
   
+  /* ######### Test du BackTracking ########*/
+  tour = !tour;
+
+  BT.display(); 
+  
+  //La cellule corrante et marquée comme visitée
+  current.visited = true;
+  
+  // election d'une cellule voisine nos visitée de façon aléatoir
+  Cell next = BT.randomVoisin(current);
+  
+  if(next==null && stack.empty()){
+    return;
+  }
+  else if(next==null){
+    current = (Cell)stack.pop();
+  }
+  else{
+    stack.push(current);
+    // supprimmer mur
+    BT.removeWall(current,next);
+    current = next;
+  }
 }
+  
+
 
 void controlEvent(ControlEvent event) {
   simCon.controlEventHandler(event);
