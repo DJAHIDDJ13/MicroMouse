@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
    while(!emptyQueue_XY(queue)) {
       struct oddpair_XY XY_tmp = summitQueue_XY(queue);
 
-      printf("%hd->(%hd, %hd)\n", XY_tmp.OX, XY_tmp.OY, XY_tmp.sign);
+      printf("%hd->(%hd, %hd)\n", XY_tmp.sign, XY_tmp.OX, XY_tmp.OY);
 
       queue.head = (queue.head)->next;
    }

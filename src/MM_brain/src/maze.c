@@ -25,13 +25,13 @@ struct Maze initMaze(int16_t N) {
 }
 
 /* Create a box with (OX, OY) coordinates in the maze */
-struct Box createBox(int16_t OX, int16_t OY, int8_t* wallIndicator) {
+struct Box createBox(int16_t OX, int16_t OY, bool* wallIndicator) {
 	struct Box box;
 
 	box.OX 	  = OX;
 	box.OY 	  = OY;
 	box.value = -1;
-	memcpy(box.wallIndicator, wallIndicator, sizeof(int8_t) * 4);
+	memcpy(box.wallIndicator, wallIndicator, sizeof(bool) * 4);
 
 	return box;
 }
@@ -43,7 +43,7 @@ int insertBox(struct Box box, struct Maze maze) {
 	int16_t size = maze.size;
 
 	if(OX >= size || OY >= size)  {
-		fprintf(stderr, "dbg: entering %s %d\n", __FUNCTION__, __LINE__);
+		fprintf(stderr, "insertBox: entering %s %d\n", __FUNCTION__, __LINE__);
 		return -1;
 	}
 
@@ -55,13 +55,13 @@ int insertBox(struct Box box, struct Maze maze) {
 /* Check if the x-th side of a box is occupied by a wall */
 bool X_TH_wallCheck(int8_t x, struct Box box) {
 	if(x >= 4) {
-		fprintf(stderr, "dbg: entering %s %d\n", __FUNCTION__, __LINE__);
+		fprintf(stderr, "X_TH_wallCheck: entering %s %d\n", __FUNCTION__, __LINE__);
 		return false;		
 	}
 
 	/* This function return true if the x-th side of 
 	   the box is occupied by a wall false otherwise */
-	return (box.wallIndicator[x] == 1) ? true : false;
+	return box.wallIndicator[x];
 }
 
 /* Display a maze */
@@ -72,87 +72,6 @@ void displayMaze(struct Maze maze) {
 		}
 		printf("\n");
 	}
-}
-
-/* String box to logical box */
-struct Box convertStringBox(int16_t OX, int16_t OY, char* displayM, int16_t size) {
-	struct Box box;
-	int8_t wallIndicator[4] = {0, 0, 0, 0};
-	
-	int16_t x = OX*3;
-	int16_t y = OY*3;
-	
-	// Top side
-	if(displayM[y*size+x] == '#' && displayM[y*size+(x+1)] == '#' && displayM[y*size+(x+2)] == '#')
-		wallIndicator[BOX_TOP_SIDE] = 1;
-
-	// Left side
-	if(displayM[(y+1)*size+x] == '#')
-		wallIndicator[BOX_LEFT_SIDE] = 1;
-
-	// Right side
-	if(displayM[(y+1)*size+(x+2)] == '#')
-		wallIndicator[BOX_RIGHT_SIDE] = 1;
-
-	// Bottom side
-	if(displayM[(y+2)*size+(x+1)] == '#')
-		wallIndicator[BOX_BOTTOM_SIDE] = 1;
-
-	box = createBox(OX, OY, wallIndicator);
-
-	return box;
-}
-
-/* String maze to logical maze */
-struct Maze convertStringMaze(char* displayM, int16_t size) {
-	struct Maze maze;
-
-	if(displayM != NULL) {
-		maze = initMaze(size/3);
-
-		for(int16_t y = 0; y < maze.size; y++) {
-			for(int16_t x = 0; x < maze.size; x++) {
-				insertBox(convertStringBox(x, y, displayM, size), maze);
-			}
-		}
-	}
-
-	return maze;
-}
-
-/* Parse string maze from a file */
-char* parseMaze(const char* file, int16_t* size) {
-	FILE* fp;
-	char* displayM;
-	char value;
-
-	if(file == NULL){
-		fprintf(stderr, "dbg: entering %s %d\n", __FUNCTION__, __LINE__);
-		exit(0);
-	}
-
-	fp = fopen(file, "r+");
-
-	if(fp == NULL){
-		printf("learn:invalide file entering %s %d\n", __FUNCTION__, __LINE__);
-		exit(0);
-	}
-	
-	fscanf(fp, "size = %hd\n", size);
-	displayM = (char *) malloc((*size) * (*size) * sizeof(char));
-
-	for(int i = 0; i < *size; i++) {
-		for(int j = 0; j < *size; j++) {
-			if(j != *size-1)
-				fscanf(fp, "%c", &value);
-			else
-				fscanf(fp, "%c\n", &value);
-			displayM[i*(*size)+j] = value;
-		}
-	}
-
-	fclose(fp);
-	return displayM;
 }
 
 /* Free the memory occupied by a maze */

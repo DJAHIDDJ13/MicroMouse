@@ -1,5 +1,16 @@
 #include <queue.h>
 
+/* Create a oddpair_XY variable */
+struct oddpair_XY createOddpair_XY(int16_t OX, int16_t OY, int8_t sign) {
+	struct oddpair_XY XY;
+
+	XY.OX = OX;
+	XY.OY = OY;
+	XY.sign = sign;
+
+	return XY;
+}
+
 /* Initialize a stack */
 Queue_XY initQueue_XY() {
 	

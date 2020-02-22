@@ -30,7 +30,7 @@ struct oddpair_XY {
 	int16_t OY:15; 			  /* The ordinate of the box  
 							      in the maze     */
 
-	int8_t sign:1;			  /* One bit for the signe */
+	uint8_t sign:1;			  /* One bit for the signe */
 };
 
 typedef struct Cell {
@@ -47,6 +47,9 @@ typedef struct {
 
 /* Here some primitives for the Queue */
 /* --------------------------------------------- */
+
+/* Create a oddpair_XY variable */
+struct oddpair_XY createOddpair_XY(int16_t OX, int16_t OY, int8_t sign);
 
 /* Initialize a stack */
 Queue_XY initQueue_XY();

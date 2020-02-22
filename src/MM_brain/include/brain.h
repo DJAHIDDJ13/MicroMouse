@@ -20,6 +20,13 @@
 
 #include <maze.h>
 #include <micromouse.h>
+#include <queue.h>
 #include <stdint.h>
+
+/* Fill a case of the maze with a color */
+void fill(struct Maze maze, int16_t OX, int16_t OY, int16_t color);
+
+/* Flood fill algorithm */
+void flooFill(struct Maze maze, int16_t OX, int16_t OY);
 
 #endif

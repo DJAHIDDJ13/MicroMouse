@@ -45,7 +45,7 @@ struct Box {
 	int16_t OY; 			  /* The ordinate of the box  
 							      in the maze     */
 	
-	int8_t wallIndicator[4]; /* Used to find out if the 
+	bool wallIndicator[4]; 	  /* Used to find out if the 
 								x-th side of the square 
 								is occupied by a wall */
 
@@ -70,7 +70,7 @@ struct Maze {
 struct Maze initMaze(int16_t N);
 
 /* Create a box with (OX, OY) coordinates in the maze */
-struct Box createBox(int16_t OX, int16_t OY, int8_t wallIndicator[]);
+struct Box createBox(int16_t OX, int16_t OY, bool wallIndicator[]);
 
 /* Insert a box with (OX, OY) coordinates in the maze */
 int insertBox(struct Box box, struct Maze maze);
@@ -80,15 +80,6 @@ bool X_TH_wallCheck(int8_t x, struct Box box);
 
 /* Display a maze */
 void displayMaze(struct Maze maze);
-
-/* String box to logical box */
-struct Box convertStringBox(int16_t OX, int16_t OY, char* displayM, int16_t size);
-
-/* String maze to logical maze */
-struct Maze convertStringMaze(char* displayM, int16_t size);
-
-/* Parse string maze from a file */
-char* parseMaze(const char* file, int16_t* size);
 
 /* Free the memory occupied by a maze */
 void freeMaze(struct Maze* maze);
