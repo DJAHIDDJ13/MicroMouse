@@ -72,4 +72,14 @@ void freeQueue_XY(Queue_XY* queue) {
 
 	while(!emptyQueue_XY(*queue))
 		popQueue_XY(queue);
+
+	if(queue->tail != NULL){
+		while(queue->tail != NULL) {
+			List_XY tail_tmp = queue->tail;
+
+			queue->tail = (queue->tail)->next;
+
+			free(tail_tmp);
+		}
+	}
 }
