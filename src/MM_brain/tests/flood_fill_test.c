@@ -15,6 +15,19 @@
 #include <brain.h>
 
 struct Maze createMaze() {
+   /* # # # # # # # # # # # # 
+      #   #                 #
+      # # #                 #
+      #           # # # #   # 
+      #           #     #   #
+      #           #     # # #
+      #     #     #         # 
+      #     #     #         #
+      #     # # # #         #
+      #                     # 
+      #                     #
+      # # # # # # # # # # # #
+   */
    struct Maze maze = initMaze(4);
    
    //Box 1
