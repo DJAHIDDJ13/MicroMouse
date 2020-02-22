@@ -32,13 +32,7 @@ int main(int argc, char **argv) {
    pushQueue_XY(&queue, XY5);
    pushQueue_XY(&queue, XY6);
 
-   while(!emptyQueue_XY(queue)) {
-      struct oddpair_XY XY_tmp = summitQueue_XY(queue);
-
-      printf("%hd->(%hd, %hd)\n", XY_tmp.sign, XY_tmp.OX, XY_tmp.OY);
-
-      queue.head = (queue.head)->next;
-   }
+   printQueue_XY(queue);
 
    freeQueue_XY(&queue);
 

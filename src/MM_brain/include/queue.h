@@ -69,4 +69,7 @@ void popQueue_XY(Queue_XY* queue);
 /* Free the memory of a queue */
 void freeQueue_XY(Queue_XY* queue);
 
+/* Print a queue */
+void printQueue_XY(Queue_XY queue);
+
 #endif

@@ -72,14 +72,16 @@ void freeQueue_XY(Queue_XY* queue) {
 
 	while(!emptyQueue_XY(*queue))
 		popQueue_XY(queue);
+}
 
-	if(queue->tail != NULL){
-		while(queue->tail != NULL) {
-			List_XY tail_tmp = queue->tail;
+/* Print a queue */
+void printQueue_XY(Queue_XY queue) {
+	
+	while(!emptyQueue_XY(queue)) {
+		struct oddpair_XY XY_tmp = summitQueue_XY(queue);
 
-			queue->tail = (queue->tail)->next;
+		printf("%hd->(%hd, %hd)\n", XY_tmp.sign, XY_tmp.OX, XY_tmp.OY);
 
-			free(tail_tmp);
-		}
-	}
+		queue.head = (queue.head)->next;
+   }
 }
