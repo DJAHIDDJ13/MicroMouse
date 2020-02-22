@@ -29,4 +29,8 @@ void fill(struct Maze maze, int16_t OX, int16_t OY, int16_t color);
 /* Flood fill algorithm */
 void flooFill(struct Maze maze, int16_t OX, int16_t OY);
 
+/* This function returns us a queue of position that
+   the MM will follow in order to arrive to the target*/
+Queue_XY backwardFloodFill(struct Maze maze, int16_t OX, int16_t OY);
+
 #endif

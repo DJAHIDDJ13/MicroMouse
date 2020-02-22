@@ -90,3 +90,29 @@ void flooFill(struct Maze maze, int16_t OX, int16_t OY) {
 
 	freeQueue_XY(&queue);
 }
+
+/* Backward flood fill algorithm */
+Queue_XY backwardFloodFill(struct Maze maze, int16_t OX, int16_t OY) {
+	
+	struct Box* boxs = maze.maze;
+	int16_t size = maze.size;
+
+	if(boxs == NULL) {
+		printf("flooFill:invalide file entering %s %d\n", __FUNCTION__, __LINE__);
+		exit(0);
+	}
+
+	Queue_XY queue = initQueue_XY();
+	struct Box box = boxs[OY*size+OX];
+	pushQueue_XY(&queue, createOddpair_XY(OX, OY, 1));
+
+	while (box.value != 0) {
+		box = minValueNeighbour(maze, OX, OY);
+		pushQueue_XY(&queue, createOddpair_XY(box.OX, box.OY, 1));
+
+		OX = box.OX;
+		OY = box.OY;
+	}
+
+	return queue;
+}

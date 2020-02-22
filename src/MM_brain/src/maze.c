@@ -64,6 +64,58 @@ bool X_TH_wallCheck(int8_t x, struct Box box) {
 	return box.wallIndicator[x];
 }
 
+/* Get the neighbour who have the min value */
+struct Box minValueNeighbour(struct Maze maze, int16_t OX, int16_t OY) {
+	struct Box* boxs = maze.maze;
+
+	if(boxs == NULL) {
+		printf("flooFill:invalide file entering %s %d\n", __FUNCTION__, __LINE__);
+		exit(0);
+	}
+	
+	int16_t size = maze.size;
+	struct Box box = boxs[OY*size+OX];
+	box.value = INT16_MAX;
+
+	//Top neighbour
+	if((OY-1 >= 0) && !X_TH_wallCheck(BOX_TOP_SIDE, boxs[OY*size+OX]) 
+		&& boxs[(OY-1)*size+OX].value < box.value) {
+
+		box.OX = OX;
+		box.OY = OY-1;
+		box.value = boxs[(OY-1)*size+OX].value;
+	}
+
+	//Bottom neighbour
+	if((OY+1 < size) && !X_TH_wallCheck(BOX_BOTTOM_SIDE, boxs[OY*size+OX]) 
+		&& boxs[(OY+1)*size+OX].value < box.value) {
+		
+		box.OX = OX;
+		box.OY = OY+1;
+		box.value = boxs[(OY+1)*size+OX].value;
+	}
+
+	//Left neighbour
+	if((OX-1 >= 0) && !X_TH_wallCheck(BOX_LEFT_SIDE, boxs[OY*size+OX]) 
+		&& boxs[OY*size+(OX-1)].value < box.value) {
+		
+		box.OX = OX-1;
+		box.OY = OY;
+		box.value = boxs[OY*size+(OX-1)].value;
+	}
+
+	//Right neighbour
+	if((OX+1 < size) && !X_TH_wallCheck(BOX_RIGHT_SIDE, boxs[OY*size+OX]) 
+		&& boxs[OY*size+(OX+1)].value < box.value) {
+		
+		box.OX = OX+1;
+		box.OY = OY;
+		box.value = boxs[OY*size+(OX+1)].value;
+	}
+
+	return box;
+}
+
 /* Display a maze */
 void displayMaze(struct Maze maze) {	
 	for(int16_t y = 0; y < maze.size; y++) {

@@ -78,6 +78,9 @@ int insertBox(struct Box box, struct Maze maze);
 /* Check if the x-th side of a box is occupied by a wall */
 bool X_TH_wallCheck(int8_t x, struct Box box);
 
+/* Get the neighbour who have the min value */
+struct Box minValueNeighbour(struct Maze maze, int16_t OX, int16_t OY);
+
 /* Display a maze */
 void displayMaze(struct Maze maze);
 

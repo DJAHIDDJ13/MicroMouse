@@ -107,7 +107,13 @@ int main(int argc, char **argv) {
    flooFill(logicalMaze, 2, 2);
    displayMaze(logicalMaze);
 
+   Queue_XY path = backwardFloodFill(logicalMaze, 3, 0);
+
+   printf("\nPath for the MM :\n");
+   printQueue_XY(path);
+   
    freeMaze(&logicalMaze);
+   freeQueue_XY(&path);
 
    return 0;
 }
