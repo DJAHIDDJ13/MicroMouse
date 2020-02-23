@@ -53,11 +53,11 @@ public class SimulationController{
 
    simulationEntry = new SimulationEntry(size, size);
    mazeBuilder = new MazeBuilder();
-   box2d.setScaleFactor(size / 1.6f);
+   box2d.setScaleFactor(80.0f / size);
    maze = mazeBuilder.builderInitialMaze(box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
                                          box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
-                                         800 / 160,
-                                         800 / 640);
+                                         size,
+                                         simulationEntry.getRatio());
  }
   
  public void setController(ControlP5 cp5) {
@@ -166,13 +166,13 @@ public class SimulationController{
   
   public void keyPressedHandler() {
     if(key == 'z')
-      maze.moveVehicle(500, 500);
+      maze.moveVehicle(200, 200);
     else if(key == 's')
-      maze.moveVehicle(-500, -500);
+      maze.moveVehicle(-200, -200);
     else if(key == 'q')
-      maze.moveVehicle(-500, 10);
+      maze.moveVehicle(-200, 200);
     else if(key == 'd')
-      maze.moveVehicle(10, -500);
+      maze.moveVehicle(200, -200);
   }
 
   public void controlEventHandler(ControlEvent event) {
@@ -218,13 +218,13 @@ public class SimulationController{
     Vec2 top_left_corner = box2d.coordPixelsToWorld(new Vec2(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY));
     Vec2 temp = box2d.coordPixelsToWorld(mouseX, mouseY).sub(top_left_corner);
     /* FIX THIS */
-    float boxW = 800 / 640;
-    float boxH = 800 / 160;
-    toAddH = boxW;
-    toAddW = boxH - toAddH;
-    float newBoxW = boxH - toAddH / ceil(SimulationUtility.MAZE_SIZE / boxH);
-    toAddX = round(temp.x / newBoxW) * newBoxW - cos(toAddA) * (newBoxW / 2) + toAddH / 2 + top_left_corner.x;
-    toAddY = round(temp.y / newBoxW) * newBoxW - sin(toAddA) * (newBoxW / 2) - toAddH / 2 + top_left_corner.y;
+    float boxW = box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE) / size;
+    float boxH = boxW * simulationEntry.getRatio();
+    toAddW = boxW - boxH;
+    toAddH = boxH;
+    // float newBoxW = boxH - toAddH / ceil(SimulationUtility.MAZE_SIZE / boxH);
+    toAddX = round(temp.x / boxW) * boxW - cos(toAddA) * (boxW / 2) + top_left_corner.x;
+    toAddY = round(temp.y / boxW) * boxW - sin(toAddA) * (boxW / 2) + top_left_corner.y;
     toAddR = toAddH / 2;
   }
   

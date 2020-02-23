@@ -16,7 +16,7 @@ public class Vehicle {
 
   // Constructor
   public Vehicle(float x, float y, float angle, float size) {
-    vehicleSize = size/30;
+    vehicleSize = size/20;
 
     // top
     topShape = new Vec2[5];
@@ -41,12 +41,12 @@ public class Vehicle {
     bottomShape[3] = new Vec2(-52, 35).mul(vehicleSize);
 
     // Wheel size and positions
-    wheelSize = new Vec2(8, 27).mul(vehicleSize);
+    wheelSize = new Vec2(8, 27).mul(vehicleSize * box2d.scaleFactor);
     wheelPos = new Vec2[4];
-    wheelPos[0] = new Vec2(48, -14).mul(vehicleSize);
-    wheelPos[1] = new Vec2(-48, -14).mul(vehicleSize);
-    wheelPos[2] = new Vec2(48, 15).mul(vehicleSize);
-    wheelPos[3] = new Vec2(-48, 15).mul(vehicleSize);
+    wheelPos[0] = new Vec2(48, -14).mul(vehicleSize * box2d.scaleFactor);
+    wheelPos[1] = new Vec2(-48, -14).mul(vehicleSize * box2d.scaleFactor);
+    wheelPos[2] = new Vec2(48, 15).mul(vehicleSize * box2d.scaleFactor);
+    wheelPos[3] = new Vec2(-48, 15).mul(vehicleSize * box2d.scaleFactor);
     
     // Sensor positions
     sensorPos = new Vec2[4];
@@ -198,10 +198,10 @@ public class Vehicle {
   
   public void makeWheels(float x, float y, float angle) {
     // wheels
-    FRWheel = new Wheel(wheelPos[0].x * box2d.scaleFactor + x, wheelPos[0].y * box2d.scaleFactor  + y, wheelSize.x * box2d.scaleFactor, wheelSize.y * box2d.scaleFactor, angle);
-    FLWheel = new Wheel(wheelPos[1].x * box2d.scaleFactor + x, wheelPos[1].y * box2d.scaleFactor  + y, wheelSize.x * box2d.scaleFactor, wheelSize.y * box2d.scaleFactor, angle);
-    BRWheel = new Wheel(wheelPos[2].x * box2d.scaleFactor + x, wheelPos[2].y * box2d.scaleFactor  + y, wheelSize.x * box2d.scaleFactor, wheelSize.y * box2d.scaleFactor, angle);
-    BLWheel = new Wheel(wheelPos[3].x * box2d.scaleFactor + x, wheelPos[3].y * box2d.scaleFactor  + y, wheelSize.x * box2d.scaleFactor, wheelSize.y * box2d.scaleFactor, angle);
+    FRWheel = new Wheel(wheelPos[0].x + x, wheelPos[0].y + y, wheelSize.x, wheelSize.y, angle);
+    FLWheel = new Wheel(wheelPos[1].x + x, wheelPos[1].y + y, wheelSize.x, wheelSize.y, angle);
+    BRWheel = new Wheel(wheelPos[2].x + x, wheelPos[2].y + y, wheelSize.x, wheelSize.y, angle);
+    BLWheel = new Wheel(wheelPos[3].x + x, wheelPos[3].y + y, wheelSize.x, wheelSize.y, angle);
   }
   
   public void makeBody(float x, float y, float angle) {    
@@ -211,7 +211,6 @@ public class Vehicle {
     Vec2[] topShapeWorld = topShape.clone();
     for(int i = 0; i < topShapeWorld.length; i++) {
       topShapeWorld[i] = new Vec2(topShapeWorld[i].x, -topShapeWorld[i].y);
-      println(topShapeWorld[i]);
     }
     top_s.set(topShapeWorld, topShapeWorld.length);
     

@@ -3,8 +3,9 @@ public class Target {
 
   // Constructor
   public Target(float x, float y, float r) {
-    this.x = x;
-    this.y = y;
+    Vec2 pixelPos = box2d.coordWorldToPixels(x, y);
+    this.x = pixelPos.x;
+    this.y = pixelPos.y;
     this.r = r;
   }
   

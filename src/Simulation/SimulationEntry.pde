@@ -4,6 +4,7 @@ public class SimulationEntry{
   private float mazeH,mazeW;
   private float boxH,boxW;
   private float shiftX,shiftY;
+  private float ratio;
   //add here all the variable that can be used for simulation
   
   public SimulationEntry(String file, float mazeH, float mazeW, 
@@ -29,6 +30,8 @@ public class SimulationEntry{
   public SimulationEntry(float rows, float cols) {
     this.boxW = 800 / 160; //the perfect size is 25.
     this.boxH = 800 / 1.6; //it has to be boxH = boxW/2 to work well
+    
+    this.ratio = .1;
     this.mazeH = SimulationUtility.MAZE_SIZE;
     this.mazeW = SimulationUtility.MAZE_SIZE;
     this.shiftX = SimulationUtility.MAZE_SHIFTX;
@@ -52,6 +55,10 @@ public class SimulationEntry{
   
   public void setFile(String file){
     this.file = file;
+  }
+  
+  public float getRatio() {
+    return ratio; 
   }
   
   public float getMazeH(){
