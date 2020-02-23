@@ -20,7 +20,7 @@ char output[BUFFER_SIZE] = "";
 
 /* LISTENER */
 void *thread_1(void *arg) {
-    printf("LISTENING...\n");
+    printf("C - LISTENING...\n");
 
 	while (1) {
 		read_fifo(output);
@@ -36,12 +36,14 @@ void *thread_1(void *arg) {
 
 /* READER */
 void *thread_2(void *arg) {
-    printf("READING...\n");
+    printf("C - READING...\n");
 	
 	while (1) {
 		pthread_mutex_lock(&mutex);
 		pthread_cond_wait (&condition, &mutex);
 		printf("%s\n", output);
+		/* ANSWER */
+		write_fifo("PONG!");
 		pthread_mutex_unlock(&mutex);
 	}
 
@@ -53,6 +55,8 @@ void *thread_2(void *arg) {
 int main(void) {
     pthread_t listener;
 	pthread_t reader;
+
+	create_fifo();
 
     printf("DEBUG 1.\n");
 
