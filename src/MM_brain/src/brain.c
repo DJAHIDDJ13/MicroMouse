@@ -108,6 +108,10 @@ Queue_XY backwardFloodFill(struct Maze maze, int16_t OX, int16_t OY) {
 
 	while (box.value != 0) {
 		box = minValueNeighbour(maze, OX, OY);
+
+		if(box.value == INT16_MAX)
+			break;
+
 		pushQueue_XY(&queue, createOddpair_XY(box.OX, box.OY, 1));
 
 		OX = box.OX;

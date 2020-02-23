@@ -2,7 +2,7 @@
    \file flood_fill_test.c
    \author MMteam
 
-   
+
    \brief Main test for the flood fill algorithm. 
    
    \warning Attention don't forget to free the 
@@ -29,7 +29,7 @@ struct Maze createMaze() {
       # # # # # # # # # # # #
    */
    struct Maze maze = initMaze(4);
-   
+
    //Box 1
    bool wallIndicator_Box[4] = {true,true,true,true};
    insertBox(createBox(0, 0, wallIndicator_Box), maze);
@@ -49,11 +49,11 @@ struct Maze createMaze() {
    //Box 5
    memcpy(wallIndicator_Box, (bool [4]){true,true,false,false}, 4*sizeof(bool));
    insertBox(createBox(0, 1, wallIndicator_Box), maze);
-   
+
    //Box 6
    memcpy(wallIndicator_Box, (bool [4]){false,false,true,false}, 4*sizeof(bool));
    insertBox(createBox(1, 1, wallIndicator_Box), maze);
-   
+
    //Box 7
    memcpy(wallIndicator_Box, (bool [4]){true,true,true,false}, 4*sizeof(bool));
    insertBox(createBox(2, 1, wallIndicator_Box), maze);
@@ -69,7 +69,7 @@ struct Maze createMaze() {
    //Box 10
    memcpy(wallIndicator_Box, (bool [4]){true,false,true,true}, 4*sizeof(bool));
    insertBox(createBox(1, 2, wallIndicator_Box), maze);
-   
+
    //Box 11
    memcpy(wallIndicator_Box, (bool [4]){true,false,false,false}, 4*sizeof(bool));
    insertBox(createBox(2, 2, wallIndicator_Box), maze);
@@ -77,11 +77,11 @@ struct Maze createMaze() {
    //Box 12
    memcpy(wallIndicator_Box, (bool [4]){false,true,true,false}, 4*sizeof(bool));
    insertBox(createBox(3, 2, wallIndicator_Box), maze);
-   
+
    //Box 13
    memcpy(wallIndicator_Box, (bool [4]){true,false,false,true}, 4*sizeof(bool));
    insertBox(createBox(0, 3, wallIndicator_Box), maze);
-   
+
    //Box 14
    memcpy(wallIndicator_Box, (bool [4]){false,true,false,true}, 4*sizeof(bool));
    insertBox(createBox(1, 3, wallIndicator_Box), maze);
@@ -97,7 +97,7 @@ struct Maze createMaze() {
    return maze;
 }
 
-int main(int argc, char **argv) {   
+int main(int argc, char **argv) {
 
    struct Maze logicalMaze = createMaze();
    displayMaze(logicalMaze);
@@ -107,7 +107,7 @@ int main(int argc, char **argv) {
    flooFill(logicalMaze, 2, 2);
    displayMaze(logicalMaze);
 
-   Queue_XY path = backwardFloodFill(logicalMaze, 3, 0);
+   Queue_XY path = backwardFloodFill(logicalMaze, 3, 1);
 
    printf("\nPath for the MM :\n");
    printQueue_XY(path);

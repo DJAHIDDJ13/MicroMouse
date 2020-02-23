@@ -11,6 +11,7 @@ public class SimulationController{
   private int objectPanelState;
   private boolean showingMovingObject;
   private boolean deleteMode;
+  private boolean snap;
   private CheckBox snapCheckBox;
   
   private int dashed;
@@ -33,6 +34,7 @@ public class SimulationController{
     objectPanelState = 0;
     showingMovingObject = false;
     deleteMode = false;
+    snap = true;
     dashed = 0;
   }
   
@@ -125,10 +127,9 @@ public class SimulationController{
        .setPosition(772, 830)
        .setSize(10, 10)
        .addItem("Snap to grid", 0)
+       .activateAll()
        ;
-     
-  }
-  
+  } 
   
   public void displayMovingObject() {
     rectMode(CENTER);
@@ -178,7 +179,10 @@ public class SimulationController{
   }
 
   public void controlEventHandler(ControlEvent event) {
-    String eventControllerName = event.getController().getName();
+    String eventControllerName = "";
+    if(event.getType() != 2)
+      eventControllerName = event.getController().getName();
+      
     deleteMode = false;
     if(eventControllerName.equals("Turn+") || eventControllerName.equals("Turn-")){
       if(toAddA == 0) {
@@ -198,7 +202,7 @@ public class SimulationController{
     } else if(eventControllerName.equals("Size")) {
       size = (int)cp5.get("Size").getValue();
     } else if(event.isFrom(snapCheckBox)) {
-      println("Here");
+      snap = !snap;
     }
   }
   
@@ -235,8 +239,9 @@ public class SimulationController{
   
   // updates the gui
   public void updateController() {
-    if(showingMovingObject && mouseX < SimulationUtility.MAZE_SIZE + SimulationUtility.MAZE_SHIFTX && mouseY < SimulationUtility.MAZE_SIZE + SimulationUtility.MAZE_SHIFTY) {
-      if(snapCheckBox.getItem(0).internalValue() == 1) {
+    if(showingMovingObject && mouseX < SimulationUtility.MAZE_SIZE + SimulationUtility.MAZE_SHIFTX 
+        && mouseY < SimulationUtility.MAZE_SIZE + SimulationUtility.MAZE_SHIFTY) {
+      if(snap) {
         snapToGrid();
       } else {
         float boxW = box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE) / size;
