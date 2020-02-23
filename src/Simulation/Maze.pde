@@ -9,9 +9,9 @@ public class Maze {
   private Target target;
   private Vehicle vehicle;
   
-  public Maze(float mazeH, float mazeW) {
-    this.mazeH = mazeH;
+  public Maze(float mazeW, float mazeH) {
     this.mazeW = mazeW;
+    this.mazeH = mazeH;
     walls = new LinkedList<Wall>();
   }
 
@@ -86,7 +86,6 @@ public class Maze {
   public void moveVehicle(float l, float r) {
     vehicle.move(l, r);
   }
-    
   
   public void update() {
     vehicle.update();
@@ -98,7 +97,7 @@ public class Maze {
     
     // maze canvas
     strokeWeight(2);
-    rect(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY, mazeW, mazeH);
+    rect(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY, size, size);
 
     
     // everything draw here starts at the edge maze
@@ -108,9 +107,9 @@ public class Maze {
     // draw border line
     line(0, size, size, size);
     line(size, size, size, 0);
- 
+    
     // draw all the walls
-    for(Wall wall : walls){
+    for(Wall wall : walls) {
       wall.display();
     }
     
@@ -120,7 +119,7 @@ public class Maze {
     // draw the target
     if(target != null)
       target.display();
-          
+    
     pop();
   } 
 }

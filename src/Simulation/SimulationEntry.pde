@@ -7,7 +7,7 @@ public class SimulationEntry{
   //add here all the variable that can be used for simulation
   
   public SimulationEntry(String file, float mazeH, float mazeW, 
-                  float boxH, float boxW, float shiftX, float shiftY){
+                  float boxH, float boxW, float shiftX, float shiftY) {
     this.file = file;
     this.mazeH = mazeH;
     this.mazeW = mazeW;
@@ -17,7 +17,7 @@ public class SimulationEntry{
     this.shiftY = shiftY;
   }
   
-  public SimulationEntry(float mazeH, float mazeW, float boxH, float boxW, float shiftX, float shiftY){
+  public SimulationEntry(float mazeH, float mazeW, float boxH, float boxW, float shiftX, float shiftY) {
     this.mazeH = mazeH;
     this.mazeW = mazeW;
     this.boxH = boxH;
@@ -26,11 +26,11 @@ public class SimulationEntry{
     this.shiftY = shiftY;
   }
   
-  public SimulationEntry(float cols, float rows){
-    this.boxW = SimulationUtility.MAZE_SIZE/rows; //the perfect size is 25.
-    this.boxH = boxW/2; //it has to be boxH = boxW/2 to work well
-    this.mazeH = rows*boxW;
-    this.mazeW = cols*boxW;
+  public SimulationEntry(float rows, float cols) {
+    this.boxW = 800 / 160; //the perfect size is 25.
+    this.boxH = 800 / 1.6; //it has to be boxH = boxW/2 to work well
+    this.mazeH = SimulationUtility.MAZE_SIZE;
+    this.mazeW = SimulationUtility.MAZE_SIZE;
     this.shiftX = SimulationUtility.MAZE_SHIFTX;
     this.shiftY = SimulationUtility.MAZE_SHIFTY;
   }
@@ -40,10 +40,10 @@ public class SimulationEntry{
   }
   
   public void setParameters(int rows, int cols){
-    this.boxW = 800/rows; //the perfect size is 25.
-    this.boxH = boxW/2; //it has to be boxH = boxW/2 to work well
+    this.boxW = SimulationUtility.MAZE_SIZE/rows; //the perfect size is 25.
+    this.boxH = boxW /10; //it has to be boxH = boxW/2 to work well
     this.mazeH = rows*boxW;
-    this.mazeW = cols*boxW;    
+    this.mazeW = cols*boxW;
   }
   
   public String getFile(){

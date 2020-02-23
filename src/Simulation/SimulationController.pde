@@ -29,7 +29,6 @@ public class SimulationController{
     
     refreshMaze();
     
-    box2d.setScaleFactor(size / 1.6f);
     objectPanelState = 0;
     showingMovingObject = false;
     deleteMode = false;
@@ -54,10 +53,11 @@ public class SimulationController{
 
    simulationEntry = new SimulationEntry(size, size);
    mazeBuilder = new MazeBuilder();
-   maze = mazeBuilder.builderInitialMaze(simulationEntry.getMazeH(),
-                                        simulationEntry.getMazeW(),
-                                        simulationEntry.getBoxH(),
-                                        simulationEntry.getBoxW());
+   box2d.setScaleFactor(size / 1.6f);
+   maze = mazeBuilder.builderInitialMaze(box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
+                                         box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
+                                         800 / 160,
+                                         800 / 640);
  }
   
  public void setController(ControlP5 cp5) {
@@ -116,9 +116,15 @@ public class SimulationController{
        .setSize(40,30)
        .setScrollSensitivity(1.1)
        .setDirection(Controller.HORIZONTAL)
-       .setValue(16)
-       .setRange(8, 32)
+       .setValue(8)
+       .setRange(4, 32)
        ;
+       
+    /*cp5.addCheckBox("Snap")
+       .setPosition(772,800)
+       .setSize(10,10)
+       ;
+      */
   }
   
   
@@ -126,13 +132,17 @@ public class SimulationController{
     rectMode(CENTER);
     // diplay wall at mouseX, mouseY
     pushMatrix();
-    translate(toAddX, toAddY);
+    Vec2 temp = box2d.coordWorldToPixels(toAddX, toAddY);
+    translate(temp.x, temp.y);
     rotate(-toAddA);
+    
+    float pixelW = box2d.scalarWorldToPixels(toAddW);
+    float pixelH = box2d.scalarWorldToPixels(toAddH);
     
     if(objectPanelState == 0) {
       fill(127,0,0);
         stroke(0);
-        rect(0, 0, toAddW, toAddH);
+        rect(0, 0, pixelW, pixelH);
       fill(255);
     } // display target
     else {
@@ -163,7 +173,6 @@ public class SimulationController{
       maze.moveVehicle(-500, 10);
     else if(key == 'd')
       maze.moveVehicle(10, -500);
-    
   }
 
   public void controlEventHandler(ControlEvent event) {
@@ -190,11 +199,11 @@ public class SimulationController{
   
   public void mousePressedHandler() {
     // if the click was on the canvas
-    if(mouseX < maze.getMazeW() && mouseY < maze.getMazeH()) {
+    if(mouseX < SimulationUtility.MAZE_SIZE + SimulationUtility.MAZE_SHIFTX && mouseY < SimulationUtility.MAZE_SIZE + SimulationUtility.MAZE_SHIFTY) {
       // if showing moving object , means we're adding
       if(showingMovingObject) {
         if(objectPanelState == 0) {
-          Wall toAdd = new Wall((float) mouseX, (float) mouseY, toAddW, toAddH, toAddA);
+          Wall toAdd = new Wall(toAddX, toAddY, toAddW / 2, toAddH / 2, toAddA);
           maze.addWall(toAdd);
         } else {
           maze.getTarget().setPosition((float) mouseX, (float) mouseY);
@@ -205,19 +214,30 @@ public class SimulationController{
     }
   }
   
+  public void snapToGrid() {
+    Vec2 top_left_corner = box2d.coordPixelsToWorld(new Vec2(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY));
+    Vec2 temp = box2d.coordPixelsToWorld(mouseX, mouseY).sub(top_left_corner);
+    /* FIX THIS */
+    float boxW = 800 / 640;
+    float boxH = 800 / 160;
+    toAddH = boxW;
+    toAddW = boxH - toAddH;
+    float newBoxW = boxH - toAddH / ceil(SimulationUtility.MAZE_SIZE / boxH);
+    toAddX = round(temp.x / newBoxW) * newBoxW - cos(toAddA) * (newBoxW / 2) + toAddH / 2 + top_left_corner.x;
+    toAddY = round(temp.y / newBoxW) * newBoxW - sin(toAddA) * (newBoxW / 2) - toAddH / 2 + top_left_corner.y;
+    toAddR = toAddH / 2;
+  }
+  
   // updates the gui
   public void updateController() {
-    if(showingMovingObject && mouseX < maze.getMazeW() && mouseY < maze.getMazeH()) {
-      toAddX = mouseX;
-      toAddY = mouseY;
-      toAddH = simulationEntry.getBoxH();
-      toAddW = simulationEntry.getBoxW();
-      toAddR = toAddH / 2;
+    if(showingMovingObject && mouseX < SimulationUtility.MAZE_SIZE + SimulationUtility.MAZE_SHIFTX && mouseY < SimulationUtility.MAZE_SIZE + SimulationUtility.MAZE_SHIFTY) {
+      snapToGrid();
     } else {
-      toAddX = panelX;
-      toAddY = panelY;
-      toAddW = panelW;
-      toAddH = panelH;
+      Vec2 temp = box2d.coordPixelsToWorld(panelX, panelY);
+      toAddX = temp.x;
+      toAddY = temp.y;
+      toAddW = box2d.scalarPixelsToWorld(panelW);
+      toAddH = box2d.scalarPixelsToWorld(panelH);
       toAddR = panelR;
     }
   }

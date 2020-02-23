@@ -1,54 +1,44 @@
 public class MazeBuilder{
   
-  public Maze builderInitialMaze(float mazeH, float mazeW, float boxH, float boxW){
-    Wall wall;
-    
-    int wallBases = (int)(mazeW/boxW);
-    int wallLR = (int)(mazeH/boxW)-1;
+  public Maze builderInitialMaze(float mazeW, float mazeH, float boxW, float boxH){
     Maze maze = new Maze(mazeH, mazeW);
-    float shiftX = SimulationUtility.MAZE_SHIFTX;
-    float shiftY = SimulationUtility.MAZE_SHIFTY;
+    
+    int num_walls = floor(mazeW / boxW); // the number of walls per side
+    
+    float wall_radius = boxH; // the radius of each wall
+    boxW -= wall_radius / num_walls; // adjusting to fit the box + 1 additional wall_radius for the beginning
+    float wall_len = boxW - wall_radius; // the length of each wall
+    
+    // Top left corner of the canvas in world coordinates
+    Vec2 top_left_corner = box2d.coordPixelsToWorld(new Vec2(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY));
+    
+    for(int i = 0; i < num_walls; i++) {
+      // Top row of border walls
+      Vec2 cur = top_left_corner.add(new Vec2((i + 0.5) * boxW + wall_radius / 2, -0.5 * wall_radius));
+      Wall wall = new Wall(cur.x, cur.y, wall_len / 2, wall_radius / 2, 0);
+      maze.addWall(wall);
+      
+      // Bottom row of border walls
+      cur = top_left_corner.add(new Vec2((i + 0.5) * boxW + wall_radius / 2, -0.5 * wall_radius - num_walls * boxW));
+      wall = new Wall(cur.x, cur.y, wall_len / 2, wall_radius / 2, 0);
+      maze.addWall(wall);
+      
+      // left column of border walls
+      cur = top_left_corner.add(new Vec2(0.5 * wall_radius, - (i + 0.5) * boxW - wall_radius / 2));
+      wall = new Wall(cur.x, cur.y, wall_len / 2, wall_radius / 2, HALF_PI);
+      maze.addWall(wall);
 
-    //create top wall
-    float xWall = 0;
-    float yWall = 0;
-    for(int i = 0; i < wallBases; i++){
-      wall = new Wall(xWall + boxW / 2 + shiftX, yWall + boxH / 2 + shiftY, boxW, boxH, 0);
+      // right column of border walls
+      cur = top_left_corner.add(new Vec2(0.5 * wall_radius + num_walls * boxW, -(i + 0.5) * boxW - wall_radius / 2));
+      wall = new Wall(cur.x, cur.y, wall_len / 2, wall_radius / 2, HALF_PI);
       maze.addWall(wall);
-      xWall += boxW;
+
     }
     
-    //create bottom wall
-    xWall = 0;
-    yWall = mazeH - boxH;
-    for(int i = 0; i < wallBases; i++){
-      wall = new Wall(xWall + boxW / 2 + shiftX, yWall + boxH / 2 + shiftY, boxW, boxH, 0);
-      maze.addWall(wall);
-      xWall += boxW;
-    }
-    
-    //create left wall
-    xWall = 0;
-    yWall = boxH;
-    for(int i = 0; i < wallLR; i++){
-      wall = new Wall(xWall + boxH / 2 + shiftX, yWall + boxW / 2 + shiftY, boxW, boxH, HALF_PI);
-      maze.addWall(wall);
-      yWall += boxW;
-    }
-    
-    //create right wall
-    xWall = mazeW - boxH;
-    yWall = boxH;
-    for(int i = 0; i < wallLR; i++){
-      wall = new Wall(xWall + boxH / 2 + shiftX, yWall + boxW / 2 + shiftY, boxW, boxH, HALF_PI);
-      maze.addWall(wall);
-      yWall += boxW;
-    }
-    
-    Target defaultTarget = makeDefaultTarget(mazeH,  mazeW, boxH, boxW);
+    Target defaultTarget = makeDefaultTarget(box2d.scalarWorldToPixels(mazeW / 2),  box2d.scalarWorldToPixels(mazeH / 2), boxW, boxW);
     maze.setTarget(defaultTarget);
     
-    Vehicle vehicle = new Vehicle(mazeW / 2, mazeH / 2, 0, 1.0 / 2.0);
+    Vehicle vehicle = new Vehicle(box2d.scalarWorldToPixels(mazeW / 2), box2d.scalarWorldToPixels(mazeH / 2), 0, 1.0);
     maze.setVehicle(vehicle);
     
     return maze;

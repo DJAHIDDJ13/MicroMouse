@@ -53,6 +53,10 @@ public class Sensor {
    }
    
    public void update(Vec2 vehiclePos, float vehicleAngle) {
+     // calculating the translation and rotation to find the position of the sensors from the vehicle's pos and angle
+     // [cos(a) , sin(a), 0]   [1, 0, tx]   [x]
+     // |-sin(a), cos(a), 0| * |0, 1, ty] * [y]
+     // [0,    0,      0, 1]   [0, 0, 1 ]   [1] 
      source = new Vec2(vehiclePos.x + relativePos.x * cos(-vehicleAngle) - relativePos.y * sin(-vehicleAngle), 
                        vehiclePos.y + relativePos.x * sin(-vehicleAngle) + relativePos.y * cos(-vehicleAngle));
      

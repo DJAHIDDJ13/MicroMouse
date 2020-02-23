@@ -10,8 +10,7 @@ public class Wall {
   }
   
   public Vec2 getPosition() {
-    Vec2 pos = box2d.getBodyPixelCoord(body);
-    return pos;
+    return body.getPosition();
   }
   
   public float getAngle() {
@@ -36,20 +35,23 @@ public class Wall {
 
   public void display() {
     // We look at each body and get its screen position
-    Vec2 pos = getPosition();
+    Vec2 pos = box2d.coordWorldToPixels(getPosition());
     
     // Get its angle of rotation
     float a = getAngle();
     
+    float pixelW = box2d.scalarWorldToPixels(w);
+    float pixelH = box2d.scalarWorldToPixels(h);
+    
     pushMatrix();
     rectMode(CENTER);
     fill(127,0,0);
-      translate(pos.x, pos.y);
+      translate(pos.x , pos.y);
       // adjust for the maze canvas shift
       translate(-SimulationUtility.MAZE_SHIFTX, -SimulationUtility.MAZE_SHIFTY);
       rotate(-a);
       stroke(0);
-      rect(0, 0, w, h);
+      rect(0, 0, pixelW * 2, pixelH * 2);
     fill(255);
     popMatrix();
   }
@@ -57,9 +59,7 @@ public class Wall {
   public void makeBody(float x, float y, float angle) {
     // Define a polygon (this is what we use for a rectangle)
     PolygonShape sd = new PolygonShape();
-    float box2dW = box2d.scalarPixelsToWorld(w / 2);
-    float box2dH = box2d.scalarPixelsToWorld(h / 2);
-    sd.setAsBox(box2dW, box2dH);
+    sd.setAsBox(w, h);
     
     // Define a fixture
     FixtureDef fd = new FixtureDef();
@@ -73,13 +73,13 @@ public class Wall {
     // Define the body and make it from the shape
     BodyDef bd = new BodyDef();
     bd.type = BodyType.STATIC;
-    bd.position.set(box2d.coordPixelsToWorld(x, y));
+    bd.position.set(x, y);
     bd.setAngle(angle);
 
     this.body = box2d.createBody(bd);
     this.body.createFixture(fd);
     
-    this.body.setGravityScale(1.0);
+    //this.body.setGravityScale(1.0);
     
     // set the current wall object as data for the body
     this.body.setUserData(this);

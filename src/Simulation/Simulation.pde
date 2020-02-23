@@ -29,7 +29,7 @@ void setup(){
   // Set the dash-gap pattern in pixels
   dash.pattern(30, 10, 15, 10);  
   
-  simCon = new SimulationController(16);
+  simCon = new SimulationController(8);
   simCon.setController(new ControlP5(this));
   simCon.createControllers();
 }

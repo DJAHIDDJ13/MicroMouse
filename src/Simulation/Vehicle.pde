@@ -9,70 +9,69 @@ public class Vehicle {
   
   private Wheel FRWheel, BRWheel, FLWheel, BLWheel;
   private Sensor[] sensors;
+  private Accelerometer accelerometer;
   
   private float vehicleSize;
   private Body body;
 
   // Constructor
   public Vehicle(float x, float y, float angle, float size) {
+    vehicleSize = size/30;
+
     // top
     topShape = new Vec2[5];
-    topShape[0] = new Vec2(-58, -35).mul(size);
-    topShape[1] = new Vec2(-50, -63).mul(size);
-    topShape[2] = new Vec2(0, -79).mul(size);
-    topShape[3] = new Vec2(49, -63).mul(size);
-    topShape[4] = new Vec2(59, -35).mul(size);
-
+    topShape[0] = new Vec2(-58, -35).mul(vehicleSize);
+    topShape[1] = new Vec2(-50, -63).mul(vehicleSize);
+    topShape[2] = new Vec2(0, -79).mul(vehicleSize);
+    topShape[3] = new Vec2(49, -63).mul(vehicleSize);
+    topShape[4] = new Vec2(59, -35).mul(vehicleSize);
     
     // middle
     middleShape = new Vec2[4];
-    middleShape[0] = new Vec2(39, -35).mul(size);
-    middleShape[1] = new Vec2(39, 34).mul(size);    
-    middleShape[2] = new Vec2(-38, 35).mul(size);
-    middleShape[3] = new Vec2(-38, -35).mul(size);
+    middleShape[0] = new Vec2(39, -35).mul(vehicleSize);
+    middleShape[1] = new Vec2(39, 34).mul(vehicleSize);    
+    middleShape[2] = new Vec2(-38, 35).mul(vehicleSize);
+    middleShape[3] = new Vec2(-38, -35).mul(vehicleSize);
     
     // bottom
     bottomShape = new Vec2[4];
-    bottomShape[0] = new Vec2(52, 34).mul(size);
-    bottomShape[1] = new Vec2(52, 51).mul(size);
-    bottomShape[2] = new Vec2(-52, 51).mul(size);
-    bottomShape[3] = new Vec2(-52, 35).mul(size);
+    bottomShape[0] = new Vec2(52, 34).mul(vehicleSize);
+    bottomShape[1] = new Vec2(52, 51).mul(vehicleSize);
+    bottomShape[2] = new Vec2(-52, 51).mul(vehicleSize);
+    bottomShape[3] = new Vec2(-52, 35).mul(vehicleSize);
 
-    wheelSize = new Vec2(8, 27).mul(size);
+    // Wheel size and positions
+    wheelSize = new Vec2(8, 27).mul(vehicleSize);
     wheelPos = new Vec2[4];
-    wheelPos[0] = new Vec2(48, -14).mul(size);
-    wheelPos[1] = new Vec2(-48, -14).mul(size);
-    wheelPos[2] = new Vec2(48, 15).mul(size);
-    wheelPos[3] = new Vec2(-48, 15).mul(size);
-        
-    sensorPos = new Vec2[4];
-    sensorPos[0] = new Vec2(-42, -51).mul(size);
-    sensorPos[1] = new Vec2(-20, -64).mul(size);
-    sensorPos[2] = new Vec2(20, -64).mul(size);
-    sensorPos[3] = new Vec2(42, -51).mul(size);
+    wheelPos[0] = new Vec2(48, -14).mul(vehicleSize);
+    wheelPos[1] = new Vec2(-48, -14).mul(vehicleSize);
+    wheelPos[2] = new Vec2(48, 15).mul(vehicleSize);
+    wheelPos[3] = new Vec2(-48, 15).mul(vehicleSize);
     
+    // Sensor positions
+    sensorPos = new Vec2[4];
+    sensorPos[0] = new Vec2(-42, -51).mul(vehicleSize);
+    sensorPos[1] = new Vec2(-20, -64).mul(vehicleSize);
+    sensorPos[2] = new Vec2(20, -64).mul(vehicleSize);
+    sensorPos[3] = new Vec2(42, -51).mul(vehicleSize);
+    
+    // Sensors angles
     sensorAngles = new float[4];
     sensorAngles[0] = -90-10;
     sensorAngles[1] = -90-60;
     sensorAngles[2] = -90+60;
     sensorAngles[3] = -90+10;
-
-    vehicleSize = size;
-
-    makeSensors(4);
+    
     makeWheels(x, y, angle);
     makeBody(x, y, angle);
     createJoints();
+
+    makeSensors(sensorAngles.length);
+    accelerometer = new Accelerometer();
   }
   
-  public Vec2 getPosition() {
-    Vec2 pos = box2d.getBodyPixelCoord(body);
-    
-    // adjust for the maze canvas shift
-    pos.x -= SimulationUtility.MAZE_SHIFTX;
-    pos.y -= SimulationUtility.MAZE_SHIFTY;
-    
-    return pos;
+  public Vec2 getPosition() {    
+    return body.getPosition();
   }
   
   public float getAngle() {
@@ -82,7 +81,7 @@ public class Vehicle {
   public void setPosition(float x, float y) {
     body.setTransform(new Vec2(x, y), getAngle());
   }
-  
+
   public void setAngle(float angle) {
     body.setTransform(getPosition(), angle);
   }
@@ -94,13 +93,13 @@ public class Vehicle {
   public Body getBody() {
     return body; 
   }
-  
+
   // calculates forward velocity
   Vec2 getForwardVelocity() {
     Vec2 currentRightNormal = body.getWorldVector(new Vec2(0, 1));
     return currentRightNormal.mul(Vec2.dot(currentRightNormal, body.getLinearVelocity()));
   }
-  
+
   public void updateDrag() {
     // apply drag force
     Vec2 currentForwardNormal = getForwardVelocity();
@@ -108,17 +107,19 @@ public class Vehicle {
     float dragForceMagnitude = -2 * currentForwardSpeed;
     body.applyForce(currentForwardNormal.mul(dragForceMagnitude), body.getWorldCenter()); 
   }
-  
+
   public void update() {
     updateDrag();
     FRWheel.updateFriction();
     FLWheel.updateFriction();
     BRWheel.updateFriction();
     BLWheel.updateFriction();
-    
+
     for(Sensor sensor: sensors) {
-      sensor.update(getPosition(), getAngle());
+      sensor.update(box2d.coordWorldToPixels(getPosition()), getAngle());
     }
+
+    accelerometer.update(box2d.coordWorldToPixels(getPosition()), getAngle());
   }
   
   public void move(float left_m, float right_m) {
@@ -127,31 +128,29 @@ public class Vehicle {
 
     BLWheel.move(left_m);
     FLWheel.move(left_m);
-    
-    body.applyForce(new Vec2(0, 500), body.getWorldCenter());
   }
   
   private void displaySensors() {
     for(int i = 0; i < sensors.length; i++) {
       sensors[i].display();
-      println("Sensor " + i + ": " + sensors[i].getValue());
     } 
-    println();
   }
   
   public void display() {
     // We look at each body and get its screen position
-    Vec2 pos = getPosition();
+    Vec2 pos = box2d.coordWorldToPixels(getPosition());
     // Get its angle of rotation
     float a = getAngle();
     
     pushMatrix();
     fill(127,127,127);
-      Vec2 offset = new Vec2(0, 0);
+      translate(pos.x, pos.y);
+      translate(-SimulationUtility.MAZE_SHIFTX, -SimulationUtility.MAZE_SHIFTY);
 
-      translate(pos.x + offset.x, pos.y + offset.y);
-      rotate(-a); 
+      rotate(-a);
+      scale(box2d.scaleFactor);
       stroke(0);
+      strokeWeight(2 / box2d.scaleFactor);
       
       beginShape();
         //Drawing of top shape
@@ -173,48 +172,46 @@ public class Vehicle {
         
       endShape();
     fill(255);
+    strokeWeight(1);
     popMatrix();
     
-    //Drawing of the wheels
+    // Displaying the wheels
     FRWheel.display();
     FLWheel.display();
     BRWheel.display();
     BLWheel.display();
 
     displaySensors();
+    accelerometer.display();
 }
   
   public void makeSensors(int nbSensors) {
     sensors = new Sensor[nbSensors];
     for(int i = 0; i < nbSensors; i++) {
-        Vec2 p1 = sensorPos[i];
+        Vec2 p1 = sensorPos[i].mul(box2d.scaleFactor);
         float ang = radians(sensorAngles[i]);
         float len = 100;
         
         sensors[i] = new Sensor(p1, ang, len);
-    } 
+    }
   }
   
   public void makeWheels(float x, float y, float angle) {
     // wheels
-    FRWheel = new Wheel(wheelPos[0].x + x, wheelPos[0].y + y, wheelSize.x, wheelSize.y, angle);
-    FLWheel = new Wheel(wheelPos[1].x + x, wheelPos[1].y + y, wheelSize.x, wheelSize.y, angle);
-    BRWheel = new Wheel(wheelPos[2].x + x, wheelPos[2].y + y, wheelSize.x, wheelSize.y, angle);
-    BLWheel = new Wheel(wheelPos[3].x + x, wheelPos[3].y + y, wheelSize.x, wheelSize.y, angle);
+    FRWheel = new Wheel(wheelPos[0].x * box2d.scaleFactor + x, wheelPos[0].y * box2d.scaleFactor  + y, wheelSize.x * box2d.scaleFactor, wheelSize.y * box2d.scaleFactor, angle);
+    FLWheel = new Wheel(wheelPos[1].x * box2d.scaleFactor + x, wheelPos[1].y * box2d.scaleFactor  + y, wheelSize.x * box2d.scaleFactor, wheelSize.y * box2d.scaleFactor, angle);
+    BRWheel = new Wheel(wheelPos[2].x * box2d.scaleFactor + x, wheelPos[2].y * box2d.scaleFactor  + y, wheelSize.x * box2d.scaleFactor, wheelSize.y * box2d.scaleFactor, angle);
+    BLWheel = new Wheel(wheelPos[3].x * box2d.scaleFactor + x, wheelPos[3].y * box2d.scaleFactor  + y, wheelSize.x * box2d.scaleFactor, wheelSize.y * box2d.scaleFactor, angle);
   }
   
-  public void makeBody(float x, float y, float angle) {
-    float x_, y_;
-    
+  public void makeBody(float x, float y, float angle) {    
     // Define a polygon
     // top shape
     PolygonShape top_s = new PolygonShape();
     Vec2[] topShapeWorld = topShape.clone();
     for(int i = 0; i < topShapeWorld.length; i++) {
-      x_ = box2d.scalarPixelsToWorld(topShapeWorld[i].x);
-      y_ = -box2d.scalarPixelsToWorld(topShapeWorld[i].y);
-      
-      topShapeWorld[i] = new Vec2(x_, y_);
+      topShapeWorld[i] = new Vec2(topShapeWorld[i].x, -topShapeWorld[i].y);
+      println(topShapeWorld[i]);
     }
     top_s.set(topShapeWorld, topShapeWorld.length);
     
@@ -222,10 +219,7 @@ public class Vehicle {
     PolygonShape middle_s = new PolygonShape();
     Vec2[] middleShapeWorld = middleShape.clone();
     for(int i = 0; i < middleShapeWorld.length; i++) {
-      x_ = box2d.scalarPixelsToWorld(middleShapeWorld[i].x);
-      y_ = -box2d.scalarPixelsToWorld(middleShapeWorld[i].y);
-      
-      middleShapeWorld[i] = new Vec2(x_, y_);
+      middleShapeWorld[i] = new Vec2(middleShapeWorld[i].x, -middleShapeWorld[i].y);
     }
     middle_s.set(middleShapeWorld, middleShapeWorld.length);
 
@@ -233,10 +227,7 @@ public class Vehicle {
     PolygonShape bottom_s = new PolygonShape();
     Vec2[] bottomShapeWorld = bottomShape.clone();
     for(int i = 0; i < bottomShapeWorld.length; i++) {
-      x_ = box2d.scalarPixelsToWorld(bottomShapeWorld[i].x);
-      y_ = -box2d.scalarPixelsToWorld(bottomShapeWorld[i].y);
-      
-      bottomShapeWorld[i] = new Vec2(x_, y_);
+      bottomShapeWorld[i] = new Vec2(bottomShapeWorld[i].x, -bottomShapeWorld[i].y);
     }
     bottom_s.set(bottomShapeWorld, bottomShapeWorld.length);
     
@@ -246,7 +237,7 @@ public class Vehicle {
 
     // Parameters that affect physics (Surface)
     top_fd.density = 1;
-    top_fd.friction = 1;
+    top_fd.friction = 0.5;
     top_fd.restitution = 0.6; 
     
     
@@ -256,7 +247,7 @@ public class Vehicle {
 
     // Parameters that affect physics (Surface)
     middle_fd.density = 1;
-    middle_fd.friction = 1;
+    middle_fd.friction = 0.5;
     middle_fd.restitution = 0.6; 
 
     // Define a fixture bottom
@@ -265,7 +256,7 @@ public class Vehicle {
     
     // Parameters that affect physics (Surface)
     bottom_fd.density = 1;
-    bottom_fd.friction = 1;
+    bottom_fd.friction = 0.5;
     bottom_fd.restitution = 0.6; 
     
     // Define the body and make it from the shape
