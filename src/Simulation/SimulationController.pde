@@ -247,11 +247,13 @@ public class SimulationController{
         float boxW = box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE) / size;
         float boxH = boxW * simulationEntry.getRatio();
 
-        toAddX = mouseX;
-        toAddY = mouseY;
+        Vec2 temp = box2d.coordPixelsToWorld(mouseX, mouseY);
+        toAddX = temp.x;
+        toAddY = temp.y;
         toAddW = boxW - boxH;
         toAddH = boxH;
         toAddR = toAddH / 2;
+        println(toAddX, toAddY, toAddW, toAddH);
       }
     } else {
       Vec2 temp = box2d.coordPixelsToWorld(panelX, panelY);
