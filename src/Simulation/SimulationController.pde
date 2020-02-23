@@ -11,6 +11,7 @@ public class SimulationController{
   private int objectPanelState;
   private boolean showingMovingObject;
   private boolean deleteMode;
+  private CheckBox snapCheckBox;
   
   private int dashed;
   
@@ -120,11 +121,12 @@ public class SimulationController{
        .setRange(4, 32)
        ;
        
-    /*cp5.addCheckBox("Snap")
-       .setPosition(772,800)
-       .setSize(10,10)
+    snapCheckBox = cp5.addCheckBox("SnapCheckBox")
+       .setPosition(772, 830)
+       .setSize(10, 10)
+       .addItem("Snap to grid", 0)
        ;
-      */
+     
   }
   
   
@@ -161,8 +163,8 @@ public class SimulationController{
 
   public void displayPanel() {
     stroke(0);
-    rect(5, 830, 70, 70); 
-  }
+    rect(5, 830, 70, 70);
+}
   
   public void keyPressedHandler() {
     if(key == 'z')
@@ -176,24 +178,27 @@ public class SimulationController{
   }
 
   public void controlEventHandler(ControlEvent event) {
+    String eventControllerName = event.getController().getName();
     deleteMode = false;
-    if(event.getController().getName().equals("Turn+") || event.getController().getName().equals("Turn-")){
+    if(eventControllerName.equals("Turn+") || eventControllerName.equals("Turn-")){
       if(toAddA == 0) {
         toAddA = HALF_PI;
       } else {
         toAddA = 0; 
       }
-    } else if(event.getController().getName().equals("+") || event.getController().getName().equals("-")){
+    } else if(eventControllerName.equals("+") || eventControllerName.equals("-")){
       objectPanelState = 1 - objectPanelState; 
-    } else if(event.getController().getName().equals("Add")) {
+    } else if(eventControllerName.equals("Add")) {
       showingMovingObject = !showingMovingObject;
-    } else if(event.getController().getName().equals("Remove")) {
+    } else if(eventControllerName.equals("Remove")) {
       showingMovingObject = false;
       deleteMode = true;
-    } else if(event.getController().getName().equals("Refresh")) {
+    } else if(eventControllerName.equals("Refresh")) {
       refreshMaze();
-    } else if(event.getController().getName().equals("Size")) {
+    } else if(eventControllerName.equals("Size")) {
       size = (int)cp5.get("Size").getValue();
+    } else if(event.isFrom(snapCheckBox)) {
+      println("Here");
     }
   }
   
@@ -213,7 +218,7 @@ public class SimulationController{
       }
     }
   }
-  
+
   public void snapToGrid() {
     Vec2 top_left_corner = box2d.coordPixelsToWorld(new Vec2(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY));
     Vec2 temp = box2d.coordPixelsToWorld(mouseX, mouseY).sub(top_left_corner);
@@ -231,7 +236,18 @@ public class SimulationController{
   // updates the gui
   public void updateController() {
     if(showingMovingObject && mouseX < SimulationUtility.MAZE_SIZE + SimulationUtility.MAZE_SHIFTX && mouseY < SimulationUtility.MAZE_SIZE + SimulationUtility.MAZE_SHIFTY) {
-      snapToGrid();
+      if(snapCheckBox.getItem(0).internalValue() == 1) {
+        snapToGrid();
+      } else {
+        float boxW = box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE) / size;
+        float boxH = boxW * simulationEntry.getRatio();
+
+        toAddX = mouseX;
+        toAddY = mouseY;
+        toAddW = boxW - boxH;
+        toAddH = boxH;
+        toAddR = toAddH / 2;
+      }
     } else {
       Vec2 temp = box2d.coordPixelsToWorld(panelX, panelY);
       toAddX = temp.x;

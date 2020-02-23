@@ -98,7 +98,7 @@ public class Maze {
     // maze canvas
     strokeWeight(2);
     rect(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY, size, size);
-
+    
     
     // everything draw here starts at the edge maze
     push();
@@ -121,6 +121,19 @@ public class Maze {
       target.display();
     
     pop();
+    
+    // fill whatever isn't canvas
+    fill(150);
+    stroke(150);
+    rect(0, 0, SimulationUtility.MAZE_SHIFTX, height);
+    rect(0, 0, width, SimulationUtility.MAZE_SHIFTY);
+    rect(SimulationUtility.MAZE_SHIFTX + SimulationUtility.MAZE_SIZE, 0, width, height);
+    rect(0, SimulationUtility.MAZE_SHIFTY + SimulationUtility.MAZE_SIZE, width, height);
+    noFill();
+    strokeWeight(2);
+    stroke(0);
+    rect(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY, size, size);
+    fill(255);
   } 
 }
 

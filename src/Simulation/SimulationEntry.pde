@@ -5,6 +5,8 @@ public class SimulationEntry{
   private float boxH,boxW;
   private float shiftX,shiftY;
   private float ratio;
+  
+  private int rows, cols;
   //add here all the variable that can be used for simulation
   
   public SimulationEntry(String file, float mazeH, float mazeW, 
@@ -27,7 +29,9 @@ public class SimulationEntry{
     this.shiftY = shiftY;
   }
   
-  public SimulationEntry(float rows, float cols) {
+  public SimulationEntry(int rows, int cols) {
+    this.rows = rows;
+    this.cols = cols;
     this.boxW = 800 / 160; //the perfect size is 25.
     this.boxH = 800 / 1.6; //it has to be boxH = boxW/2 to work well
     
@@ -40,6 +44,14 @@ public class SimulationEntry{
   
   public SimulationEntry(String file){
     this.file = file;
+  }
+  
+  public int getRows() {
+    return rows;
+  }
+
+  public int getCols() {
+    return cols;
   }
   
   public void setParameters(int rows, int cols){

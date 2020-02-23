@@ -36,6 +36,7 @@ void setup(){
 
 void draw() {
   background(150);
+  smooth();
   stroke(0);
 
   // We must always step through time!
