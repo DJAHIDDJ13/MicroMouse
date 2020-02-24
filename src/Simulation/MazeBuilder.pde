@@ -1,16 +1,15 @@
 public class MazeBuilder{
   
   public Maze builderInitialMaze(float mazeW, float mazeH, int size, float ratio){
-    Maze maze = new Maze(mazeH, mazeW);
     
     float boxW = mazeW / size;
     int num_walls = size; // the number of walls per side
     
     float wall_radius = boxW * ratio; // the radius of each wall
-    // boxW -= wall_radius / num_walls; // adjusting to fit the box + 1 additional wall_radius for the beginning
     float wall_len = boxW - wall_radius; // the length of each wall
+
+    Maze maze = new Maze(mazeH, mazeW, boxW, wall_radius);
     
-    println(size, mazeW);
     // Top left corner of the canvas in world coordinates
     Vec2 top_left_corner = box2d.coordPixelsToWorld(new Vec2(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY));
     
@@ -35,7 +34,6 @@ public class MazeBuilder{
       wall = new Wall(cur.x, cur.y, wall_len / 2, wall_radius / 2, HALF_PI);
       maze.addWall(wall);
     }
-    
     
     Target defaultTarget = makeDefaultTarget(mazeW / 2,  -mazeH / 2, boxW, boxW);
     maze.setTarget(defaultTarget);

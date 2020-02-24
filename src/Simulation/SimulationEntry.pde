@@ -32,10 +32,11 @@ public class SimulationEntry{
   public SimulationEntry(int rows, int cols) {
     this.rows = rows;
     this.cols = cols;
-    this.boxW = 800 / 160; //the perfect size is 25.
-    this.boxH = 800 / 1.6; //it has to be boxH = boxW/2 to work well
-    
     this.ratio = .1;
+
+    this.boxW = box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE) / rows; //the perfect size is 25.
+    this.boxH = boxW * ratio; //it has to be boxH = boxW/2 to work well
+    
     this.mazeH = SimulationUtility.MAZE_SIZE;
     this.mazeW = SimulationUtility.MAZE_SIZE;
     this.shiftX = SimulationUtility.MAZE_SHIFTX;

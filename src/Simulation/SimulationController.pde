@@ -61,6 +61,12 @@ public class SimulationController{
                                          box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
                                          size,
                                          simulationEntry.getRatio());
+/* test the addWallAt
+   println(maze.addWallAt(1, 1, WallOrientation.LEFT_WALL));
+   println(maze.addWallAt(1, 1, WallOrientation.RIGHT_WALL));
+   println(maze.addWallAt(1, 1, WallOrientation.TOP_WALL));
+   println(maze.addWallAt(1, 1, WallOrientation.BOTTOM_WALL));
+*/
  }
   
  public void setController(ControlP5 cp5) {
@@ -169,13 +175,13 @@ public class SimulationController{
   
   public void keyPressedHandler() {
     if(key == 'z')
-      maze.moveVehicle(200, 200);
+      maze.moveVehicle(400, 400);
     else if(key == 's')
-      maze.moveVehicle(-200, -200);
+      maze.moveVehicle(-400, -400);
     else if(key == 'q')
-      maze.moveVehicle(-200, 200);
+      maze.moveVehicle(-400, 400);
     else if(key == 'd')
-      maze.moveVehicle(200, -200);
+      maze.moveVehicle(400, -400);
   }
 
   public void controlEventHandler(ControlEvent event) {
@@ -231,7 +237,6 @@ public class SimulationController{
     float boxH = boxW * simulationEntry.getRatio();
     toAddW = boxW - boxH;
     toAddH = boxH;
-    // float newBoxW = boxH - toAddH / ceil(SimulationUtility.MAZE_SIZE / boxH);
     toAddX = round(temp.x / boxW) * boxW - cos(toAddA) * (boxW / 2) + top_left_corner.x;
     toAddY = round(temp.y / boxW) * boxW - sin(toAddA) * (boxW / 2) + top_left_corner.y;
     toAddR = toAddH / 2;
@@ -253,7 +258,6 @@ public class SimulationController{
         toAddW = boxW - boxH;
         toAddH = boxH;
         toAddR = toAddH / 2;
-        println(toAddX, toAddY, toAddW, toAddH);
       }
     } else {
       Vec2 temp = box2d.coordPixelsToWorld(panelX, panelY);
