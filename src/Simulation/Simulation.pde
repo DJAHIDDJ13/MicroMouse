@@ -27,10 +27,9 @@ void setup(){
   // Initialize it, passing a reference to the current PApplet
   dash = new DashedLines(this);
   // Set the dash-gap pattern in pixels
-  dash.pattern(30, 10, 15, 10);  
+  dash.pattern(30, 10, 15, 10);
   
-  simCon = new SimulationController(8);
-  simCon.setController(new ControlP5(this));
+  simCon = new SimulationController(new ControlP5(this), 8);
   simCon.createControllers();
 }
 
@@ -45,7 +44,8 @@ void draw() {
   
   // Animate dashes with 'walking ants' effect
   dash.offset(simCon.getDashed());
-
+  
+  
   simCon.getMaze().display();
   simCon.display();
 }

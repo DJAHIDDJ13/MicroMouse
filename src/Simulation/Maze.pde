@@ -6,6 +6,8 @@ import java.util.*;
 public class Maze {
   private float mazeH, mazeW;
   private float boxW, wallRadius, wallLen;
+  private int rows, cols;
+  
   private LinkedList<Wall> walls; // using linked list since there will be a lot of inserts/delete
   private Target target;
   private Vehicle vehicle;
