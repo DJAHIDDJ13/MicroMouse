@@ -61,7 +61,6 @@ public class Accelerometer {
      // elapsed time or step time (in seconds)
      float prev_time_step = (prevMillis - prevprevMillis) / 1000.0;
      float cur_time_step = (curMillis - prevMillis) / 1000.0;
-     
      // taking the average of the two time steps
      float avg_time_step = (prev_time_step + cur_time_step) / 2;
      
@@ -70,11 +69,13 @@ public class Accelerometer {
      prevPosition = curPosition;
      curPosition = vehiclePos;
      
+     println(prevprevPosition, prevPosition, curPosition);
      // update the angle values
      prevprevAngle = prevAngle;
      prevAngle = curAngle;
      curAngle = vehicleAngle;
-     
+
+     println(prevprevAngle, prevAngle, curAngle);
      // the directional acceleration needs 3 discrete position samples 
      accelerometer.x = secondDerivative(prevprevPosition.x, prevPosition.x, curPosition.x, avg_time_step);
      accelerometer.y = secondDerivative(prevprevPosition.y, prevPosition.y, curPosition.y, avg_time_step);

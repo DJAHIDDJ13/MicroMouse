@@ -183,7 +183,23 @@ public class Vehicle {
 
     displaySensors();
     accelerometer.display();
-}
+  }
+  
+  public PVector getAcceleration() {
+    return accelerometer.getAccelerometer();
+  }
+  
+  public PVector getAngularAcceleration() {
+    return accelerometer.getGyro();
+  }
+  
+  public float[] getSensorValues() {
+    float[] res = new float[sensors.length];
+    for(int i = 0; i < sensors.length; i++) {
+      res[i] = sensors[i].getValue();
+    }
+    return res;
+  }
   
   public void makeSensors(int nbSensors) {
     sensors = new Sensor[nbSensors];

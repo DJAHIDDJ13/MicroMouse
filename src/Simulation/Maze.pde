@@ -21,6 +21,18 @@ public class Maze {
     walls = new LinkedList<Wall>();
   }
 
+  public PVector getVehicleAcceleration() {
+    return vehicle.getAcceleration();
+  }
+  
+  public PVector getVehicleAngularAcceleration() {
+    return vehicle.getAngularAcceleration();
+  }
+  
+  public float[] getVehicleSensorValues() {
+    return vehicle.getSensorValues(); 
+  }
+
   public Target getTarget() {
     return target;
   }
