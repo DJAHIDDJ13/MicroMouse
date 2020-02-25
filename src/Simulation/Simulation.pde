@@ -14,13 +14,13 @@ SimulationController simCon;
 
 // My vars
 BackTracking BT;
-Cell cell, next, cell1, cell2, current;
+Cell next, current;
 Stack stack = new Stack();
-boolean tour = true;
+
 
 void setup(){
   size(1500,920);
-  // smooth();
+  smooth();
   
   // Initialize box2d physics and create the world
   box2d = new Box2DProcessing(this, 10.0f);
@@ -34,16 +34,16 @@ void setup(){
   //MY CODE
   BT = new BackTracking();
   current = BT.mat[0][0];
-  cell = BT.mat[0][5];
-  cell1 = BT.mat[1][2];
-  cell2 = BT.mat[1][1];
-  BT.randomVoisin(cell);
+
+  
+  for (int i =0; i<=10000; i++)
+  {print("ayaya\n");}
 }
 
 void draw() {
   background(150);
   stroke(0);
-  frameRate(16000800);
+
   // We must always step through time!
   box2d.step();
   simCon.update();
@@ -61,7 +61,6 @@ void draw() {
   //next.display();
   
   /* ######### Test du BackTracking ########*/
-  tour = !tour;
 
   BT.display(); 
   
