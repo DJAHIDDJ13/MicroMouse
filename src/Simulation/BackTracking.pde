@@ -5,7 +5,6 @@ public class BackTracking {
   public static final float mazeHeight = 800.0;;
   public static final float wallWidth  = 50;
   public static final float wallHeight = 10;
- 
   public Cell mat[][];
   
   
@@ -51,19 +50,37 @@ public class BackTracking {
    this.mat[8][7].droite = false;
    this.mat[8][8].bas = false;
    
-   //Now we apply the BackTracking algorithm to get a random maze
-   Cell next, current = this.mat[0][0];
+   // Now we apply the BackTracking algorithm to get a random maze
+   Cell next, current;
    Stack stack = new Stack();
    
-
+   current= this.mat[0][0];
    
+   while(allVisited(this.mat) == false)
+   {
+     // Current Cell marked as visited
+     current.visited = true;
+     
+     // Election d'un voisin aleatoir de current
+     next = randomVoisin(current);
+     
+    if(next==null && stack.empty()) {
+       return; }
+       
+    else if(next==null) {
+    current = (Cell)stack.pop(); }
+    
+    else{
+    stack.push(current);
+    // supprimmer mur
+    removeWall(current,next);
+    current = next; }
+   }
+ }
    
+  
  
-  }
-  
-  
-  
-  // We loop over the cells inside the mat and we show them 
+  // We loop over the cells insi mat and we show them 
   public void display()
   {
     int lignes = (int)(mazeHeight/wallWidth);
@@ -77,15 +94,7 @@ public class BackTracking {
    
   }
   
-  public void randomChange()
-  {
-    Random r = new Random();
-    int i = r.nextInt((9 - 0) + 1) + 0;
-    int j = r.nextInt((9- 0) + 1) + 0;
-    this.mat[i][j].setCellWalls(false,false,false,false);
-  }
-  
-  
+ 
   // Retourne une cellule voisine aléatoire qui n'a pas encore été visitée
   // On stack toutes les cellules vosines non visitées
   // On retourne l'une d'entre elle de manière aléatoire
@@ -115,7 +124,7 @@ public class BackTracking {
     
     if(!neighbours.empty()) {
       next = (Cell) neighbours.elementAt((int)random(neighbours.size()));
-      System.out.println("ligne : "+next.jCell/(int)wallWidth+"    colonne is : "+next.iCell/(int)wallWidth);
+     //System.out.println("ligne : "+next.jCell/(int)wallWidth+"    colonne is : "+next.iCell/(int)wallWidth);
       return next; }
     else {
       return null; }
@@ -167,5 +176,6 @@ public boolean allVisited(Cell matrix[][]) {
 return true;
 }
   
-  
+
+
 }

@@ -14,8 +14,7 @@ SimulationController simCon;
 
 // My vars
 BackTracking BT;
-Cell next, current;
-Stack stack = new Stack();
+
 
 
 void setup(){
@@ -33,11 +32,8 @@ void setup(){
   
   //MY CODE
   BT = new BackTracking();
-  current = BT.mat[0][0];
 
   
-  for (int i =0; i<=10000; i++)
-  {print("ayaya\n");}
 }
 
 void draw() {
@@ -52,36 +48,9 @@ void draw() {
   //simCon.display();
   
   //MY CODE
-  //BT.randomChange();
-  //BT.display();
-  //BT.mat[4][4].display();
-  //BT.mat[4][5].display();
-  //next = BT.randomVoisin(cell);
-  //BT.removeWall(cell1,cell2);
-  //next.display();
   
-  /* ######### Test du BackTracking ########*/
-
   BT.display(); 
   
-  //La cellule corrante et marquée comme visitée
-  current.visited = true;
-  
-  // election d'une cellule voisine nos visitée de façon aléatoir
-  Cell next = BT.randomVoisin(current);
-  
-  if(next==null && stack.empty()){
-    return;
-  }
-  else if(next==null){
-    current = (Cell)stack.pop();
-  }
-  else{
-    stack.push(current);
-    // supprimmer mur
-    BT.removeWall(current,next);
-    current = next;
-  }
 }
   
 
@@ -94,6 +63,10 @@ void mousePressed() {
   simCon.mousePressedHandler();
 }
 
-void keyPressed() {
-  simCon.keyPressedHandler();
+ void keyPressed() {
+  if (key == CODED)  {
+    if (keyCode == RIGHT) {
+      BT = new BackTracking();
+    }
+  }
 }
