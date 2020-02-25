@@ -86,6 +86,6 @@ public class Accelerometer {
    }
    
    public void display() {
-     line(curPosition.x, curPosition.y, curPosition.x + accelerometer.x, curPosition.y + accelerometer.y);
+     line(curPosition.x -SimulationUtility.MAZE_SHIFTX, curPosition.y-SimulationUtility.MAZE_SHIFTY, curPosition.x + accelerometer.x, curPosition.y + accelerometer.y);
    }
 }

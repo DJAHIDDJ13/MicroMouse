@@ -1,7 +1,6 @@
 import controlP5.*;
 
 public class SimulationController {
-  
   public SimulationEntry simulationEntry;
   private Maze maze;
   private MazeBuilder mazeBuilder;
@@ -44,6 +43,7 @@ public class SimulationController {
 
    // new simulation entry
    simulationEntry = new SimulationEntry(size, size);
+   
    
    // build the maze
    mazeBuilder = new MazeBuilder();
@@ -102,6 +102,7 @@ public class SimulationController {
   }
   
   public void display() {
+    maze.display();
     controlPanel.display();
     informationPanel.display();
     

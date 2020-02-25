@@ -9,7 +9,6 @@ public class ControlPanel {
   private boolean showingMovingObject;
   private boolean deleteMode;
   private boolean snap;
-  private CheckBox snapCheckBox;
 
   private final float panelX = 40;
   private final float panelY = 865;
@@ -25,7 +24,7 @@ public class ControlPanel {
     objectPanelState = 0;
     showingMovingObject = false;
     deleteMode = false;
-    snap = true;
+    snap = false;
   }
 
   public void mousePressedHandler() {
@@ -46,13 +45,16 @@ public class ControlPanel {
   }
 
   public void keyPressedHandler() {
+    
   }
 
   public void controlEventHandler(ControlEvent event) {
     String eventControllerName = "";
     if (event.getType() != 2)
       eventControllerName = event.getController().getName();
-
+    else
+      eventControllerName = event.getName();
+      
     deleteMode = false;
     if (eventControllerName.equals("Turn+") || eventControllerName.equals("Turn-")) {
       if (toAddA == 0) {
@@ -72,12 +74,9 @@ public class ControlPanel {
     } else if (eventControllerName.equals("Size")) {
       int size = (int) cp5.get("Size").getValue();
       simCon.setSize(size);
-    } else if (event.isFrom(snapCheckBox)) {
-      println("WORKING");
+    } else if (eventControllerName.equals("SnapCheckBox")) {
       snap = !snap;
     }
-    
-    println(event, snapCheckBox);
   }
 
   public void createControllers() {
@@ -132,19 +131,16 @@ public class ControlPanel {
       .setRange(4, 32)
       ;
 
-    snapCheckBox = cp5.addCheckBox("SnapCheckBox")
+    cp5.addCheckBox("SnapCheckBox")
       .setPosition(772, 830)
       .setSize(10, 10)
       .addItem("Snap to grid", 0)
       .activateAll()
       ;
-      println(snapCheckBox);
   }
 
   public void update() {
     updateController();
-    if(frameCount % 100 == 0)
-    println(snapCheckBox);
   }
 
   public void display() {

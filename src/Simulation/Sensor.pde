@@ -20,7 +20,7 @@ public class Sensor {
      castPoint = new Vec2(0, 0);
      
      this.angle = angle;
-     this.len = len;
+     this.len = len * box2d.scaleFactor / 10;
      this.value = 0.0;
    }
    
@@ -57,8 +57,8 @@ public class Sensor {
      // [cos(a) , sin(a), 0]   [1, 0, tx]   [x]
      // |-sin(a), cos(a), 0| * |0, 1, ty] * [y]
      // [0,    0,      0, 1]   [0, 0, 1 ]   [1] 
-     source = new Vec2(vehiclePos.x + relativePos.x * cos(-vehicleAngle) - relativePos.y * sin(-vehicleAngle), 
-                       vehiclePos.y + relativePos.x * sin(-vehicleAngle) + relativePos.y * cos(-vehicleAngle));
+     source = new Vec2(vehiclePos.x-SimulationUtility.MAZE_SHIFTX + relativePos.x * cos(-vehicleAngle) - relativePos.y * sin(-vehicleAngle), 
+                       vehiclePos.y-SimulationUtility.MAZE_SHIFTY + relativePos.x * sin(-vehicleAngle) + relativePos.y * cos(-vehicleAngle));
      
      target = new Vec2(source.x + len * cos(angle - vehicleAngle), source.y + len * sin(angle - vehicleAngle));
      sensorDetect();
@@ -70,7 +70,7 @@ public class Sensor {
      box2d.world.raycast(callback, box2d.coordPixelsToWorld(source), box2d.coordPixelsToWorld(target));
      if (callback.getM_fixture() != null) {
         castPoint = box2d.coordWorldToPixels(callback.getM_point());
-        value = floor(len / sqrt((castPoint.x - source.x) * (castPoint.x - source.x) + (castPoint.y - source.y) * (castPoint.y - source.y)));
+        value = sqrt((castPoint.x - source.x) * (castPoint.x - source.x) + (castPoint.y - source.y) * (castPoint.y - source.y));
      } else {
         value = -1;
      }

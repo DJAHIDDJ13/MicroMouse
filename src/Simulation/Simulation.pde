@@ -35,7 +35,6 @@ void setup(){
 
 void draw() {
   background(150);
-  smooth();
   stroke(0);
 
   // We must always step through time!
@@ -45,8 +44,6 @@ void draw() {
   // Animate dashes with 'walking ants' effect
   dash.offset(simCon.getDashed());
   
-  
-  simCon.getMaze().display();
   simCon.display();
 }
 

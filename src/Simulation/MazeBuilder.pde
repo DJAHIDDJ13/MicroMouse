@@ -34,8 +34,7 @@ public class MazeBuilder{
       wall = new Wall(cur.x, cur.y, wall_len / 2, wall_radius / 2, HALF_PI);
       maze.addWall(wall);
     }
-    
-    Target defaultTarget = makeDefaultTarget(mazeW / 2,  -mazeH / 2, boxW, boxW);
+    Target defaultTarget = makeDefaultTarget(SimulationUtility.MAZE_SIZE + SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SIZE + SimulationUtility.MAZE_SHIFTX, boxW, boxW);
     maze.setTarget(defaultTarget);
     
     Vehicle vehicle = new Vehicle(box2d.scalarWorldToPixels(mazeW / 2), box2d.scalarWorldToPixels(mazeH / 2), 0, 1.0);

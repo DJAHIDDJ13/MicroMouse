@@ -3,10 +3,9 @@ public class Target {
 
   // Constructor
   public Target(float x, float y, float r) {
-    Vec2 pixelPos = box2d.coordWorldToPixels(x, y);
-    this.x = pixelPos.x;
-    this.y = pixelPos.y;
-    this.r = r;
+    this.x = x;
+    this.y = y;
+    this.r = box2d.scalarWorldToPixels(r) / 4;
   }
   
   public float getPositionX() {
@@ -23,14 +22,13 @@ public class Target {
   }
 
   public void display() {
-    float pixel_r = box2d.scalarWorldToPixels(r) / 4;
     pushMatrix();
     translate(x, y);
     fill(127);
       strokeWeight(1);
-      ellipse(0, 0, pixel_r*2, pixel_r*2);
-      line(-pixel_r, 0, pixel_r, 0);
-      line(0, -pixel_r, 0, pixel_r);
+      ellipse(0, 0, r*2, r*2);
+      line(-r, 0, r, 0);
+      line(0, -r, 0, r);
     fill(255);
     popMatrix();
   }
