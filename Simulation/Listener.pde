@@ -1,6 +1,7 @@
 public class Listener extends Communication {
     FileInputStream rxStream;
     String output;
+    Message message;
 
     public Listener(Semaphore semaphore) {
         this.semaphore = semaphore;
@@ -20,11 +21,25 @@ public class Listener extends Communication {
     public void read_fifo() {
         try {
             //this.semaphore.acquire();
+
+            // RESET VALUES
             rxStream = new FileInputStream(FIFO_PATH + FIFO_RX_FILENAME);
             int character = 0;
             this.output = "";
+            
+            // READ PIPE
             while ((character = rxStream.read()) != -1)
-            this.output += (char) character;
+              this.output += (char) character;
+            this.message = new Message(this.output);
+            
+            
+            /* MESSAGES HANDLERS
+             * FLAG:VALUES
+             */
+            System.out.println("FLAG : " + this.message.getFlag());
+            System.out.println("CONTENT : " + this.message.getContent());
+            
+            // CLEAN UP
             rxStream.close();
             //this.semaphore.release();
         } catch(Exception e) {

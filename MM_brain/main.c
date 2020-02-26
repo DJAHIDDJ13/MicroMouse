@@ -43,7 +43,7 @@ void *thread_2(void *arg) {
 		pthread_cond_wait (&condition, &mutex);
 		printf("%s\n", output);
 		/* ANSWER */
-		write_fifo("PONG!");
+		write_fifo("PONG:PONG!");
 		pthread_mutex_unlock(&mutex);
 	}
 
