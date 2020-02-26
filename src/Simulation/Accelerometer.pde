@@ -69,13 +69,11 @@ public class Accelerometer {
      prevPosition = curPosition;
      curPosition = vehiclePos;
      
-     println(prevprevPosition, prevPosition, curPosition);
      // update the angle values
      prevprevAngle = prevAngle;
      prevAngle = curAngle;
      curAngle = vehicleAngle;
 
-     println(prevprevAngle, prevAngle, curAngle);
      // the directional acceleration needs 3 discrete position samples 
      accelerometer.x = secondDerivative(prevprevPosition.x, prevPosition.x, curPosition.x, avg_time_step);
      accelerometer.y = secondDerivative(prevprevPosition.y, prevPosition.y, curPosition.y, avg_time_step);

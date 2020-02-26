@@ -43,8 +43,9 @@ public class InformationPanel {
   }
 
   public void updateText() {
-    accText = String.format("x: %.1f, y:%.1f, z:%.1f", acc.x / 10, acc.y / 10, acc.z / 10);
-    angAccText = String.format("x: %.1f, y:%.1f, z:%.1f", angAcc.x / 10, angAcc.y / 10, angAcc.z / 10);
+    int div = 1;
+    accText = String.format("x: %.1f, y:%.1f, z:%.1f", acc.x / div, acc.y / div, acc.z / div);
+    angAccText = String.format("x: %.1f, y:%.1f, z:%.1f", angAcc.x / div, angAcc.y / div, angAcc.z / div);
     
     float[] sensorVals = maze.getVehicleSensorValues();
     sensorText = "";
@@ -64,7 +65,6 @@ public class InformationPanel {
     text("Accelerometer ("+ accText +")", 900, 50);
     text("Gyroscope       ("+ angAccText +")", 900, 80);
     text("Sensors           ("+ sensorText +")", 900, 110);
-    println(frameRate);
     fill(255);
   }
 }
