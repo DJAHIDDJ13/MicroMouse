@@ -5,19 +5,19 @@ import java.util.*;
 
 public class Maze {
   private float mazeH, mazeW;
-  private float boxW, wallRadius, wallLen;
+  private float boxW, boxH, ratio;
   private int rows, cols;
   
   private LinkedList<Wall> walls; // using linked list since there will be a lot of inserts/delete
   private Target target;
   private Vehicle vehicle;
   
-  public Maze(float mazeW, float mazeH, float boxW, float wallRadius) {
+  public Maze(float mazeW, float mazeH, float boxW, float boxH, float ratio) {
     this.mazeW = mazeW;
     this.mazeH = mazeH;
     this.boxW = boxW;
-    this.wallRadius = wallRadius;
-    this.wallLen = boxW - wallRadius;
+    this.boxH = boxH;
+    this.ratio = ratio;
     walls = new LinkedList<Wall>();
   }
 
@@ -78,23 +78,38 @@ public class Maze {
   }
   
   public Wall addWallAt(int x, int y, WallOrientation o) {    
+    float wall_len = 0.0f;
+    float wall_radius = 0.0f;
+    
     float angle = 0.0f;
     Vec2 offset = new Vec2();
 
     switch(o) {
     case TOP_WALL:    // top
-      offset.set(0.5 * boxW, 0         ); angle = 0.0f;    break;
+      offset.set(0.5 * boxW, 0         ); 
+      angle = 0.0f;
+      wall_radius = boxW * ratio; wall_len = boxW * (1-ratio); 
+      break;
     case RIGHT_WALL:  // right
-      offset.set(boxW      , 0.5 * boxW); angle = HALF_PI; break;
+      offset.set(boxW      , 0.5 * boxW); 
+      angle = HALF_PI; 
+      wall_radius = boxH * ratio; wall_len = boxH * (1-ratio); 
+      break;
     case BOTTOM_WALL: // bottom
-      offset.set(0.5 * boxW, boxW      ); angle = 0.0f;    break;
+      offset.set(0.5 * boxW, boxW      );
+      angle = 0.0f;    
+      wall_radius = boxW * ratio; wall_len = boxW * (1-ratio);
+      break;
     case LEFT_WALL:   // left
-      offset.set(0         , 0.5 * boxW); angle = HALF_PI; break;
+      offset.set(0         , 0.5 * boxW); 
+      angle = HALF_PI;
+      wall_radius = boxH * ratio; wall_len = boxH * (1-ratio); 
+      break;
     }
 
     Vec2 top_left_corner = box2d.coordPixelsToWorld(new Vec2(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY));
-    Vec2 cur = top_left_corner.add(new Vec2(x * boxW + offset.x, -y * boxW - offset.y));
-    Wall added = new Wall(cur.x, cur.y, wallLen / 2, wallRadius / 2, angle);
+    Vec2 cur = top_left_corner.add(new Vec2(x * boxW + offset.x, -y * boxH - offset.y));
+    Wall added = new Wall(cur.x, cur.y, wall_len / 2, wall_radius / 2, angle);
     addWall(added);
     
     return added;

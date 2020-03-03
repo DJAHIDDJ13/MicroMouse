@@ -1,38 +1,24 @@
 public class MazeBuilder{
   
   public Maze builderInitialMaze(float mazeW, float mazeH, int size, float ratio){
-    
     float boxW = mazeW / size;
+    float boxH = mazeH / size;
     int num_walls = size; // the number of walls per side
     
-    float wall_radius = boxW * ratio; // the radius of each wall
-    float wall_len = boxW - wall_radius; // the length of each wall
-
-    Maze maze = new Maze(mazeH, mazeW, boxW, wall_radius);
-    
-    // Top left corner of the canvas in world coordinates
-    Vec2 top_left_corner = box2d.coordPixelsToWorld(new Vec2(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY));
+    Maze maze = new Maze(mazeH, mazeW, boxW, boxH, ratio);
     
     for(int i = 0; i < num_walls; i++) {
-      // Top row of border walls
-      Vec2 cur = top_left_corner.add(new Vec2((i + 0.5) * boxW, 0));
-      Wall wall = new Wall(cur.x, cur.y, wall_len / 2, wall_radius / 2, 0);
-      maze.addWall(wall);
+      // TOP
+      maze.addWallAt(i, 0, WallOrientation.TOP_WALL);
       
-      // Bottom row of border walls
-      cur = top_left_corner.add(new Vec2((i + 0.5) * boxW, -num_walls * boxW));
-      wall = new Wall(cur.x, cur.y, wall_len / 2, wall_radius / 2, 0);
-      maze.addWall(wall);
+      // RIGHT
+      maze.addWallAt(size-1, i, WallOrientation.RIGHT_WALL);
       
-      // left column of border walls
-      cur = top_left_corner.add(new Vec2(0, - (i + 0.5) * boxW));
-      wall = new Wall(cur.x, cur.y, wall_len / 2, wall_radius / 2, HALF_PI);
-      maze.addWall(wall);
-
-      // right column of border walls
-      cur = top_left_corner.add(new Vec2(num_walls * boxW, -(i + 0.5) * boxW));
-      wall = new Wall(cur.x, cur.y, wall_len / 2, wall_radius / 2, HALF_PI);
-      maze.addWall(wall);
+      // BOTTOM
+      maze.addWallAt(i, size-1, WallOrientation.BOTTOM_WALL);
+      
+      // LEFT
+      maze.addWallAt(0, i, WallOrientation.LEFT_WALL);
     }
     Target defaultTarget = makeDefaultTarget(SimulationUtility.MAZE_SIZE + SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SIZE + SimulationUtility.MAZE_SHIFTX, boxW, boxW);
     maze.setTarget(defaultTarget);
@@ -43,7 +29,7 @@ public class MazeBuilder{
     return maze;
   }
   
-  public Target makeDefaultTarget(float mazeH, float mazeW, float boxH, float boxW){                  
+  public Target makeDefaultTarget(float mazeH, float mazeW, float boxW, float boxH){                  
     float xTarget = mazeW / 2;
     float yTarget = mazeH / 2;
     float rTarget = boxH / 2;

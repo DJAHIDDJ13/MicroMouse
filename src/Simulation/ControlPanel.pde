@@ -200,8 +200,8 @@ public class ControlPanel {
     float pixelH = box2d.scalarWorldToPixels(toAddH);
 
     if (objectPanelState == 0) {
-      fill(127, 0, 0);
-      stroke(0);
+      fill(127, 0, 0, 150);
+      stroke(0, 150);
       rect(0, 0, pixelW, pixelH);
       fill(255);
     } // display target

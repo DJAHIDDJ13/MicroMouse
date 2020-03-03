@@ -6,7 +6,6 @@ public class InformationPanel {
   PVector acc;
   PVector angAcc;
   
-  
   String accText;
   String angAccText;
   String sensorText;

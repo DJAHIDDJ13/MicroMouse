@@ -51,7 +51,7 @@ public class SimulationController {
                                          box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
                                          size,
                                          simulationEntry.getRatio());
-                                         
+   
    // Initializing the GUI Panels
    controlPanel = new ControlPanel(this, cp5, maze);
    informationPanel = new InformationPanel(this, cp5, maze);
