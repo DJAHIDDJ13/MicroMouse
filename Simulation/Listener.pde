@@ -5,10 +5,10 @@ import java.util.Arrays;
 public class Listener extends Communication {
     File rxFile;
     FileInputStream rxStream;
+    
 
-    public Listener(Semaphore semaphore) {
+    public Listener() {
         this.rxFile = new File(CommunicationUtility.FIFO_PATH + CommunicationUtility.FIFO_RX_FILENAME);
-        this.semaphore = semaphore;
         this.setName("Listener process");
         this.setDaemon(true);
         this.start();
@@ -17,35 +17,10 @@ public class Listener extends Communication {
     public void run() {
         CommunicationUtility.logMessage("INFO", "Listener", "run", "Starting listener...");
         while (true) {
-            System.out.println("JAVA - LISTENING...");
+            CommunicationUtility.logMessage("INFO", "Listener", "run", "Listening...");
             readFifo();
         }
     }
-
-
-    /* ########## DEPRECATED ##########
-    public void readFifo() {
-        try {
-            //this.semaphore.acquire();
-
-            // RESET VALUES
-            rxStream = new FileInputStream(CommunicationUtility.FIFO_PATH + CommunicationUtility.FIFO_RX_FILENAME);
-            int character = 0;
-            this.output = "";
-            
-            // READ PIPE
-            while ((character = rxStream.read()) != -1)
-              this.output += (char) character;
-            
-            // CLEAN UP
-            rxStream.close();
-            //this.semaphore.release();
-        } catch(Exception e) {
-            e.printStackTrace(); 
-            System.out.println(e); 
-        }
-    }
-    */
 
     /***************************************************************************************************************************
     * GLOBAL FORMAT (in bytes)
@@ -62,8 +37,6 @@ public class Listener extends Communication {
     ***************************************************************************************************************************/
     public void readFifo() {
         try {
-            //this.semaphore.acquire();
-
             /* RESET VALUES */
             rxStream = new FileInputStream(CommunicationUtility.FIFO_PATH + CommunicationUtility.FIFO_RX_FILENAME);
             byte[] rawData = new byte[CommunicationUtility.MAX_MSG_SIZE], sliced;
@@ -100,13 +73,8 @@ public class Listener extends Communication {
                 default:
                     CommunicationUtility.logMessage("ERROR", "Listener", "readFifo", "No matching flag found.");
             }
-            /*
-            for (byte value : rawData)
-              System.out.println(value);
-            */
             // CLEAN UP
             rxStream.close();
-            //this.semaphore.release();
         } catch(Exception e) {
             e.printStackTrace(); 
             System.out.println(e); 

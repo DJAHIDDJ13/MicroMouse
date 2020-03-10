@@ -15,12 +15,8 @@ import java.nio.ByteOrder;
 
 public static final long  STARTING_TIME = System.currentTimeMillis();
 
-
-Semaphore semaphore = new Semaphore(1);
-
-
-Listener listener = new Listener(semaphore);
-Writer writer = new Writer(semaphore);
+Listener listener = new Listener();
+Writer writer = new Writer();
 
 /* MESSAGE */
 HeaderData testHeader = new HeaderData();

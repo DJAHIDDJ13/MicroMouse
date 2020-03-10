@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.concurrent.*;
 
 public abstract class Communication extends Thread {
-  Semaphore semaphore;
 
   public abstract void run();
 }
