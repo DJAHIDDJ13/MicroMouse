@@ -1,7 +1,3 @@
-import java.io.File;
-import java.nio.file.Files;
-import java.util.Arrays;
-
 public class Listener extends Communication {
     File rxFile;
     FileInputStream rxStream;

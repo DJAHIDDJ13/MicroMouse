@@ -1,6 +1,4 @@
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-
+/* MESSAGE TYPE : TX */
 public class SensorData extends Message {
     float[] distanceData;
     float[] accelerometerData;

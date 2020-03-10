@@ -1,3 +1,4 @@
+/* MESSAGE TYPE : TX */
 public class HeaderData extends Message {
     int[] mazeData;
     int[] initialPosData;
@@ -11,7 +12,7 @@ public class HeaderData extends Message {
     public HeaderData (int[] mazeData, int[] initialPosData, int[] targetPosData) {
         this.flag = CommunicationUtility.HEADER_FLAG;
         if (mazeData.length != 2 || initialPosData.length != 3 || targetPosData.length != 2) {
-            CommunicationUtility.logMessage("ERROR", "HeaderData", "Constructor", "Array sizes not matching.");  
+            CommunicationUtility.logMessage("WARNING", "HeaderData", "Constructor", "Array sizes not matching.");  
         } else {
             this.mazeData = mazeData;
             this.initialPosData = initialPosData;
@@ -19,23 +20,23 @@ public class HeaderData extends Message {
         }
     }
 
-    void setMazeData(int[] mazeData) {
+    public void setMazeData(int[] mazeData) {
         if (mazeData.length != 2)
-            CommunicationUtility.logMessage("ERROR", "HeaderData", "setMazeData", "mazeData array size not matching : is " + mazeData.length + " - should be 2.");
+            CommunicationUtility.logMessage("WARNING", "HeaderData", "setMazeData", "mazeData array size not matching : is " + mazeData.length + " - should be 2.");
         else
             this.mazeData = mazeData;
     }
 
-    void setInitialPosData(int[] initialPosData) {
+    public void setInitialPosData(int[] initialPosData) {
         if (initialPosData.length != 3)
-            CommunicationUtility.logMessage("ERROR", "HeaderData", "setInitialPosData", "initialPosData array size not matching : is " + initialPosData.length + " - should be 3.");
+            CommunicationUtility.logMessage("WARNING", "HeaderData", "setInitialPosData", "initialPosData array size not matching : is " + initialPosData.length + " - should be 3.");
         else
             this.initialPosData = initialPosData;
     }
 
-    void setTargetPosData(int[] targetPosData) {
+    public void setTargetPosData(int[] targetPosData) {
         if (targetPosData.length != 2)
-            CommunicationUtility.logMessage("ERROR", "HeaderData", "targetPosData", "targetPosData array size not matching : is " + targetPosData.length + " - should be 2.");
+            CommunicationUtility.logMessage("WARNING", "HeaderData", "targetPosData", "targetPosData array size not matching : is " + targetPosData.length + " - should be 2.");
         else
             this.targetPosData = targetPosData;
     }
