@@ -20,20 +20,15 @@ public class MazeBuilder{
       // LEFT
       maze.addWallAt(0, i, WallOrientation.LEFT_WALL);
     }
-    Target defaultTarget = makeDefaultTarget(SimulationUtility.MAZE_SIZE + SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SIZE + SimulationUtility.MAZE_SHIFTX, boxW, boxW);
+    Vec2 center = box2d.coordPixelsToWorld(new Vec2(SimulationUtility.MAZE_SIZE/2 + SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SIZE/2 + SimulationUtility.MAZE_SHIFTY));
+
+    Target defaultTarget = new Target(center.x, center.y, min(boxW, boxH));
     maze.setTarget(defaultTarget);
     
-    Vehicle vehicle = new Vehicle(box2d.scalarWorldToPixels(mazeW / 2), box2d.scalarWorldToPixels(mazeH / 2), 0, 1.0);
+    
+    Vehicle vehicle = new Vehicle(center.x, center.y, 0, 1.0);
     maze.setVehicle(vehicle);
     
     return maze;
-  }
-  
-  public Target makeDefaultTarget(float mazeH, float mazeW, float boxW, float boxH){                  
-    float xTarget = mazeW / 2;
-    float yTarget = mazeH / 2;
-    float rTarget = boxH / 2;
-    
-    return new Target(xTarget, yTarget, rTarget);
   }
 }

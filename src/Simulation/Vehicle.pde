@@ -17,7 +17,7 @@ public class Vehicle {
   // Constructor
   public Vehicle(float x, float y, float angle, float size) {
     vehicleSize = size/20;
-
+    
     // top
     topShape = new Vec2[5];
     topShape[0] = new Vec2(-58, -35).mul(vehicleSize);
@@ -25,14 +25,14 @@ public class Vehicle {
     topShape[2] = new Vec2(0, -79).mul(vehicleSize);
     topShape[3] = new Vec2(49, -63).mul(vehicleSize);
     topShape[4] = new Vec2(59, -35).mul(vehicleSize);
-    
+
     // middle
     middleShape = new Vec2[4];
     middleShape[0] = new Vec2(39, -35).mul(vehicleSize);
     middleShape[1] = new Vec2(39, 34).mul(vehicleSize);    
     middleShape[2] = new Vec2(-38, 35).mul(vehicleSize);
     middleShape[3] = new Vec2(-38, -35).mul(vehicleSize);
-    
+
     // bottom
     bottomShape = new Vec2[4];
     bottomShape[0] = new Vec2(52, 34).mul(vehicleSize);
@@ -41,12 +41,12 @@ public class Vehicle {
     bottomShape[3] = new Vec2(-52, 35).mul(vehicleSize);
 
     // Wheel size and positions
-    wheelSize = new Vec2(8, 27).mul(vehicleSize * box2d.scaleFactor);
+    wheelSize = new Vec2(box2d.scalarPixelsToWorld(8), box2d.scalarPixelsToWorld(27)).mul(vehicleSize * box2d.scaleFactor);
     wheelPos = new Vec2[4];
-    wheelPos[0] = new Vec2(48, -14).mul(vehicleSize * box2d.scaleFactor);
-    wheelPos[1] = new Vec2(-48, -14).mul(vehicleSize * box2d.scaleFactor);
-    wheelPos[2] = new Vec2(48, 15).mul(vehicleSize * box2d.scaleFactor);
-    wheelPos[3] = new Vec2(-48, 15).mul(vehicleSize * box2d.scaleFactor);
+    wheelPos[0] = box2d.vectorPixelsToWorld(new Vec2(48, -14).mul(vehicleSize * box2d.scaleFactor));
+    wheelPos[1] = box2d.vectorPixelsToWorld(new Vec2(-48, -14).mul(vehicleSize * box2d.scaleFactor));
+    wheelPos[2] = box2d.vectorPixelsToWorld(new Vec2(48, 15).mul(vehicleSize * box2d.scaleFactor));
+    wheelPos[3] = box2d.vectorPixelsToWorld(new Vec2(-48, 15).mul(vehicleSize * box2d.scaleFactor));
     
     // Sensor positions
     sensorPos = new Vec2[4];
@@ -277,7 +277,7 @@ public class Vehicle {
     // Define the body and make it from the shape
     BodyDef bd = new BodyDef();
     bd.type = BodyType.DYNAMIC;
-    bd.position.set(box2d.coordPixelsToWorld(x, y));
+    bd.position.set(x, y);
     bd.setAngle(angle);
 
     this.body = box2d.createBody(bd);

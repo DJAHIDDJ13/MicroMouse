@@ -1,20 +1,20 @@
 public class Wheel {
   private float w, h;
+  private float pixelW, pixelH;
   private Body body;
 
   // Constructor
   public Wheel(float x, float y, float w, float h, float angle) {
     this.h = h;
     this.w = w;
+    this.pixelW = box2d.scalarWorldToPixels(w);
+    this.pixelH = box2d.scalarWorldToPixels(h);
+    
     makeBody(x, y, angle);
   }
   
   public Vec2 getPosition() {
-    Vec2 pos = box2d.getBodyPixelCoord(body);
-    // adjust for the maze canvas shift
-    pos.x -= SimulationUtility.MAZE_SHIFTX;
-    pos.y -= SimulationUtility.MAZE_SHIFTY;
-    return pos;
+    return body.getPosition();
   }
   
   public float getAngle() {
@@ -77,8 +77,7 @@ public class Wheel {
 
   public void display() {
     // We look at each body and get its screen position
-    Vec2 pos = getPosition();
-    
+    Vec2 pos = box2d.coordWorldToPixels(getPosition());
     // Get its angle of rotation
     float a = getAngle();
     
@@ -86,19 +85,18 @@ public class Wheel {
     rectMode(CENTER);
     fill(127,127,127);
       translate(pos.x, pos.y);
+      translate(-SimulationUtility.MAZE_SHIFTX, -SimulationUtility.MAZE_SHIFTY);
       rotate(-a);
       stroke(0);
-      rect(0, 0, w, h);
+      rect(0, 0, pixelW, pixelH);
     fill(255);
     popMatrix();
   }
   
   public void makeBody(float x, float y, float angle) {
-    // Define a polygon (this is what we use for a rectangle)
+    // Define a polygon (this is what we use for a rectangle) //<>//
     PolygonShape sd = new PolygonShape();
-    float box2dW = box2d.scalarPixelsToWorld(w / 2);
-    float box2dH = box2d.scalarPixelsToWorld(h / 2);
-    sd.setAsBox(box2dW, box2dH);
+    sd.setAsBox(w / 2, h / 2);
     
     // Define a fixture
     FixtureDef fd = new FixtureDef();
@@ -112,7 +110,7 @@ public class Wheel {
     // Define the body and make it from the shape
     BodyDef bd = new BodyDef();
     bd.type = BodyType.DYNAMIC;
-    bd.position.set(box2d.coordPixelsToWorld(x, y));
+    bd.position.set(x, y);
     bd.setAngle(angle);
 
     this.body = box2d.createBody(bd);

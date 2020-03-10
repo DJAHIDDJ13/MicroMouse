@@ -3,9 +3,11 @@ public class Target {
 
   // Constructor
   public Target(float x, float y, float r) {
-    this.x = x;
-    this.y = y;
-    this.r = box2d.scalarWorldToPixels(r) / 4;
+    Vec2 pixelCenter = box2d.coordWorldToPixels(new Vec2(x, y));
+    
+    this.x = pixelCenter.x;
+    this.y = pixelCenter.y;
+    this.r = box2d.scalarWorldToPixels(r) / 10;
   }
   
   public float getPositionX() {
