@@ -18,6 +18,8 @@ public class Maze {
     this.boxW = boxW;
     this.boxH = boxH;
     this.ratio = ratio;
+    this.rows = (int) (mazeH / boxH);
+    this.cols = (int) (mazeW / boxW);
     walls = new LinkedList<Wall>();
   }
 
@@ -60,7 +62,13 @@ public class Maze {
   public void setVehicle(Vehicle vehicle) {
     this.vehicle = vehicle; 
   }
-  
+
+  public void setVehicleAt(Vehicle vehicle, int x, int y) {
+    Vec2 p = box2d.coordPixelsToWorld((mazeW / rows) * (x + 0.5f), (mazeH / cols) * (y + 0.5f));
+    vehicle.setPosition(p.x, p.y);
+    setVehicle(vehicle);
+  }
+
   public Collection<Wall> getWalls(){
     return walls;
   }

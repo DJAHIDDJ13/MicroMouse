@@ -94,7 +94,7 @@ public class Wheel {
   }
   
   public void makeBody(float x, float y, float angle) {
-    // Define a polygon (this is what we use for a rectangle) //<>//
+    // Define a polygon (this is what we use for a rectangle) //<>// //<>// //<>//
     PolygonShape sd = new PolygonShape();
     sd.setAsBox(w / 2, h / 2);
     
