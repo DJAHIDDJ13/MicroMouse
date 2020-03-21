@@ -10,9 +10,15 @@ public class EdgeShapesCallback implements RayCastCallback {
   }
   
   public float reportFixture(Fixture fixture, final Vec2 point, final Vec2 normal, float fraction) {
-    m_fixture = fixture;
-    m_point = point;
-    m_normal = normal;
+    Body body = fixture.getBody();
+    Object userData = body.getUserData();
+    if(userData != null && (userData instanceof Integer) && userData.equals(1)) {
+      println(userData);
+      m_fixture = fixture;
+      m_point = point;
+      m_normal = normal;
+    }
+
     return fraction;
   }
   

@@ -127,6 +127,9 @@ public class Wheel {
     bd.type = BodyType.DYNAMIC;
     bd.position.set(x, y);
     bd.setAngle(angle);
+    
+    // to ignore during the sensor callback
+    bd.userData = new Integer(1);
 
     this.body = box2d.createBody(bd);
     this.body.createFixture(fd);
