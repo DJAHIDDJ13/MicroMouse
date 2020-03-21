@@ -1,13 +1,10 @@
 /*! 
    \file flood_fill_test.c
    \author MMteam
-
-
    \brief Main test for the flood fill algorithm. 
    
    \warning Attention don't forget to free the 
             memory occupied by the structures.
-
    \date 2020
 */
 #include <stdio.h>
@@ -31,68 +28,52 @@ struct Maze createMaze() {
    struct Maze maze = initMaze(4);
 
    //Box 1
-   bool wallIndicator_Box[4] = {true,true,true,true};
-   insertBox(createBox(0, 0, wallIndicator_Box), maze);
+   insertBox(createBox(0, 0, -16), maze);
 
    //Box 2
-   memcpy(wallIndicator_Box, (bool [4]){true,true,false,false}, 4*sizeof(bool));
-   insertBox(createBox(1, 0, wallIndicator_Box), maze);
+   insertBox(createBox(1, 0, -8), maze);
 
    //Box 3
-   memcpy(wallIndicator_Box, (bool [4]){false,true,false,true}, 4*sizeof(bool));
-   insertBox(createBox(2, 0, wallIndicator_Box), maze);
+   insertBox(createBox(2, 0, -10), maze);
 
    //Box 4
-   memcpy(wallIndicator_Box, (bool [4]){false,true,true,false}, 4*sizeof(bool));
-   insertBox(createBox(3, 0, wallIndicator_Box), maze);
+   insertBox(createBox(3, 0, -7), maze);
 
    //Box 5
-   memcpy(wallIndicator_Box, (bool [4]){true,true,false,false}, 4*sizeof(bool));
-   insertBox(createBox(0, 1, wallIndicator_Box), maze);
+   insertBox(createBox(0, 1, -8), maze);
 
    //Box 6
-   memcpy(wallIndicator_Box, (bool [4]){false,false,true,false}, 4*sizeof(bool));
-   insertBox(createBox(1, 1, wallIndicator_Box), maze);
+   insertBox(createBox(1, 1, -3), maze);
 
    //Box 7
-   memcpy(wallIndicator_Box, (bool [4]){true,true,true,false}, 4*sizeof(bool));
-   insertBox(createBox(2, 1, wallIndicator_Box), maze);
+   insertBox(createBox(2, 1, -13), maze);
 
    //Box 8
-   memcpy(wallIndicator_Box, (bool [4]){true,false,true,true}, 4*sizeof(bool));
-   insertBox(createBox(3, 1, wallIndicator_Box), maze);
+   insertBox(createBox(3, 1, -15), maze);
 
    //Box 9
-   memcpy(wallIndicator_Box, (bool [4]){true,false,true,false}, 4*sizeof(bool));
-   insertBox(createBox(0, 2, wallIndicator_Box), maze);
+   insertBox(createBox(0, 2, -11), maze);
 
    //Box 10
-   memcpy(wallIndicator_Box, (bool [4]){true,false,true,true}, 4*sizeof(bool));
-   insertBox(createBox(1, 2, wallIndicator_Box), maze);
+   insertBox(createBox(1, 2, -15), maze);
 
    //Box 11
-   memcpy(wallIndicator_Box, (bool [4]){true,false,false,false}, 4*sizeof(bool));
-   insertBox(createBox(2, 2, wallIndicator_Box), maze);
+   insertBox(createBox(2, 2, -1), maze);
 
    //Box 12
-   memcpy(wallIndicator_Box, (bool [4]){false,true,true,false}, 4*sizeof(bool));
-   insertBox(createBox(3, 2, wallIndicator_Box), maze);
+   insertBox(createBox(3, 2, -7), maze);
 
    //Box 13
-   memcpy(wallIndicator_Box, (bool [4]){true,false,false,true}, 4*sizeof(bool));
-   insertBox(createBox(0, 3, wallIndicator_Box), maze);
+   insertBox(createBox(0, 3, -5), maze);
 
    //Box 14
-   memcpy(wallIndicator_Box, (bool [4]){false,true,false,true}, 4*sizeof(bool));
-   insertBox(createBox(1, 3, wallIndicator_Box), maze);
+   insertBox(createBox(1, 3, -10), maze);
 
    //Box 15
-   memcpy(wallIndicator_Box, (bool [4]){false,false,false,true}, 4*sizeof(bool));
-   insertBox(createBox(2, 3, wallIndicator_Box), maze);
+   insertBox(createBox(2, 3, -4), maze);
 
    //Box 16
-   memcpy(wallIndicator_Box, (bool [4]){false,false,true,true}, 4*sizeof(bool));
-   insertBox(createBox(3, 3, wallIndicator_Box), maze);
+   insertBox(createBox(3, 3, -6), maze);
    
    return maze;
 }
@@ -104,7 +85,8 @@ int main(int argc, char **argv) {
 
    printf("\n---------------\n\n");
 
-   flooFill(logicalMaze, 2, 2);
+   //One destination cell
+   floodFill(logicalMaze, 2, 2, false);
    displayMaze(logicalMaze);
 
    Queue_XY path = backwardFloodFill(logicalMaze, 3, 1);

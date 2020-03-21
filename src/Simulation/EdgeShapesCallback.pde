@@ -12,13 +12,14 @@ public class EdgeShapesCallback implements RayCastCallback {
   public float reportFixture(Fixture fixture, final Vec2 point, final Vec2 normal, float fraction) {
     Body body = fixture.getBody();
     Object userData = body.getUserData();
+    
+    // ignore the vehicle's body and wheels
     if(userData != null && (userData instanceof Integer) && userData.equals(1)) {
-      println(userData);
-      m_fixture = fixture;
-      m_point = point;
-      m_normal = normal;
+      return -1;
     }
-
+    m_fixture = fixture;
+    m_point = point;
+    m_normal = normal;
     return fraction;
   }
   
