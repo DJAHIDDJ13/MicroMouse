@@ -1,5 +1,5 @@
 /*! 
-   \file flood_fill_test.c
+   \file maze.c
    \author MMteam
 
    
@@ -24,18 +24,6 @@ struct Maze initMaze(int16_t N) {
 	return maze;
 }
 
-/* Create a box with (OX, OY) coordinates in the maze */
-struct Box createBox(int16_t OX, int16_t OY, bool* wallIndicator) {
-	struct Box box;
-
-	box.OX 	  = OX;
-	box.OY 	  = OY;
-	box.value = -1;
-	memcpy(box.wallIndicator, wallIndicator, sizeof(bool) * 4);
-
-	return box;
-}
-
 /* Insert a box with (OX, OY) coordinates in the maze */
 int insertBox(struct Box box, struct Maze maze) {
 	int16_t OX = box.OX;
@@ -52,18 +40,6 @@ int insertBox(struct Box box, struct Maze maze) {
 	return 0;
 }
 
-/* Check if the x-th side of a box is occupied by a wall */
-bool X_TH_wallCheck(int8_t x, struct Box box) {
-	if(x >= 4) {
-		fprintf(stderr, "X_TH_wallCheck: entering %s %d\n", __FUNCTION__, __LINE__);
-		return false;		
-	}
-
-	/* This function return true if the x-th side of 
-	   the box is occupied by a wall false otherwise */
-	return box.wallIndicator[x];
-}
-
 /* Get the neighbour who have the min value */
 struct Box minValueNeighbour(struct Maze maze, int16_t OX, int16_t OY) {
 	struct Box* boxs = maze.maze;
@@ -78,7 +54,7 @@ struct Box minValueNeighbour(struct Maze maze, int16_t OX, int16_t OY) {
 	box.value = INT16_MAX;
 
 	//Top neighbour
-	if((OY-1 >= 0) && !X_TH_wallCheck(BOX_TOP_SIDE, boxs[OY*size+OX]) 
+	if((OY-1 >= 0) && top_access_check(boxs[OY*size+OX]) 
 		&& boxs[(OY-1)*size+OX].value < box.value) {
 
 		box.OX = OX;
@@ -87,7 +63,7 @@ struct Box minValueNeighbour(struct Maze maze, int16_t OX, int16_t OY) {
 	}
 
 	//Bottom neighbour
-	if((OY+1 < size) && !X_TH_wallCheck(BOX_BOTTOM_SIDE, boxs[OY*size+OX]) 
+	if((OY+1 < size) && bottom_access_check(boxs[OY*size+OX]) 
 		&& boxs[(OY+1)*size+OX].value < box.value) {
 		
 		box.OX = OX;
@@ -96,7 +72,7 @@ struct Box minValueNeighbour(struct Maze maze, int16_t OX, int16_t OY) {
 	}
 
 	//Left neighbour
-	if((OX-1 >= 0) && !X_TH_wallCheck(BOX_LEFT_SIDE, boxs[OY*size+OX]) 
+	if((OX-1 >= 0) && left_access_check(boxs[OY*size+OX]) 
 		&& boxs[OY*size+(OX-1)].value < box.value) {
 		
 		box.OX = OX-1;
@@ -105,7 +81,7 @@ struct Box minValueNeighbour(struct Maze maze, int16_t OX, int16_t OY) {
 	}
 
 	//Right neighbour
-	if((OX+1 < size) && !X_TH_wallCheck(BOX_RIGHT_SIDE, boxs[OY*size+OX]) 
+	if((OX+1 < size) && right_access_check(boxs[OY*size+OX]) 
 		&& boxs[OY*size+(OX+1)].value < box.value) {
 		
 		box.OX = OX+1;

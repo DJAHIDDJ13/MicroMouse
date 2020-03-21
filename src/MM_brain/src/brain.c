@@ -17,7 +17,7 @@
 /* Fill a case of the maze with a color */
 void fill(struct Maze maze, int16_t OX, int16_t OY, int16_t color) {
 	int16_t size = maze.size;
-
+	
 	if((OX < 0 || OX >= size) || (OY < 0 || OY >= size)) {
 		printf("fill:invalide file entering %s %d\n", __FUNCTION__, __LINE__);
 		exit(0);
@@ -26,9 +26,46 @@ void fill(struct Maze maze, int16_t OX, int16_t OY, int16_t color) {
 	maze.maze[OY*size+OX].value = color;
 }
 
-/* Flood fill algorithm */
-void flooFill(struct Maze maze, int16_t OX, int16_t OY) {
+/* Push the destination boxs of the maze to the queue */
+void pushDestinationBoxs(Queue_XY* queue, int16_t OX, int16_t OY, bool cellNumber) {
+	struct oddpair_XY XY;
 
+	if(queue == NULL) {
+		printf("flooFill:invalide file entering %s %d\n", __FUNCTION__, __LINE__);
+		exit(0);
+	}
+
+	if(!cellNumber) {
+		XY = createOddpair_XY(OX, OY, 0);
+		pushQueue_XY(queue, XY);
+	}
+	else {
+		XY = createOddpair_XY(OX, OY, 0);
+		pushQueue_XY(queue, XY);
+
+
+		XY = createOddpair_XY(OX+1, OY, 0);
+		pushQueue_XY(queue, XY);
+
+
+		XY = createOddpair_XY(OX, OY+1, 0);
+		pushQueue_XY(queue, XY);
+
+		XY = createOddpair_XY(OX+1, OY+1, 0);
+		pushQueue_XY(queue, XY);
+	}
+}
+
+/*---- The FloodFill algorithm ----*/
+/* Imagine you pour water into the destination of the maze( which is the four center cells surrounded by 7 walls). 
+   The water will first flow to the cell immediately outside the destination cells. And then to it’s immediately 
+   accessible neighboring cells. Similarly, water will flow along the paths in the maze, eventually reaching the 
+   starting position of the mouse. */
+
+/* Flood fill algorithm */
+void floodFill(struct Maze maze, int16_t OX, int16_t OY, bool cellDestinationNumber) {
+	struct oddpair_XY XY;
+	
 	struct Box* boxs = maze.maze;
 	int16_t size = maze.size;
 
@@ -40,9 +77,9 @@ void flooFill(struct Maze maze, int16_t OX, int16_t OY) {
 	int16_t colorMaze = 0;
 
 	Queue_XY queue = initQueue_XY();
+
+	pushDestinationBoxs(&queue, OX, OY, cellDestinationNumber);
 	
-	struct oddpair_XY XY = createOddpair_XY(OX, OY, 0);
-	pushQueue_XY(&queue, XY);
 	uint8_t sign = 0;
 
 	while(!emptyQueue_XY(queue)) {
@@ -56,7 +93,7 @@ void flooFill(struct Maze maze, int16_t OX, int16_t OY) {
 		fill(maze, XY.OX, XY.OY, colorMaze);
 
 		//Top neighbour, check if ther is no wall
-		if(!X_TH_wallCheck(BOX_TOP_SIDE, boxs[(XY.OY)*size+XY.OX]) 
+		if(top_access_check(boxs[(XY.OY)*size+XY.OX]) 
 			&& boxs[(XY.OY-1)*size+XY.OX].value == -1 && boxs[(XY.OY-1)*size+XY.OX].value != -2) {
 		
 			pushQueue_XY(&queue, createOddpair_XY(XY.OX, XY.OY-1, 1 - XY.sign));
@@ -64,7 +101,7 @@ void flooFill(struct Maze maze, int16_t OX, int16_t OY) {
 		}
 
 		//Bottom neighbour, check if ther is no wall
-		if(!X_TH_wallCheck(BOX_BOTTOM_SIDE, boxs[(XY.OY)*size+XY.OX]) 
+		if(bottom_access_check(boxs[(XY.OY)*size+XY.OX]) 
 			&& boxs[(XY.OY+1)*size+XY.OX].value == -1 && boxs[(XY.OY+1)*size+XY.OX].value != -2) {
 		
 			pushQueue_XY(&queue, createOddpair_XY(XY.OX, XY.OY+1, 1 - XY.sign));
@@ -72,7 +109,7 @@ void flooFill(struct Maze maze, int16_t OX, int16_t OY) {
 		}
 
 		//Left neighbour, check if ther is no wall
-		if(!X_TH_wallCheck(BOX_LEFT_SIDE, boxs[XY.OY*size+(XY.OX)]) 
+		if(left_access_check(boxs[XY.OY*size+(XY.OX)]) 
 			&& boxs[XY.OY*size+(XY.OX-1)].value == -1 && boxs[XY.OY*size+(XY.OX-1)].value != -2) {
 			
 			pushQueue_XY(&queue, createOddpair_XY(XY.OX-1, XY.OY, 1 - XY.sign));
@@ -80,9 +117,8 @@ void flooFill(struct Maze maze, int16_t OX, int16_t OY) {
 		}
 
 		//Right neighbour, check if ther is no wall
-		if(!X_TH_wallCheck(BOX_RIGHT_SIDE, boxs[XY.OY*size+(XY.OX)]) 
+		if(right_access_check(boxs[XY.OY*size+(XY.OX)]) 
 			&& boxs[XY.OY*size+(XY.OX+1)].value == -1 && boxs[XY.OY*size+(XY.OX+1)].value != -2) {
-			
 			pushQueue_XY(&queue, createOddpair_XY(XY.OX+1, XY.OY, 1 - XY.sign));
 			boxs[XY.OY*size+(XY.OX+1)].value = -2;
 		}

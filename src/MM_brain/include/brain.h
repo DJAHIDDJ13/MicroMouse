@@ -26,11 +26,16 @@
 /* Fill a case of the maze with a color */
 void fill(struct Maze maze, int16_t OX, int16_t OY, int16_t color);
 
-/* Flood fill algorithm */
-void flooFill(struct Maze maze, int16_t OX, int16_t OY);
+/* Push the destination boxs of the maze to the queue */
+void pushDestinationBoxs(Queue_XY* queue, int16_t OX, int16_t OY, bool cellNumber);
 
-/* This function returns us a queue of position that
-   the MM will follow in order to arrive to the target*/
+/* Fill the destination boxs of the maze */
+void pushDestinationBoxs(Queue_XY* queue, int16_t OX, int16_t OY, bool cellNumber);
+
+/* The FloodFill algorithm */
+void floodFill(struct Maze maze, int16_t OX, int16_t OY, bool cellDestinationNumber);
+
+/* Backward flood fill algorithm */
 Queue_XY backwardFloodFill(struct Maze maze, int16_t OX, int16_t OY);
 
 #endif
