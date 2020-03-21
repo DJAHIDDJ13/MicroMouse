@@ -79,15 +79,46 @@ public class Vehicle {
   }
   
   public void setPosition(float x, float y) {
+    FRWheel.setPosition(wheelPos[0].x + x, wheelPos[0].y + y);
+    FLWheel.setPosition(wheelPos[1].x + x, wheelPos[1].y + y);
+    BRWheel.setPosition(wheelPos[2].x + x, wheelPos[2].y + y);
+    BLWheel.setPosition(wheelPos[3].x + x, wheelPos[3].y + y);
+    
     body.setTransform(new Vec2(x, y), getAngle());
   }
 
   public void setAngle(float angle) {
+    FRWheel.setAngle(angle);
+    FLWheel.setAngle(angle);
+    BRWheel.setAngle(angle);
+    BLWheel.setAngle(angle);
+    
     body.setTransform(getPosition(), angle);
   }
 
   public void setTransform(float x, float y, float angle) {
+    FRWheel.setTransform(translateVec2(rotateVec2(wheelPos[0], angle), x, y), angle);
+    FLWheel.setTransform(translateVec2(rotateVec2(wheelPos[1], angle), x, y), angle);
+    BRWheel.setTransform(translateVec2(rotateVec2(wheelPos[2], angle), x, y), angle);
+    BLWheel.setTransform(translateVec2(rotateVec2(wheelPos[3], angle), x, y), angle);
+
     body.setTransform(new Vec2(x, y), angle);
+  }
+
+  public Vec2 rotateVec2(Vec2 p, float angle) {
+    return new Vec2(p.x*cos(angle) - p.y*sin(angle), p.x*sin(angle) + p.y*cos(angle));
+  }
+  
+  public Vec2 rotateVec2(float x, float y, float angle) {
+    return new Vec2(x*cos(angle) - y*sin(angle), x*sin(angle) + y*cos(angle));
+  }
+
+  public Vec2 translateVec2(float x, float y, float tx, float ty) {
+    return new Vec2(x + tx, y + ty);
+  }
+
+  public Vec2 translateVec2(Vec2 p, float tx, float ty) {
+    return new Vec2(p.x + tx, p.y + ty);
   }
 
   public Body getBody() {
@@ -214,10 +245,10 @@ public class Vehicle {
   
   public void makeWheels(float x, float y, float angle) {
     // wheels
-    FRWheel = new Wheel(wheelPos[0].x + x, wheelPos[0].y + y, wheelSize.x, wheelSize.y, angle);
-    FLWheel = new Wheel(wheelPos[1].x + x, wheelPos[1].y + y, wheelSize.x, wheelSize.y, angle);
-    BRWheel = new Wheel(wheelPos[2].x + x, wheelPos[2].y + y, wheelSize.x, wheelSize.y, angle);
-    BLWheel = new Wheel(wheelPos[3].x + x, wheelPos[3].y + y, wheelSize.x, wheelSize.y, angle);
+    FRWheel = new Wheel(translateVec2(rotateVec2(wheelPos[0], angle), x, y), wheelSize.x, wheelSize.y, angle);
+    FLWheel = new Wheel(translateVec2(rotateVec2(wheelPos[1], angle), x, y), wheelSize.x, wheelSize.y, angle);
+    BRWheel = new Wheel(translateVec2(rotateVec2(wheelPos[2], angle), x, y), wheelSize.x, wheelSize.y, angle);
+    BLWheel = new Wheel(translateVec2(rotateVec2(wheelPos[3], angle), x, y), wheelSize.x, wheelSize.y, angle);
   }
   
   public void makeBody(float x, float y, float angle) {    

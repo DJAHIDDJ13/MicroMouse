@@ -5,20 +5,22 @@ public class MazeBuilder{
     float boxH = mazeH / size;
     
     Maze maze = new Maze(mazeH, mazeW, boxW, boxH, ratio);
-    Vec2 center = box2d.coordPixelsToWorld(new Vec2(SimulationUtility.MAZE_SIZE/2 + SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SIZE/2 + SimulationUtility.MAZE_SHIFTY));
 
+    final int targetX = ceil(((float)size) / 2.0) -1;
+    final int targetY = ceil(((float)size) / 2.0) -1;
+    Vec2 center = maze.getCellWorldCenterAt(targetX, targetY);
     Target defaultTarget = new Target(center.x, center.y, min(boxW, boxH));
     maze.setTarget(defaultTarget);
     
     
     // put vehicle on cell (0, 0)
-    
-    Vehicle vehicle = new Vehicle(0, 0, PI/2, 1.0);
-    maze.setVehicleAt(vehicle, 2, 2);
+    Vec2 p = maze.getCellWorldCenterAt(0, 0);
+    Vehicle vehicle = new Vehicle(p.x, p.y, PI, 1.0);
+    maze.setVehicle(vehicle);
     
     return maze;
   }
-  
+
   public Maze builderInitialMaze(float mazeW, float mazeH, int size, float ratio){
     int num_walls = size;
     
@@ -42,7 +44,7 @@ public class MazeBuilder{
   }
   
   public Maze generateRandomMaze(float mazeW, float mazeH, int size, float ratio) {
-    int w = 2, h = 2;
+    int w = size, h = size;
 
     Maze maze = emptyMazeSetup(mazeH, mazeW, size, ratio);
     
@@ -81,7 +83,7 @@ public class MazeBuilder{
         neighbors.add(new MazeCell(cur.x+1, cur.y));
       }
       
-      // get a random neighbor //<>//
+      // get a random neighbor
       if(neighbors.size() == 0) { // the current cell has no neighbors
         continue;
       } else {
@@ -90,13 +92,13 @@ public class MazeBuilder{
         MazeCell choice = neighbors.get(rand.nextInt(neighbors.size()));
         stack.push(choice);
         // make a hole between cur and chosen cell
-        res[cur.x][cur.y][cur.relativeOrientation(choice).getValue()] = true;
-        res[choice.x][choice.y][choice.relativeOrientation(cur).getValue()] = true;
+        res[cur.x][cur.y][choice.relativeOrientation(cur).getValue()] = true;
+        res[choice.x][choice.y][cur.relativeOrientation(choice).getValue()] = true;
         neighbors = null;
       }
     }
     
-    for(int i = 0; i < w; i++) {
+    for(int i = 0; i < w; i++) { //<>//
       for(int j = 0; j < h; j++) {
         for(int k = 0; k < 4; k++) {
           if(res[i][j][k] == false) {

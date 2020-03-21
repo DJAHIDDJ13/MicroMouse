@@ -12,7 +12,14 @@ public class Wheel {
     
     makeBody(x, y, angle);
   }
-  
+  public Wheel(Vec2 p, float w, float h, float angle) {
+    this.h = h;
+    this.w = w;
+    this.pixelW = box2d.scalarWorldToPixels(w);
+    this.pixelH = box2d.scalarWorldToPixels(h);
+    
+    makeBody(p.x, p.y, angle);
+  }
   public Vec2 getPosition() {
     return body.getPosition();
   }
@@ -25,12 +32,20 @@ public class Wheel {
     body.setTransform(new Vec2(x, y), getAngle());
   }
   
+  public void setPosition(Vec2 p) {
+    body.setTransform(p, getAngle());
+  }
+  
   public void setAngle(float angle) {
     body.setTransform(getPosition(), angle);
   }
 
   public void setTransform(float x, float y, float angle) {
     body.setTransform(new Vec2(x, y), angle);
+  }
+  
+  public void setTransform(Vec2 p, float angle) {
+    body.setTransform(p, angle);
   }
 
   public Body getBody() {

@@ -47,7 +47,7 @@ public class SimulationController {
    
    // build the maze
    mazeBuilder = new MazeBuilder();
-   maze = mazeBuilder.builderInitialMaze(box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
+   maze = mazeBuilder.generateRandomMaze(box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
                                          box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
                                          size,
                                          simulationEntry.getRatio());

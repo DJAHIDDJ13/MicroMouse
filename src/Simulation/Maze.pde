@@ -63,8 +63,16 @@ public class Maze {
     this.vehicle = vehicle; 
   }
 
+  public Vec2 getCellPixelCenterAt(int x, int y) {
+    return new Vec2((box2d.scalarWorldToPixels(mazeW) / rows) * (x + 0.5f), (box2d.scalarWorldToPixels(mazeH) / cols) * (y + 0.5f));
+  }
+  
+  public Vec2 getCellWorldCenterAt(int x, int y) {
+    return box2d.coordPixelsToWorld(new Vec2((box2d.scalarWorldToPixels(mazeW) / rows) * (x + 0.5f), (box2d.scalarWorldToPixels(mazeH) / cols) * (y + 0.5f)));
+  }
+  
   public void setVehicleAt(Vehicle vehicle, int x, int y) {
-    Vec2 p = box2d.coordPixelsToWorld((mazeW / rows) * (x + 0.5f), (mazeH / cols) * (y + 0.5f));
+    Vec2 p = getCellWorldCenterAt(x, y);
     vehicle.setPosition(p.x, p.y);
     setVehicle(vehicle);
   }
