@@ -35,12 +35,23 @@ struct Sensor {
 	int16_t lightValue;
 };
 
+typedef struct vec {
+   float x, y, z;
+} Vec;
+
+struct Gyro {
+   Vec ypr; // yaw, pitch and roll (angular acceleration)
+   Vec xyz; // x, y, z acceleration
+};
+
 /*            Main structure for the micromouse "robot"           */
 struct Micromouse {
 	/*     Our robot need two engine and four infrared sensor     */
 	struct Engine engines[NB_ENGINE];
 
 	struct Sensor sensors[NB_SENSOR];
+
+   struct Gyro gyro;
 };
 
 #endif
