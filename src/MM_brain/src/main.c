@@ -70,8 +70,7 @@ void *thread_2(void *arg) {
 		pthread_cond_wait (&condition, &mutex);
 		/* WRITING */
 		/* ...Processing...*/
-		format_tx_data(&tx_msg, MOTOR_FLAG, test);	
-		write_fifo(tx_msg);
+		write_fifo(tx_msg, MOTOR_FLAG, test);
 		pthread_mutex_unlock(&mutex);
 	}
 

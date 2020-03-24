@@ -54,7 +54,7 @@ void init_rx_message(RX_Message* rx_msg, unsigned char flag);
 int get_tx_fifo_path(char *path);
 int get_rx_fifo_path(char *path);
 int create_fifo();
-int write_fifo(TX_Message tx_msg);
+int write_fifo(TX_Message tx_msg, unsigned char flag, void* content);
 int read_fifo(RX_Message* rx_msg);
 void format_rx_data(RX_Message rx_msg, SensorData* sensor_data, HeaderData* header_data);
 void format_tx_data(TX_Message *tx_msg, unsigned char flag, void* content);

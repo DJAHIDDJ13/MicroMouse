@@ -92,7 +92,7 @@ int create_fifo() {
  * | MOTORL (4) | MOTORR (4) |
  * +------------+------------+
  ***************************************************************************************************************************/
-int write_fifo(TX_Message tx_msg) {
+int write_fifo(TX_Message tx_msg, unsigned char flag, void* content) {
 	FILE *fp;
 	char full_path[BUFFER_SIZE] = "";
 	get_tx_fifo_path(full_path);
@@ -102,7 +102,9 @@ int write_fifo(TX_Message tx_msg) {
 		perror("fopen");
 		return 1;
 	}
-	
+
+	format_tx_data(&tx_msg, flag, content);
+
 	fwrite(&tx_msg.flag, sizeof(tx_msg.flag), 1, fp);
 	fwrite(tx_msg.content, sizeof(tx_msg.content), 1, fp);
 
@@ -135,6 +137,9 @@ int write_fifo(TX_Message tx_msg) {
 int read_fifo(RX_Message* rx_msg) {
 	int i = 0, j = 0, cursor = 0;
 	int byteToInt = 0;
+	char logMsg[512] = "", numberToStr[80];
+
+	
 	union {
 		float floatNumber;
 		unsigned char bytesNumber[4];
@@ -154,6 +159,10 @@ int read_fifo(RX_Message* rx_msg) {
 	fread(buffer, sizeof(buffer), 1, fp);
 
 	init_rx_message(rx_msg, buffer[0]);
+	strcpy(logMsg, "Received : ");
+	sprintf(numberToStr, "%u", (*rx_msg).flag);
+	strcat(logMsg, numberToStr);
+	strcat(logMsg, " ");
 	switch ((*rx_msg).flag) {
 		case HEADER_FLAG:
 			for (i = 1; i < HEADER_CONTENT_SIZE + 1; i++) {
@@ -165,7 +174,8 @@ int read_fifo(RX_Message* rx_msg) {
 						byteToInt |= ((int)buffer[j] << j*8 );
 					i++;
 				}
-				printf("%d\n", byteToInt);
+				sprintf(numberToStr, "%d ", byteToInt);
+				strcat(logMsg, numberToStr);
 			}
 			break;
 		case SENSOR_FLAG:
@@ -173,6 +183,8 @@ int read_fifo(RX_Message* rx_msg) {
 				for (j = 0; j < 4; j++)
 					byteToFloat.bytesNumber[j] = buffer[i+j];
 				i += 3;
+				sprintf(numberToStr, "%.6g ", byteToFloat.floatNumber);
+				strcat(logMsg, numberToStr);
 				(*rx_msg).content.float_array[cursor] = byteToFloat.floatNumber;
 				cursor++;
 			}
@@ -180,6 +192,8 @@ int read_fifo(RX_Message* rx_msg) {
 		default:
 			log_message("ERROR", "Listener", "init_rx_message", "No matching flag found.");
 	}
+
+	log_message("INFO", "Listener", "read_fifo", logMsg);
 
 	fclose(fp);
 
@@ -215,6 +229,7 @@ void format_rx_data(RX_Message rx_msg, SensorData* sensor_data, HeaderData* head
 }
 
 void format_tx_data(TX_Message *tx_msg, unsigned char flag, void* content) {
+	char logMsg[512] = "", numberToStr[80];
 	float* data = content;
 	int i = 0, j = 0, cursor = 0;
 	union {
@@ -223,6 +238,9 @@ void format_tx_data(TX_Message *tx_msg, unsigned char flag, void* content) {
 	} floatToByte;
 	(*tx_msg).flag = flag;
 
+	strcpy(logMsg, "Sending : ");
+	sprintf(numberToStr, "%u ", flag);
+	strcat(logMsg, numberToStr);
 	switch (flag) {
 		case MOTOR_FLAG:
 			(*tx_msg).content = malloc(MOTOR_CONTENT_SIZE);
@@ -232,9 +250,13 @@ void format_tx_data(TX_Message *tx_msg, unsigned char flag, void* content) {
 					(*tx_msg).content[cursor] = floatToByte.bytes_number[j];
 					cursor++;
 				}
+				sprintf(numberToStr, "%.6g ", data[i]);
+				strcat(logMsg, numberToStr);
 			}
 			break;
 		default:
 			log_message("ERROR", "Writer", "format_tx_data", "No matching flag found.");
 	}
+
+	log_message("INFO", "Writer", "write_fifo", logMsg);
 }
