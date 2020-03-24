@@ -329,3 +329,5 @@ TSWLatexianTemp*
 *.lpz
 /bin/
 *.DS_Store
+.vscode/*
+
