@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "box.h": "c",
+        "communication.h": "c"
+    }
+}
