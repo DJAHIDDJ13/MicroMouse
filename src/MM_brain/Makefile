@@ -10,7 +10,7 @@ INCDIR=include
 TESTDIR=tests
 OBJDIR=obj
 
-CFLAGS=-Wall -g -I$(INCDIR)
+CFLAGS=-Wall -g -I$(INCDIR) -lpthread
 
 # getting source files and obj names
 SOURCES  := $(wildcard $(SRCDIR)/*.c)
@@ -21,7 +21,7 @@ TESTBINS := $(TESTS:$(TESTDIR)/%.c=$(BINDIR)/%)
 TESTOBJ  := $(TESTS:$(TESTDIR)/%.c=$(OBJDIR)/%.o)
 
 # flags to be used
-LFLAGS=-lm -std=c99
+LFLAGS=-lm -std=c99 -lpthread
 
 # make main executable
 $(BINDIR)/$(TARGET): $(OBJECTS)
