@@ -1,0 +1,107 @@
+\documentclass[12pt, french]{report}
+
+%%%%%%%%%% Packages externes utilisés %%%%%%%%%%%%%%%%%%%
+\usepackage[french]{babel}
+\selectlanguage{french}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage{macro}
+\usepackage{eso-pic,graphicx,transparent}
+\usepackage{hyperref}
+\usepackage{afterpage}
+\usepackage{xcolor}
+%La mise en page du rapport, NE PAS MODIFIER.
+\usepackage{geometry}
+\geometry{
+   a4paper,
+   left=20mm,
+   right=20mm,
+   top=20mm,
+   bottom=20mm
+}
+
+\begin{document}
+\input{page_de_garde.tex}
+\clearpage
+
+\thispagestyle{empty}
+\section*{Remerciements}
+
+\clearpage
+\thispagestyle{empty}
+\section*{Résumé et abstract}
+\subsection*{Résumé}
+
+\subsection*{Abstract}
+
+\clearpage
+\setcounter{page}{1}
+\tableofcontents
+\listoffigures
+
+\clearpage
+
+\chapter{Introduction}
+\paragraph{Chapeau du chapitre}
+\input{introduction.tex}
+\clearpage
+
+\chapter{Présentation et spécification du projet}
+Ce chapitre présente le cahier des charges (CDC) du projet et les
+spécifications techniques, il contient les principaux éléments nécessaires
+pour comprendre le positionnement marketing du futur produit et la
+conception technique. Il mentionne également des informations relatives au
+développement du produit dans sa globalité et son architecture.
+
+\input{presentation_specification.tex}
+\clearpage
+
+\chapter{Partie technique construction du labyrinthe}
+\paragraph{Chapeau du chapitre}
+\input{technique_construction_labyrinthe.tex}
+\clearpage
+
+\chapter{Partie technique mappage et navigation}
+\paragraph{Chapeau du chapitre}
+\input{technique_mappage_et_navigation.tex}
+\clearpage
+
+\chapter{Partie technique calcul du plus court chemin}
+\paragraph{Chapeau du chapitre}
+\input{technique_plus_court_chemin.tex}
+\clearpage
+
+\chapter{Partie technique contrôle du véhicule}
+\paragraph{Chapeau du chapitre}
+\input{technique_controle_du_vehicule.tex}
+\clearpage
+
+\chapter{Partie technique communication}
+\paragraph{Chapeau du chapitre}
+\input{technique_communication.tex}
+\clearpage
+
+\chapter{Rendu final}
+\paragraph{Chapeau du chapitre}
+\input{rendu_final.tex}
+\clearpage
+
+\chapter{Gestion de projet}
+\paragraph{Chapeau du chapitre}
+\input{gestion_de_projet.tex}
+\clearpage
+
+\chapter{Conclusion et perspectives}
+\paragraph{Chapeau du chapitre}
+\input{conclusion_perspectives.tex}
+\clearpage
+
+\bibliographystyle{plain}
+\bibliography{bibliographies}
+\clearpage
+
+\input{annexe.tex}
+\clearpage
+
+\end{document}
