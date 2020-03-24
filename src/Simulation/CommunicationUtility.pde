@@ -12,12 +12,13 @@ public static class CommunicationUtility {
     public static final byte MOTOR_FLAG = 20;
     public static final byte MOTOR_CONTENT_SIZE = 8;
 
-
     public static void logMessage(String logLevel, String process, String function, String msg) {
-        System.out.println( "[" + (float) (System.currentTimeMillis() - STARTING_TIME)/1000 + "] " + 
+        String format = "%-40s%s%n";
+        System.out.printf(format,
+                            "[" + (float) (System.currentTimeMillis() - STARTING_TIME)/1000 + "] " + 
                             process + 
-                            " - " + function + "()\t" +
-                            "[" + logLevel + "] : " +
+                            " - " + function + "()",
+                            "[" + logLevel + "] : " + 
                             msg);
         if (logLevel.equals("ERROR"))
             System.exit(0); 

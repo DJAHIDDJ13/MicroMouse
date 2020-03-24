@@ -38,6 +38,7 @@ public class Listener extends Communication {
             byte[] rawData = new byte[CommunicationUtility.MAX_MSG_SIZE], sliced;
             byte fileByte = 0;
             int cursor = 0;
+            String logMsg = "";
 
             /* READ PIPE */
             while ((fileByte = (byte) rxStream.read()) != -1 && cursor < 50) {
@@ -46,6 +47,7 @@ public class Listener extends Communication {
             }
 
             /* rawData[0] = FLAG */
+            logMsg += "Received : ";
             switch (rawData[0]) {
                 case CommunicationUtility.MOTOR_FLAG:
                     sliced = Arrays.copyOfRange(rawData, 1, CommunicationUtility.MOTOR_CONTENT_SIZE + 1);
@@ -59,7 +61,8 @@ public class Listener extends Communication {
                         }
                         if (cursor == 4) {
                             floatVal = ByteBuffer.wrap(floatByte).order(ByteOrder.LITTLE_ENDIAN).getFloat();
-                            System.out.println(floatVal); // SUBTITUTE TO SERIALIZABLE OBJECT
+                            //System.out.println(floatVal); // SUBTITUTE TO SERIALIZABLE OBJECT
+                            logMsg += floatVal + " ";
                             floatByte = new byte[4];
                             cursor = 0;
                         }
@@ -69,6 +72,7 @@ public class Listener extends Communication {
                 default:
                     CommunicationUtility.logMessage("ERROR", "Listener", "readFifo", "No matching flag found.");
             }
+            CommunicationUtility.logMessage("INFO", "Listener", "readFifo", logMsg);
             // CLEAN UP
             rxStream.close();
         } catch(Exception e) {
