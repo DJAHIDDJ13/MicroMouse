@@ -18,13 +18,13 @@
  */
 
 void init_rx_message(RX_Message* rx_msg, unsigned char flag) {
-	(*rx_msg).flag = flag;
+	rx_msg->flag = flag;
 	switch (flag) {
 		case HEADER_FLAG:
-			(*rx_msg).content.int_array = malloc(HEADER_CONTENT_SIZE);
+			rx_msg->content.int_array = malloc(HEADER_CONTENT_SIZE);
 			break;
 		case SENSOR_FLAG:
-			(*rx_msg).content.float_array = malloc(SENSOR_CONTENT_SIZE);
+			rx_msg->content.float_array = malloc(SENSOR_CONTENT_SIZE);
 			break;
 		default:
 			log_message("ERROR", "Listener", "init_rx_message", "No matching flag found.");
@@ -160,10 +160,10 @@ int read_fifo(RX_Message* rx_msg) {
 
 	init_rx_message(rx_msg, buffer[0]);
 	strcpy(logMsg, "Received : ");
-	sprintf(numberToStr, "%u", (*rx_msg).flag);
+	sprintf(numberToStr, "%u", rx_msg->flag);
 	strcat(logMsg, numberToStr);
 	strcat(logMsg, " ");
-	switch ((*rx_msg).flag) {
+	switch (rx_msg->flag) {
 		case HEADER_FLAG:
 			for (i = 1; i < HEADER_CONTENT_SIZE + 1; i++) {
 				byteToInt = 0;
@@ -185,7 +185,7 @@ int read_fifo(RX_Message* rx_msg) {
 				i += 3;
 				sprintf(numberToStr, "%.6g ", byteToFloat.floatNumber);
 				strcat(logMsg, numberToStr);
-				(*rx_msg).content.float_array[cursor] = byteToFloat.floatNumber;
+				rx_msg->content.float_array[cursor] = byteToFloat.floatNumber;
 				cursor++;
 			}
 			break;
@@ -203,25 +203,25 @@ int read_fifo(RX_Message* rx_msg) {
 void format_rx_data(RX_Message rx_msg, SensorData* sensor_data, HeaderData* header_data) {
 	switch (rx_msg.flag) {
 		case HEADER_FLAG:
-			(*header_data).maze_width = rx_msg.content.int_array[0];
-			(*header_data).maze_height = rx_msg.content.int_array[1];
-			(*header_data).initial_x = rx_msg.content.int_array[2];
-			(*header_data).initial_y = rx_msg.content.int_array[3];
-			(*header_data).initial_angle = rx_msg.content.int_array[4];
-			(*header_data).target_x = rx_msg.content.int_array[5];
-			(*header_data).target_y = rx_msg.content.int_array[6];
+			header_data->maze_width = rx_msg.content.int_array[0];
+			header_data->maze_height = rx_msg.content.int_array[1];
+			header_data->initial_x = rx_msg.content.int_array[2];
+			header_data->initial_y = rx_msg.content.int_array[3];
+			header_data->initial_angle = rx_msg.content.int_array[4];
+			header_data->target_x = rx_msg.content.int_array[5];
+			header_data->target_y = rx_msg.content.int_array[6];
 			break;
 		case SENSOR_FLAG:
-			(*sensor_data).dist_left = rx_msg.content.float_array[0];
-			(*sensor_data).dist_left_front = rx_msg.content.float_array[1];
-			(*sensor_data).dist_right_front = rx_msg.content.float_array[2];
-			(*sensor_data).dist_right = rx_msg.content.float_array[3];
-			(*sensor_data).accelerometer_1 = rx_msg.content.float_array[4];
-			(*sensor_data).accelerometer_2 = rx_msg.content.float_array[5];
-			(*sensor_data).accelerometer_3 = rx_msg.content.float_array[6];
-			(*sensor_data).accelerometer_4 = rx_msg.content.float_array[7];
-			(*sensor_data).accelerometer_5 = rx_msg.content.float_array[8];
-			(*sensor_data).accelerometer_6 = rx_msg.content.float_array[9];
+			sensor_data->dist_left = rx_msg.content.float_array[0];
+			sensor_data->dist_left_front = rx_msg.content.float_array[1];
+			sensor_data->dist_right_front = rx_msg.content.float_array[2];
+			sensor_data->dist_right = rx_msg.content.float_array[3];
+			sensor_data->accelerometer_1 = rx_msg.content.float_array[4];
+			sensor_data->accelerometer_2 = rx_msg.content.float_array[5];
+			sensor_data->accelerometer_3 = rx_msg.content.float_array[6];
+			sensor_data->accelerometer_4 = rx_msg.content.float_array[7];
+			sensor_data->accelerometer_5 = rx_msg.content.float_array[8];
+			sensor_data->accelerometer_6 = rx_msg.content.float_array[9];
 			break;
 		default:
 			log_message("ERROR", "Listener", "format_rx_data", "No matching flag found.");
@@ -236,18 +236,18 @@ void format_tx_data(TX_Message *tx_msg, unsigned char flag, void* content) {
 		float float_number;
 		unsigned char bytes_number[4];
 	} floatToByte;
-	(*tx_msg).flag = flag;
+	tx_msg->flag = flag;
 
 	strcpy(logMsg, "Sending : ");
 	sprintf(numberToStr, "%u ", flag);
 	strcat(logMsg, numberToStr);
 	switch (flag) {
 		case MOTOR_FLAG:
-			(*tx_msg).content = malloc(MOTOR_CONTENT_SIZE);
+			tx_msg->content = malloc(MOTOR_CONTENT_SIZE);
 			for (i = 0; i < (int) (MOTOR_CONTENT_SIZE / sizeof(float)); i++) {
 				floatToByte.float_number = data[i];
 				for (j = 0; j < 4; j++) {
-					(*tx_msg).content[cursor] = floatToByte.bytes_number[j];
+					tx_msg->content[cursor] = floatToByte.bytes_number[j];
 					cursor++;
 				}
 				sprintf(numberToStr, "%.6g ", data[i]);
