@@ -10,8 +10,7 @@ INCDIR=include
 TESTDIR=tests
 OBJDIR=obj
 
-CFLAGS=-Wall -g -I$(INCDIR) -lpthread
-
+CFLAGS=-Wall -I$(INCDIR) -lpthread -g
 # getting source files and obj names
 SOURCES  := $(wildcard $(SRCDIR)/*.c)
 INCLUDES := $(wildcard $(INCDIR)/*.h)

@@ -142,6 +142,7 @@ public class Maze {
     final BodyQueryCallback bodyQueryCallback = new BodyQueryCallback();
     box2d.world.queryAABB(bodyQueryCallback, aabb);
    
+    
     // TODO: find a better way to do this
     return bodyQueryCallback.getBodies();
   }
@@ -149,9 +150,11 @@ public class Maze {
   public void removeBodyAt(float x, float y) {
     ArrayList<Body> bodies = getBodyAtPoint(x, y);
     for(Body body: bodies) {
-      println(body, body.getTransform().p.x, body.getTransform().p.y);
-      walls.remove(body.getUserData());
-      box2d.destroyBody(body);
+      if(body.getUserData() instanceof Wall) {
+        println(body, body.getTransform().p.x, body.getTransform().p.y);
+        walls.remove(body.getUserData());
+        box2d.destroyBody(body);
+      }
     }
   }
   
