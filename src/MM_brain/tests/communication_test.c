@@ -7,6 +7,7 @@
 
    \date 2020
 */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -18,9 +19,14 @@
 #include <pthread.h>
 #include <time.h>
 
+#include "box.h"
+#include "brain.h"
 #include "communication.h"
+#include "maze.h"
+#include "micromouse.h"
+#include "position.h"
+#include "queue.h"
 #include "utils.h"
-
 
 /* MUTEX */
 pthread_cond_t condition = PTHREAD_COND_INITIALIZER;

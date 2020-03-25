@@ -1,3 +1,26 @@
+## How to use the MM_brain
+
+### To create a test file
+paste your C file for the test in the test/ folder.
+
+### To compile the MM_brain
+```
+$ make
+```
+
+### To compile the MM_brain tests
+```
+$ make test
+```
+
+### To run a executable file
+All the executable file are in the bin/ folder
+```
+$ bin/your_executable_file
+```
+
+### Flood fill algorithm
+
 This part goes into the micromouse microcontroller to make real-time
  decisions and communicate with the user interface via bluetooth.
 
@@ -7,7 +30,7 @@ These 16 combinations were also categorized according to the presence of a wall 
 
 ![The numbers given to different wall configurations](../../docs/report/pics/wallIndicator.jpeg)
 
-## The FloodFill algorithm
+#### The FloodFill algorithm
  
  Imagine you pour water into the destination of the maze( which is the four center cells surrounded by 7 walls). The water will first flow to the cell immediately outside the destination cells. And then to it’s immediately accessible neighboring cells. Similarly, water will flow along the paths in the maze, eventually reaching the starting position of the mouse.
 
@@ -25,7 +48,7 @@ If you place your mouse anywhere in the maze, and ask it to travel to the cell w
 
 If you want to send the mouse to some other cell (not to one of the middle four), all you have to do is, perform the floodfill from your desired cell. ie, start by putting zero to the cell you expect the mouse to travel to.
 
-## The fast run
+#### The fast run
 
 Once you decide that the mouse has discovered enough cells to find an optimum path, you can bring the mouse back to the starting square, and do the fast run. In the process, the mouse.
 

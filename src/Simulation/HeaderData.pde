@@ -104,5 +104,4 @@ public class HeaderData extends Message {
     public void setContent(String strContent) {
         
     }
-
 }
