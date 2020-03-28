@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <sys/time.h>
+#include <math.h>
 
 #include "micromouse.h"
 #include "position.h"
@@ -36,17 +37,54 @@ struct Position init_pos(Vec i_pos, Vec i_vel, Vec i_acc, Vec i_ang, Vec i_ang_v
  */
 struct Position update_pos(struct Micromouse m, float time_step) 
 {
-   double ts = time_step / 1000;
+   // ms to s
+   double ts = time_step / 1000.0;
 
    struct Position next;
-   next.pos.x = 2 * cur.pos.x - prev.pos.x + m.gyro.xyz.x * ts * ts;
-   next.pos.y = 2 * cur.pos.y - prev.pos.y + m.gyro.xyz.y * ts * ts;
-   next.pos.z = 2 * cur.pos.z - prev.pos.z + m.gyro.xyz.z * ts * ts;
-
+   
+   // 2nd degree integral of the angular acceleration
+   // https://en.wikipedia.org/wiki/Verlet_integration#Basic_St%C3%B6rmer%E2%80%93Verlet
    next.ang.x = 2 * cur.ang.x - prev.ang.x + m.gyro.ypr.x * ts * ts;
    next.ang.y = 2 * cur.ang.y - prev.ang.y + m.gyro.ypr.y * ts * ts;
    next.ang.z = 2 * cur.ang.z - prev.ang.z + m.gyro.ypr.z * ts * ts;
+   
+   // perform 3d rotation
+   // the displacement estimate
+   next.pos.x = cur.pos.x - prev.pos.x + m.gyro.xyz.x * ts * ts;
+   next.pos.y = cur.pos.y - prev.pos.y + m.gyro.xyz.y * ts * ts;
+   next.pos.z = cur.pos.z - prev.pos.z + m.gyro.xyz.z * ts * ts;
+   
+   // applying the 3 axis rotation
+   /**
+    * Euler angles
+    * https://mathworld.wolfram.com/EulerAngles.html
+    * 
+    * ψ rotation in x axis,
+    * θ rotation in y axis,
+    * φ rotation in z axis
+    *
+    * [cosθcosψ, cosψsinθsinφ−sinψcosφ, cosψsinθcosφ+cosψcosφ]   [x]
+    * |cosθsinψ, sinψsinθsinφ+cosψcosφ, sinψsinθcosφ−cosψsinφ| * |y|
+    * [−sinθ   , cosθsinφ             , cosθcosφ             ]   [z]
+    */
 
+   next.pos.x = next.pos.z * (cos(next.ang.x) * sin(next.ang.y) * cos(next.ang.z) + cos(next.ang.x) * cos(next.ang.z)) 
+              + next.pos.y * (cos(next.ang.x) * sin(next.ang.y) * sin(next.ang.z) - sin(next.ang.x) * cos(next.ang.z))
+              + next.pos.x * (cos(next.ang.x) * cos(next.ang.y));
+   
+   next.pos.y = next.pos.z * (sin(next.ang.x) * sin(next.ang.y) * cos(next.ang.z) - cos(next.ang.x) * sin(next.ang.z)) 
+              + next.pos.y * (sin(next.ang.x) * sin(next.ang.y) * sin(next.ang.z) + cos(next.ang.x) * cos(next.ang.z))
+              + next.pos.x * (sin(next.ang.x) * cos(next.ang.y));
+  
+   next.pos.z = next.pos.z * cos(next.ang.y) * cos(next.ang.z) 
+              + next.pos.y * cos(next.ang.y) * sin(next.ang.z)
+              - next.pos.x * sin(next.ang.y);
+   
+   // adding the current estimate
+   next.pos.x += cur.pos.x;
+   next.pos.y += cur.pos.y;
+   next.pos.z += cur.pos.z;
+   
    prev = cur;
    cur = next;
 

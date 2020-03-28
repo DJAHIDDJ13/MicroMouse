@@ -12,13 +12,14 @@ int main(int argc, const char *argv[])
    Vec i_vel = {.x=0, .y=0, .z=0};
    Vec i_acc = {.x=0, .y=0, .z=0};
    
-   Vec i_ang = {.x=0, .y=0, .z=0};
+   Vec i_ang = {.x=0, .y=1, .z=0};
    Vec i_ang_vel = {.x=0, .y=0, .z=0};
    Vec i_ang_acc = {.x=0, .y=0, .z=0};
    
    float time_step = 16.66666f;
 
    estim = init_pos(i_pos, i_vel, i_acc, i_ang, i_ang_vel, i_ang_acc, time_step);
+   printf("(%g %g %g), (%g %g %g)\n", estim.pos.x, estim.pos.y, estim.pos.z, estim.ang.x, estim.ang.y, estim.ang.z);
   
    struct Micromouse x_forward = {
             .gyro = {
@@ -43,33 +44,33 @@ int main(int argc, const char *argv[])
 
    // One forward acceleration on x for one time_step
    estim = update_pos(x_forward, time_step);
-   printf("Applying 1m/s^2 on x axis for 1 time_step\n(%g %g %g), (%g %g %g)\n", estim.pos.x, estim.pos.y, estim.pos.z, estim.ang.x, estim.pos.y, estim.pos.z);
+   printf("Applying 1m/s^2 on x axis for 1 time_step\n(%g %g %g), (%g %g %g)\n", estim.pos.x, estim.pos.y, estim.pos.z, estim.ang.x, estim.ang.y, estim.ang.z);
    // no acceleration for 10 time_steps
    printf("No acceleration for 10 time steps\n");
    for(int i = 0; i < 10; i++) {
       estim = update_pos(still, time_step);
-      printf("(%g %g %g), (%g %g %g)\n", estim.pos.x, estim.pos.y, estim.pos.z, estim.ang.x, estim.pos.y, estim.pos.z);
+      printf("(%g %g %g), (%g %g %g)\n", estim.pos.x, estim.pos.y, estim.pos.z, estim.ang.x, estim.ang.y, estim.ang.z);
    }
 
    // 2 backward acceleration on x for one time_step; This should stop it and
    // make it go backwards 
    estim = update_pos(x_2backward, time_step);
-   printf("\nApplying -2m/s^2 on x axis for 1 time_step\n(%g %g %g), (%g %g %g)\n", estim.pos.x, estim.pos.y, estim.pos.z, estim.ang.x, estim.pos.y, estim.pos.z);
+   printf("\nApplying -2m/s^2 on x axis for 1 time_step\n(%g %g %g), (%g %g %g)\n", estim.pos.x, estim.pos.y, estim.pos.z, estim.ang.x, estim.ang.y, estim.ang.z);
    // no acceleration for 10 time_steps
    printf("No acceleration for 10 time steps\n");
    for(int i = 0; i < 10; i++) {
       estim = update_pos(still, time_step);
-      printf("(%g %g %g), (%g %g %g)\n", estim.pos.x, estim.pos.y, estim.pos.z, estim.ang.x, estim.pos.y, estim.pos.z);
+      printf("(%g %g %g), (%g %g %g)\n", estim.pos.x, estim.pos.y, estim.pos.z, estim.ang.x, estim.ang.y, estim.ang.z);
    }   
  
    // 1 forward acceleration on x for one time_step
    estim = update_pos(x_forward, time_step);
-   printf("\nApplying 1m/s^2 on x axis for 1 time_step\n(%g %g %g), (%g %g %g)\n", estim.pos.x, estim.pos.y, estim.pos.z, estim.ang.x, estim.pos.y, estim.pos.z);
+   printf("\nApplying 1m/s^2 on x axis for 1 time_step\n(%g %g %g), (%g %g %g)\n", estim.pos.x, estim.pos.y, estim.pos.z, estim.ang.x, estim.ang.y, estim.ang.z);
    // no acceleration for 10 time_steps
    printf("No acceleration for 10 time steps\n");
    for(int i = 0; i < 10; i++) {
       estim = update_pos(still, time_step);
-      printf("(%g %g %g), (%g %g %g)\n", estim.pos.x, estim.pos.y, estim.pos.z, estim.ang.x, estim.pos.y, estim.pos.z);
+      printf("(%g %g %g), (%g %g %g)\n", estim.pos.x, estim.pos.y, estim.pos.z, estim.ang.x, estim.ang.y, estim.ang.z);
    }   
    return 0;
 }
