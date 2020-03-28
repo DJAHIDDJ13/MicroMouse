@@ -7,7 +7,7 @@ public class Wheel {
   public Wheel(float x, float y, float w, float h, float angle) {
     this.h = h;
     this.w = w;
-    this.pixelW = box2d.scalarWorldToPixels(w);
+    this.pixelW = box2d.scalarWorldToPixels(w); //<>//
     this.pixelH = box2d.scalarWorldToPixels(h);
     
     makeBody(x, y, angle);
@@ -18,7 +18,7 @@ public class Wheel {
     this.pixelW = box2d.scalarWorldToPixels(w);
     this.pixelH = box2d.scalarWorldToPixels(h);
     
-    makeBody(p.x, p.y, angle);
+    makeBody(p.x, p.y, angle); //<>//
   }
   public Vec2 getPosition() {
     return body.getPosition();
