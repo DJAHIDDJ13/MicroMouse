@@ -21,7 +21,7 @@ public class InformationPanel {
     acc = maze.getVehicleAcceleration();
     angAcc = maze.getVehicleAngularAcceleration();
     
-    updateText();
+    //updateText();
   }
   
   public void mousePressedHandler() {
@@ -44,8 +44,7 @@ public class InformationPanel {
     
   }
 
-public void drawSensor(int sensorX, int sensorY, float sensorValue)
-{
+public void drawSensor(int sensorX, int sensorY, float sensorValue) {
   int sensorSize = 14;
 
   // sensors colors depending on sensors values
@@ -60,7 +59,9 @@ public void drawSensor(int sensorX, int sensorY, float sensorValue)
   ellipse(sensorX,sensorY,sensorSize,sensorSize);
 
 }
-public void GenericVehicleInformations( ) {
+
+
+public void GenericVehicleInformations( )  {
   
   Vec2[] topShape,middleShape,bottomShape;
   float vehicleSize = 0.15;
@@ -129,8 +130,6 @@ public void GenericVehicleInformations( ) {
     strokeWeight(1);
     popMatrix();
     
-    
-    
     //print proximity bar indicator
     fill(0);
     textSize(16);
@@ -175,7 +174,6 @@ public void GenericVehicleInformations( ) {
     text(angAcc.y/div, rectX-250,rectY+110);
     text(angAcc.z/div, rectX-250,rectY+130);
     
-    
     // Accelerometer x,y,z values
     fill(0);
     textSize(16);
@@ -189,26 +187,12 @@ public void GenericVehicleInformations( ) {
     text(acc.x/div, rectX-110,rectY+90);
     text(acc.y/div, rectX-110,rectY+110);
     text(acc.z/div, rectX-110,rectY+130);
-    
-    
-    
-    System.out.println("\n\n\n");
 }
+
+
   public void display() {
-    if(frameCount % 5 == 0) {
-      updateText();
-    }
-    
-    fill(120,20  ,56);
-    rect(810, 5, 640, 400);
-    
-    fill(255);
-    textSize(14);
-    //text("Accelerometer ("+ accText +")", 900, 50);
-   // text("Gyroscope       ("+ angAccText +")", 900, 80);
-    //text("Sensors           ("+ sensorText +")", 900, 110);
+    fill(81,92,94);
+    rect(810, 5, 640, 300);
     GenericVehicleInformations();
-    
-    fill(255);
   }
 }
