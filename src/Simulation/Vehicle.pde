@@ -166,7 +166,7 @@ public class Vehicle {
       sensors[i].display();
     } 
   }
-  
+   
   public void display() {
     // We look at each body and get its screen position
     Vec2 pos = box2d.coordWorldToPixels(getPosition());
