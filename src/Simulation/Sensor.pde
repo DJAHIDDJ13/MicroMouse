@@ -57,31 +57,41 @@ public class Sensor {
      // [cos(a) , sin(a), 0]   [1, 0, tx]   [x]
      // |-sin(a), cos(a), 0| * |0, 1, ty] * [y]
      // [0,    0,      0, 1]   [0, 0, 1 ]   [1] 
+     vehiclePos = box2d.coordWorldToPixels(vehiclePos);
      source = new Vec2(vehiclePos.x-SimulationUtility.MAZE_SHIFTX + relativePos.x * cos(-vehicleAngle) - relativePos.y * sin(-vehicleAngle), 
                        vehiclePos.y-SimulationUtility.MAZE_SHIFTY + relativePos.x * sin(-vehicleAngle) + relativePos.y * cos(-vehicleAngle));
      
+     
      target = new Vec2(source.x + len * cos(angle - vehicleAngle), source.y + len * sin(angle - vehicleAngle));
+     
+     source = box2d.coordPixelsToWorld(source);
+     target = box2d.coordPixelsToWorld(target);
      sensorDetect();
    }
    
    public void sensorDetect() {
      callback.setM_fixture(null);
      
-     box2d.world.raycast(callback, box2d.coordPixelsToWorld(source), box2d.coordPixelsToWorld(target));
+     box2d.world.raycast(callback, source, target);
      if (callback.getM_fixture() != null) {
-        castPoint = box2d.coordWorldToPixels(callback.getM_point());
-        value = sqrt((castPoint.x - source.x) * (castPoint.x - source.x) + (castPoint.y - source.y) * (castPoint.y - source.y));
-     } else {
+        castPoint = callback.getM_point();
+        value = dist(castPoint.x, castPoint.y, source.x, source.y);
+        println(castPoint);
+   } else {
         value = -1;
      }
    }
    
    public void display() {
+     Vec2 sourceP = box2d.coordWorldToPixels(source);
+     Vec2 targetP = box2d.coordWorldToPixels(target);
+     Vec2 castP = box2d.coordWorldToPixels(castPoint);
+     println(castPoint, castP);
      stroke(180);
-     dash.line(source.x ,source.y, target.x, target.y);
+     dash.line(sourceP.x ,sourceP.y, targetP.x, targetP.y);
      stroke(255, 0, 0);
      if(value != -1)
-       ellipse(castPoint.x, castPoint.y, 10, 10);
+       ellipse(castP.x, castP.y, 10, 10);
      stroke(0);
    }
    

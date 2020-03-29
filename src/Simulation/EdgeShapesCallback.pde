@@ -24,7 +24,7 @@ public class EdgeShapesCallback implements RayCastCallback {
   }
   
   public Vec2 getM_point() {
-    return m_point;
+    return new Vec2(m_point.x, m_point.y);
   }
   
   public void setM_point(Vec2 m_point) {

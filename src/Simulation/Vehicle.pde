@@ -147,7 +147,7 @@ public class Vehicle {
     BLWheel.updateFriction();
 
     for(Sensor sensor: sensors) {
-      sensor.update(box2d.coordWorldToPixels(getPosition()), getAngle());
+      sensor.update(getPosition(), getAngle());
     }
 
     accelerometer.update(box2d.coordWorldToPixels(getPosition()), getAngle());
@@ -213,6 +213,7 @@ public class Vehicle {
     BLWheel.display();
 
     displaySensors();
+    println();
     accelerometer.display();
   }
   
