@@ -76,7 +76,7 @@ public void drawSensor(int sensorX, int sensorY, float sensorValue) {
   if(sensorValue == -1) {
     fill(0);
   } else {
-    fill(map(sensorValue, 0, 99, redHue, blueHue), 360, 360);
+    fill(map(sensorValue, 0, 1024, redHue, blueHue), 360, 360);
   }
   
   ellipse(sensorX,sensorY,sensorSize,sensorSize);
