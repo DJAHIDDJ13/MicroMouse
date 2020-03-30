@@ -298,6 +298,7 @@ Les capteurs de distance sont modélisés comme des Raycasts à partir des posit
 
 \subsection{Simulation de l'accéléromètre et gyroscope}
 \begin{frame}{Simulation de l'accéléromètre et gyroscope}
+L'autre type de capteur est utilisée pour détecter l'accélération directionelle et angulaire de véhicule. 
 La simulation de l'accéléromètre se fait avec la méthode d'intégration de Verlet (équation ci-dessous), en utilisant des échantillons des valeurs de position et direction de la Micromouse : \\
 \begin{equation*}
     \vec{a}_n = \frac{\vec{x}_{n+1} - 2 * \vec{x}_n + \vec{x}_{n-1}}{\Delta t^2}
@@ -329,7 +330,9 @@ Cette méthode donne un facteur d'erreur quadratique sur la valeur d'accélérat
 \subsection{Estimation de la pose}
 \begin{frame}{Estimation de la pose}
 
-Une des parties les plus importantes du Brain est l'estimation de la position et orientation de véhicule, en utilisant les capteurs d'accélération.
+%Une des parties les plus importantes du Brain est l'estimation de la position et orientation de véhicule, en utilisant les capteurs d'accélération.
+Une des parties permettant le contrôle de véhicule est l'estimation de la position et orientation, en utilisant les capteurs d'accélération.
+
 \begin{figure}
 \centering
 \tikzstyle{block} = [rectangle, draw, fill=blue!10,rounded corners,  text centered,     text width = 7em, minimum height = 2em]
@@ -446,20 +449,18 @@ Bellman Equation
 
 \end{frame}
 
-\begin{frame}{Algorithme RRT}
+\begin{frame}{Algorithme RRT rapidly exploring random tree}
 
 Plusieurs extension de l'algorithme rapidly exploring random tree.
-\begin{columns}[c]
 
-\column{.5\textwidth}
 \begin{figure}
     \centering
-    \includegraphics[width=6cm,height=4.5cm,keepaspectratio]{pics/rrt_rrt*.png}
+    \includegraphics[width=11cm,height=10cm,keepaspectratio]{pics/rrt_rrtstar.png}
     \caption{Comparaison entre RRT* et RRT pour 1000 noeud}
 \end{figure}
 
-RRT* ou Sampling-based Algorithmsfor Optimal Motion Planning, chaque fois qu'on ajoute un noeud on simplifie le chemin.
-\end{columns}
+RRT* ou Sampling-based Algorithms for Optimal Motion Planning, chaque fois qu'on ajoute un noeud on simplifie le chemin.
+
 \end{frame}
 
 %------------------------------- END section brain
