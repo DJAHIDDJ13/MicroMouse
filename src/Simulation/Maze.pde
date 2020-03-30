@@ -23,6 +23,10 @@ public class Maze {
     walls = new LinkedList<Wall>();
   }
 
+  public Vehicle getVehicle(){
+   return vehicle;
+  }
+  
   public PVector getVehicleAcceleration() {
     return vehicle.getAcceleration();
   }

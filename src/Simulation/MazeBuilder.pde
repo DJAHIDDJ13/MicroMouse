@@ -98,7 +98,7 @@ public class MazeBuilder{
       }
     }
     
-    for(int i = 0; i < w; i++) { //<>//
+    for(int i = 0; i < w; i++) {
       for(int j = 0; j < h; j++) {
         for(int k = 0; k < 4; k++) {
           if(res[i][j][k] == false) {

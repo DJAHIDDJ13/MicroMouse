@@ -14,8 +14,8 @@ public class ControlPanel {
   private final float panelY = 865;
   private final float panelW = 40;
   private final float panelH = 20;
-  private final float panelR = 10;
-
+  private final float panelR = 10;  
+            
   public ControlPanel(SimulationController simCon, ControlP5 cp5, Maze maze) {
     this.maze = maze;
     this.cp5 = cp5;
