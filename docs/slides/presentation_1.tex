@@ -88,6 +88,9 @@
 \usepackage{listings}
 \usetikzlibrary{positioning,fit,calc}
 \usepackage{xspace}
+\usepackage{color}
+\usepackage{colortbl}
+\usepackage{array}
 %----------------------------------------------------------------------------------------
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
@@ -176,7 +179,9 @@ Réaliser un véhicule autonome pour la résolution d'un labyrinthe.
 \end{center}
 % En plus de la résolution du labyrinthe des systèmes Multi-Agent, \textit{i.e.} des jeux avec plusieurs véhicules seront mis en oeuvre.
 
-En plus de la résolution du labyrinthe, des jeux avec plusieurs véhicules seront mis en oeuvre.
+%En plus de la résolution du labyrinthe, des jeux avec plusieurs véhicules seront mis en oeuvre.
+
+Réaliser des jeux compétitifs et coopératifs entre plusieurs véhicules.
 \end{frame}
 
 \subsection{Mise en scénario}
@@ -237,7 +242,7 @@ L'architecture des différents parties techniques de projet.
       \node [inner,draw=blue] (col) {Simulation \\de collisions};
       \node [inner,draw=blue,above=of col] (acom)  {Module \\communication};
       \node [inner,draw=blue,left=of acom] (cap)  {Simulation \\de capteurs};
-      \node [inner,draw=blue,left=of col] (maze) {Generation \\de maze};
+      \node [inner,draw=blue,left=of col] (maze) {Génération \\de maze};
       
       \draw[black,thick,->] (maze) -- (col);
       \draw[black,thick,->] (col) -- (cap);
@@ -272,12 +277,12 @@ L'architecture des différents parties techniques de projet.
 
 \subsection{Modèle physique de Micromouse}
 \begin{frame}{Modèle physique de Micromouse}
-Le véhicule est modélisé comme un polygone 2D, avec les quatre roues placées sur les côtés du véhicule, avec ces propriétés suivantes:
+Le véhicule est modélisé comme un polygone 2D, avec les quatre roues placées sur les côtés du véhicule, avec les propriétés suivantes:
 \begin{columns}[c]
 \column{.45\textwidth}
 \begin{itemize}
     \item Pas de force de gravité
-    \item Force de traînée sur le corps et roues
+    \item Force de traînée sur le corps et les roues
     \item Force de frottement
     \item Résistance latérale des roues
     \item Résistance angulaire des roues
@@ -292,18 +297,22 @@ Le véhicule est modélisé comme un polygone 2D, avec les quatre roues placées
 \subsection{Simulation de capteurs distance}
 \begin{frame}{Simulation de capteurs distance}
 Les capteurs de distance sont modélisés comme des Raycasts à partir des positions et orientations des capteurs réels sur le corps de la Micromouse.
-\fig{pics/dist_sensor.png}{8cm}{5cm}{Les capteurs dans la simulation.}{distsensor}
+\fig{pics/dist_sensor.png}{8cm}{5cm}{Les capteurs de distances dans la simulation. Chaque raycast (ligne pointillée) représente un capteur et sa projection sur les murs (cercle rouge)}{distsensor}
 
 \end{frame}
 
 \subsection{Simulation de l'accéléromètre et gyroscope}
 \begin{frame}{Simulation de l'accéléromètre et gyroscope}
-L'autre type de capteur est utilisée pour détecter l'accélération directionelle et angulaire de véhicule. 
-La simulation de l'accéléromètre se fait avec la méthode d'intégration de Verlet (équation ci-dessous), en utilisant des échantillons des valeurs de position et direction de la Micromouse : \\
+
+Un autre type de capteur (accéléromètre et gyroscope) est utilisé pour détecter l'accélération directionelle et angulaire du véhicule. \\
+
+
+\vspace{5mm}
+La simulation de celle-ci se fait avec la méthode d'intégration de Verlet (équation ci-dessous), en utilisant des échantillons des valeurs de position et de direction de la Micromouse : \\
 \begin{equation*}
     \vec{a}_n = \frac{\vec{x}_{n+1} - 2 * \vec{x}_n + \vec{x}_{n-1}}{\Delta t^2}
 \end{equation*}\\
-Cette méthode donne un facteur d'erreur quadratique sur la valeur d'accélération $\mathcal{O}(\Delta t^2)$.
+Cette méthode donne un facteur d'erreur quadratique sur la valeur d'accélération $\mathcal{O}(\Delta t^2)$ à chaque itération.
 \end{frame}
 
 \subsection{Algorithmes de génération de labyrinthe}
@@ -312,9 +321,9 @@ Cette méthode donne un facteur d'erreur quadratique sur la valeur d'accélérat
 \begin{frame}{Algorithmes génération de labyrinthe}
 \begin{itemize}
 \item Les labyrinthes peuvent être classifiés en deux types :   parfaits et imparfaits.
-\item Il existe différents algorithmes de génération de labyrinthes : algorithme de Backtracking, Kruskal, etc.
+\item On utilise différents algorithmes de génération de labyrinthes : algorithme de Backtracking, Kruskal, etc.
 
-\fig{pics/maze.png}{6cm}{5cm}{Génération d'un labyrinthe dans la simulation (Backtracking).}{genmaze}
+\fig{pics/maze.png}{6cm}{5cm}{Génération d'un labyrinthe à l'aide de l'algorithme de Backtracking.}{genmaze}
 \end{itemize}
 \end{frame}
 
@@ -330,8 +339,8 @@ Cette méthode donne un facteur d'erreur quadratique sur la valeur d'accélérat
 \subsection{Estimation de la pose}
 \begin{frame}{Estimation de la pose}
 
-%Une des parties les plus importantes du Brain est l'estimation de la position et orientation de véhicule, en utilisant les capteurs d'accélération.
-Une des parties permettant le contrôle de véhicule est l'estimation de la position et orientation, en utilisant les capteurs d'accélération.
+%Une des parties les plus importantes du Brain est l'estimation de la position et de l'orientation de véhicule, en utilisant les capteurs d'accélération.
+Une des parties permettant le contrôle de véhicule est l'estimation de la position et orientation, qui utilise les capteurs d'accélération.
 
 \begin{figure}
 \centering
@@ -451,12 +460,12 @@ Bellman Equation
 
 \begin{frame}{Algorithme RRT rapidly exploring random tree}
 
-Plusieurs extension de l'algorithme rapidly exploring random tree.
+Plusieurs extensions de l'algorithme rapidly exploring random tree.
 
 \begin{figure}
     \centering
     \includegraphics[width=11cm,height=10cm,keepaspectratio]{pics/rrt_rrtstar.png}
-    \caption{Comparaison entre RRT* et RRT pour 1000 noeud}
+    \caption{Comparaison entre RRT* et RRT pour 1000 noeuds}
 \end{figure}
 
 RRT* ou Sampling-based Algorithms for Optimal Motion Planning, chaque fois qu'on ajoute un noeud on simplifie le chemin.
@@ -484,7 +493,7 @@ RRT* ou Sampling-based Algorithms for Optimal Motion Planning, chaque fois qu'on
         \textbf{Flag} & \textbf{Taille} & \textbf{Données} & \textbf{Description}\\
         \midrule
             10 & 
-            17 octet & 
+            17 octets & 
             7 int & 
             \begin{tabular}{@{}l@{}}
                 - Dimension du labyrinthe \\
@@ -493,7 +502,7 @@ RRT* ou Sampling-based Algorithms for Optimal Motion Planning, chaque fois qu'on
             \hline
         
             11 & 
-            41 octet & 
+            41 octets & 
             10 float & 
             \begin{tabular}{@{}l@{}}
                 - Capteurs de distance \\
@@ -502,7 +511,7 @@ RRT* ou Sampling-based Algorithms for Optimal Motion Planning, chaque fois qu'on
             \hline
             
             20 & 
-            9 octet & 
+            9 octets & 
             2 float &
             \begin{tabular}{@{}l@{}}
                 - Puissance des moteurs \\
@@ -523,7 +532,7 @@ RRT* ou Sampling-based Algorithms for Optimal Motion Planning, chaque fois qu'on
 
 \begin{table}[H]
     \centering
-    \begin{tabularx}{\textwidth}{X X}
+    \begin{tabularx}{\textwidth}{>{\columncolor{green!15}}X >{\columncolor{red!15}}X}
         \toprule
             \textbf{Ce qui a été fait} & \textbf{Ce qui reste à faire} \\
         \midrule
@@ -535,8 +544,8 @@ RRT* ou Sampling-based Algorithms for Optimal Motion Planning, chaque fois qu'on
             Amélioration/optimisation des algorithmes actuels \\ 
             \hline
             
-            implémentation de l'algorithme de Flood fill  &     
-            Réaliser un système multi-agents\\
+            Implémentation de l'algorithme de Flood fill  &     
+            Réalisation d'un système multi-agents\\
             \hline
             
             Communication Simulation/Brain & 
