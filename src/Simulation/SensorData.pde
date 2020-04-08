@@ -83,6 +83,10 @@ public class SensorData extends Message {
         }
     }
 
+    public void setContent(byte[] content) {
+        this.content = content;
+    }
+
     /* TO_DO */
     public void setContent(String strContent) {
 

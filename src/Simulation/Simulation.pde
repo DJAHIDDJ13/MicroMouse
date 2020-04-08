@@ -26,7 +26,7 @@ Writer writer;
 /* MESSAGE */
 HeaderData testHeader;
 SensorData testSensor;
-
+Message rxMsg;
 
 void setup(){
   
@@ -90,7 +90,11 @@ void mousePressed() {
   if (!osName.toLowerCase().contains("windows")) {
       /* Communication example */
       writer.writeFifo(testSensor);
+      rxMsg = listener.getRxMessage();
+      System.out.println(rxMsg.getLeftPowerMotor());
   }
+  
+  
   
   simCon.mousePressedHandler();
 }

@@ -1,13 +1,17 @@
 public class Listener extends Communication {
     File rxFile;
     FileInputStream rxStream;
-    
+    Message rxMessage;
 
     public Listener() {
         this.rxFile = new File(CommunicationUtility.FIFO_PATH + CommunicationUtility.FIFO_RX_FILENAME);
         this.setName("Listener process");
         this.setDaemon(true);
         this.start();
+    }
+
+    public Message getRxMessage() {
+        return this.rxMessage;
     }
 
     public void run() {
@@ -54,6 +58,19 @@ public class Listener extends Communication {
                     float floatVal = 0;
                     byte[] floatByte = new byte[4];
                     cursor = 0;
+                    
+                    this.rxMessage = new MotorData();
+                    this.rxMessage = (MotorData) this.rxMessage;
+                    MotorData motorDataMsg = new MotorData();
+                    motorDataMsg.setContent(sliced);
+                    motorDataMsg.formatMessage();
+                    motorDataMsg.setLeftPowerMotor();
+                    motorDataMsg.setRightPowerMotor();
+                    this.rxMessage = motorDataMsg;
+
+                    
+                    
+                    /*
                     for (byte value : sliced) {
                         if (cursor < 4) {
                             floatByte[cursor] = value;
@@ -65,9 +82,9 @@ public class Listener extends Communication {
                             logMsg += floatVal + " ";
                             floatByte = new byte[4];
                             cursor = 0;
-                        }
-                        
+                        } 
                     }
+                    */
                     break;
                 default:
                     CommunicationUtility.logMessage("ERROR", "Listener", "readFifo", "No matching flag found.");
