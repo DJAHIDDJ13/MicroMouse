@@ -58,18 +58,6 @@ int create_fifo() {
 		mkdir(FIFO_PATH, 0700);
 	}
 
-	/* /!\ remove first */
-	remove(full_path_tx);
-	if (errno == EACCES || errno == EINVAL) {
-		perror("remove");
-		return 1;
-	}
-	remove(full_path_rx);
-	if (errno == EACCES || errno == EINVAL) {
-		perror("remove");
-		return 1;
-	}
-
 	/* mode : -rw-rw-rw */
 	if (mkfifo(full_path_tx, 0666) != 0 || mkfifo(full_path_rx, 0660) != 0) {
 		perror("mkfifo");

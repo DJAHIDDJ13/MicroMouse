@@ -50,13 +50,29 @@ public class MotorData extends Message {
         }
     }
     
-    public void setContent(byte[] content) {
-        this.content = content;
+    public void setLeftPowerMotor(float leftPowerMotor) {
+        this.leftPowerMotor = leftPowerMotor;
     }
     
+    public void setRightPowerMotor(float rightPowerMotor) {
+        this.rightPowerMotor = rightPowerMotor;
+    }
+
+    public float getLeftPowerMotor() {
+        return this.leftPowerMotor;
+    }
+    
+    public float getRightPowerMotor() {
+        return this.rightPowerMotor;
+    }
+
     public void formatMessage() {
         setLeftPowerMotor();
         setRightPowerMotor();
+    }
+    
+    public void setContent(byte[] content) {
+        this.content = content;
     }
     
     /* TO_DO or REMOVE */
@@ -68,7 +84,8 @@ public class MotorData extends Message {
         /**/ 
     }
     
-    public void dumpContent() {
-        /**/ 
+    public String dumpContent() {
+        /**/
+        return "";
     }
 }

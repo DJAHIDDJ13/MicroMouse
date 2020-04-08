@@ -1,14 +1,33 @@
 public class Writer extends Communication {
-    FileOutputStream txStream;
+    protected File txFile;
+    protected FileOutputStream txStream;
+    protected Message txMessage;
 
     public Writer() {
+        this.txFile = new File(CommunicationUtility.FIFO_PATH + CommunicationUtility.FIFO_TX_FILENAME); 
         this.setName("Writer process");
         this.setDaemon(true);
         this.start();
     }
 
     public void run() {
+        if (!this.txFile.exists()) {
+            if (osName.toLowerCase().contains("linux") || osName.toLowerCase().contains("macos")) {
+                try {
+                    Process p = Runtime.getRuntime().exec("mkfifo " + CommunicationUtility.FIFO_PATH + CommunicationUtility.FIFO_TX_FILENAME);
+                } catch(Exception e) {
+                    e.printStackTrace(); 
+                    System.out.println(e); 
+                }
+              
+            }
+        }
+      
         CommunicationUtility.logMessage("INFO", "Writer", "run", "Starting writer...");
+        while (true) {
+            this.suspend();
+            writeFifo();
+        }
     }
 
     /***************************************************************************************************************************
@@ -32,40 +51,25 @@ public class Writer extends Communication {
      * | DIST1 (4) | DIST2 (4) | DIST3 (4) | DIST4 (4) | ACC1  (4) | ACC2  (4) | ACC3  (4) | ACC4  (4) | ACC5  (4) | ACC6  (4) |
      * +-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+
      **************************************************************************************************************************/
-    public void writeFifo(HeaderData msg) {
+     public void writeFifo(Message msg) {
         try {
-            String logMsg = "";
-            logMsg += "Sending : ";
-            logMsg += msg.flag + " ";
-            for (float data : msg.mazeData)
-                logMsg += data + " ";
-            for (float data : msg.initialPosData)
-                logMsg += data + " ";
-            for (float data : msg.targetPosData)
-                logMsg += data + " ";
-            txStream = new FileOutputStream(CommunicationUtility.FIFO_PATH + CommunicationUtility.FIFO_TX_FILENAME);
-            txStream.write(msg.getFlag());
-            txStream.write(msg.getContent());
-            txStream.close();
-            CommunicationUtility.logMessage("INFO", "Writer", "writeFifo", logMsg);
+            this.txMessage = msg;
+            this.resume();
         } catch(Exception e) {
             e.printStackTrace();  
             System.out.println(e); 
         }
     }
 
-    public void writeFifo(SensorData msg) {
+    protected void writeFifo() {
         try {
             String logMsg = "";
             logMsg += "Sending : ";
-            logMsg += msg.flag + " ";
-            for (float data : msg.distanceData)
-                logMsg += data + " ";
-            for (float data : msg.accelerometerData)
-                logMsg += data + " ";
+            logMsg += this.txMessage.flag + " ";
+            logMsg += this.txMessage.dumpContent();
             txStream = new FileOutputStream(CommunicationUtility.FIFO_PATH + CommunicationUtility.FIFO_TX_FILENAME);
-            txStream.write(msg.getFlag());
-            txStream.write(msg.getContent());
+            txStream.write(this.txMessage.getFlag());
+            txStream.write(this.txMessage.getContent());
             txStream.close();
             CommunicationUtility.logMessage("INFO", "Writer", "writeFifo", logMsg);
         } catch(Exception e) {
