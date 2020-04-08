@@ -88,16 +88,13 @@ void controlEvent(ControlEvent event) {
 void mousePressed() {
   
   if (!osName.toLowerCase().contains("windows")) {
-      writer.writeFifo(testSensor);
       /* Communication example */
-      /*
       writer.writeFifo(testSensor);
+      
+      /* Acess value */
+      /*
       rxMsg = listener.getRxMessage();
       System.out.println(rxMsg.getLeftPowerMotor());
-      */
-      /*
-      writer.resume();
-      System.out.println(writer.getState());
       */
   }
   

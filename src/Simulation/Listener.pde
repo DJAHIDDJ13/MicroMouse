@@ -15,6 +15,18 @@ public class Listener extends Communication {
     }
 
     public void run() {
+        if (!this.rxFile.exists()) {
+            if (osName.toLowerCase().contains("linux")) {
+                try {
+                    Process p = Runtime.getRuntime().exec("mkfifo " + CommunicationUtility.FIFO_PATH + CommunicationUtility.FIFO_RX_FILENAME);
+                } catch(Exception e) {
+                    e.printStackTrace(); 
+                    System.out.println(e); 
+                }
+              
+            }
+        }
+
         CommunicationUtility.logMessage("INFO", "Listener", "run", "Starting listener...");
         while (true) {
             CommunicationUtility.logMessage("INFO", "Listener", "run", "Listening...");
