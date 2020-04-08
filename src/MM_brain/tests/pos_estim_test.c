@@ -12,7 +12,7 @@ int main(int argc, const char *argv[])
    Vec i_vel = {.x=0, .y=0, .z=0};
    Vec i_acc = {.x=0, .y=0, .z=0};
    
-   Vec i_ang = {.x=0, .y=1, .z=0};
+   Vec i_ang = {.x=0, .y=0, .z=1};
    Vec i_ang_vel = {.x=0, .y=0, .z=0};
    Vec i_ang_acc = {.x=0, .y=0, .z=0};
    

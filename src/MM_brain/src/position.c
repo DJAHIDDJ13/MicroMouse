@@ -54,31 +54,18 @@ struct Position update_pos(struct Micromouse m, float time_step)
    next.pos.y = cur.pos.y - prev.pos.y + m.gyro.xyz.y * ts * ts;
    next.pos.z = cur.pos.z - prev.pos.z + m.gyro.xyz.z * ts * ts;
    
-   // applying the 3 axis rotation
+   // applying the z axis rotation
    /**
-    * Euler angles
-    * https://mathworld.wolfram.com/EulerAngles.html
-    * 
-    * ψ rotation in x axis,
-    * θ rotation in y axis,
-    * φ rotation in z axis
+    * θ rotation in z axis,
     *
-    * [cosθcosψ, cosψsinθsinφ−sinψcosφ, cosψsinθcosφ+cosψcosφ]   [x]
-    * |cosθsinψ, sinψsinθsinφ+cosψcosφ, sinψsinθcosφ−cosψsinφ| * |y|
-    * [−sinθ   , cosθsinφ             , cosθcosφ             ]   [z]
+    * [cosθ, −sinθ, 0]   [x]
+    * |sinθ,  cosθ, 0| * |y|
+    * [0   ,     0, 1]   [z]
     */
 
-   next.pos.x = next.pos.z * (cos(next.ang.x) * sin(next.ang.y) * cos(next.ang.z) + cos(next.ang.x) * cos(next.ang.z)) 
-              + next.pos.y * (cos(next.ang.x) * sin(next.ang.y) * sin(next.ang.z) - sin(next.ang.x) * cos(next.ang.z))
-              + next.pos.x * (cos(next.ang.x) * cos(next.ang.y));
-   
-   next.pos.y = next.pos.z * (sin(next.ang.x) * sin(next.ang.y) * cos(next.ang.z) - cos(next.ang.x) * sin(next.ang.z)) 
-              + next.pos.y * (sin(next.ang.x) * sin(next.ang.y) * sin(next.ang.z) + cos(next.ang.x) * cos(next.ang.z))
-              + next.pos.x * (sin(next.ang.x) * cos(next.ang.y));
-  
-   next.pos.z = next.pos.z * cos(next.ang.y) * cos(next.ang.z) 
-              + next.pos.y * cos(next.ang.y) * sin(next.ang.z)
-              - next.pos.x * sin(next.ang.y);
+   next.pos.x = next.pos.x * cos(next.ang.z) - next.pos.y * sin(next.ang.z);
+   next.pos.y = next.pos.x * sin(next.ang.z) + next.pos.y * cos(next.ang.z);
+   next.pos.z = next.pos.z;
    
    // adding the current estimate
    next.pos.x += cur.pos.x;
