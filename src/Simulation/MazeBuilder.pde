@@ -43,6 +43,79 @@ public class MazeBuilder{
     return maze;
   }
   
+  
+  
+ 
+  public boolean[][][] ImperfectMaze(int size, boolean[][][] res)
+  {
+  int neiX=0,  neiY=0, k=0, rand=0;
+  int[][] neiIndex = { {0,-1}, {0,1}, {-1,0}, {1,0} }; 
+  List<MazeCell> startList = new ArrayList<MazeCell>();
+  List<MazeCell> goalList = new ArrayList<MazeCell>();
+  List<MazeCell> startGate = new ArrayList<MazeCell>();
+  List<MazeCell> goalGate = new ArrayList<MazeCell>();
+  MazeCell start = new MazeCell(0,0);
+  MazeCell goal = new MazeCell(floor(size/2),floor(size/2));
+  MazeCell curCell, neiCell;
+  
+    // setting up Start and Goal sets.
+    for(int i = 0; i < size; i++) {
+      for(int j = 0; j < size; j++) {
+        if (start.distanceCells(i, j) < goal.distanceCells(i, j)) { 
+        startList.add(new MazeCell(i, j)); 
+      }
+        else {
+        goalList.add(new MazeCell(i, j));
+      }
+      }
+    }
+    
+    
+    /*println(startList.size());
+    println(goalList.size());
+    for(int in=0; in<4; in++) {print("le chiffre est ",neiIndex[in][0],neiIndex[in][1],"\n"); }*/
+    
+   for(int i=0; i<startList.size(); i++) {
+     curCell = startList.get(i);  //print(curCell.x,curCell.y,"\n");
+     for(int in=0; in<4; in++) {
+        neiX=curCell.x+neiIndex[in][0];  
+        neiY=curCell.y+neiIndex[in][1];
+        if( (0<=neiX && neiX<size) && (0<=neiY && neiY<size)) {
+          for (int j=0; j<goalList.size(); j++) {
+            neiCell = goalList.get(j);
+            if( (neiCell.x == neiX && neiCell.y==neiY) &&
+              (res[curCell.x][curCell.y][neiCell.relativeOrientation(curCell).getValue()] == false) &&
+              (res[neiCell.x][neiCell.y][curCell.relativeOrientation(neiCell).getValue()] == false) )
+              {
+                startGate.add(k,curCell);
+                goalGate.add(k,neiCell);
+                k++;
+                //res[curCell.x][curCell.y][neiCell.relativeOrientation(curCell).getValue()] = true;
+                //res[neiCell.x][neiCell.y][curCell.relativeOrientation(neiCell).getValue()] = true;
+                print("cur : ",curCell.x,curCell.y,"\n");
+                print("neighbour ",neiCell.x,neiCell.y,"\n");
+                //return res;
+              }
+          }
+        }    
+     }
+   }
+   
+   // random gate between start and goal sets
+   if(startGate.size() > 0 && startGate.size() == goalGate.size()){
+    rand=int(random(k-1));
+    curCell = startGate.get(rand);
+    neiCell = goalGate.get(rand);
+    res[curCell.x][curCell.y][neiCell.relativeOrientation(curCell).getValue()] = true;
+    res[neiCell.x][neiCell.y][curCell.relativeOrientation(neiCell).getValue()] = true;
+    print("final cur : ",curCell.x,curCell.y,"\n");
+    print("final neighbour ",neiCell.x,neiCell.y,"\n");
+    return res;
+  
+}
+  return res;
+  }
+  
   public Maze generateRandomMaze(float mazeW, float mazeH, int size, float ratio) {
     int w = size, h = size;
 
@@ -96,8 +169,10 @@ public class MazeBuilder{
         res[choice.x][choice.y][cur.relativeOrientation(choice).getValue()] = true;
         neighbors = null;
       }
-    }
-    
+    }    
+     
+     res = ImperfectMaze(size,res);
+     
     for(int i = 0; i < w; i++) {
       for(int j = 0; j < h; j++) {
         for(int k = 0; k < 4; k++) {
