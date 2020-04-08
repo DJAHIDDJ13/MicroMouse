@@ -11,7 +11,7 @@
  * | MOTORL (4) | MOTORR (4) |
  * +------------+------------+
  ***************************************************************************************************************************/
-public class MotorData extends Message implements RxMessage {
+public class MotorData extends Message {
     float leftPowerMotor;
     float rightPowerMotor;
 
@@ -84,7 +84,8 @@ public class MotorData extends Message implements RxMessage {
         /**/ 
     }
     
-    public void dumpContent() {
-        /**/ 
+    public String dumpContent() {
+        /**/
+        return "";
     }
 }

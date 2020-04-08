@@ -1,5 +1,6 @@
 public class Writer extends Communication {
-    FileOutputStream txStream;
+    protected FileOutputStream txStream;
+    protected Message txMessage;
 
     public Writer() {
         this.setName("Writer process");
@@ -9,6 +10,10 @@ public class Writer extends Communication {
 
     public void run() {
         CommunicationUtility.logMessage("INFO", "Writer", "run", "Starting writer...");
+        while (true) {
+            this.suspend();
+            writeFifo();
+        }
     }
 
     /***************************************************************************************************************************
@@ -32,6 +37,34 @@ public class Writer extends Communication {
      * | DIST1 (4) | DIST2 (4) | DIST3 (4) | DIST4 (4) | ACC1  (4) | ACC2  (4) | ACC3  (4) | ACC4  (4) | ACC5  (4) | ACC6  (4) |
      * +-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+
      **************************************************************************************************************************/
+     public void writeFifo(Message msg) {
+        try {
+            this.txMessage = msg;
+            this.resume();
+        } catch(Exception e) {
+            e.printStackTrace();  
+            System.out.println(e); 
+        }
+    }
+
+    protected void writeFifo() {
+        try {
+            String logMsg = "";
+            logMsg += "Sending : ";
+            logMsg += this.txMessage.flag + " ";
+            logMsg += this.txMessage.dumpContent();
+            txStream = new FileOutputStream(CommunicationUtility.FIFO_PATH + CommunicationUtility.FIFO_TX_FILENAME);
+            txStream.write(this.txMessage.getFlag());
+            txStream.write(this.txMessage.getContent());
+            txStream.close();
+            CommunicationUtility.logMessage("INFO", "Writer", "writeFifo", logMsg);
+        } catch(Exception e) {
+            e.printStackTrace();  
+            System.out.println(e); 
+        }
+    }
+
+/*
     public void writeFifo(HeaderData msg) {
         try {
             String logMsg = "";
@@ -73,4 +106,5 @@ public class Writer extends Communication {
             System.out.println(e); 
         }
     }
+*/
 }

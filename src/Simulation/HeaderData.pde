@@ -76,10 +76,12 @@ public class HeaderData extends Message {
         }
     }
 
-    public void dumpContent() {
+    public String dumpContent() {
         if (this.content == null || this.content.length == 0) {
             CommunicationUtility.logMessage("INFO", "HeaderData", "dumpContent", "Content is empty");
+            return "";
         } else {
+            String strContent = "";
             int intVal = 0;
             int cursor = 0;
             for (byte value : this.content) {
@@ -92,11 +94,12 @@ public class HeaderData extends Message {
                 } 
                 
                 if (cursor == 2) {
-                    System.out.println(intVal);
+                    strContent += intVal + " ";
                     intVal = 0;
                     cursor = 0;
                 }
             }
+            return strContent;
         }
     }
 

@@ -75,7 +75,7 @@ void draw() {
   box2d.step();
   simCon.update();
   
-  // Animate dashes with 'walking ants' effect
+  // Animate dashes with 'walking ants' effectf 
   dash.offset(simCon.getDashed());
   
   simCon.display();
@@ -88,10 +88,17 @@ void controlEvent(ControlEvent event) {
 void mousePressed() {
   
   if (!osName.toLowerCase().contains("windows")) {
+      writer.writeFifo(testSensor);
       /* Communication example */
+      /*
       writer.writeFifo(testSensor);
       rxMsg = listener.getRxMessage();
       System.out.println(rxMsg.getLeftPowerMotor());
+      */
+      /*
+      writer.resume();
+      System.out.println(writer.getState());
+      */
   }
   
   
