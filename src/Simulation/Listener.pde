@@ -16,7 +16,7 @@ public class Listener extends Communication {
 
     public void run() {
         if (!this.rxFile.exists()) {
-            if (osName.toLowerCase().contains("linux")) {
+            if (osName.toLowerCase().contains("linux") || osName.toLowerCase().contains("macos")) {
                 try {
                     Process p = Runtime.getRuntime().exec("mkfifo " + CommunicationUtility.FIFO_PATH + CommunicationUtility.FIFO_RX_FILENAME);
                 } catch(Exception e) {

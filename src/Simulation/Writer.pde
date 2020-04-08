@@ -12,7 +12,7 @@ public class Writer extends Communication {
 
     public void run() {
         if (!this.txFile.exists()) {
-            if (osName.toLowerCase().contains("linux")) {
+            if (osName.toLowerCase().contains("linux") || osName.toLowerCase().contains("macos")) {
                 try {
                     Process p = Runtime.getRuntime().exec("mkfifo " + CommunicationUtility.FIFO_PATH + CommunicationUtility.FIFO_TX_FILENAME);
                 } catch(Exception e) {
