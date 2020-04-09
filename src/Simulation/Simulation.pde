@@ -1,5 +1,4 @@
 import shiffman.box2d.*;
-
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.joints.*;
 import org.jbox2d.collision.shapes.*;
@@ -7,7 +6,6 @@ import org.jbox2d.collision.shapes.Shape;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.callbacks.RayCastCallback;
-
 import garciadelcastillo.dashedlines.*;
 
 // A reference to our box2d world
@@ -18,40 +16,40 @@ SimulationController simCon;
 public static final long  STARTING_TIME = System.currentTimeMillis();
 
 /* COMMUNICATION */
-String osName = null;
+//String osName = null;
 
-Listener listener;
-Writer writer;
+//Listener listener;
+//Writer writer;
 
 /* MESSAGE */
-HeaderData testHeader;
-SensorData testSensor;
+//HeaderData testHeader;
+//SensorData testSensor;
 
 
 void setup(){
   
-  osName = System.getProperty("os.name");
+  //osName = System.getProperty("os.name");
   
-  if (!osName.toLowerCase().contains("windows")) {
-      listener = new Listener();
-      writer = new Writer();
+  //if (!osName.toLowerCase().contains("windows")) {
+     // listener = new Listener();
+     // writer = new Writer();
       
       /* MESSAGE */
-      testHeader = new HeaderData();
-      testSensor = new SensorData();
+      //testHeader = new HeaderData();
+      //testSensor = new SensorData();
       
       /* Communication example */
-      float[] testDist = new float[] {1.23, 4.56, 7.89, 12.23};
-      float[] testAcc = new float[] {1.23, 4.56, 7.89, 12.23, 45.67, 89.12};
+      //float[] testDist = new float[] {1.23, 4.56, 7.89, 12.23};
+      //float[] testAcc = new float[] {1.23, 4.56, 7.89, 12.23, 45.67, 89.12};
       
-      testSensor.setDistanceData(testDist);
-      testSensor.setAccelerometerData(testAcc);
+      //testSensor.setDistanceData(testDist);
+      //testSensor.setAccelerometerData(testAcc);
     
-      testSensor.setContent();
-  }
+      //testSensor.setContent();
+  //}
   
   size(1500,920);
-  // smooth();
+  smooth();
   
   // Initialize box2d physics and create the world
   box2d = new Box2DProcessing(this, 10.0f);
@@ -70,7 +68,6 @@ void setup(){
 void draw() {
   background(150);
   stroke(0);
-
   // We must always step through time!
   box2d.step();
   simCon.update();
@@ -85,16 +82,19 @@ void controlEvent(ControlEvent event) {
   simCon.controlEventHandler(event);
 }
 
-void mousePressed() {
-  
-  if (!osName.toLowerCase().contains("windows")) {
-      /* Communication example */
+/*void mousePressed() {
+ if (!osName.toLowerCase().contains("windows")) {
+      //Communication example 
       writer.writeFifo(testSensor);
   }
   
-  simCon.mousePressedHandler();
+ // simCon.mousePressedHandler();
 }
+*/
 
+/*
 void keyPressed() {
   simCon.keyPressedHandler();
 }
+
+*/
