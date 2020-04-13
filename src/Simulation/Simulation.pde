@@ -16,16 +16,22 @@ SimulationController simCon;
 public static final long  STARTING_TIME = System.currentTimeMillis();
 
 /* COMMUNICATION */
-//String osName = null;
+String osName = null;
 
 //Listener listener;
 //Writer writer;
 
 /* MESSAGE */
+//
 //HeaderData testHeader;
 //SensorData testSensor;
-
-
+/*
+=======
+HeaderData testHeader;
+SensorData testSensor;
+Message rxMsg;
+>>>>>>> 87502302f22affecb7ce617a3f0c62b376cb0150
+*/
 void setup(){
   
   //osName = System.getProperty("os.name");
@@ -72,7 +78,7 @@ void draw() {
   box2d.step();
   simCon.update();
   
-  // Animate dashes with 'walking ants' effect
+  // Animate dashes with 'walking ants' effectf 
   dash.offset(simCon.getDashed());
   
   simCon.display();
@@ -86,11 +92,21 @@ void controlEvent(ControlEvent event) {
  if (!osName.toLowerCase().contains("windows")) {
       //Communication example 
       writer.writeFifo(testSensor);
+      
+      /* Acess value */
+      /*
+      rxMsg = listener.getRxMessage();
+      System.out.println(rxMsg.getLeftPowerMotor());
+      
   }
+*/
+ // simCon.mousePressedHandler();
+
+  
   
  // simCon.mousePressedHandler();
-}
-*/
+
+//}
 
 /*
 void keyPressed() {

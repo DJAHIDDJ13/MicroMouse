@@ -1,7 +1,86 @@
 \section{Analyse de la problématique de la construction du labyrinthe} 
 \label{sec:ProblematiqueConstructionLabyrinthe}
+\paragraph{}
+Les labyrinthes (et les algorithmes responsables de leur génération) peuvent être organisés selon trois critères de  classifications différents. Ces critères sont : la dimension, la topologie, et la tessellation. Un labyrinthe peut prendre un objet d'un de ses classes dans n'importe quelle combinaison.
 
-\paragraph{Chapeau}
+\subsection{Dimension d'un labyrinthe}
+La dimension d'un labyrinthe corresponds à l'espace dimensionnel couvert par le labyrinthe. Les labyrinthes peuvent êtres de dimensionnalité 2, 3 ou tout autre dimension supérieure.
+
+\begin{figure*}[htp] 
+    \centering
+    \subfloat[Labyrinthe en 2 dimensions.]{%
+        \includegraphics[width=0.3\textwidth]{report/pics/2D_maze.png}%
+        \label{fig:a}%
+        }%
+    \hfill%
+    \subfloat[Labyrinthe en 3 dimensions.]{%
+        \includegraphics[width=0.3\textwidth]{pics/3D_maze.png}%
+        \label{fig:b}%
+        }%
+    \caption{Exemple d'un labyrinthe 2D et d'un labyrinthe 3D}
+\end{figure*}
+
+\subsection{Topologie d'un labyrinthe}
+D’un point de vu mathématique, un labyrinthe est définie comme étant une surface connexe pouvant avoir deux types de topologies : topologie simple et topologie comportant des anneaux. Cette différence dans le type de topologie conduit à une distinction des labyrinthes en deux catégories : Les labyrinthes parfaits et les labyrinthes imparfaits.
+
+\subsubsection{Labyrinthe parfait}
+Afin qu’un labyrinthe soit labélisé comme étant parfait, ce dernier doit remplir deux conditions :
+\begin{itemize}
+\item Ne contient pas de cycles.
+\item Il existe un unique chemin entre la cellule de départ et la cellule d’arrivée du labyrinthe.
+\end{itemize}
+Plus généralement, quelque soit deux cellules sélectionnées dans notre labyrinthe, le chemin entre ces deux cellules doit être unique.
+
+\subsubsection{Labyrinthe imparfait}
+Un labyrinthe qui ne remplit pas les conditions pour être labélisé comme parfait est dit imparfait. Les labyrinthes imparfaits peuvent donc contenir des boucles, des îlots ou des cellules inaccessibles.
+
+
+\begin{figure*}[htp] 
+    \centering
+    \subfloat[Labyrinthe parfait.]{%
+        \includegraphics[width=0.5\textwidth]{report/pics/perfect_maze.png}%
+        \label{fig:a}%
+        }%
+    \hfill%
+    \subfloat[Labyrinthe imparfait.]{%
+        \includegraphics[width=0.5\textwidth]{report/pics/imperfect_maze.png}%
+        \label{fig:b}%
+        }%
+    \caption{Exemple d'un labyrinthe parfait et d'un labyrinthe imparfait.}
+\end{figure*}
+
+
+\subsection{Tessellation d'un labyrinthe}
+La classe de tessellation est la géométrie des cellules individuelles qui composent le labyrinthe. Il existe de nombreux types de tessellation, on citera notamment :
+
+\subsubsection{ Tesellation orthogonal}
+Il s'agit d'une grille rectangulaire standard où les cellules ont des passages qui se coupent à angle droit formant des cellules sous forme de carrés.
+
+\subsubsection{Tesellation delta} 
+Un labyrinthe à tessellation delta est un composé de triangles imbriqués, où chaque cellule peut avoir jusqu'à trois passages connectés.
+
+\subsubsection{Tesellation theta}
+Un labyrinthe à tessellation theta est composé de cercles concentriques. Les cellules ont généralement quatre connexions de passage possibles, mais peuvent en avoir plus en raison du plus grand nombre de cellules dans les anneaux externes.
+
+
+\begin{figure*}[htp] 
+    \centering
+    \subfloat[Labyrinthe orthogonal.]{%
+        \includegraphics[width=0.27\textwidth]{report/pics/orthogonal_maze.png}%
+        \label{fig:a}%
+        }%
+    \hfill%
+    \subfloat[Labyrinthe delta.]{%
+        \includegraphics[width=0.3\textwidth]{report/pics/delta_maze.png}%
+        \label{fig:b}%
+        }%
+        \hfill%
+    \subfloat[Labyrinthe theta.]{%
+        \includegraphics[width=0.3\textwidth]{report/pics/theta_maze.png}%
+        \label{fig:c}%
+        }%
+    \caption{Exemple de labyrinthes avec différentes classes de tessellation.}
+\end{figure*}
 
 
 \section{État de l’art: études des solutions existantes} \label{sec:etatDeLart2}
