@@ -18,12 +18,12 @@ La dimension d'un labyrinthe corresponds à l'espace dimensionnel couvert par le
 \begin{figure*}[htp] 
     \centering
     \subfloat[Labyrinthe en 2 dimensions.]{%
-        \includegraphics[width=0.27\textwidth]{report/pics/2D_maze.png}%
+        \includegraphics[width=0.35\textwidth]{report/pics/2D_maze.png}%
         \label{fig:a}%
         }%
     \hfill%
     \subfloat[Labyrinthe en 3 dimensions.]{%
-        \includegraphics[width=0.27\textwidth]{pics/3D_maze.png}%
+        \includegraphics[width=0.35\textwidth]{pics/3D_maze.png}%
         \label{fig:b}%
         }%
     \caption{Exemple d'un labyrinthe 2D et d'un labyrinthe 3D}
@@ -64,7 +64,7 @@ La classe de tessellation est la géométrie des cellules individuelles qui comp
 D’un point de vu mathématique, un labyrinthe est définie comme étant une surface connexe pouvant avoir deux types de topologies : topologie simple et topologie comportant des anneaux. Cette différence dans le type de topologie conduit à une distinction des labyrinthes en deux catégories : Les labyrinthes parfaits et les labyrinthes imparfaits.
 
 \subsubsection{Labyrinthe parfait}
-Afin qu’un labyrinthe soit labélisé comme étant parfait, ce dernier doit remplir deux conditions :
+Afin qu'un labyrinthe soit labélisé comme étant parfait, ce dernier doit remplir deux conditions :
 \begin{itemize}
 \item Ne contient pas de cycles.
 \item Il existe un unique chemin entre la cellule de départ et la cellule d’arrivée du labyrinthe.
@@ -93,14 +93,38 @@ Un labyrinthe qui ne remplit pas les conditions pour être labélisé comme parf
 
 
 Dans la suite de ce rapport, nous considérons l'ensemble de nos labyrinthes comme étant de dimension 2 et possédant une tessellation orthogonale. La distinction se feras sur le critère de la topologie, on distinguera alors deux types de labyrinthes : les labyrinthes parfaits et les labyrinthes imparfaits.
-\section{Analyse de la problématique de la construction du labyrinthe}
-\section{État de l’art: études des solutions existantes} \label{sec:etatDeLart2}
 
-\paragraph{Chapeau}
+\newpage
+\section{Introduction à la génération de labyrinthes}
+Les algorithmes utilisés pour la génération de labyrinthes suivent un ordre d'étapes prédéfini. Afin de créer des labyrinthes structurés de manière aléatoire, une ou plusieurs étapes de l'algorithme doivent être randomisées (c'est-à-dire que la prise de décision au sein de l'étape doit utiliser une fonction renvoyant un résultat aléatoire). 
+Il existe deux approches algorithmiques générales utilisées pour la génération automatisée des labyrinthes. Ces approches sont : l'ajout de murs et la sculpture de passages.
+\\
+\begin{itemize}
+\item\textbf{ Ajout de murs :} Dans cette approche, on se base sur l'ajout de murs pour générer progressivement notre labyrinthe. On démarre d'un labyrinthe vide, puis l'algorithme va placer au fur et à mesure des murs à des positions spécifiques. 
+\\
+\item\textbf{ Sculpture de passages :} Les algorithmes basés sur cette approche se concentrent sur les chemins et le positionnement des cellules du labyrinthe. On démarre d'une matrice de cellules (une grille complètement remplie de murs), puis l'algorithme de sculpture de passages va alors creuser à travers la grille et détruire certains murs reliant les différentes cellules, ce processus itérative générera au final un labyrinthe.
+\end{itemize}
+\subsection{Introduction à la théorie des graphes}
+Cette sous-section présente certains principes fondamentaux de la théorie des graphes sur lesquels sont basé les algorithmes de génération de labyrinthes. 
+\subsubsection{Graphe}
+Un graphe est le concept fondamental dans la théorie des graphes, ce dernier est définie comme étant un triplet  $G = (V, E, \epsilon )$, avec $V$ représentant l'ensemble des sommets, $E$  l'ensemble des arêtes et $\epsilon$ une fonction de mappage appelée relation d'incidence tel que $\epsilon$ : $E	\rightarrow \power{V}{2}$
+
+\subsection{Théorie des graphes et génération de labyrinthes}
+
+
+
+\section{État de l’art: études des solutions existantes} \label{sec:etatDeLart2}
+\subsection{Algorithme de Prim}
+\subsection{Algorithme de Kruskal}
+\subsection{Algorithme de Backtracking}
+\subsection{Algorithme de d'arbre binaire}
+
+
 
 
 \section{Solution proposée et sa mise en œuvre} \label{sec:solution2}
-
+\subsection{Solution implémentée pour la génération de labyrinthes parfaits}
+\subsection{Solution implémentée pour la génération de labyrinthes imparfaits}
 \paragraph{Chapeau}
 
 
