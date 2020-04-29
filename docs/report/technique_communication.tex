@@ -1,18 +1,44 @@
+\documentclass[10pt]{article}
+\usepackage[usenames]{color} %pour la couleur
+\usepackage{amssymb} %maths
+\usepackage{amsmath} %maths
+\usepackage[utf8]{inputenc} %utile pour taper directement les caractères accentués
+\begin{document}
+\[$
 \section{Analyse de la problématique de la communication} \label{sec:ProblematiqueCommunication}
-
-\paragraph{Chapeau}
-
+\paragraph{Faire communiquer les différentes composantes du projet}
+Simulation en Java - Processing
+Brain en C
 
 \section{État de l’art: études des solutions existantes} \label{sec:etatDeLart5}
+\paragraph{Pour faire communiquer plusieurs processus, de nombreux moyens existent. Cette partie a pour but d'étudier ces différentes alternatives afin d'en tirer les plus avantageux en fonction de nos besoins.}
 
-\paragraph{Chapeau}
+  % Sockets - Pipes - Nammed pipes
+  \subsection{Communication par sockets}
+  \paragraph{}Un socket permet une abstraction de la couche logicielle d'un programme se rapportant au réseau. Il s'appuie sur les modules du système d'exploitation afin de faire communiquer deux processus selon deux modes de connexions :
+  \begin{itemize}
+    \item le mode connecté s'appuyant sur le protocole de la couche transport TCP (Transmission Control Protocol) qui établit une connexion durable entre les deux interlocuteurs. Ce mode de communication est reconnu comme fiable puisqu'il s'appuie sur un mécanisme d'acquittement et de contrôle CRC (Cyclic Redundancy Control) pour chaque paquet IP envoyé. Une erreur détectée par un de ces deux mécanisme déclenche le renvoi des données alors perdues ou corrompues ;
+    \item le mode non-connecté utilisant le protocole de la couche transport UDP (User Datagram Protocol) qui présente l'avantage d'être plus léger puisqu'il s'affranchit des mécanismes d'acquittement et de contrôle cités précédemment.
+  \end{itemize}
+
+  \paragraph{}Ainsi, si dans notre projet, sockets il y a, c'est le mode non-connecté qui sera privilégié. En effet, les données échangées étant soumises à des contraintes de temps réels, lorsqu'un paquet IP est perdu, il n'est pas utile de le renvoyer car les données qu'il porte sont alors inactuelles et donc inutilisables.
+
+  \paragraph{}Dans le langage C, ces deux types sockets sont implémentés dans la bibliothèque \texttt{<sys/socket.h>} alors qu'en Java/Processing, c'est la bibliothèque \texttt{hypermedia.net.*} qui est utilisée pour la création de socket UDP.
+
+\fig{pics/udp_socket.png}{15cm}{12cm}{Diagramme décrivant le fonctionnement des sockets UDP}{udp_socket}
+
+  \paragraph{}Par ailleurs, la communication par sockets adopte une architecture clients/serveur. Il est donc possible d'envisager un dispositif composé de plusieurs micromouses en utilisant cette solution de communication ; la partie simulation représentant le serveur et les brains, les clients.
 
 
 \section{Solution proposée et sa mise en œuvre} \label{sec:solution5}
+\paragraph{Au vu des choix matériels, nous avons opté pour les canaux nommés afin de faire communiquer les différentes composantes du projet. En effet, notre micromouse ne possédant pas de carte réseau, c'est par Bluetooth que se fera le communication entre les deux programmes. Ainsi, bien qu'elle semblait être la plus adaptée, la solution employant les sockets se retoruve alors inutilisable dans le contexte décrit.}
 
-\paragraph{Chapeau}
+  \subsection{Qu'est-ce qu'un canal nommé (named pipe) ?}
+  \paragraph{}
+
 
 
 \section{Tests et certifications de la solution} \label{sec:test5}
-
 \paragraph{Chapeau}
+$\]
+\end{document}
