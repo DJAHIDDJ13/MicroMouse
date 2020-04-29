@@ -147,10 +147,10 @@ public class Vehicle {
     BLWheel.updateFriction();
 
     for(Sensor sensor: sensors) {
-      sensor.update(box2d.coordWorldToPixels(getPosition()), getAngle());
+      sensor.update(getPosition(), getAngle());
     }
 
-    accelerometer.update(box2d.coordWorldToPixels(getPosition()), getAngle());
+    accelerometer.update(getPosition(), getAngle());
   }
   
   public void move(float left_m, float right_m) {
@@ -235,9 +235,9 @@ public class Vehicle {
   public void makeSensors(int nbSensors) {
     sensors = new Sensor[nbSensors];
     for(int i = 0; i < nbSensors; i++) {
-        Vec2 p1 = sensorPos[i].mul(box2d.scaleFactor);
+        Vec2 p1 = sensorPos[i];
         float ang = radians(sensorAngles[i]);
-        float len = 100;
+        float len = 10;
         
         sensors[i] = new Sensor(p1, ang, len);
     }

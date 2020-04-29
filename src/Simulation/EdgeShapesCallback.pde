@@ -24,7 +24,10 @@ public class EdgeShapesCallback implements RayCastCallback {
   }
   
   public Vec2 getM_point() {
-    return m_point;
+    // for some reason the object returned by the report fixture method is the same, 
+    // this caused some problems between the sensors, where they had the same value because it's the same object
+    // TODO: find a cleaner way to fix this idk
+    return new Vec2(m_point.x, m_point.y);
   }
   
   public void setM_point(Vec2 m_point) {

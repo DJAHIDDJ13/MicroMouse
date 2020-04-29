@@ -60,10 +60,12 @@ public class SensorData extends Message {
         }
     }
 
-    public void dumpContent() {
+    public String dumpContent() {
         if (this.content == null || this.content.length == 0) {
             CommunicationUtility.logMessage("INFO", "SensorData", "dumpContent", "Content is empty.");
+            return "";
         } else {
+            String strContent = "";
             float floatVal = 0;
             byte[] floatByte = new byte[4];
             int cursor = 0;
@@ -75,12 +77,17 @@ public class SensorData extends Message {
 
                 if (cursor == 4) {
                     floatVal = ByteBuffer.wrap(floatByte).order(ByteOrder.LITTLE_ENDIAN).getFloat();
-                    System.out.println(floatVal);
+                    strContent += floatVal + " ";
                     floatByte = new byte[4];
                     cursor = 0;
                 }
             }
+            return strContent;
         }
+    }
+
+    public void setContent(byte[] content) {
+        this.content = content;
     }
 
     /* TO_DO */

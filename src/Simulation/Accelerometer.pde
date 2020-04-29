@@ -18,6 +18,7 @@ public class Accelerometer {
    private int prevMillis;
    private int prevprevMillis;
    
+   private final float scalar = 2;
    public Accelerometer() {
      accelerometer = new PVector(0, 0, 0); // the z axis will be ignored (set to 0)
      gyro = new PVector(0, 0, 0); // both the x and y axis rotations will be ignored since they are not simulated
@@ -67,7 +68,7 @@ public class Accelerometer {
      // update the position values
      prevprevPosition = prevPosition;
      prevPosition = curPosition;
-     curPosition = vehiclePos;
+     curPosition = vehiclePos.mul(scalar); // the acceleration values are too small on world coordinates
      
      // update the angle values
      prevprevAngle = prevAngle;
@@ -81,10 +82,14 @@ public class Accelerometer {
      // same for the angular acceleration
      gyro.z = secondDerivative(prevprevAngle, prevAngle, curAngle, avg_time_step);
      
-     //println(prevprevPosition, prevPosition, curPosition);
    }
    
    public void display() {
-     line(curPosition.x -SimulationUtility.MAZE_SHIFTX, curPosition.y-SimulationUtility.MAZE_SHIFTY, curPosition.x + accelerometer.x, curPosition.y + accelerometer.y);
+     push();
+     Vec2 curP = box2d.coordWorldToPixels(curPosition.mul(1.0f / scalar));
+     translate(-SimulationUtility.MAZE_SHIFTX, -SimulationUtility.MAZE_SHIFTY);
+     translate(curP.x, curP.y);
+     line(0, 0, accelerometer.x, -accelerometer.y); // to transform to pixel vector (y inversed)
+     pop();
    }
 }

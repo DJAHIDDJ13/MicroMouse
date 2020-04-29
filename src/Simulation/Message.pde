@@ -14,10 +14,20 @@ public abstract class Message {
     return this.flag;
   }
 
+  /* MOTOR DATA */
+  public float getLeftPowerMotor() {
+      return -999; 
+  }
+
+  public float getRightPowerMotor() {
+      return -999; 
+  }
+
   public abstract void setContent();
+  public abstract void setContent(byte[] content);
+  public abstract String dumpContent();
   /* TO_DO */
   public abstract void setContent(String strContent);
-  public abstract void dumpContent();
 
   public byte[] getContent() {
     return this.content;

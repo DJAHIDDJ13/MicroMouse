@@ -1,7 +1,7 @@
 public class Listener extends Communication {
-    File rxFile;
-    FileInputStream rxStream;
-    
+    protected File rxFile;
+    protected FileInputStream rxStream;
+    protected Message rxMessage;
 
     public Listener() {
         this.rxFile = new File(CommunicationUtility.FIFO_PATH + CommunicationUtility.FIFO_RX_FILENAME);
@@ -10,7 +10,23 @@ public class Listener extends Communication {
         this.start();
     }
 
+    public Message getRxMessage() {
+        return this.rxMessage;
+    }
+
     public void run() {
+        if (!this.rxFile.exists()) {
+            if (osName.toLowerCase().contains("linux") || osName.toLowerCase().contains("macos")) {
+                try {
+                    Process p = Runtime.getRuntime().exec("mkfifo " + CommunicationUtility.FIFO_PATH + CommunicationUtility.FIFO_RX_FILENAME);
+                } catch(Exception e) {
+                    e.printStackTrace(); 
+                    System.out.println(e); 
+                }
+              
+            }
+        }
+
         CommunicationUtility.logMessage("INFO", "Listener", "run", "Starting listener...");
         while (true) {
             CommunicationUtility.logMessage("INFO", "Listener", "run", "Listening...");
@@ -51,23 +67,17 @@ public class Listener extends Communication {
             switch (rawData[0]) {
                 case CommunicationUtility.MOTOR_FLAG:
                     sliced = Arrays.copyOfRange(rawData, 1, CommunicationUtility.MOTOR_CONTENT_SIZE + 1);
-                    float floatVal = 0;
-                    byte[] floatByte = new byte[4];
-                    cursor = 0;
-                    for (byte value : sliced) {
-                        if (cursor < 4) {
-                            floatByte[cursor] = value;
-                            cursor++;
-                        }
-                        if (cursor == 4) {
-                            floatVal = ByteBuffer.wrap(floatByte).order(ByteOrder.LITTLE_ENDIAN).getFloat();
-                            //System.out.println(floatVal); // SUBTITUTE TO SERIALIZABLE OBJECT
-                            logMsg += floatVal + " ";
-                            floatByte = new byte[4];
-                            cursor = 0;
-                        }
-                        
-                    }
+                    
+                    this.rxMessage = new MotorData();
+                    MotorData motorDataMsg = new MotorData();
+                    motorDataMsg.setContent(sliced);
+                    motorDataMsg.formatMessage();
+                    motorDataMsg.setLeftPowerMotor();
+                    motorDataMsg.setRightPowerMotor();
+                    this.rxMessage = motorDataMsg;
+
+                    /* LOGS */
+                    logMsg += this.rxMessage.getLeftPowerMotor() + " " + this.rxMessage.getRightPowerMotor();
                     break;
                 default:
                     CommunicationUtility.logMessage("ERROR", "Listener", "readFifo", "No matching flag found.");
