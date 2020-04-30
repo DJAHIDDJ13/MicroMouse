@@ -1,11 +1,11 @@
-/*! 
+/*!
    \file queue_test.c
    \author MMteam
 
-   
-   \brief Main test for the queue structure. 
-   
-   \warning Attention don't forget to free the 
+
+   \brief Main test for the queue structure.
+
+   \warning Attention don't forget to free the
             memory occupied by the structures.
 
    \date 2020
@@ -14,8 +14,9 @@
 #include <stdint.h>
 #include <queue.h>
 
-int main(int argc, char **argv) {   
-   
+int main(int argc, char **argv)
+{
+
    struct oddpair_XY XY1 = {2, 2, 0};
    struct oddpair_XY XY2 = {2, 1, 1};
    struct oddpair_XY XY3 = {1, 2, 1};

@@ -1,12 +1,12 @@
-/*! 
+/*!
    \file maze.h
    \author MMteam
 
-   
+
    \brief Header file to describe the logical maze.
 
-   \details This header file contains the data structures 
-   			that will structure our logical maze. 
+   \details This header file contains the data structures
+   			that will structure our logical maze.
    			Also some functions to manipulate the maze.
 
    \date 2020
@@ -23,10 +23,10 @@
 /*        Structure representing the maze        */
 struct Maze {
 
-	int16_t 	size; 		/*		 Maze size		*/
+   int16_t 	size; 		/*		 Maze size		*/
 
-	struct  Box* maze;  	/* Our maze is supposed 
-						   		to exist in the form 
+   struct  Box* maze;  	/* Our maze is supposed
+						   		to exist in the form
 						   		of a table 		*/
 };
 

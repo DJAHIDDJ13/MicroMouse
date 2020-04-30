@@ -14,40 +14,40 @@
 #define MOTOR_FLAG 20
 #define MOTOR_CONTENT_SIZE 8
 
-typedef struct { 
-    unsigned char flag;
-    union {
-        float* float_array;
-        int* int_array;
-    } content;
+typedef struct {
+   unsigned char flag;
+   union {
+      float* float_array;
+      int* int_array;
+   } content;
 } RX_Message;
 
-typedef struct { 
-    unsigned char flag;
-    unsigned char* content;
+typedef struct {
+   unsigned char flag;
+   unsigned char* content;
 } TX_Message;
 
-typedef struct { 
-    float   dist_left, 
-            dist_left_front, 
-            dist_right_front, 
-            dist_right;
-    float   accelerometer_1,
-            accelerometer_2,
-            accelerometer_3,
-            accelerometer_4,
-            accelerometer_5,
-            accelerometer_6;
+typedef struct {
+   float   dist_left,
+           dist_left_front,
+           dist_right_front,
+           dist_right;
+   float   accelerometer_1,
+           accelerometer_2,
+           accelerometer_3,
+           accelerometer_4,
+           accelerometer_5,
+           accelerometer_6;
 } SensorData;
 
-typedef struct { 
-    int maze_width, 
-        maze_height;
-    int initial_x, 
-        initial_y, 
-        initial_angle;
-    int target_x, 
-        target_y;
+typedef struct {
+   int maze_width,
+       maze_height;
+   int initial_x,
+       initial_y,
+       initial_angle;
+   int target_x,
+       target_y;
 } HeaderData;
 
 void init_rx_message(RX_Message* rx_msg, unsigned char flag);

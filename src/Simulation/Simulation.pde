@@ -16,37 +16,37 @@ SimulationController simCon;
 public static final long  STARTING_TIME = System.currentTimeMillis();
 
 /* COMMUNICATION */
-//String osName = null;
+String osName = null;
 
-//Listener listener;
-//Writer writer;
+Listener listener;
+Writer writer;
 
 /* MESSAGE */
-//HeaderData testHeader;
-//SensorData testSensor;
+HeaderData testHeader;
+SensorData testSensor;
 
 
 void setup(){
   
-  //osName = System.getProperty("os.name");
+  osName = System.getProperty("os.name");
   
-  //if (!osName.toLowerCase().contains("windows")) {
-     // listener = new Listener();
-     // writer = new Writer();
+  if (!osName.toLowerCase().contains("windows")) {
+    listener = new Listener();
+    writer = new Writer();
       
       /* MESSAGE */
-      //testHeader = new HeaderData();
-      //testSensor = new SensorData();
+    testHeader = new HeaderData();
+    testSensor = new SensorData();
       
       /* Communication example */
-      //float[] testDist = new float[] {1.23, 4.56, 7.89, 12.23};
-      //float[] testAcc = new float[] {1.23, 4.56, 7.89, 12.23, 45.67, 89.12};
+    float[] testDist = new float[] {1.23, 4.56, 7.89, 12.23};
+    float[] testAcc = new float[] {1.23, 4.56, 7.89, 12.23, 45.67, 89.12};
       
-      //testSensor.setDistanceData(testDist);
-      //testSensor.setAccelerometerData(testAcc);
+    testSensor.setDistanceData(testDist);
+    testSensor.setAccelerometerData(testAcc);
     
-      //testSensor.setContent();
-  //}
+    testSensor.setContent();
+  }
   
   size(1500,920);
   smooth();
@@ -82,19 +82,16 @@ void controlEvent(ControlEvent event) {
   simCon.controlEventHandler(event);
 }
 
-/*void mousePressed() {
+void mousePressed() {
  if (!osName.toLowerCase().contains("windows")) {
       //Communication example 
       writer.writeFifo(testSensor);
   }
   
- // simCon.mousePressedHandler();
+ simCon.mousePressedHandler();
 }
-*/
 
-/*
+
 void keyPressed() {
   simCon.keyPressedHandler();
 }
-
-*/
