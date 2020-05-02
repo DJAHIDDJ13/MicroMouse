@@ -4,15 +4,12 @@ public class SimulationController {
   public SimulationEntry simulationEntry;
   private Maze maze;
   private MazeBuilder mazeBuilder;
+  private CommunicationController comCon;
   
   private ControlP5 cp5;
   
   private ControlPanel controlPanel;
   private InformationPanel informationPanel;
-  
-  /* Communication */
-  Listener listener;
-  Writer writer;
 
   // TO BE REMOVED
   private int dashed;
@@ -20,12 +17,10 @@ public class SimulationController {
   private int size;
     
   public SimulationController(ControlP5 cp5, int size){
-    this.listener = new Listener();
-    this.writer = new Writer();
     this.cp5 = cp5;
     this.size = size;
+    comCon = new CommunicationController();
     refreshMaze();
-    
     dashed = 0;
   }
   
@@ -50,7 +45,6 @@ public class SimulationController {
    // new simulation entry
    simulationEntry = new SimulationEntry(size, size);
    
-   
    // build the maze
    mazeBuilder = new MazeBuilder();
    maze = mazeBuilder.generateRandomMaze(box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
@@ -61,6 +55,9 @@ public class SimulationController {
    // Initializing the GUI Panels
    controlPanel = new ControlPanel(this, cp5, maze);
    informationPanel = new InformationPanel(this, cp5, maze);
+   
+   // initializing the communication controller
+   comCon.setMaze(maze);
  }
   
  public void setController(ControlP5 cp5) {
@@ -105,38 +102,13 @@ public class SimulationController {
     informationPanel.update();
     
     maze.update();
+    comCon.update();
   }
   
   public void display() {
     maze.display();
     controlPanel.display();
     informationPanel.display();
-    
-    /* COMMUNICATION : TO BE MOVED IN OTHER SECTION (?) */
-    /* SENSORS POSITIONS
-     *    _______________
-     *   / 0          2  \
-     *  / 1             3 \
-     *
-     */
-    //float[] accelerometerData = ArrayUtils.addAll(maze.getVehicleAcceleration().array(), getVehicleAngularAcceleration().array());
-    float[] accelerometerData = new float[6];
-    System.arraycopy(maze.getVehicleAcceleration().array(), 0, accelerometerData, 0, 3);
-    System.arraycopy(maze.getVehicleAngularAcceleration().array(), 0, accelerometerData, 3, 3);
-
-    SensorData sensorMessage = new SensorData();
-    sensorMessage.setDistanceData(maze.getVehicleSensorValues());
-    sensorMessage.setAccelerometerData(accelerometerData);
-    sensorMessage.setContent();
-
-    this.writer.writeFifo(sensorMessage);
-    Message rxMsg = this.listener.getRxMessage();
-
-    /* CODE SNIPET TO USE RX MSG
-    if (rxMsg != null) 
-      System.out.println("Using received data : " + rxMsg.getLeftPowerMotor() + " AND " + rxMsg.getRightPowerMotor());
-    */
-
     dashed++;
   }
   

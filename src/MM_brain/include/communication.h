@@ -41,12 +41,12 @@ typedef struct {
 } SensorData;
 
 typedef struct {
-   int maze_width,
+   float maze_width,
        maze_height;
-   int initial_x,
+   float initial_x,
        initial_y,
        initial_angle;
-   int target_x,
+   float target_x,
        target_y;
 } HeaderData;
 

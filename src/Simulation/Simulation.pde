@@ -12,7 +12,6 @@ import garciadelcastillo.dashedlines.*;
 public static Box2DProcessing box2d;
 public static DashedLines dash;
 SimulationController simCon;
-
 public static final long  STARTING_TIME = System.currentTimeMillis();
 String osName = System.getProperty("os.name");
 
