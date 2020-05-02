@@ -1,4 +1,10 @@
-public class Writer extends Communication {
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.concurrent.*;
+
+public class Writer extends Thread {
     protected File txFile;
     protected FileOutputStream txStream;
     protected Message txMessage;
@@ -46,9 +52,10 @@ public class Writer extends Communication {
      * +-----------+-----------+-----------+-----------+-----------+-----------+-----------+
      *      FLAG=DATA_SENSOR
      *          - DIST# = distances
-     *          - ACC#  = accelerometer values
+     *          - F_ACC#  = forward accelerometer values
+     *          - A_ACC# = angular accelerometer values
      * +-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+
-     * | DIST1 (4) | DIST2 (4) | DIST3 (4) | DIST4 (4) | ACC1  (4) | ACC2  (4) | ACC3  (4) | ACC4  (4) | ACC5  (4) | ACC6  (4) |
+     * | DIST1 (4) | DIST2 (4) | DIST3 (4) | DIST4 (4) | F_ACC1(4) | F_ACC2(4) | F_ACC3(4) | A_ACC1(4) | A_ACC2(4) | A_ACC3(4) |
      * +-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+
      **************************************************************************************************************************/
      public void writeFifo(Message msg) {

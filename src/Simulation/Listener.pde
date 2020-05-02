@@ -1,4 +1,10 @@
-public class Listener extends Communication {
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.concurrent.*;
+
+public class Listener extends Thread {
     protected File rxFile;
     protected FileInputStream rxStream;
     protected Message rxMessage;
