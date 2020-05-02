@@ -40,8 +40,6 @@ public class CommunicationController {
   }
   
   public void update() {
-    
-    /* COMMUNICATION : TO BE MOVED IN OTHER SECTION (?) */
     /* SENSORS POSITIONS
      *    _______________
      *   / 0          2  \

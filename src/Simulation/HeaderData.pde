@@ -49,34 +49,6 @@ public class HeaderData extends Message {
             targetPosData == null || targetPosData.length == 0) {
                 CommunicationUtility.logMessage("ERROR", "HeaderData", "setContent", "Cannot format message content because data are incomplete.");
         } else {
-            /*
-            byte intToByte = 0;
-            int cursor = 0;
-            */
-            /* MAZE DIMENSION */
-            /*for (int value : this.mazeData) {
-                for (int i = 0; i < 2; i++) {
-                    this.content[cursor] = (byte) ((value >> i*8) & 0xFF);
-                    cursor++;
-                }
-            }*/
-
-            /* INITIAL POSITION INFORMATION */
-            /*for (int value : this.initialPosData) {
-                for (int i = 0; i < 2; i++) {
-                    this.content[cursor] = (byte) ((value >> i*8) & 0xFF);
-                    cursor++;
-                }
-            }*/
-
-            /* TARGET POSITION INFORMATION */
-            /*for (int value : this.targetPosData) {
-                for (int i = 0; i < 2; i++) {
-                    this.content[cursor] = (byte) ((value >> i*8) & 0xFF);
-                    cursor++;
-                }
-            }*/
-            
             this.content = CommunicationUtility.packFloatArray(CommunicationUtility.concatAllFloat(mazeData, initialPosData, targetPosData));
         }
     }
@@ -87,29 +59,9 @@ public class HeaderData extends Message {
             return "";
         } else {
             String strContent = "";
-            /*
-            int intVal = 0;
-            int cursor = 0;
-            for (byte value : this.content) {
-                if (cursor == 0) {
-                    intVal = ((value & 0xff) << cursor*8);
-                    cursor++;
-                } else if (cursor < 2) {
-                    intVal |= ((value & 0xff) << cursor*8);
-                    cursor++;
-                } 
-                
-                if (cursor == 2) {
-                    strContent += intVal + " ";
-                    intVal = 0;
-                    cursor = 0;
-                }
-            }
-            
-            */
+
             float[] arr = CommunicationUtility.extractByteArray(content);
-            println(content.length);
-            for(float f: arr) { //<>// //<>//
+            for(float f: arr) { //<>//
                strContent += f + " ";
             }
             return strContent;
