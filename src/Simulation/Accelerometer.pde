@@ -87,7 +87,6 @@ public class Accelerometer {
    public void display() {
      push();
      Vec2 curP = box2d.coordWorldToPixels(curPosition.mul(1.0f / scalar));
-     println(curPosition, curP, accelerometer);
      translate(-SimulationUtility.MAZE_SHIFTX, -SimulationUtility.MAZE_SHIFTY);
      translate(curP.x, curP.y);
      line(0, 0, accelerometer.x, -accelerometer.y); // to transform to pixel vector (y inversed)
