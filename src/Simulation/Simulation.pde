@@ -14,46 +14,9 @@ public static DashedLines dash;
 SimulationController simCon;
 
 public static final long  STARTING_TIME = System.currentTimeMillis();
+String osName = System.getProperty("os.name");
 
-/* COMMUNICATION */
-String osName = null;
-
-//Listener listener;
-//Writer writer;
-
-/* MESSAGE */
-//
-//HeaderData testHeader;
-//SensorData testSensor;
-/*
-=======
-HeaderData testHeader;
-SensorData testSensor;
-Message rxMsg;
->>>>>>> 87502302f22affecb7ce617a3f0c62b376cb0150
-*/
 void setup(){
-  
-  //osName = System.getProperty("os.name");
-  
-  //if (!osName.toLowerCase().contains("windows")) {
-     // listener = new Listener();
-     // writer = new Writer();
-      
-      /* MESSAGE */
-      //testHeader = new HeaderData();
-      //testSensor = new SensorData();
-      
-      /* Communication example */
-      //float[] testDist = new float[] {1.23, 4.56, 7.89, 12.23};
-      //float[] testAcc = new float[] {1.23, 4.56, 7.89, 12.23, 45.67, 89.12};
-      
-      //testSensor.setDistanceData(testDist);
-      //testSensor.setAccelerometerData(testAcc);
-    
-      //testSensor.setContent();
-  //}
-  
   size(1500,920);
   smooth();
   
@@ -82,35 +45,17 @@ void draw() {
   dash.offset(simCon.getDashed());
   
   simCon.display();
+
 }
 
 void controlEvent(ControlEvent event) {
   simCon.controlEventHandler(event);
 }
 
-/*void mousePressed() {
- if (!osName.toLowerCase().contains("windows")) {
-      //Communication example 
-      writer.writeFifo(testSensor);
-      
-      /* Acess value */
-      /*
-      rxMsg = listener.getRxMessage();
-      System.out.println(rxMsg.getLeftPowerMotor());
-      
-  }
-*/
- // simCon.mousePressedHandler();
+void mousePressed() {
+ simCon.mousePressedHandler();
+}
 
-  
-  
- // simCon.mousePressedHandler();
-
-//}
-
-/*
 void keyPressed() {
   simCon.keyPressedHandler();
 }
-
-*/

@@ -10,12 +10,18 @@ public class SimulationController {
   private ControlPanel controlPanel;
   private InformationPanel informationPanel;
   
+  /* Communication */
+  Listener listener;
+  Writer writer;
+
   // TO BE REMOVED
   private int dashed;
 
   private int size;
     
   public SimulationController(ControlP5 cp5, int size){
+    this.listener = new Listener();
+    this.writer = new Writer();
     this.cp5 = cp5;
     this.size = size;
     refreshMaze();
@@ -106,6 +112,31 @@ public class SimulationController {
     controlPanel.display();
     informationPanel.display();
     
+    /* COMMUNICATION : TO BE MOVED IN OTHER SECTION (?) */
+    /* SENSORS POSITIONS
+     *    _______________
+     *   / 0          2  \
+     *  / 1             3 \
+     *
+     */
+    //float[] accelerometerData = ArrayUtils.addAll(maze.getVehicleAcceleration().array(), getVehicleAngularAcceleration().array());
+    float[] accelerometerData = new float[6];
+    System.arraycopy(maze.getVehicleAcceleration().array(), 0, accelerometerData, 0, 3);
+    System.arraycopy(maze.getVehicleAngularAcceleration().array(), 0, accelerometerData, 3, 3);
+
+    SensorData sensorMessage = new SensorData();
+    sensorMessage.setDistanceData(maze.getVehicleSensorValues());
+    sensorMessage.setAccelerometerData(accelerometerData);
+    sensorMessage.setContent();
+
+    this.writer.writeFifo(sensorMessage);
+    Message rxMsg = this.listener.getRxMessage();
+
+    /* CODE SNIPET TO USE RX MSG
+    if (rxMsg != null) 
+      System.out.println("Using received data : " + rxMsg.getLeftPowerMotor() + " AND " + rxMsg.getRightPowerMotor());
+    */
+
     dashed++;
   }
   
