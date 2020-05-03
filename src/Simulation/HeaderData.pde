@@ -5,6 +5,7 @@ public class HeaderData extends Message {
     float[] mazeData;
     float[] initialPosData;
     float[] targetPosData;
+    float[] cellSizeData;
 
     public HeaderData() {
         this.flag = CommunicationUtility.HEADER_FLAG;
@@ -43,13 +44,21 @@ public class HeaderData extends Message {
             this.targetPosData = targetPosData;
     }
 
+    public void setCellSizeData(float[] cellSizeData) {
+        if (cellSizeData.length != 2)
+            CommunicationUtility.logMessage("WARNING", "HeaderData", "cellSizeData", "cellSizeData array size not matching : is " + cellSizeData.length + " - should be 2.");
+        else
+            this.cellSizeData = cellSizeData;
+    }
+
     public void setContent() {
         if (mazeData == null || mazeData.length == 0 ||
             initialPosData == null || initialPosData.length == 0 ||
-            targetPosData == null || targetPosData.length == 0) {
+            targetPosData == null || targetPosData.length == 0 ||
+            cellSizeData == null || cellSizeData.length == 0) {
                 CommunicationUtility.logMessage("ERROR", "HeaderData", "setContent", "Cannot format message content because data are incomplete.");
         } else {
-            this.content = CommunicationUtility.packFloatArray(CommunicationUtility.concatAllFloat(mazeData, initialPosData, targetPosData));
+            this.content = CommunicationUtility.packFloatArray(CommunicationUtility.concatAllFloat(mazeData, initialPosData, targetPosData, cellSizeData));
         }
     }
 

@@ -8,7 +8,7 @@
 #define MAX_MSG_SIZE 50
 
 #define HEADER_FLAG 11
-#define HEADER_CONTENT_SIZE 16
+#define HEADER_CONTENT_SIZE 40
 #define SENSOR_FLAG 10
 #define SENSOR_CONTENT_SIZE 40
 #define MOTOR_FLAG 20
@@ -48,6 +48,8 @@ typedef struct {
        initial_angle;
    float target_x,
        target_y;
+   float box_width,
+       box_height;
 } HeaderData;
 
 void init_rx_message(RX_Message* rx_msg, unsigned char flag);

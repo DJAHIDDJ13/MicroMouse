@@ -6,7 +6,7 @@ public static class CommunicationUtility {
 
     public static final int MAX_MSG_SIZE = 50;
     public static final byte HEADER_FLAG = 11;
-    public static final byte HEADER_CONTENT_SIZE = 16;
+    public static final byte HEADER_CONTENT_SIZE = 40;
     public static final byte SENSOR_FLAG = 10;
     public static final byte SENSOR_CONTENT_SIZE = 40;
     public static final byte MOTOR_FLAG = 20;

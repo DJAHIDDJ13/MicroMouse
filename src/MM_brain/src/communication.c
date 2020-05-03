@@ -121,9 +121,10 @@ int write_fifo(TX_Message tx_msg, unsigned char flag, void* content)
  *          - MAZE# = maze dimension
  *          - INIT# = micromouse initial position information
  *          - TAR#  = target position
- * +-----------+-----------+-----------+-----------+-----------+-----------+-----------+
- * | MAZEL (2) | MAZEH (2) | INITX (2) | INITY (2) | INITA (2) | TARX  (2) | TARY  (2) |
- * +-----------+-----------+-----------+-----------+-----------+-----------+-----------+
+ *          - BOX# = box size (cells dimension)
+ * +-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+
+ * | MAZEL (4) | MAZEH (4) | INITX (4) | INITY (4) | INITA (4) | TARX  (4) | TARY  (4) | BOXW  (4) | BOXH  (4) |
+ * +-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+
  *      FLAG=DATA_SENSOR
  *          - DIST# = distances
  *          - ACC#  = accelerometer values
@@ -134,7 +135,6 @@ int write_fifo(TX_Message tx_msg, unsigned char flag, void* content)
 int read_fifo(RX_Message* rx_msg)
 {
    int i = 0, j = 0, cursor = 0;
-   int byteToInt = 0;
    char logMsg[512] = "", numberToStr[80];
 
    union {
@@ -165,21 +165,16 @@ int read_fifo(RX_Message* rx_msg)
    switch (rx_msg->flag) {
    case HEADER_FLAG:
       for (i = 1; i < HEADER_CONTENT_SIZE + 1; i++) {
-         byteToInt = 0;
-
-         for (j = 0; j < 2; j++) {
-            if (j == 0) {
-               byteToInt = ((int)buffer[j] << j * 8 );
-            } else {
-               byteToInt |= ((int)buffer[j] << j * 8 );
-            }
-
-            i++;
+         for (j = 0; j < 4; j++) {
+            byteToFloat.bytesNumber[j] = buffer[i + j];
          }
 
-         sprintf(numberToStr, "%d ", byteToInt);
+         i += 3;
+         sprintf(numberToStr, "%.6g ", byteToFloat.floatNumber);
          strcat(logMsg, numberToStr);
-      }
+         rx_msg->content.float_array[cursor] = byteToFloat.floatNumber;
+         cursor++;
+      }     
 
       break;
 
@@ -213,13 +208,16 @@ void format_rx_data(RX_Message rx_msg, SensorData* sensor_data, HeaderData* head
 {
    switch (rx_msg.flag) {
    case HEADER_FLAG:
-      header_data->maze_width = rx_msg.content.int_array[0];
-      header_data->maze_height = rx_msg.content.int_array[1];
-      header_data->initial_x = rx_msg.content.int_array[2];
-      header_data->initial_y = rx_msg.content.int_array[3];
-      header_data->initial_angle = rx_msg.content.int_array[4];
-      header_data->target_x = rx_msg.content.int_array[5];
-      header_data->target_y = rx_msg.content.int_array[6];
+      header_data->maze_width = rx_msg.content.float_array[0];
+      header_data->maze_height = rx_msg.content.float_array[1];
+      header_data->initial_x = rx_msg.content.float_array[2];
+      header_data->initial_y = rx_msg.content.float_array[3];
+      header_data->initial_angle = rx_msg.content.float_array[4];
+      header_data->target_x = rx_msg.content.float_array[5];
+      header_data->target_y = rx_msg.content.float_array[6];
+      header_data->box_width = rx_msg.content.float_array[7];
+      header_data->box_height = rx_msg.content.float_array[8];
+
       break;
 
    case SENSOR_FLAG:

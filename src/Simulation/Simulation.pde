@@ -16,6 +16,7 @@ public static final long  STARTING_TIME = System.currentTimeMillis();
 String osName = System.getProperty("os.name");
 
 void setup(){
+  frame.setResizable(true);
   size(1500,920);
   smooth();
   

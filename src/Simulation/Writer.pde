@@ -47,9 +47,10 @@ public class Writer extends Thread {
      *          - MAZE# = maze dimension
      *          - INIT# = micromouse initial position information
      *          - TAR#  = target position
-     * +-----------+-----------+-----------+-----------+-----------+-----------+-----------+
-     * | MAZEL (2) | MAZEH (2) | INITX (2) | INITY (2) | INITA (2) | TARX  (2) | TARY  (2) |
-     * +-----------+-----------+-----------+-----------+-----------+-----------+-----------+
+     *          - BOX# = box size (cells dimension)
+     * +-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+
+     * | MAZEL (4) | MAZEH (4) | INITX (4) | INITY (4) | INITA (4) | TARX  (4) | TARY  (4) | BOXW  (4) | BOXH  (4) |
+     * +-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+
      *      FLAG=DATA_SENSOR
      *          - DIST# = distances
      *          - F_ACC#  = forward accelerometer values

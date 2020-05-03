@@ -29,12 +29,14 @@ public class CommunicationController {
     Vec2 tp = maze.getTarget().getPosition();
     float[] mazeData = {maze.getWidth(), maze.getHeight()}, 
           initialPosData = {p.x, p.y, a}, 
-          targetPosData = {tp.x, tp.y};
+          targetPosData = {tp.x, tp.y},
+          cellSizeData = {maze.getBoxW(), maze.getBoxH()};
           
     headerMessage.setMazeData(mazeData);
     headerMessage.setInitialPosData(initialPosData);
     headerMessage.setTargetPosData(targetPosData);
-    
+    headerMessage.setCellSizeData(cellSizeData);
+
     headerMessage.setContent();
     this.writer.writeFifo(headerMessage);
   }
