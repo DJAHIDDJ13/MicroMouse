@@ -1,12 +1,12 @@
-/*! 
+/*!
    \file brain.h
    \author MMteam
 
-   
-   \brief Header file to declare the functions used 
+
+   \brief Header file to declare the functions used
    		  to implement the MM brain.
 
-   \details This header file contains only declarations 
+   \details This header file contains only declarations
    			of the functions.
 
    	\see brain.c

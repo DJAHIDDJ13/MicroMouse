@@ -1,9 +1,9 @@
-/*! 
+/*!
    \file Stack_XY.h
    \author MMteam
 
-   
-   \brief Header file to declare the structure and the functions used 
+
+   \brief Header file to declare the structure and the functions used
    		  to implement a generic stack.
 
    \see stack.c
@@ -24,25 +24,25 @@
 
 struct oddpair_XY {
 
-	int16_t OX:15; 			  /* The abscissa of the box 
-							      in the maze     */
-	
-	int16_t OY:15; 			  /* The ordinate of the box  
+   int16_t OX: 15; 			  /* The abscissa of the box
 							      in the maze     */
 
-	uint8_t sign:1;			  /* One bit for the signe */
+   int16_t OY: 15; 			  /* The ordinate of the box
+							      in the maze     */
+
+   uint8_t sign: 1;			 /* One bit for the signe */
 };
 
 typedef struct Cell {
 
-	struct oddpair_XY XY;
-	struct Cell* next; /* pointer to next cell */
+   struct oddpair_XY XY;
+   struct Cell* next; /* pointer to next cell */
 } *List_XY;
 
 typedef struct {
-	
-	List_XY head;
-	List_XY tail;
+
+   List_XY head;
+   List_XY tail;
 } Queue_XY;
 
 /* Here some primitives for the Queue */

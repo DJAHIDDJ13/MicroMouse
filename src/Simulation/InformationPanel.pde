@@ -154,7 +154,7 @@ public void GenericVehicleInformations( )  {
     text(sensors[1],910,85);
     text(sensors[3],1050,85);
 
-    
+
     // Gyroscope x,y,z values
     int div=1;
     fill(0);

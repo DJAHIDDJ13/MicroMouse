@@ -23,6 +23,22 @@ public class Maze {
     walls = new LinkedList<Wall>();
   }
 
+  public float getBoxW() {
+    return boxW;
+  }
+
+  public float getBoxH() {
+    return boxH;
+  }
+
+  public float getWidth() {
+    return mazeW; 
+  }
+
+  public float getHeight() {
+    return mazeH; 
+  }
+
   public Vehicle getVehicle(){
    return vehicle;
   }

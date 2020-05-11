@@ -65,11 +65,7 @@ void *thread_2(void *arg)
       pthread_mutex_lock(&mutex);
       pthread_cond_wait (&condition, &mutex);
       /* WRITING */
-      /* ...Processing... */
-      /* Code snipet to use received data */
-      /*
-      printf("MAZE DIMENSIONS : %f x %f\n", header_data.maze_width, header_data.maze_height);
-      */
+      /* ...Processing...*/
       write_fifo(tx_msg, MOTOR_FLAG, test);
       pthread_mutex_unlock(&mutex);
    }

@@ -4,12 +4,13 @@ public class SimulationController {
   public SimulationEntry simulationEntry;
   private Maze maze;
   private MazeBuilder mazeBuilder;
+  private CommunicationController comCon;
   
   private ControlP5 cp5;
   
   private ControlPanel controlPanel;
   private InformationPanel informationPanel;
-  
+
   // TO BE REMOVED
   private int dashed;
 
@@ -18,8 +19,8 @@ public class SimulationController {
   public SimulationController(ControlP5 cp5, int size){
     this.cp5 = cp5;
     this.size = size;
+    comCon = new CommunicationController();
     refreshMaze();
-    
     dashed = 0;
   }
   
@@ -44,7 +45,6 @@ public class SimulationController {
    // new simulation entry
    simulationEntry = new SimulationEntry(size, size);
    
-   
    // build the maze
    mazeBuilder = new MazeBuilder();
    maze = mazeBuilder.generateRandomMaze(box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
@@ -55,6 +55,9 @@ public class SimulationController {
    // Initializing the GUI Panels
    controlPanel = new ControlPanel(this, cp5, maze);
    informationPanel = new InformationPanel(this, cp5, maze);
+   
+   // initializing the communication controller
+   comCon.setMaze(maze);
  }
   
  public void setController(ControlP5 cp5) {
@@ -99,13 +102,13 @@ public class SimulationController {
     informationPanel.update();
     
     maze.update();
+    comCon.update();
   }
   
   public void display() {
     maze.display();
     controlPanel.display();
     informationPanel.display();
-    
     dashed++;
   }
   

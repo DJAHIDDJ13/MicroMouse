@@ -37,26 +37,7 @@ public class SensorData extends Message {
             accelerometerData == null || accelerometerData.length == 0) {
                 CommunicationUtility.logMessage("ERROR", "SensorData", "setContent", "Cannot format message content because data are incomplete.");
         } else {
-            int intBits = 0;
-            int cursor = 0;
-
-            /* DISTANCE DATA */
-            for (float value : this.distanceData) {
-                intBits = Float.floatToIntBits(value);
-                for (int i = 0; i < 4; i++) {
-                    this.content[cursor] = (byte) ((intBits >> i*8) & 0xFF);
-                    cursor++;
-                }
-            }
-
-            /* ACCELEROMETER DATA */
-            for (float value : this.accelerometerData) {
-                intBits = Float.floatToIntBits(value);
-                for (int i = 0; i < 4; i++) {
-                    this.content[cursor] = (byte) ((intBits >> i*8) & 0xFF);
-                    cursor++;
-                }
-            }
+            this.content = CommunicationUtility.packFloatArray(CommunicationUtility.concatAllFloat(distanceData, accelerometerData));
         }
     }
 
@@ -66,21 +47,10 @@ public class SensorData extends Message {
             return "";
         } else {
             String strContent = "";
-            float floatVal = 0;
-            byte[] floatByte = new byte[4];
-            int cursor = 0;
-            for (byte value : this.content) {
-                if (cursor < 4) {
-                    floatByte[cursor] = value;
-                    cursor++;
-                }
-
-                if (cursor == 4) {
-                    floatVal = ByteBuffer.wrap(floatByte).order(ByteOrder.LITTLE_ENDIAN).getFloat();
-                    strContent += floatVal + " ";
-                    floatByte = new byte[4];
-                    cursor = 0;
-                }
+            
+            float[] arr = CommunicationUtility.extractByteArray(content);
+            for(float f: arr) {
+               strContent += f + " ";
             }
             return strContent;
         }

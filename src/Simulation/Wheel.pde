@@ -7,7 +7,7 @@ public class Wheel {
   public Wheel(float x, float y, float w, float h, float angle) {
     this.h = h;
     this.w = w;
-    this.pixelW = box2d.scalarWorldToPixels(w); //<>//
+    this.pixelW = box2d.scalarWorldToPixels(w);
     this.pixelH = box2d.scalarWorldToPixels(h);
     
     makeBody(x, y, angle);
@@ -18,7 +18,7 @@ public class Wheel {
     this.pixelW = box2d.scalarWorldToPixels(w);
     this.pixelH = box2d.scalarWorldToPixels(h);
     
-    makeBody(p.x, p.y, angle); //<>//
+    makeBody(p.x, p.y, angle);
   }
   public Vec2 getPosition() {
     return body.getPosition();
@@ -109,7 +109,7 @@ public class Wheel {
   }
   
   public void makeBody(float x, float y, float angle) {
-    // Define a polygon (this is what we use for a rectangle) //<>// //<>// //<>//
+    // Define a polygon (this is what we use for a rectangle) //<>// //<>//
     PolygonShape sd = new PolygonShape();
     sd.setAsBox(w / 2, h / 2);
     

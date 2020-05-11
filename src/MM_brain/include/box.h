@@ -1,12 +1,12 @@
-/*! 
+/*!
    \file box.h
    \author MMteam
 
-   
+
    \brief Header file to describe the logical box.
 
-   \details This header file contains the data structures 
-   			that will structure our logical box. 
+   \details This header file contains the data structures
+   			that will structure our logical box.
    			Also some functions to manipulate the box.
 
    \date 2020
@@ -22,25 +22,25 @@
 
 /*    Structure representing a Box of the maze    */
 struct Box {
-	/* Our orthonormal mark
-	   o ----> x
-	   |
-	   |
-	   v
-	   y
-	*/  
+   /* Our orthonormal mark
+      o ----> x
+      |
+      |
+      v
+      y
+   */
 
-	int16_t OX; 			  /* The abscissa of the box 
-							      in the maze     */
-	
-	int16_t OY; 			  /* The ordinate of the box  
+   int16_t OX; 			  /* The abscissa of the box
 							      in the maze     */
 
-	int16_t wallIndicator;  /* Used to find out if the 
-								x-th side of the square 
+   int16_t OY; 			  /* The ordinate of the box
+							      in the maze     */
+
+   int16_t wallIndicator;  /* Used to find out if the
+								x-th side of the square
 								is occupied by a wall */
 
-	int16_t value;			  /* The value of the case */
+   int16_t value;			  /* The value of the case */
 
 };
 
