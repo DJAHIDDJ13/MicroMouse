@@ -61,7 +61,7 @@ public class MazeBuilder{
     // setting up Start and Goal sets.
     for(int i = 0; i < size; i++) {
       for(int j = 0; j < size; j++) {
-        if (start.distanceCells(i, j)< goal.distanceCells(i, j)+1) { 
+        if (start.distanceCells(i, j)+2< goal.distanceCells(i, j)) { 
         startList.add(new MazeCell(i, j)); 
       }
         else {
@@ -159,7 +159,7 @@ public class MazeBuilder{
       }
     }    
      
-     res = ImperfectMaze(size,res,2);
+     res = ImperfectMaze(size,res,4);
      
     for(int i = 0; i < w; i++) {
       for(int j = 0; j < h; j++) {

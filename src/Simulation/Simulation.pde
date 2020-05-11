@@ -108,9 +108,7 @@ void controlEvent(ControlEvent event) {
 
 //}
 
-/*
+
 void keyPressed() {
   simCon.keyPressedHandler();
 }
-
-*/
