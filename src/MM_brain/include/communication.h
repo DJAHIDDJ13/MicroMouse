@@ -1,4 +1,7 @@
-#include "utils.h"
+#ifndef COMMUNICATION_H
+#define COMMUNICATION_H
+
+#include "micromouse.h"
 
 #define FIFO_PATH "/tmp/"
 #define FIFO_TX_FILENAME "c_tx"
@@ -39,7 +42,7 @@ typedef struct {
            accelerometer_5,
            accelerometer_6;
 } SensorData;
-
+/*
 typedef struct {
    float maze_width,
        maze_height;
@@ -51,6 +54,7 @@ typedef struct {
    float box_width,
        box_height;
 } HeaderData;
+*/
 
 void init_rx_message(RX_Message* rx_msg, unsigned char flag);
 int get_tx_fifo_path(char *path);
@@ -58,5 +62,8 @@ int get_rx_fifo_path(char *path);
 int create_fifo();
 int write_fifo(TX_Message tx_msg, unsigned char flag, void* content);
 int read_fifo(RX_Message* rx_msg);
-void format_rx_data(RX_Message rx_msg, SensorData* sensor_data, HeaderData* header_data);
+//void format_rx_data(RX_Message rx_msg, SensorData* sensor_data, HeaderData* header_data);
+void format_rx_data_mm(RX_Message rx_msg, struct Micromouse* data);
 void format_tx_data(TX_Message *tx_msg, unsigned char flag, void* content);
+
+#endif

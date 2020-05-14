@@ -208,34 +208,42 @@ void format_rx_data(RX_Message rx_msg, SensorData* sensor_data, HeaderData* head
 {
    switch (rx_msg.flag) {
    case HEADER_FLAG:
-      header_data->maze_width = rx_msg.content.float_array[0];
-      header_data->maze_height = rx_msg.content.float_array[1];
-      header_data->initial_x = rx_msg.content.float_array[2];
-      header_data->initial_y = rx_msg.content.float_array[3];
-      header_data->initial_angle = rx_msg.content.float_array[4];
-      header_data->target_x = rx_msg.content.float_array[5];
-      header_data->target_y = rx_msg.content.float_array[6];
-      header_data->box_width = rx_msg.content.float_array[7];
-      header_data->box_height = rx_msg.content.float_array[8];
-
+      memcpy(header_data, rx_msg.content.float_array, sizeof(*header_data));
       break;
 
    case SENSOR_FLAG:
-      sensor_data->dist_left = rx_msg.content.float_array[0];
-      sensor_data->dist_left_front = rx_msg.content.float_array[1];
-      sensor_data->dist_right_front = rx_msg.content.float_array[2];
-      sensor_data->dist_right = rx_msg.content.float_array[3];
-      sensor_data->accelerometer_1 = rx_msg.content.float_array[4];
-      sensor_data->accelerometer_2 = rx_msg.content.float_array[5];
-      sensor_data->accelerometer_3 = rx_msg.content.float_array[6];
-      sensor_data->accelerometer_4 = rx_msg.content.float_array[7];
-      sensor_data->accelerometer_5 = rx_msg.content.float_array[8];
-      sensor_data->accelerometer_6 = rx_msg.content.float_array[9];
+      memcpy(sensor_data, rx_msg.content.float_array, sizeof(*sensor_data));
       break;
 
    default:
       log_message("ERROR", "Listener", "format_rx_data", "No matching flag found.");
    }
+}
+
+void format_rx_data_mm(RX_Message rx_msg, struct Micromouse* data)
+{
+   switch (rx_msg.flag) {
+   case HEADER_FLAG:
+      memcpy(&(data->header_data), rx_msg.content.float_array, sizeof(data->header_data));
+      break;
+
+   case SENSOR_FLAG:
+      data->sensors[0] = rx_msg.content.float_array[0];
+      data->sensors[1] = rx_msg.content.float_array[1];
+      data->sensors[2] = rx_msg.content.float_array[2];
+      data->sensors[3] = rx_msg.content.float_array[3];
+      data->gyro.xyz.x = rx_msg.content.float_array[4];
+      data->gyro.xyz.y = rx_msg.content.float_array[5];
+      data->gyro.xyz.z = rx_msg.content.float_array[6];
+      data->gyro.ypr.x = rx_msg.content.float_array[7];
+      data->gyro.ypr.y = rx_msg.content.float_array[8];
+      data->gyro.ypr.z = rx_msg.content.float_array[9];
+      break;
+
+   default:
+      log_message("ERROR", "Listener", "format_rx_data", "No matching flag found.");
+   }
+
 }
 
 void format_tx_data(TX_Message *tx_msg, unsigned char flag, void* content)

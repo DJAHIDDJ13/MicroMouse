@@ -17,7 +17,7 @@ public class Accelerometer {
    private int curMillis;
    private int prevMillis;
    private int prevprevMillis;
-   
+   private int counter;
    private final float scalar = 2;
    public Accelerometer() {
      accelerometer = new PVector(0, 0, 0); // the z axis will be ignored (set to 0)
@@ -34,16 +34,24 @@ public class Accelerometer {
      curMillis = millis();
      prevMillis = millis();
      prevprevMillis = millis();
+     
+     counter = 0;
    }
    
    // in radians per second squared
    public PVector getGyro() {
-     return gyro;
+     PVector ret = new PVector(0, 0, 0);
+     if(counter > 2)
+       ret = gyro;
+     return ret;
    }
    
    // in meters per second squared
    public PVector getAccelerometer() {
-     return accelerometer;
+     PVector ret = new PVector(0, 0, 0);
+     if(counter > 2)
+       ret = accelerometer;
+     return ret;
    }
    
    // calculate numerical second derivative using verlet's integration method
@@ -82,6 +90,7 @@ public class Accelerometer {
      // same for the angular acceleration
      gyro.z = secondDerivative(prevprevAngle, prevAngle, curAngle, avg_time_step);
      
+     counter++;
    }
    
    public void display() {

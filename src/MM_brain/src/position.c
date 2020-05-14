@@ -14,8 +14,8 @@ struct Position cur, prev, next;
 
 struct Position init_pos(Vec3 i_pos, Vec3 i_vel, Vec3 i_acc, Vec3 i_ang, Vec3 i_ang_vel, Vec3 i_ang_acc, float time_step)
 {
-   double ts = time_step / 1000;
-
+   double ts = time_step / 1000.0;
+   printf("ts = %g\n", ts);
    prev.pos = i_pos;
    prev.ang = i_ang;
 
@@ -27,6 +27,9 @@ struct Position init_pos(Vec3 i_pos, Vec3 i_vel, Vec3 i_acc, Vec3 i_ang, Vec3 i_
    cur.ang.y = i_ang.y + i_ang_vel.y * ts + 0.5f * i_ang_acc.y * ts * ts;
    cur.ang.z = i_ang.z + i_ang_vel.z * ts + 0.5f * i_ang_acc.z * ts * ts;
 
+   printf("\nCurrent1* position displacement: %g, %g, %g\n", cur.pos.x, cur.pos.y, cur.pos.z);
+   printf("Current angle: %g, %g, %g\n\n", cur.ang.x, cur.ang.y, cur.ang.z);
+ 
    return cur;
 }
 
@@ -37,6 +40,8 @@ struct Position init_pos(Vec3 i_pos, Vec3 i_vel, Vec3 i_acc, Vec3 i_ang, Vec3 i_
  */
 struct Position update_pos(struct Micromouse m, float time_step)
 {
+   printf("\nCurrent2* position displacement: %g, %g, %g\n", cur.pos.x, cur.pos.y, cur.pos.z);
+   printf("Current angle: %g, %g, %g\n\n", cur.ang.x, cur.ang.y, cur.ang.z);
    // ms to s
    double ts = time_step / 1000.0;
 
@@ -52,6 +57,9 @@ struct Position update_pos(struct Micromouse m, float time_step)
    next.pos.y = cur.pos.y - prev.pos.y + m.gyro.xyz.y * ts * ts;
    next.pos.z = cur.pos.z - prev.pos.z + m.gyro.xyz.z * ts * ts;
 
+ 
+   printf("\nCurrent position displacement: %g, %g, %g\n", next.pos.x, next.pos.y, next.pos.z);
+   printf("Current angle: %g, %g, %g\n\n", next.ang.x, next.ang.y, next.ang.z);
    // applying the z axis rotation
    /**
     * θ rotation in z axis,
@@ -65,14 +73,19 @@ struct Position update_pos(struct Micromouse m, float time_step)
    next.pos.y = next.pos.x * sin(next.ang.z) + next.pos.y * cos(next.ang.z);
    next.pos.z = next.pos.z;
 
+   printf("Current position after rotation: %g, %g, %g\n", next.pos.x, next.pos.y, next.pos.z);
+   printf("Current angle: %g, %g, %g\n", next.ang.x, next.ang.y, next.ang.z);
    // adding the current estimate
    next.pos.x += cur.pos.x;
    next.pos.y += cur.pos.y;
    next.pos.z += cur.pos.z;
-
+   printf("Current position plus: %g, %g, %g\n", next.pos.x, next.pos.y, next.pos.z);
+   printf("Current angle: %g, %g, %g\n", next.ang.x, next.ang.y, next.ang.z);
+ 
    prev = cur;
    cur = next;
 
+   printf("current time step: %gms\n", ts);
    return next;
 }
 

@@ -27,10 +27,11 @@
 #include "position.h"
 #include "queue.h"
 #include "utils.h"
+#include "cell_estim.h"
 
 /* MUTEX */
-pthread_cond_t condition = PTHREAD_COND_INITIALIZER;
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+//pthread_cond_t condition = PTHREAD_COND_INITIALIZER;
+//pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 /* GLOBAL VARIABLES */
 RX_Message rx_msg;
 TX_Message tx_msg;
@@ -38,7 +39,7 @@ SensorData sensor_data;
 HeaderData header_data;
 
 /* LISTENER */
-void *thread_1(void *arg)
+/*void *thread_1(void *arg)
 {
    log_message("INFO", "Listener", "run", "Starting listener...");
 
@@ -49,14 +50,14 @@ void *thread_1(void *arg)
       pthread_cond_signal (&condition);
       pthread_mutex_unlock (&mutex);
    }
-
+*/
    /* No warning */
-   (void) arg;
+/*   (void) arg;
    pthread_exit(NULL);
 }
-
+*/
 /* WRITER */
-void *thread_2(void *arg)
+/*void *thread_2(void *arg)
 {
    float test[2] = { 1.23, 4.56 };
    log_message("INFO", "Writer", "run", "Starting writer...");
@@ -64,32 +65,73 @@ void *thread_2(void *arg)
    while (1) {
       pthread_mutex_lock(&mutex);
       pthread_cond_wait (&condition, &mutex);
+ */
       /* WRITING */
       /* ...Processing... */
       /* Code snipet to use received data */
       /*
       printf("MAZE DIMENSIONS : %f x %f\n", header_data.maze_width, header_data.maze_height);
       */
-      write_fifo(tx_msg, MOTOR_FLAG, test);
+/*      write_fifo(tx_msg, MOTOR_FLAG, test);
       pthread_mutex_unlock(&mutex);
    }
-
+*/
    /* No warning */
-   (void) arg;
+/*   (void) arg;
    pthread_exit(NULL);
 }
+*/
+
 
 int main(void)
 {
 
-   pthread_t listener;
-   pthread_t reader;
+   //pthread_t listener;
+   //pthread_t reader;
 
+   log_message("INFO", "Listener", "run", "Starting listener...");
+   log_message("INFO", "Writer", "run", "Starting writer...");
    set_starting_time();
 
    create_fifo();
+   
+   float test[2] = {50, 50};
 
-   if (pthread_create(&listener, NULL, thread_1, NULL) || pthread_create(&reader, NULL, thread_2, NULL) ) {
+   struct Micromouse status;
+
+   iVec2 cell;
+   status.engines[0] = test[0];
+   status.engines[1] = test[1];
+
+   while(1) {
+      read_fifo(&rx_msg);
+      format_rx_data_mm(rx_msg, &status);
+
+      switch(rx_msg.flag) {
+         case HEADER_FLAG:
+            printf("Received HeaderData:\n");
+            printf("\tMaze size: %g, %g\n", status.header_data.maze_width, status.header_data.maze_height);
+            printf("\tBox size: %g, %g\n", status.header_data.box_width, status.header_data.box_height);
+            printf("\tInit pose: %g, %g, %g\n", status.header_data.initial_x, status.header_data.initial_y, status.header_data.initial_angle);
+            printf("\tTarget pos: %g, %g\n", status.header_data.target_x, status.header_data.target_y);
+            cell = init_cell(status);
+            break;
+         case SENSOR_FLAG:
+            printf("Received SensorData:\n");
+            printf("\tAccl: %g, %g, %g\n", status.gyro.xyz.x, status.gyro.xyz.y, status.gyro.xyz.z);
+            printf("\tGyro: %g, %g, %g\n", status.gyro.ypr.x, status.gyro.ypr.y, status.gyro.ypr.z);
+            printf("\tSens: %g, %g, %g, %g\n", status.sensors[0], status.sensors[1], status.sensors[2], status.sensors[3]);
+
+            cell = update_cell(status);
+            break;
+      }
+
+      write_fifo(tx_msg, MOTOR_FLAG, &status);
+      printf("Current estimated cell is: (%d, %d)\n", cell.x, cell.y);
+   }
+
+/*   if (pthread_create(&listener, NULL, thread_1, NULL) || 
+       pthread_create(&reader, NULL, thread_2, NULL) ) {
       perror("pthread_create");
       return 1;
    }
@@ -98,6 +140,6 @@ int main(void)
       perror("pthread_join");
       return 1;
    }
-
+*/
    return 0;
 }
