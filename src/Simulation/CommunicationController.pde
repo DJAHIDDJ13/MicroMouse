@@ -49,7 +49,7 @@ public class CommunicationController {
      *
      */
     //float[] accelerometerData = ArrayUtils.addAll(maze.getVehicleAcceleration().array(), getVehicleAngularAcceleration().array());
-    float[] accelerometerData = new float[6]; //<>// //<>//
+    float[] accelerometerData = new float[6]; //<>// //<>// //<>//
     System.arraycopy(maze.getVehicleAcceleration().array(), 0, accelerometerData, 0, 3);
     System.arraycopy(maze.getVehicleAngularAcceleration().array(), 0, accelerometerData, 3, 3);
 
@@ -58,12 +58,11 @@ public class CommunicationController {
     sensorMessage.setContent();
 
     this.writer.writeFifo(sensorMessage);
-
-    /* CODE SNIPET TO USE RX MSG
+    /* CODE SNIPET TO USE RX MSG*/
     Message rxMsg = this.listener.getRxMessage();
-    if (rxMsg != null) 
-      System.out.println("Using received data : " + rxMsg.getLeftPowerMotor() + " AND " + rxMsg.getRightPowerMotor());
-    */
-
+    /*if (rxMsg != null) 
+      //System.out.println("Using received data : " + rxMsg.getLeftPowerMotor() + " AND " + rxMsg.getRightPowerMotor());
+      maze.moveVehicle(rxMsg.getLeftPowerMotor(), rxMsg.getRightPowerMotor());
+    m*/
   }
 }

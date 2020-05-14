@@ -16,24 +16,27 @@
 
 #include <stdint.h>
 
+//#include "communication.h"
+
 #define NB_ENGINE	2 /*       The total number of engines        */
 #define NB_SENSOR	4 /*       The total number of sensors        */
 
 /*        Structure representing a motor of the micromouse        */
-struct Engine {
+/*struct Engine {*/
    /*    Value of the motor, it will be turned into a vote
          value to activate the motor                             */
-   int16_t value;
+/*   int16_t value;
 };
+*/
 
 /*   Structure representing a infrared sensor of the micromouse   */
-struct Sensor {
+/*struct Sensor {*/
    /*   Value of the distance returned by the infrared sensor    */
-   int16_t distanceValue;
-
+/*   int16_t distanceValue;
+*/
    /* Light value "light level" returned by the infrared sensor  */
-   int16_t lightValue;
-};
+/*   int16_t lightValue;
+};*/
 
 typedef struct vec3 {
    float x, y, z;
@@ -47,15 +50,29 @@ struct Gyro {
    Vec3 ypr; // yaw, pitch and roll (angular acceleration)
    Vec3 xyz; // x, y, z acceleration
 };
+typedef struct {
+   float maze_width,
+       maze_height;
+   float initial_x,
+       initial_y,
+       initial_angle;
+   float target_x,
+       target_y;
+   float box_width,
+       box_height;
+} HeaderData;
+
 
 /*            Main structure for the micromouse "robot"           */
 struct Micromouse {
    /*     Our robot need two engine and four infrared sensor     */
-   struct Engine engines[NB_ENGINE];
+   float engines[NB_ENGINE];
 
-   struct Sensor sensors[NB_SENSOR];
+   float sensors[NB_SENSOR];
 
    struct Gyro gyro;
+  
+   HeaderData header_data;
 };
 
 #endif
