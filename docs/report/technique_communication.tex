@@ -6,9 +6,7 @@
 \begin{document}
 \[$
 \section{Analyse de la problématique de la communication} \label{sec:ProblematiqueCommunication}
-\paragraph{Faire communiquer les différentes composantes du projet}
-Simulation en Java - Processing
-Brain en C
+\paragraph{}Puisque nous avons présenté lors des parties précédentes les différentes composantes du projet, il s'agit maintenant de les faire communiquer entre eux. Nous nous interrogerons donc, au cours de cette partie, sur un moyen de communication inter-process entre la simulation en Java/Processing et le brain en C en local (sur une même machine) puis à distance (entre la micromouse et l'IHM).
 
 \section{État de l’art: études des solutions existantes} \label{sec:etatDeLart5}
 \paragraph{Pour faire communiquer plusieurs processus, de nombreux moyens existent. Cette partie a pour but d'étudier ces différentes alternatives afin d'en tirer les plus avantageux en fonction de nos besoins.}
@@ -25,7 +23,7 @@ Brain en C
 
   \paragraph{}Dans le langage C, ces deux types sockets sont implémentés dans la bibliothèque \texttt{<sys/socket.h>} alors qu'en Java/Processing, c'est la bibliothèque \texttt{hypermedia.net.*} qui est utilisée pour la création de socket UDP.
 
-\fig{pics/udp_socket.png}{15cm}{12cm}{Diagramme décrivant le fonctionnement des sockets UDP}{udp_socket}
+%\fig{pics/udp_socket.png}{15cm}{12cm}{Diagramme décrivant le fonctionnement des sockets UDP}{udp_socket}
 
   \paragraph{}Par ailleurs, la communication par sockets adopte une architecture clients/serveur. Il est donc possible d'envisager un dispositif composé de plusieurs micromouses en utilisant cette solution de communication ; la partie simulation représentant le serveur et les brains, les clients.
 
