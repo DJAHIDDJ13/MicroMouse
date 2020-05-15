@@ -184,24 +184,30 @@ Sur la figure ci-dessous on est illustrée la génération d'un labyrinthe à l'
 {Géénration d'un labyritnhe 3*3 à l'aide de l'algortihme de Prim.}{mmcomp}
 
 \subsection{Algorithme de Backtracking}
-Le Backtracking est une approche et une famille d'algorithmes utilisés pour résoudre des problèmes algorithmiques. Dans cette approche, on construit une solution progressivement et de manière récursive. Dans cette approche, on teste l'ensemble des candidats possibles pour la construction d'une solution, et on revient en arrière (backtracks) dès qu'on détermine qu'un candidat ne peut nous fournir une solution valable. Le Backtracking est un parcours en profondeur sur l'arbre de décision du problème, avec possibilité de revenir en arrière.
+Le Backtracking est une approche et une famille d'algorithmes utilisés pour résoudre des problèmes algorithmiques.
+Un algorithme de Backtracking (en français retour en arrière) est un algorithme récursif qui tente de résoudre un problème donné en testant tous les chemins possibles vers une solution jusqu'à ce qu'une solution soit trouvée. 
+Chaque fois qu'un chemin est testé, si aucune solution n'est trouvée, l'algorithme revient en arrière pour tester un autre chemin possible. L'algorithme réitère cette logique jusqu'à ce qu'une solution soit trouvée ou que tous les chemins aient été Le Backtracking est donc un parcours en profondeur sur l'arbre de décision du problème, avec possibilité de revenir en arrière. En ce qui concerne l'algorithme de Backtracking pour la génération de labyrinthe parfait, on verra dans la section suivante que ça sera l'algorithme choisit pour générer les labyrinthes dans lequels va évoluer la Micromouse. On reviendra en détails sur cet algorithme et sa logique de fonctionnement dans la section \textbf{3.6.1.}
 
 \newpage
 \section{Comparaison des algorithmes de génération de labyrinthes}
+\subsection{Introduction à la comparaison de labyrinthes}
+Maintenant qu'on a présenté un ensemble d'algorithmes utilisés pour la génération de labyrinthes parfaits, il faut se décider sur l'algorithme à implémenter afin de générer les labyrinthes dans lequels va évoluer notre Micromouse. Dans cette section, nous présentons les critères et métriques sur lequels on s'est basé afin de comparer les différents algorithmes ainsi que les labyrinthes qu'ils génèrent. Cette section se basent en grande partie sur les recherches et analyses menées et présentées dans le livre "Maze pour Programmers"\cite{maze_for_programmers}.
+\newline
+Dans ce livre, les différents algorithmes de génération de labyrinthes sont comparés à l'aide des statistiques. Chaque algorithme est exécuté un nombre précis de fois pour générer des labyrinthes de taille fixe. Il suffit alors de choisir une propriété précise et d'analyser les labyrinthes résultants.
+\subsection{Critères de comparaison de labyrinthes}
 
-Maintenant qu'on a présenté un ensemble d'algorithmes utilisés pour la génération de labyrinthes parfaits, il faut se décider sur l'algorithme à implémenter afin de générer les labyrinthes dans lequels va évoluer notre Micromouse. Dans cette section, nous présentons les critères et métriques sur lequels on s'est basé afin de comparer les différents algorithmes ainsi que les labyrinthes qu'ils génèrent. Cette section se basent en grande partie sur les recherches et analyses menées par le professeur Jamis Buck dans son livre "Maze pour Programmers"\cite{maze_for_programmers}
 
 \subsubsection{Impasse}
 Une impasse est définie comme une cellule qui n'est liée qu'à un seul voisin, c'est à dire une cellule qui ne possède qu'un seul mur perforé, ces autres murs étant fermés.
 Un labyrinthe avec peu d'impasses aura tendance à contenir plus de routes secondaires, ce qui aura pour effet de rendre le labyrinthe plus difficile à résoudre. 
+\newline
 D'un point de vu de la Micromouse, et dans le but de tester l'intelligence de cette dernière, on préférera un labyrinthe contenant peu d'impasses afin de pouvoir mettre à épreuve les capacités de décisions de cette dernière. Par exemple, dans un labyrinthe contenant un nombre important d'impasses, on pourrait programmer la Micromouse de sorte qu'elle se contente d'avancer sans réel objectif et qu'elle revienne sur ses pas dans la cas ou elle tombe sur impasse et sauvegarde en mémoire la position de cette dernière. 
-Ce n'est clairement pas intéressant comme algorithme de navigation, ce qui nous conforte dans notre choix d'opter pour un algorithme qui génère peu d'impasses.
-\newline
-La figure suivante montre le nombre moyen d'impasses générées au sein du labyrinthe par différents algorithmes.
-\newline
-\fig{pics/impasse.png}{16cm}{12cm}
+Ce n'est clairement pas intéressant comme algorithme de navigation, ce qui nous conforte dans notre choix d'opter pour un algorithme qui génère peu d'impasses. La figure suivante montre le nombre moyen d'impasses générées au sein du labyrinthe par différents algorithmes.
+
+\fig{pics/impasse.png}{14.5cm}{12cm}
 {Moyenne d'impasses engendrées par différents algorithmes de génération de labyrinthes}{mmcomp}
-\newline
+
+
 On constate que l'algorithme de Prim a tendance à produire des labyrinthes où environ 45\% des cellules sont des impasses. En parallèle l'algorithme de Backtracking en génère un nombre beaucoup moins important.
 
 
@@ -213,21 +219,136 @@ Dans un labyrinthe un faible variation de directions, la majorité des chemins s
 \fig{pics/variation_directions}{16cm}{12cm}
 {Taux de variation de directions moyens pour différents algorithmes de génération de labyrinthes}{mmcomp}
 On s'aperçoit que l'algorithme de Backtracking dispose d'un fréquence de variation de directions de quasiment 50\%, tandis que l'algorithme de Kruskal, de Prim et d'arbre binaire ont des fréquences de variations plus petites.
-\subsubsection{Taille du chemin optimal}
-Le chemin optimal d'un labyrinthe est définie comme étant le chemin le plus court chemin reliant la cellule de départ et la cellule objectif. Pour calculer la taille du chemin optimal, on commence d'abord par utiliser un algorithme de navigation (résolution du labyrinthe) afin de déterminer quel est le chemin optimal, puis, on calcule le pourcentage de cellules du labyrinthe appartenant à ce chemin.
-En général, plus le chemin optimal est long, plus le labyrinthe sera difficile à résoudre.
+\subsection{Conclusion}
 
-\fig{pics/plus_long_chemin}{16cm}{12cm}
-{Taille moyenne du chemin optimal pour différents algorithmes de génération de labyrinthes}{mmcomp}
-
+\newpage
 
 
 \section{Solution proposée et sa mise en œuvre} \label{sec:solution2}
-\subsection{Solution implémentée pour la génération de labyrinthes parfaits}
-\subsection{Solution implémentée pour la génération de labyrinthes imparfaits}
-\paragraph{Chapeau}
+\subsection{Algorithme de Backtracking pour la génération de labyrinthes parfaits}
+Les bases de l'algorithme Backtracking pour la génération de labyrinthes parfaits est qu'on démarre à partir d'une cellule prise au hasard de notre labyrinthe, et qu'on "creuse" un chemin dans une direction aléatoire (haut, bas, gauche, droite). La contrainte est qu'on ne peut jamais creuser vers une cellule qu'on a déjà visitée. À chaque itération, l'algorithme garde en mémoire les cellules visitées et les voisins des ces dernières. Dans le cas ou on arrive sur une cellules dont l'ensemble des voisins ont déjà été visités, on revient en arrière jusqu'à ce qu'on trouve une cellule à qui il reste des voisins non visités. On utilisera une pile comme structure de données afin de stocker les cellules visitées. Le pseudo code de l'algorithme est le suivant : 
+\newline
+\begin{enumerate}
+    \item Choisir une cellule de départ aléatoire, la marquer comme visitée et l'empiler.
+    \item Tant que la pile n'est pas vide :
+    \begin{enumerate}
+        \item Dépiler une cellule de la pile et la marquer comme visitée.
+        \item Si la cellule actuelle possède des voisins qui n'ont pas encore été visités :
+        \begin{enumerate}
+            \item Choisir au hasard un des voisins non visité. \item Supprimer le mur reliant la cellule actuelle et le voisin choisi.
+            \item Empiler la cellule actuelle dans la pile et se déplacer vers le voisin choisi.
+            \newline
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
+
+Pour une meilleure compréhension, nous allons illustrer et expliciter la génération d'un labyrinthe par l'algorithme de Backtracking étape par étape. Nous utiliserons une pile afin de garder une trace des cellules que nous avons visitées.
+On rappelle qu'un pile ne peut être manipulé que via ses opération "empiler" et "dépiler", ce qui assure un ordre précis avec lequel ses éléments sont consultés, ordre tout à fait adapté à l'algorithme de Backtracking dans lequel on souhaite ajouter des cellules au fur et à mesure de leur découverte et les dépiler dès qu'elles ne possèdent plus de voisins nos visités.
+
+\begin{minipage}{0.6\textwidth}
+Au départ de l'algorithme, on choisit une cellule aléatoire du labyrinthe qu'on empile dans notre pile. Dans notre exemple on démarre avec la cellule A4. À chaque itération, la cellule au sommet de la pile est considérée comme étant la cellule actuelle.
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=\linewidth]{report/pics/backtracking1.png}
+\end{minipage}
+
+\begin{minipage}{0.6\textwidth}
+On choisit un voisin aléatoire de la cellule actuelle (dans notre exemple A3) et on supprime le mur qui sépare les deux cellules. On empile le voisin choisit dans notre pile, ce qui en fait la nouvelle cellule actuelle.
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=\linewidth]{report/pics/backtracking2.png}
+\end{minipage}
+
+\newpage
+
+\begin{minipage}{0.6\textwidth}
+Ce processus itérative se poursuit, on explore aléatoirement les cellules voisines comme on peut le voir sur la figure. Chaque cellule visitée sera ajouter à notre pile.
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=\linewidth]{report/pics/backtracking3.png}
+\end{minipage}
 
 
-\section{Tests et certifications de la solution} \label{sec:test2}
 
-\paragraph{Chapeau}
+\begin{minipage}{0.6\textwidth}
+Notre processus aléatoire nous emmène vers la cellule B4 qui elle ne dispose pas de voisins nos visités.
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=\linewidth]{report/pics/backtracking4.png}
+\end{minipage}
+
+
+\begin{minipage}{0.6\textwidth}
+À cette étape, on dépile la cellule B4 de notre pile car elle ne possède plus de voisins non visités. Cette opération a pour effet de faire de la cellule précédente (cellule C4) la nouvelle cellule actuelle de l'algorithme.
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=\linewidth]{report/pics/backtracking5.png}
+\end{minipage}
+
+\begin{minipage}{0.6\textwidth}
+La cellule C4 dispose encore d'un voisin non visité (D4). On poursuit alors notre exploration aléatoire en choisissant ce voisin.
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=\linewidth]{report/pics/backtracking6.png}
+\end{minipage}
+
+\begin{minipage}{0.6\textwidth}
+Le processus se poursuit de cette manière, en revenant en arrière à chaque fois qu'on tombe sur une cellule ne possédant pas de voisins visitable jusqu'à ce que chaque cellule du labyrinthe ait été visitée.
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=\linewidth]{report/pics/backtracking7.png}
+\end{minipage}
+
+
+\begin{minipage}{0.6\textwidth}
+La dernière cellule à visiter sera toujours une cellule n'ayant pas de voisins visitables. Nous revenons alors sur nos pas, en dépilant les cellules de la pile, à la recherche d'un voisin nos visité. Cependant dans notre cas, l'ensemble des cellules du labyrinthe ont été visitées, on dépilera alors les cellules jusqu'à revenir à notre cellule de départ (la cellule A4) qu'on supprimera également de la pile, ce qui nous laisse avec une pile vide.
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=\linewidth]{report/pics/backtracking9.png}
+\end{minipage}
+
+\begin{minipage}{0.6\textwidth}
+Une pile vide est le signal de terminaison de l'algorithme. On se retrouve alors avec le résultat final qui est un labyrinthe parfait.
+\\
+
+\end{minipage}
+\begin{minipage}{0.42\textwidth}
+\includegraphics[width=\linewidth]{report/pics/backtracking8.png}
+\end{minipage}
+
+Sur les figures ci-dessous, on montre différents labyrinthes parfaits générés par notre algorithme de Backtracking une fois ce dernier implémenté.
+\fig{pics/perfect1.png}{10.5cm}{11cm}
+{Génération d'un labyrinthe parfait 8*8 dans notre simulation.}{mmcomp}
+\newpage
+
+\fig{pics/perfect2.png}{10.5cm}{11cm}
+{Génération d'un labyrinthe parfait 12*12 dans notre simulation.}{mmcomp}
+
+\fig{pics/perfect3.png}{10.5cm}{11cm}
+{Génération d'un labyrinthe parfait 16*16 dans notre simulation.}{mmcomp}
+
+\subsection{Génération de labyrinthes imparfaits}
+Une des propriétées de base d'un labyrinthe parfait et qu'il existe un seul et unique chemin reliant deux cellules du labyrinthe. Cette propriété n'est pas respecté dans un labyrinthe imparfait, tel qu'il peut exister des boucles ou plusieurs chemins reliant deux cellules. Un labyrinthe imparfait peut être intéressant dans le cas ou l'on souhaite avoir plusieurs parcours possible entre deux cellules du labyrinthe afin de tester l'intelligence de notre Micromouse. Par exemple, dans le cas ou notre Micromouse démarre d'une cellule de départ A, qu'elle a pour objectif d'atteindre la cellule B, et qu'entre ces deux cellules il existe plus d'un chemin possible, on souhaiterais qu'après un certain nombre de parcours la Micromouse puisse distinguer entre les deux chemins et choisir le chemin optimal (le chemin le plus court).
+\\
+\newline
+On génère un labyrinthe imparfait de la manière suivante :
+
+\begin{enumerate}
+    \item On commence d'abord par générer un labyrinthe parfait.
+    \item Initialiser la position de la cellule départ (cellule sur laquelle démarre la Micromouse) et la cellule objectif (cellule que doit atteindre la Micromouse)
+    \item On divise les cellules du labyrinthe en deux ensemble : l'ensemble "départ" et l'ensemble "objectif". La classification se fait sur le critère de proximité des cellules, les cellules les plus proches de la cellule départ seront mises dans l'ensemble départ et les cellules les plus proches de la cellule objectif seront mises dans l'ensemble objectif.
+    \item Chercher un mur du labyrinthe qui sépare les deux régions (ensemble) et le supprimer.
+    \\
+    \newline
+\end{enumerate}
+
+On peut voir sur la figure ci-dessous le processus de génération d'un labyrinthe imparfait : 
+
+\fig{pics/imperfect1.png}{7.5cm}{5cm}
+{Génération d'un labyrinthe 6*6 imparfait.}{mmcomp}
+
+Sur la figure ci-dessous est illustrée un labyrinthe imparfait généré par notre algorithme au sein de notre simulation : 
+\newpage
+\fig{pics/imperfect2.png}{10.5cm}{11cm}
+{Génération d'un labyrinthe 8*8 imparfait dans notre simulation.}{mmcomp}
+
