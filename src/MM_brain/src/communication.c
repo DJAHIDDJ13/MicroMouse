@@ -23,11 +23,11 @@ void init_rx_message(RX_Message* rx_msg, unsigned char flag)
 
    switch (flag) {
    case HEADER_FLAG:
-      rx_msg->content.int_array = malloc(HEADER_CONTENT_SIZE);
+      rx_msg->content.int_array = malloc(sizeof(HeaderData));
       break;
 
    case SENSOR_FLAG:
-      rx_msg->content.float_array = malloc(SENSOR_CONTENT_SIZE);
+      rx_msg->content.float_array = malloc(sizeof(SensorData));
       break;
 
    default:
@@ -164,7 +164,7 @@ int read_fifo(RX_Message* rx_msg)
 
    switch (rx_msg->flag) {
    case HEADER_FLAG:
-      for (i = 1; i < HEADER_CONTENT_SIZE + 1; i++) {
+      for (i = 1; i < sizeof(HeaderData) + 1; i++) {
          for (j = 0; j < 4; j++) {
             byteToFloat.bytesNumber[j] = buffer[i + j];
          }
@@ -179,7 +179,7 @@ int read_fifo(RX_Message* rx_msg)
       break;
 
    case SENSOR_FLAG:
-      for (i = 1; i < SENSOR_CONTENT_SIZE + 1; i++) {
+      for (i = 1; i < sizeof(SensorData) + 1; i++) {
          for (j = 0; j < 4; j++) {
             byteToFloat.bytesNumber[j] = buffer[i + j];
          }
