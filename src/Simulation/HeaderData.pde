@@ -57,14 +57,22 @@ public class HeaderData extends Message {
             this.cellSizeData = cellSizeData;
     }
 
+    public void setSensorsPos(float[] sensorsPos) {
+        if (sensorsPos.length != 8)
+            CommunicationUtility.logMessage("WARNING", "HeaderData", "sensorsPos", "sensorsPos array size not matching : is " + sensorsPos.length + " - should be 8.");
+        else
+            this.sensorsPos = sensorsPos;
+    }
+
     public void setContent() {
         if (mazeData == null || mazeData.length == 0 ||
             initialPosData == null || initialPosData.length == 0 ||
             targetPosData == null || targetPosData.length == 0 ||
-            cellSizeData == null || cellSizeData.length == 0) {
+            cellSizeData == null || cellSizeData.length == 0 ||
+            sensorsPos == null || sensorsPos.length == 0) {
                 CommunicationUtility.logMessage("ERROR", "HeaderData", "setContent", "Cannot format message content because data are incomplete.");
         } else {
-            this.content = CommunicationUtility.packFloatArray(CommunicationUtility.concatAllFloat(mazeData, initialPosData, targetPosData, cellSizeData, encoderData));
+            this.content = CommunicationUtility.packFloatArray(CommunicationUtility.concatAllFloat(mazeData, initialPosData, targetPosData, cellSizeData, encoderData, sensorsPos));
         }
     }
 
