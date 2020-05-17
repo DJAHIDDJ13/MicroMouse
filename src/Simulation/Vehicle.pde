@@ -79,6 +79,10 @@ public class Vehicle {
     return body.getPosition();
   }
   
+  public float getEncoderLinesPerRevolution() {
+    return left_encoder.getLinesPerRevolution(); 
+  }
+  
   public float getAngle() {
     return body.getAngle(); 
   }

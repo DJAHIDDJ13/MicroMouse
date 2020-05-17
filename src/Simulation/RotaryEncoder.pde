@@ -15,12 +15,16 @@ public class RotaryEncoder {
   public void update(float newRevolutionAngle) {
     if(prevRevolutionAngle != -1) {
       /** Probably should change the abs to the distance between the two angles in a circle or 10*PI ?*/
-      lineCumul = round(abs(newRevolutionAngle - prevRevolutionAngle) / linesPerRevolution);
+      lineCumul = round(abs(newRevolutionAngle - prevRevolutionAngle) / (TWO_PI) * linesPerRevolution);
     }
+    println("New revolution angle" + newRevolutionAngle + " previous " + prevRevolutionAngle);
     prevRevolutionAngle = newRevolutionAngle;
   }
   
   public int getValue() {
      return lineCumul;
+  }
+  public int getLinesPerRevolution() {
+     return linesPerRevolution; 
   }
 }

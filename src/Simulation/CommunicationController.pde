@@ -27,6 +27,7 @@ public class CommunicationController {
     Vec2 p = maze.getVehicle().getPosition();
     float a = maze.getVehicle().getAngle();
     Vec2 tp = maze.getTarget().getPosition();
+    float encoderLinesPerRevolution = maze.getVehicle().getEncoderLinesPerRevolution();
     float[] mazeData = {maze.getWidth(), maze.getHeight()}, 
           initialPosData = {p.x, p.y, a}, 
           targetPosData = {tp.x, tp.y},
@@ -36,6 +37,7 @@ public class CommunicationController {
     headerMessage.setInitialPosData(initialPosData);
     headerMessage.setTargetPosData(targetPosData);
     headerMessage.setCellSizeData(cellSizeData);
+    headerMessage.setEncoderLinesPerRevolution(encoderLinesPerRevolution);
 
     headerMessage.setContent();
     this.writer.writeFifo(headerMessage);

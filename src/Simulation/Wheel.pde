@@ -3,6 +3,7 @@ public class Wheel {
   private float pixelW, pixelH;
   private Body body;
   private float revolutionAngle; 
+  private float wheelCircumference;
 
   // Constructor
   public Wheel(float x, float y, float w, float h, float angle) {
@@ -13,6 +14,7 @@ public class Wheel {
     
     makeBody(x, y, angle);
     revolutionAngle = 0.0;
+    wheelCircumference = PI * h * h;
   }
   public Wheel(Vec2 p, float w, float h, float angle) {
     this.h = h;
@@ -92,9 +94,8 @@ public class Wheel {
     /** between 0-2*PI (to avoid floating point precision problems when if the values get too big)??
      ** may cause problem with sampling of the encoder if the readings are 
      ** too long apart. maybe 0-10*PI or something to make the problem less likely */
-    //float wheelCircumference = PI * r * r;
-
-    revolutionAngle = 0;
+    
+    revolutionAngle ++;
   }
   
   //tire class function
@@ -124,7 +125,7 @@ public class Wheel {
   }
   
   public void makeBody(float x, float y, float angle) {
-    // Define a polygon (this is what we use for a rectangle) //<>// //<>//
+    // Define a polygon (this is what we use for a rectangle) //<>// //<>// //<>// //<>//
     PolygonShape sd = new PolygonShape();
     sd.setAsBox(w / 2, h / 2);
     
