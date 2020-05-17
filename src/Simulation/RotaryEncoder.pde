@@ -3,26 +3,20 @@
  */
 public class RotaryEncoder {
   private final int linesPerRevolution = 1024;
-  private float prevRevolutionAngle;
 
   public int lineCumul;
   
   public RotaryEncoder() {
-    prevRevolutionAngle = -1;
     lineCumul = 0;
   }
   
-  public void update(float newRevolutionAngle) {
-    if(prevRevolutionAngle != -1) {
-      /** Probably should change the abs to the distance between the two angles in a circle or 10*PI ?*/
-      lineCumul = round(abs(newRevolutionAngle - prevRevolutionAngle) / (TWO_PI) * linesPerRevolution);
-    }
-    println("New revolution angle" + newRevolutionAngle + " previous " + prevRevolutionAngle);
-    prevRevolutionAngle = newRevolutionAngle;
+  public void update(double totalRevolutionAngle) {
+    /** Probably should change the abs to the distance between the two angles in a circle or 10*PI ?*/
+    lineCumul = round((float)totalRevolutionAngle / (TWO_PI) * linesPerRevolution);
   }
   
   public int getValue() {
-     return lineCumul;
+     return round(lineCumul);
   }
   public int getLinesPerRevolution() {
      return linesPerRevolution; 

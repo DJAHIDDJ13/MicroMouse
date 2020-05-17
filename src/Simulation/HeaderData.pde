@@ -74,7 +74,7 @@ public class HeaderData extends Message {
             String strContent = "";
 
             float[] arr = CommunicationUtility.extractByteArray(content);
-            for(float f: arr) { //<>// //<>// //<>//
+            for(float f: arr) { //<>// //<>// //<>// //<>//
                strContent += f + " ";
             }
             return strContent;
