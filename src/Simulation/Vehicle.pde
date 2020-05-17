@@ -11,7 +11,8 @@ public class Vehicle {
   private Wheel FRWheel, BRWheel, FLWheel, BLWheel;
   private Sensor[] sensors;
   private Accelerometer accelerometer;
-  
+  private RotaryEncoder left_encoder, right_encoder; // to simulate encoders at timers 1 and 4
+  private float[] encoderData;
   private float vehicleSize;
   private Body body;
 
@@ -69,14 +70,28 @@ public class Vehicle {
 
     makeSensors(sensorAngles.length);
     accelerometer = new Accelerometer();
+    
+    left_encoder = new RotaryEncoder();
+    right_encoder = new RotaryEncoder();
+    encoderData = new float[2];
   }
   
   public Vec2 getPosition() {    
     return body.getPosition();
   }
   
+  public float getEncoderLinesPerRevolution() {
+    return left_encoder.getLinesPerRevolution(); 
+  }
+  
   public float getAngle() {
     return body.getAngle(); 
+  }
+  
+  public float[] getEncoderData() {
+    encoderData[0] = (float) left_encoder.getValue();
+    encoderData[1] = (float) right_encoder.getValue();
+    return encoderData;
   }
   
   public void setPosition(float x, float y) {
@@ -126,10 +141,18 @@ public class Vehicle {
     return body; 
   }
 
+  public float getWheelCircumference() {
+    return FRWheel.getWheelCircumference(); 
+  }
+
   // calculates forward velocity
   Vec2 getForwardVelocity() {
     Vec2 currentRightNormal = body.getWorldVector(new Vec2(0, 1));
     return currentRightNormal.mul(Vec2.dot(currentRightNormal, body.getLinearVelocity()));
+  }
+
+  Vec2[] getSensorPos() {
+    return this.sensorPos;
   }
 
   public void updateDrag() {
@@ -152,6 +175,8 @@ public class Vehicle {
     }
 
     accelerometer.update(getPosition(), getAngle());
+    left_encoder.update(FRWheel.getRevolutionAngle());
+    right_encoder.update(FLWheel.getRevolutionAngle());
   }
   
   public void move(float left_m, float right_m) {

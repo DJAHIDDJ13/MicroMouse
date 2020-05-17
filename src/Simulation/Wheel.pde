@@ -3,7 +3,13 @@ public class Wheel {
   private float w, h;
   private float pixelW, pixelH;
   private Body body;
-
+  private double revolutionAngle; 
+  private float wheelCircumference;
+  private Vec2 prev_pos;
+  private float prev_ang;
+  private boolean first_value = false;
+  private double total_displacement;
+  
   // Constructor
   public Wheel(float x, float y, float w, float h, float angle) {
     this.h = h;
@@ -12,7 +18,14 @@ public class Wheel {
     this.pixelH = box2d.scalarWorldToPixels(h);
     
     makeBody(x, y, angle);
+    revolutionAngle = 0.0;
+    
+    prev_pos = new Vec2();
+    prev_ang = 0;
+    total_displacement = 0.0;
+    wheelCircumference = PI * (h/2) * (h/2);
   }
+  
   public Wheel(Vec2 p, float w, float h, float angle) {
     this.h = h;
     this.w = w;
@@ -20,7 +33,13 @@ public class Wheel {
     this.pixelH = box2d.scalarWorldToPixels(h);
     
     makeBody(p.x, p.y, angle);
+    
+    prev_pos = new Vec2();
+    prev_ang = 0;
+    total_displacement = 0.0;
+    wheelCircumference = PI * h * h;
   }
+  
   public Vec2 getPosition() {
     return body.getPosition();
   }
@@ -63,6 +82,32 @@ public class Wheel {
   Vec2 getForwardVelocity() {
     Vec2 currentRightNormal = body.getWorldVector(new Vec2(0, 1));
     return currentRightNormal.mul(Vec2.dot(currentRightNormal, body.getLinearVelocity()));
+  }
+  
+  public float getWheelCircumference() {
+    return wheelCircumference; 
+  }
+  
+  public double getRevolutionAngle() {
+    /** Revolution angle calc logic here */
+    /** Needs to model the way the wheel moves when there is lateral and/or frontal skidding */
+    /** between 0-2*PI (to avoid floating point precision problems when if the values get too big)??
+     ** may cause problem with sampling of the encoder if the readings are 
+     ** too long apart. maybe 0-10*PI or something to make the problem less likely */
+     Vec2 new_pos = getPosition();
+     float new_ang = getAngle();
+     
+    if(first_value) {
+      total_displacement += cos(new_ang - prev_ang) * dist(prev_pos.x, prev_pos.y, new_pos.x, new_pos.y);
+      println("Displacement ", total_displacement / wheelCircumference * 2*PI);
+      revolutionAngle = total_displacement / wheelCircumference * 2*PI;
+    }
+    
+    first_value = true;
+    prev_pos.set(new_pos);
+    prev_ang = new_ang;
+    
+    return revolutionAngle;
   }
   
   void updateFriction() {
@@ -110,7 +155,7 @@ public class Wheel {
   }
   
   public void makeBody(float x, float y, float angle) {
-    // Define a polygon (this is what we use for a rectangle) //<>// //<>//
+    // Define a polygon (this is what we use for a rectangle) //<>// //<>// //<>// //<>//
     PolygonShape sd = new PolygonShape();
     sd.setAsBox(w / 2, h / 2);
     

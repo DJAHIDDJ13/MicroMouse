@@ -43,8 +43,6 @@ iVec2 update_cell(struct Micromouse status)
    float mdiff = (1e6 * (cur_celltime.tv_sec - prevtime.tv_sec) + cur_celltime.tv_usec - prevtime.tv_usec) / 1000.0f;
    estim = update_pos(status, mdiff);
 
-   //printf("\ncur_cellrent position estimation: %g, %g, %g\n", estim.pos.x, estim.pos.y, estim.pos.z);
-   //printf("cur_cellrent angle estimation: %g, %g, nn%g\n\n", estim.ang.x, estim.ang.y, estim.ang.z);
    //cur_cell.x = estim.pos.x / status.header_data.box_width;
    //cur_cell.y = estim.pos.y / status.header_data.box_width;
    cur_cell.x = (estim.pos.x - status.header_data.initial_x) / status.header_data.box_width;

@@ -11,32 +11,13 @@
    \date 2020
 */
 #ifndef MICROMOUSE_H
-
 #define MICROMOUSE_H
 
 #include <stdint.h>
 
-//#include "communication.h"
-
 #define NB_ENGINE	2 /*       The total number of engines        */
 #define NB_SENSOR	4 /*       The total number of sensors        */
-
-/*        Structure representing a motor of the micromouse        */
-/*struct Engine {*/
-   /*    Value of the motor, it will be turned into a vote
-         value to activate the motor                             */
-/*   int16_t value;
-};
-*/
-
-/*   Structure representing a infrared sensor of the micromouse   */
-/*struct Sensor {*/
-   /*   Value of the distance returned by the infrared sensor    */
-/*   int16_t distanceValue;
-*/
-   /* Light value "light level" returned by the infrared sensor  */
-/*   int16_t lightValue;
-};*/
+#define NB_ENCODER 2 /*       The total number of encoders; one for each engine*/
 
 typedef struct vec3 {
    float x, y, z;
@@ -51,6 +32,14 @@ struct Gyro {
    Vec3 xyz; // x, y, z acceleration
 };
 typedef struct {
+   float sensors[NB_SENSOR];
+
+   struct Gyro gyro;
+
+   float encoders[NB_ENCODER];
+} SensorData;
+
+typedef struct {
    float maze_width,
        maze_height;
    float initial_x,
@@ -60,6 +49,16 @@ typedef struct {
        target_y;
    float box_width,
        box_height;
+   float lines_per_revolution, 
+         wheel_circumference;
+   float left_sensor_position_x,
+         left_sensor_position_y,
+         top_left_sensor_position_x,
+         top_left_sensor_position_y,
+         top_right_sensor_position_x,
+         top_right_sensor_position_y,
+         right_sensor_position_x,
+         right_sensor_position_y;
 } HeaderData;
 
 
@@ -67,11 +66,9 @@ typedef struct {
 struct Micromouse {
    /*     Our robot need two engine and four infrared sensor     */
    float engines[NB_ENGINE];
-
-   float sensors[NB_SENSOR];
-
-   struct Gyro gyro;
-  
+   
+   SensorData sensor_data;
+   
    HeaderData header_data;
 };
 

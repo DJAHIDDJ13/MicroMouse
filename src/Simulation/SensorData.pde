@@ -3,6 +3,7 @@ public class SensorData extends Message {
     
     float[] distanceData;
     float[] accelerometerData;
+    float[] encoderData;
 
     public SensorData() {
         this.flag = CommunicationUtility.SENSOR_FLAG;
@@ -33,12 +34,19 @@ public class SensorData extends Message {
             this.accelerometerData = accelerometerData;
     }
 
+    public void setEncoderData(float[] encoderData) {
+        if (encoderData.length != 2)
+            CommunicationUtility.logMessage("ERROR", "SensorData", "setEncoderrData", "encoderData array size not matching : is " + encoderData.length + " - should be 2.");
+        else
+            this.encoderData = encoderData;
+    }
+
     public void setContent() {
         if (distanceData == null || distanceData.length == 0 ||
             accelerometerData == null || accelerometerData.length == 0) {
                 CommunicationUtility.logMessage("ERROR", "SensorData", "setContent", "Cannot format message content because data are incomplete.");
         } else {
-            this.content = CommunicationUtility.packFloatArray(CommunicationUtility.concatAllFloat(distanceData, accelerometerData));
+            this.content = CommunicationUtility.packFloatArray(CommunicationUtility.concatAllFloat(distanceData, accelerometerData, encoderData));
         }
     }
 

@@ -51,6 +51,9 @@ public class Maze {
   public PVector getVehicleAngularAcceleration() {
     return vehicle.getAngularAcceleration();
   }
+  public float[] getVehicleEncoderData() {
+    return vehicle.getEncoderData();  
+  }
   
   public float[] getVehicleSensorValues() {
     return vehicle.getSensorValues(); 

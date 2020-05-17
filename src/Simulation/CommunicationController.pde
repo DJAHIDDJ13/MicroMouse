@@ -28,15 +28,29 @@ public class CommunicationController {
     Vec2 p = maze.getVehicle().getPosition();
     float a = maze.getVehicle().getAngle();
     Vec2 tp = maze.getTarget().getPosition();
+    float encoderLinesPerRevolution = maze.getVehicle().getEncoderLinesPerRevolution();
+    float wheelCircumference = maze.getVehicle().getWheelCircumference();
     float[] mazeData = {maze.getWidth(), maze.getHeight()}, 
           initialPosData = {p.x, p.y, a}, 
           targetPosData = {tp.x, tp.y},
-          cellSizeData = {maze.getBoxW(), maze.getBoxH()};
+          cellSizeData = {maze.getBoxW(), maze.getBoxH()},
+          encoderData = {encoderLinesPerRevolution, wheelCircumference},
+          sensorsPos = new float[8];
+
+    int i = 0;
+    for (Vec2 sensorPos : maze.getVehicle().getSensorPos()) {
+      sensorsPos[i] = sensorPos.x;
+      i++;
+      sensorsPos[i] = sensorPos.y;
+      i++;
+    }
           
     headerMessage.setMazeData(mazeData);
     headerMessage.setInitialPosData(initialPosData);
     headerMessage.setTargetPosData(targetPosData);
     headerMessage.setCellSizeData(cellSizeData);
+    headerMessage.setEncoderLinesPerRevolution(encoderData);
+    headerMessage.setSensorsPos(sensorsPos);
 
     headerMessage.setContent();
     this.writer.writeFifo(headerMessage);
@@ -50,12 +64,13 @@ public class CommunicationController {
      *
      */
     //float[] accelerometerData = ArrayUtils.addAll(maze.getVehicleAcceleration().array(), getVehicleAngularAcceleration().array());
-    float[] accelerometerData = new float[6]; //<>// //<>// //<>//
+    float[] accelerometerData = new float[6]; //<>// //<>// //<>// //<>//
     System.arraycopy(maze.getVehicleAcceleration().array(), 0, accelerometerData, 0, 3);
     System.arraycopy(maze.getVehicleAngularAcceleration().array(), 0, accelerometerData, 3, 3);
 
     sensorMessage.setDistanceData(maze.getVehicleSensorValues());
     sensorMessage.setAccelerometerData(accelerometerData);
+    sensorMessage.setEncoderData(maze.vehicle.getEncoderData());
     sensorMessage.setContent();
 
     this.writer.writeFifo(sensorMessage);
