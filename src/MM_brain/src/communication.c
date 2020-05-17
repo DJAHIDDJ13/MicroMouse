@@ -278,8 +278,7 @@ void format_tx_data(TX_Message *tx_msg, unsigned char flag, void* content)
    log_message("INFO", "Writer", "write_fifo", logMsg);
 }
 
-/*
-void dump_sensor_data(struct MicroMouse data) 
+void dump_sensor_data(struct Micromouse data) 
 {
    printf("Sensor Data:\n");
    printf("\tAccl: %g, %g, %g\n", data.sensor_data.gyro.xyz.x, 
@@ -310,7 +309,6 @@ void dump_header_data(struct Micromouse data)
    printf("\tTarget pos: %g, %g\n", data.header_data.target_x, 
                                     data.header_data.target_y);
    printf("\tLines per revolution: %g\n", data.header_data.lines_per_revolution);
-   printf("\tEncoder data: LPR:%g, circumference: %g\n", status.header_data.lines_per_revolution, 
-                                                         status.header_data.wheel_circumference);
+   printf("\tEncoder data: LPR:%g, circumference: %g\n", data.header_data.lines_per_revolution, 
+                                                         data.header_data.wheel_circumference);
 }
-*/

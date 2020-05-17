@@ -37,6 +37,6 @@ int write_fifo(TX_Message tx_msg, unsigned char flag, void* content);
 int read_fifo(RX_Message* rx_msg);
 void format_rx_data_mm(RX_Message rx_msg, struct Micromouse* data);
 void format_tx_data(TX_Message *tx_msg, unsigned char flag, void* content);
-//void dump_sensor_data(struct MicroMouse data);
-//void dump_header_data(struct Micromouse data);
+void dump_sensor_data(struct Micromouse data);
+void dump_header_data(struct Micromouse data);
 #endif
