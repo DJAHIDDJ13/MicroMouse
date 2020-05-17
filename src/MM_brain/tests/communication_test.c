@@ -88,6 +88,8 @@ int main(void)
    //pthread_t listener;
    //pthread_t reader;
 
+   printf("%d\n", sizeof(HeaderData));
+
    log_message("INFO", "Listener", "run", "Starting listener...");
    log_message("INFO", "Writer", "run", "Starting writer...");
    set_starting_time();
@@ -109,7 +111,7 @@ int main(void)
       switch(rx_msg.flag) {
          case HEADER_FLAG:
 //            dump_header_data(status); // the function definition won't compile for some reason
-           printf("Header Data:\n");
+            printf("Header Data:\n");
             printf("\tMaze size: %g, %g\n", status.header_data.maze_width, 
                                             status.header_data.maze_height);
             printf("\tBox size: %g, %g\n", status.header_data.box_width, 
@@ -121,8 +123,14 @@ int main(void)
                                              status.header_data.target_y);
             printf("\tEncoder data: LPR:%g, circumference: %g\n", status.header_data.lines_per_revolution, 
                                                                   status.header_data.wheel_circumference);
-         
-
+            printf("\tSensor position (Left) : (%g, %g)\n", status.header_data.left_sensor_position_x, 
+                                                            status.header_data.left_sensor_position_y);
+            printf("\tSensor position (Top Left) : (%g, %g)\n", status.header_data.top_left_sensor_position_x, 
+                                                            status.header_data.top_left_sensor_position_y);
+            printf("\tSensor position (Top Right) : (%g, %g)\n", status.header_data.top_right_sensor_position_x, 
+                                                            status.header_data.top_right_sensor_position_y);
+            printf("\tSensor position (Right) : (%g, %g)\n", status.header_data.right_sensor_position_x, 
+                                                            status.header_data.right_sensor_position_y);
             cell = init_cell(status);
             break;
          case SENSOR_FLAG:

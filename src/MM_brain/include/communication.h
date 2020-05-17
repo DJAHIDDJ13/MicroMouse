@@ -8,7 +8,8 @@
 #define FIFO_RX_FILENAME "java_tx"
 #define BUFFER_SIZE 256
 
-#define MAX_MSG_SIZE 50
+/* FLAG(2) + MAX(CONTENT_SIZE) */
+#define MAX(a,b) (((a)>(b))?(a+2):(b+2))
 
 #define HEADER_FLAG 11
 #define SENSOR_FLAG 10
