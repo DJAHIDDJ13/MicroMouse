@@ -1,4 +1,5 @@
 public class Wall {
+  
   private float h, w;
   private Body body;
 
@@ -78,8 +79,6 @@ public class Wall {
 
     this.body = box2d.createBody(bd);
     this.body.createFixture(fd);
-    
-    //this.body.setGravityScale(1.0);
     
     // set the current wall object as data for the body
     this.body.setUserData(this);

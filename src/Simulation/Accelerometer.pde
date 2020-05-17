@@ -1,6 +1,7 @@
 // Class to simulate the angular and directional acceleration sensors
 public class Accelerometer {
-   private PVector accelerometer; // 3d vector to store the directional acceleration
+   
+  private PVector accelerometer; // 3d vector to store the directional acceleration
    private PVector gyro; // 3d vector to store the angular acceleration
    
    // To track the vehicle's position changes   
@@ -19,6 +20,7 @@ public class Accelerometer {
    private int prevprevMillis;
    private int counter;
    private final float scalar = 2;
+   
    public Accelerometer() {
      accelerometer = new PVector(0, 0, 0); // the z axis will be ignored (set to 0)
      gyro = new PVector(0, 0, 0); // both the x and y axis rotations will be ignored since they are not simulated
@@ -91,14 +93,5 @@ public class Accelerometer {
      gyro.z = secondDerivative(prevprevAngle, prevAngle, curAngle, avg_time_step);
      
      counter++;
-   }
-   
-   public void display() {
-     push();
-     Vec2 curP = box2d.coordWorldToPixels(curPosition.mul(1.0f / scalar));
-     translate(-SimulationUtility.MAZE_SHIFTX, -SimulationUtility.MAZE_SHIFTY);
-     translate(curP.x, curP.y);
-     line(0, 0, accelerometer.x, -accelerometer.y); // to transform to pixel vector (y inversed)
-     pop();
    }
 }

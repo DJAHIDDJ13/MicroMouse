@@ -4,6 +4,7 @@ import org.jbox2d.callbacks.QueryCallback;
 import java.util.*;
 
 public class Maze {
+  
   private float mazeH, mazeW;
   private float boxW, boxH, ratio;
   private int rows, cols;

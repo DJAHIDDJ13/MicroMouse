@@ -1,4 +1,5 @@
 public class InformationPanel {
+  
   SimulationController simCon;
   ControlP5 cp5;
   Maze maze;
@@ -47,8 +48,6 @@ public class InformationPanel {
     // get the acceleration vectors 
     acc = maze.getVehicleAcceleration();
     angAcc = maze.getVehicleAngularAcceleration();
-    
-    //updateText();
   }
   
   public void mousePressedHandler() {
@@ -68,40 +67,43 @@ public class InformationPanel {
   }
   
   public void update() {
+    acc = maze.getVehicleAcceleration();
+    angAcc = maze.getVehicleAngularAcceleration();    
+  }
+
+  public void drawSensor(int sensorX, int sensorY, float sensorValue) {
+    int sensorSize = 14;
     
+    if(sensorValue == -1) {
+      fill(0);
+    } 
+    else {
+      fill(map(sensorValue, 0, 1024, redHue, blueHue), 360, 360);
+    }
+  
+    ellipse(sensorX,sensorY,sensorSize,sensorSize);
   }
 
-public void drawSensor(int sensorX, int sensorY, float sensorValue) {
-  int sensorSize = 14;
-  if(sensorValue == -1) {
-    fill(0);
-  } else {
-    fill(map(sensorValue, 0, 1024, redHue, blueHue), 360, 360);
-  }
-  
-  ellipse(sensorX,sensorY,sensorSize,sensorSize);
-}
 
-
-public void GenericVehicleInformations( )  {
+  public void GenericVehicleInformations( )  {
+    int vehicleX= 1000;
+    int vehicleY=170;
   
-  int vehicleX= 1000;
-  int vehicleY=170;
-  
-  // proximity bar
-  int numProx = 6;
-  int rectX=1250;
-  int rectY = 70;
-  int rectSize=12;
+    // proximity bar
+    int numProx = 6;
+    int rectX=1250;
+    int rectY = 70;
+    int rectSize=12;
  
     // Generic Vehicl Body
     pushMatrix();
-    fill(127,127,127);
+      fill(127,127,127);
       translate(vehicleX, vehicleY);
 
       rotate(0);
       stroke(0);
-    beginShape();
+      
+      beginShape();
         //Drawing of top shape
         for(Vec2 vec: topShape)
           vertex(vec.x, vec.y);
@@ -118,9 +120,10 @@ public void GenericVehicleInformations( )  {
         vertex(middleShape[3].x, middleShape[3].y); 
         
         vertex(topShape[0].x, topShape[0].y);
-    endShape();
-    fill(255);
-    strokeWeight(1);
+      endShape();
+      
+      fill(255);
+      strokeWeight(1);
     popMatrix();
     
     //print proximity bar indicator
@@ -132,14 +135,16 @@ public void GenericVehicleInformations( )  {
     text("High", rectX+145, rectY-10);
     
     colorMode(HSB, 360, 100, 100);
+    
     for (int i = 0; i <= numProx; i++) {
-     fill(map(i, 0, numProx, redHue, blueHue), 100, 100);
-     rect(rectX, rectY, rectSize, rectSize);
-     rectX += 25;
+      fill(map(i, 0, numProx, redHue, blueHue), 100, 100);
+      rect(rectX, rectY, rectSize, rectSize);
+      rectX += 25;
     }
 
     //print sensors
     float[] sensors = maze.getVehicleSensorValues();
+    
     drawSensor(970,70,sensors[0]);    // sensor 0
     drawSensor(1027,70,sensors[2]);   // sensor 1
     drawSensor(930,100,sensors[1]);   // sensor 2
@@ -154,9 +159,9 @@ public void GenericVehicleInformations( )  {
     text(sensors[1],910,85);
     text(sensors[3],1050,85);
 
-
     // Gyroscope x,y,z values
     int div=1;
+
     fill(0);
     textSize(16);
     text("Gyroscope :",rectX-265,rectY+70); 
@@ -164,6 +169,7 @@ public void GenericVehicleInformations( )  {
     text("X :",rectX-265,rectY+90); 
     text("Y :",rectX-265,rectY+110); 
     text("Z :",rectX-265,rectY+130); 
+    
     textSize(14);
     fill(255);
     text(angAcc.x/div, rectX-250,rectY+90);
@@ -178,13 +184,13 @@ public void GenericVehicleInformations( )  {
     text("X :",rectX-125,rectY+90); 
     text("Y :",rectX-125,rectY+110); 
     text("Z :",rectX-125,rectY+130); 
+    
     textSize(14);
     fill(255);
     text(acc.x/div, rectX-110,rectY+90);
     text(acc.y/div, rectX-110,rectY+110);
     text(acc.z/div, rectX-110,rectY+130);
-}
-
+  }
 
   public void display() {
     fill(81,92,94);

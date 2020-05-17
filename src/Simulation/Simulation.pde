@@ -6,53 +6,14 @@ import org.jbox2d.collision.shapes.Shape;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.callbacks.RayCastCallback;
-import garciadelcastillo.dashedlines.*;
 
 // A reference to our box2d world
 public static Box2DProcessing box2d;
-public static DashedLines dash;
 SimulationController simCon;
 
 public static final long  STARTING_TIME = System.currentTimeMillis();
 
-/* COMMUNICATION */
-String osName = null;
-
-//Listener listener;
-//Writer writer;
-
-/* MESSAGE */
-//
-//HeaderData testHeader;
-//SensorData testSensor;
-/*
-=======
-HeaderData testHeader;
-SensorData testSensor;
-Message rxMsg;
->>>>>>> 87502302f22affecb7ce617a3f0c62b376cb0150
-*/
 void setup(){
-  
-  //osName = System.getProperty("os.name");
-  
-  //if (!osName.toLowerCase().contains("windows")) {
-     // listener = new Listener();
-     // writer = new Writer();
-      
-      /* MESSAGE */
-      //testHeader = new HeaderData();
-      //testSensor = new SensorData();
-      
-      /* Communication example */
-      //float[] testDist = new float[] {1.23, 4.56, 7.89, 12.23};
-      //float[] testAcc = new float[] {1.23, 4.56, 7.89, 12.23, 45.67, 89.12};
-      
-      //testSensor.setDistanceData(testDist);
-      //testSensor.setAccelerometerData(testAcc);
-    
-      //testSensor.setContent();
-  //}
   
   size(1500,920);
   smooth();
@@ -61,11 +22,6 @@ void setup(){
   box2d = new Box2DProcessing(this, 10.0f);
   Vec2 gravity = new Vec2(0, 0);
   box2d.createWorld(gravity);
-  
-  // Initialize it, passing a reference to the current PApplet
-  dash = new DashedLines(this);
-  // Set the dash-gap pattern in pixels
-  dash.pattern(30, 10, 15, 10);
   
   simCon = new SimulationController(new ControlP5(this), 8);
   simCon.createControllers();
@@ -78,36 +34,12 @@ void draw() {
   box2d.step();
   simCon.update();
   
-  // Animate dashes with 'walking ants' effectf 
-  dash.offset(simCon.getDashed());
-  
   simCon.display();
 }
 
 void controlEvent(ControlEvent event) {
   simCon.controlEventHandler(event);
 }
-
-/*void mousePressed() {
- if (!osName.toLowerCase().contains("windows")) {
-      //Communication example 
-      writer.writeFifo(testSensor);
-      
-      /* Acess value */
-      /*
-      rxMsg = listener.getRxMessage();
-      System.out.println(rxMsg.getLeftPowerMotor());
-      
-  }
-*/
- // simCon.mousePressedHandler();
-
-  
-  
- // simCon.mousePressedHandler();
-
-//}
-
 
 void keyPressed() {
   simCon.keyPressedHandler();

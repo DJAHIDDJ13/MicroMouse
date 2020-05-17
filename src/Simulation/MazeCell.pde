@@ -1,4 +1,5 @@
 public class MazeCell {
+  
   int x, y;
   
   // Constructor
@@ -39,8 +40,4 @@ public class MazeCell {
         return false;
       }
   }
-  
-  
-  
-
 }
