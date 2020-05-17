@@ -33,13 +33,23 @@ public class CommunicationController {
           initialPosData = {p.x, p.y, a}, 
           targetPosData = {tp.x, tp.y},
           cellSizeData = {maze.getBoxW(), maze.getBoxH()},
-          encoderData = {encoderLinesPerRevolution, wheelCircumference};
+          encoderData = {encoderLinesPerRevolution, wheelCircumference},
+          sensorsPos = new float[8];
+
+    int i = 0;
+    for (Vec2 sensorPos : maze.getVehicle().getSensorPos()) {
+      sensorsPos[i] = sensorPos.x;
+      i++;
+      sensorsPos[i] = sensorPos.y;
+      i++;
+    }
           
     headerMessage.setMazeData(mazeData);
     headerMessage.setInitialPosData(initialPosData);
     headerMessage.setTargetPosData(targetPosData);
     headerMessage.setCellSizeData(cellSizeData);
     headerMessage.setEncoderLinesPerRevolution(encoderData);
+    headerMessage.setSensorsPos(sensorsPos);
 
     headerMessage.setContent();
     this.writer.writeFifo(headerMessage);

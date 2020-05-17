@@ -150,6 +150,10 @@ public class Vehicle {
     return currentRightNormal.mul(Vec2.dot(currentRightNormal, body.getLinearVelocity()));
   }
 
+  Vec2[] getSensorPos() {
+    return this.sensorPos;
+  }
+
   public void updateDrag() {
     // apply drag force
     Vec2 currentForwardNormal = getForwardVelocity();

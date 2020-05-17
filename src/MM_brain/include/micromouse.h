@@ -51,6 +51,14 @@ typedef struct {
        box_height;
    float lines_per_revolution, 
          wheel_circumference;
+   float left_sensor_position_x,
+         left_sensor_position_y,
+         top_left_sensor_position_x,
+         top_left_sensor_position_y,
+         top_right_sensor_position_x,
+         top_right_sensor_position_y,
+         right_sensor_position_x,
+         right_sensor_position_y;
 } HeaderData;
 
 

@@ -7,6 +7,8 @@ public class HeaderData extends Message {
     float[] targetPosData;
     float[] cellSizeData;
     float[] encoderData;
+    float[] sensorsPos;
+
     public HeaderData() {
         this.flag = CommunicationUtility.HEADER_FLAG;
         this.content = new byte[CommunicationUtility.HEADER_CONTENT_SIZE];

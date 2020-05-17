@@ -24,7 +24,7 @@ void init_rx_message(RX_Message* rx_msg, unsigned char flag)
 
    switch (flag) {
    case HEADER_FLAG:
-      rx_msg->content.int_array = malloc(sizeof(HeaderData));
+      rx_msg->content.float_array = malloc(sizeof(HeaderData));
       break;
 
    case SENSOR_FLAG:
@@ -145,7 +145,7 @@ int read_fifo(RX_Message* rx_msg)
 
    FILE *fp;
    char full_path[BUFFER_SIZE] = "";
-   unsigned char buffer[MAX_MSG_SIZE] = { 0 };
+   unsigned char buffer[MAX(sizeof(HeaderData), sizeof(SensorData))] = { 0 };
    get_rx_fifo_path(full_path);
 
    fp = fopen(full_path, "rb");
