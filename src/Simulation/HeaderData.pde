@@ -6,7 +6,7 @@ public class HeaderData extends Message {
     float[] initialPosData;
     float[] targetPosData;
     float[] cellSizeData;
-    float encoderLinesPerRevolution;
+    float[] encoderData;
     public HeaderData() {
         this.flag = CommunicationUtility.HEADER_FLAG;
         this.content = new byte[CommunicationUtility.HEADER_CONTENT_SIZE];
@@ -44,8 +44,8 @@ public class HeaderData extends Message {
             this.targetPosData = targetPosData;
     }
     
-    public void setEncoderLinesPerRevolution(float encoderLinesPerRevolution) {
-      this.encoderLinesPerRevolution = encoderLinesPerRevolution;
+    public void setEncoderLinesPerRevolution(float[] encoderData) {
+      this.encoderData = encoderData;
     }
 
     public void setCellSizeData(float[] cellSizeData) {
@@ -62,7 +62,7 @@ public class HeaderData extends Message {
             cellSizeData == null || cellSizeData.length == 0) {
                 CommunicationUtility.logMessage("ERROR", "HeaderData", "setContent", "Cannot format message content because data are incomplete.");
         } else {
-            this.content = CommunicationUtility.packFloatArray(CommunicationUtility.concatAllFloat(mazeData, initialPosData, targetPosData, cellSizeData, new float[]{encoderLinesPerRevolution}));
+            this.content = CommunicationUtility.packFloatArray(CommunicationUtility.concatAllFloat(mazeData, initialPosData, targetPosData, cellSizeData, encoderData));
         }
     }
 
@@ -74,7 +74,7 @@ public class HeaderData extends Message {
             String strContent = "";
 
             float[] arr = CommunicationUtility.extractByteArray(content);
-            for(float f: arr) { //<>// //<>// //<>// //<>//
+            for(float f: arr) { //<>// //<>// //<>//
                strContent += f + " ";
             }
             return strContent;

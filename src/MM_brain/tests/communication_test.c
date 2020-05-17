@@ -119,8 +119,9 @@ int main(void)
                                                 status.header_data.initial_angle);
             printf("\tTarget pos: %g, %g\n", status.header_data.target_x, 
                                              status.header_data.target_y);
-            printf("\tLines per revolution: %g\n", status.header_data.lines_per_revolution);
-
+            printf("\tEncoder data: LPR:%g, circumference: %g\n", status.header_data.lines_per_revolution, 
+                                                                  status.header_data.wheel_circumference);
+         
 
             cell = init_cell(status);
             break;

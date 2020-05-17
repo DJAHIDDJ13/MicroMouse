@@ -140,6 +140,10 @@ public class Vehicle {
     return body; 
   }
 
+  public float getWheelCircumference() {
+    return FRWheel.getWheelCircumference(); 
+  }
+
   // calculates forward velocity
   Vec2 getForwardVelocity() {
     Vec2 currentRightNormal = body.getWorldVector(new Vec2(0, 1));

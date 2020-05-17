@@ -310,5 +310,7 @@ void dump_header_data(struct Micromouse data)
    printf("\tTarget pos: %g, %g\n", data.header_data.target_x, 
                                     data.header_data.target_y);
    printf("\tLines per revolution: %g\n", data.header_data.lines_per_revolution);
+   printf("\tEncoder data: LPR:%g, circumference: %g\n", status.header_data.lines_per_revolution, 
+                                                         status.header_data.wheel_circumference);
 }
 */

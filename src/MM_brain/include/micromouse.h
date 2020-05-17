@@ -49,7 +49,8 @@ typedef struct {
        target_y;
    float box_width,
        box_height;
-   float lines_per_revolution;
+   float lines_per_revolution, 
+         wheel_circumference;
 } HeaderData;
 
 

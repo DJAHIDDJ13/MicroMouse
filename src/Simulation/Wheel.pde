@@ -80,6 +80,10 @@ public class Wheel {
     return currentRightNormal.mul(Vec2.dot(currentRightNormal, body.getLinearVelocity()));
   }
   
+  public float getWheelCircumference() {
+    return wheelCircumference; 
+  }
+  
   public double getRevolutionAngle() {
     /** Revolution angle calc logic here */
     /** Needs to model the way the wheel moves when there is lateral and/or frontal skidding */
