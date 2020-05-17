@@ -1,4 +1,5 @@
 public enum WallOrientation {
+  
   TOP_WALL(0), BOTTOM_WALL(1), RIGHT_WALL(2), LEFT_WALL(3);
   
   private final int value;

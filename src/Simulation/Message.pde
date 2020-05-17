@@ -3,6 +3,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 public abstract class Message {
+  
   byte flag;
   byte[] content;
 
@@ -40,5 +41,4 @@ public abstract class Message {
 
     return intToByte;
   }
-
 }

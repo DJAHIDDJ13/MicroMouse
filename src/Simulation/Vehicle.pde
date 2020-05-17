@@ -1,4 +1,5 @@
 public class Vehicle {
+  
   private final Vec2[] topShape;
   private final Vec2[] middleShape;
   private final Vec2[] bottomShape;
@@ -185,13 +186,6 @@ public class Vehicle {
     BLWheel.move(left_m);
     FLWheel.move(left_m);
   }
-  
-  private void displaySensors() {
-    for(int i = 0; i < sensors.length; i++) {
-      sensors[i].display();
-    } 
-    println(left_encoder.getValue());
-  }
    
   public void display() {
     // We look at each body and get its screen position
@@ -237,9 +231,6 @@ public class Vehicle {
     FLWheel.display();
     BRWheel.display();
     BLWheel.display();
-
-    displaySensors();
-    accelerometer.display();
   }
   
   public PVector getAcceleration() {

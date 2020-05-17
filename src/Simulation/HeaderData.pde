@@ -2,7 +2,8 @@ import java.io.ByteArrayOutputStream;
 
 /* MESSAGE TYPE : TX */
 public class HeaderData extends Message {
-    float[] mazeData;
+    
+  float[] mazeData;
     float[] initialPosData;
     float[] targetPosData;
     float[] cellSizeData;

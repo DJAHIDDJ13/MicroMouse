@@ -1,4 +1,5 @@
 public class CommunicationController {
+  
   private Maze maze;
   
   /* Communication */

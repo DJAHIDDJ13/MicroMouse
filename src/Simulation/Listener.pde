@@ -5,15 +5,18 @@ import java.io.IOException;
 import java.util.concurrent.*;
 
 public class Listener extends Thread {
-    protected File rxFile;
+    
+  protected File rxFile;
     protected FileInputStream rxStream;
     protected Message rxMessage;
+    private String osName;
 
     public Listener() {
         this.rxFile = new File(CommunicationUtility.FIFO_PATH + CommunicationUtility.FIFO_RX_FILENAME);
         this.setName("Listener process");
         this.setDaemon(true);
         this.start();
+        osName = System.getProperty("os.name");
     }
 
     public Message getRxMessage() {

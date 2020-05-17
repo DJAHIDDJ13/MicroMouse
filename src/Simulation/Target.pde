@@ -1,4 +1,5 @@
 public class Target {
+  
   private Vec2 pos;
   private float r;
 
@@ -14,8 +15,7 @@ public class Target {
   public Vec2 getPosition() {
     return box2d.coordPixelsToWorld(pos);
   }
-
-  
+ 
   public void setPosition(float x, float y) {
     pos.x = x;
     pos.y = y;

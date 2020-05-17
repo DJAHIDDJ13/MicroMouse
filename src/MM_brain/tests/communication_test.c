@@ -88,7 +88,7 @@ int main(void)
    //pthread_t listener;
    //pthread_t reader;
 
-   printf("%d\n", sizeof(HeaderData));
+   printf("%ld\n", sizeof(HeaderData));
 
    log_message("INFO", "Listener", "run", "Starting listener...");
    log_message("INFO", "Writer", "run", "Starting writer...");

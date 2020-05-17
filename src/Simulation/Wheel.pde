@@ -1,4 +1,5 @@
 public class Wheel {
+  
   private float w, h;
   private float pixelW, pixelH;
   private Body body;
@@ -8,6 +9,7 @@ public class Wheel {
   private float prev_ang;
   private boolean first_value = false;
   private double total_displacement;
+  
   // Constructor
   public Wheel(float x, float y, float w, float h, float angle) {
     this.h = h;
@@ -23,6 +25,7 @@ public class Wheel {
     total_displacement = 0.0;
     wheelCircumference = PI * (h/2) * (h/2);
   }
+  
   public Wheel(Vec2 p, float w, float h, float angle) {
     this.h = h;
     this.w = w;
@@ -36,6 +39,7 @@ public class Wheel {
     total_displacement = 0.0;
     wheelCircumference = PI * h * h;
   }
+  
   public Vec2 getPosition() {
     return body.getPosition();
   }

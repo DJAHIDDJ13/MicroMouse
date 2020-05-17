@@ -1,5 +1,6 @@
 /* MESSAGE TYPE : TX */
 public class SensorData extends Message {
+    
     float[] distanceData;
     float[] accelerometerData;
     float[] encoderData;
@@ -72,6 +73,4 @@ public class SensorData extends Message {
     public void setContent(String strContent) {
 
     }
-
-
 }

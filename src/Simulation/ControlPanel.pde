@@ -1,4 +1,5 @@
 public class ControlPanel {
+  
   SimulationController simCon;
   ControlP5 cp5;
   Maze maze;

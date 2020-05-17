@@ -1,6 +1,7 @@
 import controlP5.*;
 
 public class SimulationController {
+  
   public SimulationEntry simulationEntry;
   private Maze maze;
   private MazeBuilder mazeBuilder;
@@ -58,19 +59,19 @@ public class SimulationController {
    
    // initializing the communication controller
    comCon.setMaze(maze);
- }
+  }
   
- public void setController(ControlP5 cp5) {
-   this.cp5 = cp5;
- }
+  public void setController(ControlP5 cp5) {
+    this.cp5 = cp5;
+  }
  
- public ControlP5 getController(){
-   return this.cp5;
- }
+  public ControlP5 getController(){
+    return this.cp5;
+  }
   
- public void createControllers() {
-   controlPanel.createControllers();
-   informationPanel.createControllers();
+  public void createControllers() {
+    controlPanel.createControllers();
+    informationPanel.createControllers();
   } 
   
   public void keyPressedHandler() {
@@ -112,7 +113,6 @@ public class SimulationController {
     dashed++;
   }
   
-  // TO BE REMOVED
   public int getDashed() {
     return dashed; 
   }

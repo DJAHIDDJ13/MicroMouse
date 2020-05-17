@@ -8,12 +8,14 @@ public class Writer extends Thread {
     protected File txFile;
     protected FileOutputStream txStream;
     protected Message txMessage;
+    private String osName;
 
     public Writer() {
         this.txFile = new File(CommunicationUtility.FIFO_PATH + CommunicationUtility.FIFO_TX_FILENAME); 
         this.setName("Writer process");
         this.setDaemon(true);
         this.start();
+        osName = System.getProperty("os.name");
     }
 
     public void run() {
