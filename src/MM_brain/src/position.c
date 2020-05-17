@@ -40,26 +40,22 @@ struct Position init_pos(Vec3 i_pos, Vec3 i_vel, Vec3 i_acc, Vec3 i_ang, Vec3 i_
  */
 struct Position update_pos(struct Micromouse m, float time_step)
 {
-   printf("\nCurrent2* position displacement: %g, %g, %g\n", cur.pos.x, cur.pos.y, cur.pos.z);
-   printf("Current angle: %g, %g, %g\n\n", cur.ang.x, cur.ang.y, cur.ang.z);
    // ms to s
    double ts = time_step / 1000.0;
 
    // 2nd degree integral of the angular acceleration
    // https://en.wikipedia.org/wiki/Verlet_integration#Basic_St%C3%B6rmer%E2%80%93Verlet
-   next.ang.x = 2 * cur.ang.x - prev.ang.x + m.gyro.ypr.x * ts * ts;
-   next.ang.y = 2 * cur.ang.y - prev.ang.y + m.gyro.ypr.y * ts * ts;
-   next.ang.z = 2 * cur.ang.z - prev.ang.z + m.gyro.ypr.z * ts * ts;
+   next.ang.x = 2 * cur.ang.x - prev.ang.x + m.sensor_data.gyro.ypr.x * ts * ts;
+   next.ang.y = 2 * cur.ang.y - prev.ang.y + m.sensor_data.gyro.ypr.y * ts * ts;
+   next.ang.z = 2 * cur.ang.z - prev.ang.z + m.sensor_data.gyro.ypr.z * ts * ts;
 
    // perform 3d rotation
    // the displacement estimate
-   next.pos.x = cur.pos.x - prev.pos.x + m.gyro.xyz.x * ts * ts;
-   next.pos.y = cur.pos.y - prev.pos.y + m.gyro.xyz.y * ts * ts;
-   next.pos.z = cur.pos.z - prev.pos.z + m.gyro.xyz.z * ts * ts;
+   next.pos.x = cur.pos.x - prev.pos.x + m.sensor_data.gyro.xyz.x * ts * ts;
+   next.pos.y = cur.pos.y - prev.pos.y + m.sensor_data.gyro.xyz.y * ts * ts;
+   next.pos.z = cur.pos.z - prev.pos.z + m.sensor_data.gyro.xyz.z * ts * ts;
 
  
-   printf("\nCurrent position displacement: %g, %g, %g\n", next.pos.x, next.pos.y, next.pos.z);
-   printf("Current angle: %g, %g, %g\n\n", next.ang.x, next.ang.y, next.ang.z);
    // applying the z axis rotation
    /**
     * θ rotation in z axis,
@@ -73,14 +69,10 @@ struct Position update_pos(struct Micromouse m, float time_step)
    next.pos.y = next.pos.x * sin(next.ang.z) + next.pos.y * cos(next.ang.z);
    next.pos.z = next.pos.z;
 
-   printf("Current position after rotation: %g, %g, %g\n", next.pos.x, next.pos.y, next.pos.z);
-   printf("Current angle: %g, %g, %g\n", next.ang.x, next.ang.y, next.ang.z);
    // adding the current estimate
    next.pos.x += cur.pos.x;
    next.pos.y += cur.pos.y;
    next.pos.z += cur.pos.z;
-   printf("Current position plus: %g, %g, %g\n", next.pos.x, next.pos.y, next.pos.z);
-   printf("Current angle: %g, %g, %g\n", next.ang.x, next.ang.y, next.ang.z);
  
    prev = cur;
    cur = next;
