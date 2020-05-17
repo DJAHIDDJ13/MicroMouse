@@ -69,10 +69,8 @@ public class Vehicle {
     makeSensors(sensorAngles.length);
     accelerometer = new Accelerometer();
     
-    float r = wheelSize.y / 2;
-    float wheelCircumference = PI * r * r;
-    left_encoder = new RotaryEncoder(wheelCircumference);
-    right_encoder = new RotaryEncoder(wheelCircumference);
+    left_encoder = new RotaryEncoder();
+    right_encoder = new RotaryEncoder();
   }
   
   public Vec2 getPosition() {    

@@ -92,7 +92,8 @@ public class Wheel {
     /** between 0-2*PI (to avoid floating point precision problems when if the values get too big)??
      ** may cause problem with sampling of the encoder if the readings are 
      ** too long apart. maybe 0-10*PI or something to make the problem less likely */
-     
+    //float wheelCircumference = PI * r * r;
+
     revolutionAngle = 0;
   }
   
