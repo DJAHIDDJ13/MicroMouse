@@ -10,7 +10,7 @@ public class Vehicle {
   private Wheel FRWheel, BRWheel, FLWheel, BLWheel;
   private Sensor[] sensors;
   private Accelerometer accelerometer;
-  
+  private RotaryEncoder left_encoder, right_encoder; // to simulate encoders at timers 1 and 4
   private float vehicleSize;
   private Body body;
 
@@ -68,6 +68,11 @@ public class Vehicle {
 
     makeSensors(sensorAngles.length);
     accelerometer = new Accelerometer();
+    
+    float r = wheelSize.y / 2;
+    float wheelCircumference = PI * r * r;
+    left_encoder = new RotaryEncoder(wheelCircumference);
+    right_encoder = new RotaryEncoder(wheelCircumference);
   }
   
   public Vec2 getPosition() {    
@@ -151,6 +156,8 @@ public class Vehicle {
     }
 
     accelerometer.update(getPosition(), getAngle());
+    left_encoder.update(FRWheel.getRevolutionAngle());
+    right_encoder.update(FLWheel.getRevolutionAngle());
   }
   
   public void move(float left_m, float right_m) {
@@ -165,6 +172,7 @@ public class Vehicle {
     for(int i = 0; i < sensors.length; i++) {
       sensors[i].display();
     } 
+    println(left_encoder.getValue());
   }
    
   public void display() {

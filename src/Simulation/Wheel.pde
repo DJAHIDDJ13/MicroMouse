@@ -2,6 +2,7 @@ public class Wheel {
   private float w, h;
   private float pixelW, pixelH;
   private Body body;
+  private float revolutionAngle; 
 
   // Constructor
   public Wheel(float x, float y, float w, float h, float angle) {
@@ -11,6 +12,7 @@ public class Wheel {
     this.pixelH = box2d.scalarWorldToPixels(h);
     
     makeBody(x, y, angle);
+    revolutionAngle = 0.0;
   }
   public Wheel(Vec2 p, float w, float h, float angle) {
     this.h = h;
@@ -64,6 +66,10 @@ public class Wheel {
     return currentRightNormal.mul(Vec2.dot(currentRightNormal, body.getLinearVelocity()));
   }
   
+  public float getRevolutionAngle() {
+    return revolutionAngle;
+  }
+  
   void updateFriction() {
     // cancelling lateral velocity
     float maxLateralImpulse = 3.0f;
@@ -80,6 +86,14 @@ public class Wheel {
     float currentForwardSpeed = currentForwardNormal.normalize();
     float dragForceMagnitude = -2 * currentForwardSpeed;
     body.applyForce(currentForwardNormal.mul(dragForceMagnitude), body.getWorldCenter());
+
+    /** Revolution angle calc logic here */
+    /** Needs to model the way the wheel moves when there is lateral and/or frontal skidding */
+    /** between 0-2*PI (to avoid floating point precision problems when if the values get too big)??
+     ** may cause problem with sampling of the encoder if the readings are 
+     ** too long apart. maybe 0-10*PI or something to make the problem less likely */
+     
+    revolutionAngle = 0;
   }
   
   //tire class function
