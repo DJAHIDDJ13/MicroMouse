@@ -238,6 +238,8 @@ void format_rx_data_mm(RX_Message rx_msg, struct Micromouse* data)
       data->gyro.ypr.x = rx_msg.content.float_array[7];
       data->gyro.ypr.y = rx_msg.content.float_array[8];
       data->gyro.ypr.z = rx_msg.content.float_array[9];
+      data->encoders[0] = rx_msg.content.float_array[10];
+      data->encoders[1] = rx_msg.content.float_array[11];
       break;
 
    default:

@@ -114,6 +114,7 @@ int main(void)
             printf("\tBox size: %g, %g\n", status.header_data.box_width, status.header_data.box_height);
             printf("\tInit pose: %g, %g, %g\n", status.header_data.initial_x, status.header_data.initial_y, status.header_data.initial_angle);
             printf("\tTarget pos: %g, %g\n", status.header_data.target_x, status.header_data.target_y);
+            printf("\tLines per revolution: %g\n", status.header_data.lines_per_revolution);
             cell = init_cell(status);
             break;
          case SENSOR_FLAG:
@@ -121,7 +122,7 @@ int main(void)
             printf("\tAccl: %g, %g, %g\n", status.gyro.xyz.x, status.gyro.xyz.y, status.gyro.xyz.z);
             printf("\tGyro: %g, %g, %g\n", status.gyro.ypr.x, status.gyro.ypr.y, status.gyro.ypr.z);
             printf("\tSens: %g, %g, %g, %g\n", status.sensors[0], status.sensors[1], status.sensors[2], status.sensors[3]);
-
+            printf("\tEnc: %g %g\n", status.encoders[0], status.encoders[1]);
             cell = update_cell(status);
             break;
       }

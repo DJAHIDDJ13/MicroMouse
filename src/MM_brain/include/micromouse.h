@@ -20,6 +20,7 @@
 
 #define NB_ENGINE	2 /*       The total number of engines        */
 #define NB_SENSOR	4 /*       The total number of sensors        */
+#define NB_ENCODER 2 /*       The total number of encoders; one for each engine*/
 
 /*        Structure representing a motor of the micromouse        */
 /*struct Engine {*/
@@ -60,6 +61,7 @@ typedef struct {
        target_y;
    float box_width,
        box_height;
+   float lines_per_revolution;
 } HeaderData;
 
 
@@ -71,7 +73,9 @@ struct Micromouse {
    float sensors[NB_SENSOR];
 
    struct Gyro gyro;
-  
+
+   float encoders[NB_ENCODER];
+
    HeaderData header_data;
 };
 
