@@ -11,6 +11,7 @@ public class Vehicle {
   private Sensor[] sensors;
   private Accelerometer accelerometer;
   private RotaryEncoder left_encoder, right_encoder; // to simulate encoders at timers 1 and 4
+  private float[] encoderData;
   private float vehicleSize;
   private Body body;
 
@@ -71,6 +72,7 @@ public class Vehicle {
     
     left_encoder = new RotaryEncoder();
     right_encoder = new RotaryEncoder();
+    encoderData = new float[2];
   }
   
   public Vec2 getPosition() {    
@@ -79,6 +81,12 @@ public class Vehicle {
   
   public float getAngle() {
     return body.getAngle(); 
+  }
+  
+  public float[] getEncoderData() {
+    encoderData[0] = (float) left_encoder.getValue();
+    encoderData[1] = (float) right_encoder.getValue();
+    return encoderData;
   }
   
   public void setPosition(float x, float y) {
