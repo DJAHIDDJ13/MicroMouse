@@ -21,10 +21,9 @@
 
 #include "box.h"
 #include "brain.h"
-#include "communication.h"
 #include "maze.h"
-#include "micromouse.h"
 #include "position.h"
+#include "communication.h"
 #include "queue.h"
 #include "utils.h"
 #include "cell_estim.h"
@@ -109,20 +108,38 @@ int main(void)
 
       switch(rx_msg.flag) {
          case HEADER_FLAG:
-            printf("Received HeaderData:\n");
-            printf("\tMaze size: %g, %g\n", status.header_data.maze_width, status.header_data.maze_height);
-            printf("\tBox size: %g, %g\n", status.header_data.box_width, status.header_data.box_height);
-            printf("\tInit pose: %g, %g, %g\n", status.header_data.initial_x, status.header_data.initial_y, status.header_data.initial_angle);
-            printf("\tTarget pos: %g, %g\n", status.header_data.target_x, status.header_data.target_y);
+//            dump_header_data(status); // the function definition won't compile for some reason
+           printf("Header Data:\n");
+            printf("\tMaze size: %g, %g\n", status.header_data.maze_width, 
+                                            status.header_data.maze_height);
+            printf("\tBox size: %g, %g\n", status.header_data.box_width, 
+                                           status.header_data.box_height);
+            printf("\tInit pose: %g, %g, %g\n", status.header_data.initial_x, 
+                                                status.header_data.initial_y, 
+                                                status.header_data.initial_angle);
+            printf("\tTarget pos: %g, %g\n", status.header_data.target_x, 
+                                             status.header_data.target_y);
             printf("\tLines per revolution: %g\n", status.header_data.lines_per_revolution);
+
+
             cell = init_cell(status);
             break;
          case SENSOR_FLAG:
-            printf("Received SensorData:\n");
-            printf("\tAccl: %g, %g, %g\n", status.gyro.xyz.x, status.gyro.xyz.y, status.gyro.xyz.z);
-            printf("\tGyro: %g, %g, %g\n", status.gyro.ypr.x, status.gyro.ypr.y, status.gyro.ypr.z);
-            printf("\tSens: %g, %g, %g, %g\n", status.sensors[0], status.sensors[1], status.sensors[2], status.sensors[3]);
-            printf("\tEnc: %g %g\n", status.encoders[0], status.encoders[1]);
+//            dump_sensor_data(status);
+            printf("Sensor Data:\n");
+            printf("\tAccl: %g, %g, %g\n", status.sensor_data.gyro.xyz.x, 
+                                           status.sensor_data.gyro.xyz.y, 
+                                           status.sensor_data.gyro.xyz.z);
+            printf("\tGyro: %g, %g, %g\n", status.sensor_data.gyro.ypr.x, 
+                                           status.sensor_data.gyro.ypr.y, 
+                                           status.sensor_data.gyro.ypr.z);
+            printf("\tSens: %g, %g, %g, %g\n", status.sensor_data.sensors[0], 
+                                               status.sensor_data.sensors[1], 
+                                               status.sensor_data.sensors[2], 
+                                               status.sensor_data.sensors[3]);
+            printf("\tEnc: %g %g\n", status.sensor_data.encoders[0], 
+                                     status.sensor_data.encoders[1]);
+ 
             cell = update_cell(status);
             break;
       }

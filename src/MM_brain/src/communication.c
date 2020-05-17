@@ -8,6 +8,7 @@
 #include <signal.h>
 #include <pthread.h>
 
+#include "micromouse.h"
 #include "communication.h"
 #include "utils.h"
 
@@ -228,18 +229,7 @@ void format_rx_data_mm(RX_Message rx_msg, struct Micromouse* data)
       break;
 
    case SENSOR_FLAG:
-      data->sensors[0] = rx_msg.content.float_array[0];
-      data->sensors[1] = rx_msg.content.float_array[1];
-      data->sensors[2] = rx_msg.content.float_array[2];
-      data->sensors[3] = rx_msg.content.float_array[3];
-      data->gyro.xyz.x = rx_msg.content.float_array[4];
-      data->gyro.xyz.y = rx_msg.content.float_array[5];
-      data->gyro.xyz.z = rx_msg.content.float_array[6];
-      data->gyro.ypr.x = rx_msg.content.float_array[7];
-      data->gyro.ypr.y = rx_msg.content.float_array[8];
-      data->gyro.ypr.z = rx_msg.content.float_array[9];
-      data->encoders[0] = rx_msg.content.float_array[10];
-      data->encoders[1] = rx_msg.content.float_array[11];
+      memcpy(&(data->sensor_data), rx_msg.content.float_array, sizeof(data->sensor_data));
       break;
 
    default:
@@ -287,3 +277,38 @@ void format_tx_data(TX_Message *tx_msg, unsigned char flag, void* content)
 
    log_message("INFO", "Writer", "write_fifo", logMsg);
 }
+
+/*
+void dump_sensor_data(struct MicroMouse data) 
+{
+   printf("Sensor Data:\n");
+   printf("\tAccl: %g, %g, %g\n", data.sensor_data.gyro.xyz.x, 
+                                  data.sensor_data.gyro.xyz.y, 
+                                  data.sensor_data.gyro.xyz.z);
+   printf("\tGyro: %g, %g, %g\n", data.sensor_data.gyro.ypr.x, 
+                                  data.sensor_data.gyro.ypr.y, 
+                                  data.sensor_data.gyro.ypr.z);
+   printf("\tSens: %g, %g, %g, %g\n", data.sensor_data.sensors[0], 
+                                      data.sensor_data.sensors[1], 
+                                      data.sensor_data.sensors[2], 
+                                      data.sensor_data.sensors[3]);
+   printf("\tEnc: %g %g\n", data.sensor_data.encoders[0], 
+                            data.sensor_data.encoders[1]);
+
+}
+
+void dump_header_data(struct Micromouse data) 
+{
+   printf("Header Data:\n");
+   printf("\tMaze size: %g, %g\n", data.header_data.maze_width, 
+                                   data.header_data.maze_height);
+   printf("\tBox size: %g, %g\n", data.header_data.box_width, 
+                                  data.header_data.box_height);
+   printf("\tInit pose: %g, %g, %g\n", data.header_data.initial_x, 
+                                       data.header_data.initial_y, 
+                                       data.header_data.initial_angle);
+   printf("\tTarget pos: %g, %g\n", data.header_data.target_x, 
+                                    data.header_data.target_y);
+   printf("\tLines per revolution: %g\n", data.header_data.lines_per_revolution);
+}
+*/
