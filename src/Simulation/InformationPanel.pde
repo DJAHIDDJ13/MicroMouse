@@ -1,26 +1,19 @@
 public class InformationPanel {
   
-  SimulationController simCon;
-  ControlP5 cp5;
-  Maze maze;
+  private Maze maze;
   
-  PVector acc;
-  PVector angAcc;
+  private PVector acc;
+  private PVector angAcc;
+
+  private final int redHue = 0, blueHue = 240;  
+  private Vec2[] topShape,middleShape,bottomShape;
   
-  String accText;
-  String angAccText;
-  String sensorText;
-
-  final int redHue = 0, blueHue = 240;  
-
-  Vehicle vehicle;
-  Vec2[] topShape,middleShape,bottomShape;
+  private final int LWheelX1 = 955, LWheelY1 = 180, LWheelX2 = 955;
+  private final int RWheelX1 = 1045, RWheelY1 = 180, RWheelX2 = 1045;
   
   //constructor
-  public InformationPanel(SimulationController simCon, ControlP5 cp5, Maze maze) {
+  public InformationPanel(Maze maze) {
     this.maze = maze;
-    this.cp5 = cp5;
-    this.simCon = simCon;
     float vehicleSize = 1.5;
     
     // top
@@ -84,6 +77,38 @@ public class InformationPanel {
     ellipse(sensorX,sensorY,sensorSize,sensorSize);
   }
 
+  public void drawEngine() {
+    textSize(14);
+    strokeWeight(2);
+    //left engine
+    // draw the line
+    double leftForce = maze.getLeftWheelForce();
+    int LWheelY2 = -(int)(leftForce*15/100) + LWheelY1;
+    line(LWheelX1, LWheelY1, LWheelX2, LWheelY2);
+
+    // draw a triangle at (x2, y2)
+    pushMatrix();
+      translate(LWheelX2, LWheelY2);
+      rotate(atan2(LWheelX1-LWheelX2, LWheelY2-LWheelY1));
+      line(0, 0, -5, -5);
+      line(0, 0, 5, -5);
+    popMatrix();
+    
+    //right engine
+    // draw the line
+    double rightForce = maze.getRightWheelForce();
+    int RWheelY2 = -(int)(rightForce*15/100) + RWheelY1;
+    line(RWheelX1, RWheelY1, RWheelX2, RWheelY2);
+
+    // draw a triangle at (x2, y2)
+    pushMatrix();
+      translate(RWheelX2, RWheelY2);
+      rotate(atan2(RWheelX1-RWheelX2, RWheelY2-RWheelY1));
+      line(0, 0, -5, -5);
+      line(0, 0, 5, -5);
+    popMatrix(); 
+    strokeWeight(1);
+  }
 
   public void GenericVehicleInformations( )  {
     int vehicleX= 1000;
@@ -94,6 +119,9 @@ public class InformationPanel {
     int rectX=1250;
     int rectY = 70;
     int rectSize=12;
+    
+    double leftForce = maze.getLeftWheelForce();
+    double rightForce = maze.getRightWheelForce();
  
     // Generic Vehicl Body
     pushMatrix();
@@ -154,10 +182,10 @@ public class InformationPanel {
     // print sensors value
     fill(255);
     textSize(14);
-    text(sensors[0], 950,55);
-    text(sensors[2],1007,55);
-    text(sensors[1],910,85);
-    text(sensors[3],1050,85);
+    text((int)sensors[0],950,55);
+    text((int)sensors[2],1007,55);
+    text((int)sensors[1],910,85);
+    text((int)sensors[3],1050,85);
 
     // Gyroscope x,y,z values
     int div=1;
@@ -190,11 +218,27 @@ public class InformationPanel {
     text(acc.x/div, rectX-110,rectY+90);
     text(acc.y/div, rectX-110,rectY+110);
     text(acc.z/div, rectX-110,rectY+130);
+    
+    fill(0);
+    textSize(16);
+    text("Left motor :",rectX-265,rectY+170);
+    textSize(15);
+    fill(255);
+    text((int)leftForce, rectX-165,rectY+170);
+      
+    fill(0);
+    textSize(16);
+    text("Right motor :",rectX-265,rectY+210);
+    textSize(15);
+    fill(255);
+    text((int)rightForce, rectX-155,rectY+210);
+    
+    drawEngine();
   }
 
   public void display() {
     fill(81,92,94);
-    rect(810, 5, 640, 300);
+    rect(830, 5, 640, 300);
     GenericVehicleInformations();
   }
 }

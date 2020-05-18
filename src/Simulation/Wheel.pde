@@ -9,6 +9,7 @@ public class Wheel {
   private float prev_ang;
   private boolean first_value = false;
   private double total_displacement;
+  private double force;
   
   // Constructor
   public Wheel(float x, float y, float w, float h, float angle) {
@@ -16,6 +17,7 @@ public class Wheel {
     this.w = w;
     this.pixelW = box2d.scalarWorldToPixels(w);
     this.pixelH = box2d.scalarWorldToPixels(h);
+    this.force = 0;
     
     makeBody(x, y, angle);
     revolutionAngle = 0.0;
@@ -70,6 +72,10 @@ public class Wheel {
 
   public Body getBody() {
     return body; 
+  }
+  
+  public double getForce() {
+    return force;
   }
   
   // calculates the lateral velocity of the body
@@ -130,6 +136,8 @@ public class Wheel {
   
   //tire class function
   void move(float force) {      
+      this.force = force;
+      
       //find current speed in forward direction
       Vec2 currentForwardNormal = body.getWorldVector(new Vec2(0, 1));
 

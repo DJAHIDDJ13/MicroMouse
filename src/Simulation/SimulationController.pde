@@ -55,7 +55,7 @@ public class SimulationController {
    
    // Initializing the GUI Panels
    controlPanel = new ControlPanel(this, cp5, maze);
-   informationPanel = new InformationPanel(this, cp5, maze);
+   informationPanel = new InformationPanel(maze);
    
    // initializing the communication controller
    comCon.setMaze(maze);

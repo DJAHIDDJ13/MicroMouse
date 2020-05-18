@@ -94,6 +94,14 @@ public class Vehicle {
     return encoderData;
   }
   
+  public double getLeftWheelForce() {
+    return FLWheel.getForce();
+  }
+  
+  public double getRightWheelForce() {
+    return FRWheel.getForce();
+  }
+  
   public void setPosition(float x, float y) {
     FRWheel.setPosition(wheelPos[0].x + x, wheelPos[0].y + y);
     FLWheel.setPosition(wheelPos[1].x + x, wheelPos[1].y + y);

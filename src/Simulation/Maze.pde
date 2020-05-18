@@ -48,9 +48,18 @@ public class Maze {
     return vehicle.getAcceleration();
   }
   
+  public double getLeftWheelForce() {
+    return vehicle.getLeftWheelForce();
+  }
+  
+  public double getRightWheelForce() {
+    return vehicle.getRightWheelForce();
+  }
+  
   public PVector getVehicleAngularAcceleration() {
     return vehicle.getAngularAcceleration();
   }
+  
   public float[] getVehicleEncoderData() {
     return vehicle.getEncoderData();  
   }
