@@ -83,6 +83,23 @@ public class Sensor {
       value = -1;
     }
   }
+  
+   public void display() {
+     Vec2 sourceP = box2d.coordWorldToPixels(source);
+     Vec2 targetP = box2d.coordWorldToPixels(target);
+     Vec2 castP = box2d.coordWorldToPixels(castPoint);
+
+     push();
+     translate(-SimulationUtility.MAZE_SHIFTX, -SimulationUtility.MAZE_SHIFTY);
+
+     stroke(180);
+       line(sourceP.x ,sourceP.y, targetP.x, targetP.y);
+     stroke(255, 0, 0);
+     if(value != -1)
+       ellipse(castP.x, castP.y, 10, 10);
+     stroke(0);
+     pop();
+   }
    
   public float getValue() {
     return value;

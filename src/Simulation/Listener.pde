@@ -6,7 +6,7 @@ import java.util.concurrent.*;
 
 public class Listener extends Thread {
     
-  protected File rxFile;
+    protected File rxFile;
     protected FileInputStream rxStream;
     protected Message rxMessage;
     private String osName;

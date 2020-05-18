@@ -3,7 +3,7 @@ import java.io.ByteArrayOutputStream;
 /* MESSAGE TYPE : TX */
 public class HeaderData extends Message {
     
-  float[] mazeData;
+    float[] mazeData;
     float[] initialPosData;
     float[] targetPosData;
     float[] cellSizeData;
@@ -77,7 +77,7 @@ public class HeaderData extends Message {
         }
     }
 
-    public String dumpContent() {
+    public String dumpContent() { //<>//
         if (this.content == null || this.content.length == 0) {
             CommunicationUtility.logMessage("INFO", "HeaderData", "dumpContent", "Content is empty");
             return "";
