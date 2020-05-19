@@ -13,7 +13,10 @@ public class SimulationController {
   private InformationPanel informationPanel;
 
   private int size;
-    
+  
+  private final static float box2d_scalar = 80.0f;
+  private final static float user_motor_force = 300;
+  
   public SimulationController(ControlP5 cp5, int size){
     this.cp5 = cp5;
     this.size = size;
@@ -37,7 +40,7 @@ public class SimulationController {
    // Creating the box2d world
    Vec2 gravity = new Vec2(0, 0);
    box2d.createWorld(gravity);
-   box2d.setScaleFactor(80.0f / size);
+   box2d.setScaleFactor(box2d_scalar / size);
 
    // new simulation entry
    simulationEntry = new SimulationEntry(size, size);
@@ -75,13 +78,13 @@ public class SimulationController {
     informationPanel.keyPressedHandler();
     
     if(key == 'z')
-      maze.moveVehicle(400, 400);
+      maze.moveVehicle(user_motor_force, user_motor_force);
     else if(key == 's')
-      maze.moveVehicle(-400, -400);
+      maze.moveVehicle(-user_motor_force, -user_motor_force);
     else if(key == 'q')
-      maze.moveVehicle(-400, 400);
+      maze.moveVehicle(-user_motor_force, user_motor_force);
     else if(key == 'd')
-      maze.moveVehicle(400, -400);
+      maze.moveVehicle(user_motor_force, -user_motor_force);
   }
 
   public void controlEventHandler(ControlEvent event) {

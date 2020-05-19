@@ -1,11 +1,8 @@
 public class Vehicle {
   
-  private final Vec2[] topShape;
-  private final Vec2[] middleShape;
-  private final Vec2[] bottomShape;
+  private final Vec2[] topShape, middleShape, bottomShape;
   private final Vec2 wheelSize;
-  private final Vec2[] wheelPos;
-  private final Vec2[] sensorPos;
+  private final Vec2[] wheelPos, sensorPos;
   private final float[] sensorAngles;
   
   private Wheel FRWheel, BRWheel, FLWheel, BLWheel;
@@ -15,6 +12,8 @@ public class Vehicle {
   private float[] encoderData;
   private float vehicleSize;
   private Body body;
+
+  private final static float sensorAngle1 = 90, sensorAngle2 = 10, sensorAngle3 = 60; 
 
   // Constructor
   public Vehicle(float x, float y, float angle, float size) {
@@ -59,10 +58,10 @@ public class Vehicle {
     
     // Sensors angles
     sensorAngles = new float[4];
-    sensorAngles[0] = -90-10;
-    sensorAngles[1] = -90-60;
-    sensorAngles[2] = -90+60;
-    sensorAngles[3] = -90+10;
+    sensorAngles[0] = -sensorAngle1-sensorAngle2;
+    sensorAngles[1] = -sensorAngle1-sensorAngle3;
+    sensorAngles[2] = -sensorAngle1+sensorAngle3;
+    sensorAngles[3] = -sensorAngle1+sensorAngle2;
     
     makeWheels(x, y, angle);
     makeBody(x, y, angle);

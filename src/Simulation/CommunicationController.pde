@@ -24,20 +24,20 @@ public class CommunicationController {
   }
   
   public void sendHeaders() {
-    println("Sending headers");
     Vec2 p = maze.getVehicle().getPosition();
-    float a = maze.getVehicle().getAngle();
     Vec2 tp = maze.getTarget().getPosition();
+    Vec2 origin = box2d.coordPixelsToWorld(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY);
+    
+    float a = maze.getVehicle().getAngle();
     float encoderLinesPerRevolution = maze.getVehicle().getEncoderLinesPerRevolution();
     float wheelCircumference = maze.getVehicle().getWheelCircumference();
-    Vec2 origin = box2d.coordPixelsToWorld(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY);
     float[] mazeData = {maze.getWidth(), maze.getHeight()}, 
-          initialPosData = {p.x, p.y, a}, 
-          targetPosData = {tp.x, tp.y},
-          cellSizeData = {maze.getBoxW(), maze.getBoxH()},
-          encoderData = {encoderLinesPerRevolution, wheelCircumference},
-          sensorsPos = new float[8],
-          originPos = {origin.x, origin.y};
+                        initialPosData = {p.x, p.y, a}, 
+                        targetPosData = {tp.x, tp.y},
+                        cellSizeData = {maze.getBoxW(), maze.getBoxH()},
+                        encoderData = {encoderLinesPerRevolution, wheelCircumference},
+                        sensorsPos = new float[8],
+                        originPos = {origin.x, origin.y};
 
     int i = 0;
     for (Vec2 sensorPos : maze.getVehicle().getSensorPos()) {
@@ -45,7 +45,7 @@ public class CommunicationController {
       i++;
       sensorsPos[i] = sensorPos.y;
       i++;
-    }
+  }
     
           
     headerMessage.setMazeData(mazeData);
@@ -79,10 +79,10 @@ public class CommunicationController {
 
     this.writer.writeFifo(sensorMessage);
     /* CODE SNIPET TO USE RX MSG*/
-    Message rxMsg = this.listener.getRxMessage();
-    /*if (rxMsg != null) 
+    /*Message rxMsg = this.listener.getRxMessage();
+      if (rxMsg != null) 
       //System.out.println("Using received data : " + rxMsg.getLeftPowerMotor() + " AND " + rxMsg.getRightPowerMotor());
       maze.moveVehicle(rxMsg.getLeftPowerMotor(), rxMsg.getRightPowerMotor());
-    m*/
+    */
   }
 }

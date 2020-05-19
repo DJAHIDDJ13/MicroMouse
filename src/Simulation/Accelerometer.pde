@@ -1,7 +1,7 @@
 // Class to simulate the angular and directional acceleration sensors
 public class Accelerometer {
    
-  private PVector accelerometer; // 3d vector to store the directional acceleration
+   private PVector accelerometer; // 3d vector to store the directional acceleration
    private PVector gyro; // 3d vector to store the angular acceleration
    
    // To track the vehicle's position changes   

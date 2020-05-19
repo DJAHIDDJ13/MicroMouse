@@ -101,7 +101,8 @@ public class Maze {
   }
   
   public Vec2 getCellWorldCenterAt(int x, int y) {
-    return box2d.coordPixelsToWorld(new Vec2((box2d.scalarWorldToPixels(mazeW) / rows) * (x + 0.5f), (box2d.scalarWorldToPixels(mazeH) / cols) * (y + 0.5f)));
+    return box2d.coordPixelsToWorld(new Vec2((box2d.scalarWorldToPixels(mazeW) / rows) 
+           * (x + 0.5f), (box2d.scalarWorldToPixels(mazeH) / cols) * (y + 0.5f)));
   }
   
   public void setVehicleAt(Vehicle vehicle, int x, int y) {
@@ -183,7 +184,6 @@ public class Maze {
     // Look at the shapes intersecting this box (max.: 10)
     final BodyQueryCallback bodyQueryCallback = new BodyQueryCallback();
     box2d.world.queryAABB(bodyQueryCallback, aabb);
-   
     
     // TODO: find a better way to do this
     return bodyQueryCallback.getBodies();

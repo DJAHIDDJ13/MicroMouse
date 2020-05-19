@@ -27,7 +27,7 @@ public class Listener extends Thread {
         if (!this.rxFile.exists()) {
             if (osName.toLowerCase().contains("linux") || osName.toLowerCase().contains("macos")) {
                 try {
-                    Process p = Runtime.getRuntime().exec("mkfifo " + CommunicationUtility.FIFO_PATH + CommunicationUtility.FIFO_RX_FILENAME);
+                    Runtime.getRuntime().exec("mkfifo " + CommunicationUtility.FIFO_PATH + CommunicationUtility.FIFO_RX_FILENAME);
                 } catch(Exception e) {
                     e.printStackTrace(); 
                     System.out.println(e); 

@@ -22,21 +22,27 @@ public class SensorData extends Message {
 
     public void setDistanceData(float[] distanceData) {
         if (distanceData.length != 4)
-            CommunicationUtility.logMessage("ERROR", "SensorData", "setDistanceData", "distanceData array size not matching : is " + distanceData.length + " - should be 4.");
+            CommunicationUtility.logMessage("ERROR", "SensorData", "setDistanceData", 
+                                            "distanceData array size not matching : is " 
+                                            + distanceData.length + " - should be 4.");
         else
             this.distanceData = distanceData;
     }
 
     public void setAccelerometerData(float[] accelerometerData) {
         if (accelerometerData.length != 6)
-            CommunicationUtility.logMessage("ERROR", "SensorData", "setAccelerometerData", "accelerometerData array size not matching : is " + accelerometerData.length + " - should be 6.");
+            CommunicationUtility.logMessage("ERROR", "SensorData", "setAccelerometerData", 
+                                            "accelerometerData array size not matching : is " 
+                                            + accelerometerData.length + " - should be 6.");
         else
             this.accelerometerData = accelerometerData;
     }
 
     public void setEncoderData(float[] encoderData) {
         if (encoderData.length != 2)
-            CommunicationUtility.logMessage("ERROR", "SensorData", "setEncoderrData", "encoderData array size not matching : is " + encoderData.length + " - should be 2.");
+            CommunicationUtility.logMessage("ERROR", "SensorData", "setEncoderrData", 
+                                            "encoderData array size not matching : is " 
+                                            + encoderData.length + " - should be 2.");
         else
             this.encoderData = encoderData;
     }
@@ -44,7 +50,8 @@ public class SensorData extends Message {
     public void setContent() {
         if (distanceData == null || distanceData.length == 0 ||
             accelerometerData == null || accelerometerData.length == 0) {
-                CommunicationUtility.logMessage("ERROR", "SensorData", "setContent", "Cannot format message content because data are incomplete.");
+                CommunicationUtility.logMessage("ERROR", "SensorData", "setContent", 
+                                                "Cannot format message content because data are incomplete.");
         } else {
             this.content = CommunicationUtility.packFloatArray(CommunicationUtility.concatAllFloat(distanceData, accelerometerData, encoderData));
         }

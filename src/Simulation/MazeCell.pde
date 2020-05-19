@@ -27,17 +27,16 @@ public class MazeCell {
     return null;
   }
   
-  public float distanceCells(int x2, int y2)
-  {
-   return sqrt( pow(this.x - x2,2) + pow(this.y - y2,2) );
+  public float distanceCells(int x2, int y2) {
+    return sqrt( pow(this.x - x2,2) + pow(this.y - y2,2) );
   }
   
-  public boolean equals(MazeCell other)
-  {
+  public boolean equals(MazeCell other) {
     if (this.x == other.x && this.y==other.y) {
-      return true; }
-      else {
-        return false;
-      }
+      return true; 
+    }
+    else {
+      return false;
+    }
   }
 }

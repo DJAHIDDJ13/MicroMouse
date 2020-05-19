@@ -12,6 +12,7 @@ public static Box2DProcessing box2d;
 SimulationController simCon;
 
 public static final long  STARTING_TIME = System.currentTimeMillis();
+private final static int initialSize = 8;
 
 void setup(){
   
@@ -23,7 +24,7 @@ void setup(){
   Vec2 gravity = new Vec2(0, 0);
   box2d.createWorld(gravity);
   
-  simCon = new SimulationController(new ControlP5(this), 8);
+  simCon = new SimulationController(new ControlP5(this), initialSize);
   simCon.createControllers();
 }
 

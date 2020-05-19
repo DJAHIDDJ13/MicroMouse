@@ -12,6 +12,7 @@ public class Wheel {
   private double force;
   private double forward_displacement;
   private double backward_displacement;
+  
   // Constructor
   public Wheel(float x, float y, float w, float h, float angle) {
     this.h = h;
@@ -186,7 +187,7 @@ public class Wheel {
   }
   
   public void makeBody(float x, float y, float angle) {
-    // Define a polygon (this is what we use for a rectangle) //<>// //<>// //<>// //<>//
+    // Define a polygon (this is what we use for a rectangle) //<>//
     PolygonShape sd = new PolygonShape();
     sd.setAsBox(w / 2, h / 2);
     
