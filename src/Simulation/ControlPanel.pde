@@ -1,8 +1,7 @@
 public class ControlPanel {
-  
-  SimulationController simCon;
-  ControlP5 cp5;
-  Maze maze;
+
+  private ControlP5 cp5;
+  private Maze maze;
 
   private float toAddX, toAddY, toAddR, toAddW, toAddH, toAddA;
 
@@ -17,10 +16,9 @@ public class ControlPanel {
   private final float panelH = 20;
   private final float panelR = 10;  
             
-  public ControlPanel(SimulationController simCon, ControlP5 cp5, Maze maze) {
+  public ControlPanel(ControlP5 cp5, Maze maze) {
     this.maze = maze;
     this.cp5 = cp5;
-    this.simCon = simCon;
 
     objectPanelState = 0;
     showingMovingObject = false;

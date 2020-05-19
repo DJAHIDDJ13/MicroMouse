@@ -50,7 +50,7 @@ public class SimulationController {
                                          simulationEntry.getRatio());
    
    // Initializing the GUI Panels
-   controlPanel = new ControlPanel(this, cp5, maze);
+   controlPanel = new ControlPanel(cp5, maze);
    informationPanel = new InformationPanel(maze);
    
    // initializing the communication controller
