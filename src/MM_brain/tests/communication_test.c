@@ -110,11 +110,11 @@ int main(void)
 
       switch(rx_msg.flag) {
          case HEADER_FLAG:
-            dump_header_data(status);
+//            dump_header_data(status);
             cell = init_cell(status);
             break;
          case SENSOR_FLAG:
-            dump_sensor_data(status);
+//            dump_sensor_data(status);
             cell = update_cell(status);
             break;
       }

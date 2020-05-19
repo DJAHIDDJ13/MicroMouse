@@ -311,4 +311,15 @@ void dump_header_data(struct Micromouse data)
    printf("\tLines per revolution: %g\n", data.header_data.lines_per_revolution);
    printf("\tEncoder data: LPR:%g, circumference: %g\n", data.header_data.lines_per_revolution, 
                                                          data.header_data.wheel_circumference);
+   printf("\tOrigin pos: %g, %g\n", data.header_data.origin_x, 
+                                    data.header_data.origin_y);
+   printf("\tSensor placement:\n");
+   printf("\t\tBottom left %g, %g\n", data.header_data.left_sensor_position_x, 
+                               data.header_data.left_sensor_position_y);
+   printf("\t\tTop left %g, %g\n", data.header_data.top_left_sensor_position_x, 
+                               data.header_data.top_left_sensor_position_y);
+   printf("\t\tTop right %g, %g\n", data.header_data.top_right_sensor_position_x, 
+                               data.header_data.top_right_sensor_position_y);
+   printf("\t\tBottom right %g, %g\n", data.header_data.right_sensor_position_x, 
+                               data.header_data.right_sensor_position_y);
 }

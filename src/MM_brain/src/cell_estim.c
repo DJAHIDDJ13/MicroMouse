@@ -27,8 +27,8 @@ iVec2 init_cell(struct Micromouse status)
 
    estim = init_pos(i_pos, i_vel, i_acc, i_ang, i_ang_vel, i_ang_acc, time_step);
    
-   cur_cell.x = (estim.pos.x - status.header_data.initial_x) / status.header_data.box_width;
-   cur_cell.y = (estim.pos.y - status.header_data.initial_y) / status.header_data.box_width;
+   cur_cell.x = (-74.5 - estim.pos.x) / status.header_data.box_width;
+   cur_cell.y = (45.5 - estim.pos.y) / status.header_data.box_width;
 
    gettimeofday(&cur_celltime, NULL);
 
@@ -43,10 +43,11 @@ iVec2 update_cell(struct Micromouse status)
    float mdiff = (1e6 * (cur_celltime.tv_sec - prevtime.tv_sec) + cur_celltime.tv_usec - prevtime.tv_usec) / 1000.0f;
    estim = update_pos(status, mdiff);
 
-   //cur_cell.x = estim.pos.x / status.header_data.box_width;
-   //cur_cell.y = estim.pos.y / status.header_data.box_width;
-   cur_cell.x = (estim.pos.x - status.header_data.initial_x) / status.header_data.box_width;
-   cur_cell.y = (estim.pos.y - status.header_data.initial_y) / status.header_data.box_width;
+   cur_cell.x = (-74.5 - estim.pos.x) / status.header_data.box_width;
+   cur_cell.y = (45.5 - estim.pos.y) / status.header_data.box_width;
+
+   printf("Position: %g, %g, %g\n", estim.pos.x, estim.pos.y, estim.pos.z);
+   printf("Angle: %g, %g, %g\n", estim.ang.x, estim.ang.y, estim.ang.z);
 
    return cur_cell;
 }

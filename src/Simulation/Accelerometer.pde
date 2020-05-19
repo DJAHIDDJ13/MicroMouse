@@ -12,7 +12,7 @@ public class Accelerometer {
    // Vehicle's angle changes
    private float curAngle;
    private float prevAngle;
-   private float prevprevAngle;
+   // private float prevprevAngle;
    
    // time steps between each (physics) update -should be around 1 / 60 seconds for 60 FPS-
    private int curMillis;
@@ -31,7 +31,7 @@ public class Accelerometer {
      
      curAngle = 0; 
      prevAngle = 0;
-     prevprevAngle = 0;
+     // prevprevAngle = 0;
      
      curMillis = millis();
      prevMillis = millis();
@@ -81,7 +81,7 @@ public class Accelerometer {
      curPosition = vehiclePos.mul(scalar); // the acceleration values are too small on world coordinates
      
      // update the angle values
-     prevprevAngle = prevAngle;
+     //prevprevAngle = prevAngle;
      prevAngle = curAngle;
      curAngle = vehicleAngle;
 
@@ -89,8 +89,8 @@ public class Accelerometer {
      accelerometer.x = secondDerivative(prevprevPosition.x, prevPosition.x, curPosition.x, avg_time_step);
      accelerometer.y = secondDerivative(prevprevPosition.y, prevPosition.y, curPosition.y, avg_time_step);
      
-     // same for the angular acceleration
-     gyro.z = secondDerivative(prevprevAngle, prevAngle, curAngle, avg_time_step);
+     // same for the angular velocity
+     gyro.z = (curAngle - prevAngle) / avg_time_step;
      
      counter++;
    }
