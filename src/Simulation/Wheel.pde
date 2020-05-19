@@ -98,8 +98,23 @@ public class Wheel {
      float new_ang = getAngle();
      
     if(first_value) {
-      total_displacement += cos(new_ang - prev_ang) * dist(prev_pos.x, prev_pos.y, new_pos.x, new_pos.y);
-      println("Displacement ", total_displacement / wheelCircumference * 2*PI);
+      // Figuring out the direction of the movement of the wheel
+      Vec2 diff = new_pos.sub(prev_pos); // the movement vector
+      // the angle of the vehicle restricted between -PI and PI, the double modulus is necessary to handle negative numbers
+      // Here we phase the angle by HALF_PI and then restrict it between 0,2*PI. then back to -PI,PI
+      float restricted_ang = (((new_ang - HALF_PI) % TWO_PI) + TWO_PI) % TWO_PI - PI; 
+      float movement_heading = atan2(diff.y, diff.x); // the angle of the movement vector (heading)
+      println("diff ", diff, " restr_ang ", restricted_ang, " movement_heading ", movement_heading);
+      
+      // in order for the wheel to be moving forward, the heading of the movement vector and the direction angle of the wheel
+      // must be the same or within PI/2 of each other (plus or minus PI/2), otherwise the movement is backwards
+      if(abs(movement_heading - restricted_ang) < HALF_PI) { // wheel moving forward
+        println("FORWARD"); 
+        total_displacement += cos(new_ang - prev_ang) * dist(prev_pos.x, prev_pos.y, new_pos.x, new_pos.y);
+      } else { // backward
+        total_displacement -= cos(new_ang - prev_ang) * dist(prev_pos.x, prev_pos.y, new_pos.x, new_pos.y);
+        println("BACKWARD");  
+      }
       revolutionAngle = total_displacement / wheelCircumference * 2*PI;
     }
     

@@ -28,8 +28,8 @@ typedef struct ivec2 {
 } iVec2;
 
 struct Gyro {
-   Vec3 ypr; // yaw, pitch and roll (angular acceleration)
    Vec3 xyz; // x, y, z acceleration
+   Vec3 ypr; // yaw, pitch and roll (angular acceleration)
 };
 typedef struct {
    float sensors[NB_SENSOR];
@@ -39,6 +39,7 @@ typedef struct {
    float encoders[NB_ENCODER];
 } SensorData;
 
+// TODO: change these to Vec2
 typedef struct {
    float maze_width,
        maze_height;
@@ -59,6 +60,7 @@ typedef struct {
          top_right_sensor_position_y,
          right_sensor_position_x,
          right_sensor_position_y;
+   float origin_x, origin_y;
 } HeaderData;
 
 

@@ -9,7 +9,7 @@ public class HeaderData extends Message {
     float[] cellSizeData;
     float[] encoderData;
     float[] sensorsPos;
-
+    float[] originPos;
     public HeaderData() {
         this.flag = CommunicationUtility.HEADER_FLAG;
         this.content = new byte[CommunicationUtility.HEADER_CONTENT_SIZE];
@@ -64,6 +64,13 @@ public class HeaderData extends Message {
         else
             this.sensorsPos = sensorsPos;
     }
+    
+    public void setOriginPos(float[] originPos) {
+        if (originPos.length != 2)
+            CommunicationUtility.logMessage("WARNING", "HeaderData", "originPos", "originPos array size not matching : is " + originPos.length + " - should be 2.");
+        else
+            this.originPos = originPos;
+    }
 
     public void setContent() {
         if (mazeData == null || mazeData.length == 0 ||
@@ -73,7 +80,7 @@ public class HeaderData extends Message {
             sensorsPos == null || sensorsPos.length == 0) {
                 CommunicationUtility.logMessage("ERROR", "HeaderData", "setContent", "Cannot format message content because data are incomplete.");
         } else {
-            this.content = CommunicationUtility.packFloatArray(CommunicationUtility.concatAllFloat(mazeData, initialPosData, targetPosData, cellSizeData, encoderData, sensorsPos));
+            this.content = CommunicationUtility.packFloatArray(CommunicationUtility.concatAllFloat(mazeData, initialPosData, targetPosData, cellSizeData, encoderData, sensorsPos, originPos));
         }
     }
 

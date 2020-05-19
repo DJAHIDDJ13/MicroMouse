@@ -30,12 +30,14 @@ public class CommunicationController {
     Vec2 tp = maze.getTarget().getPosition();
     float encoderLinesPerRevolution = maze.getVehicle().getEncoderLinesPerRevolution();
     float wheelCircumference = maze.getVehicle().getWheelCircumference();
+    Vec2 origin = box2d.coordPixelsToWorld(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY);
     float[] mazeData = {maze.getWidth(), maze.getHeight()}, 
           initialPosData = {p.x, p.y, a}, 
           targetPosData = {tp.x, tp.y},
           cellSizeData = {maze.getBoxW(), maze.getBoxH()},
           encoderData = {encoderLinesPerRevolution, wheelCircumference},
-          sensorsPos = new float[8];
+          sensorsPos = new float[8],
+          originPos = {origin.x, origin.y};
 
     int i = 0;
     for (Vec2 sensorPos : maze.getVehicle().getSensorPos()) {
@@ -44,6 +46,7 @@ public class CommunicationController {
       sensorsPos[i] = sensorPos.y;
       i++;
     }
+    
           
     headerMessage.setMazeData(mazeData);
     headerMessage.setInitialPosData(initialPosData);
@@ -51,6 +54,7 @@ public class CommunicationController {
     headerMessage.setCellSizeData(cellSizeData);
     headerMessage.setEncoderLinesPerRevolution(encoderData);
     headerMessage.setSensorsPos(sensorsPos);
+    headerMessage.setOriginPos(originPos);
 
     headerMessage.setContent();
     this.writer.writeFifo(headerMessage);
