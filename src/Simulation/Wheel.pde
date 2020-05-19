@@ -10,7 +10,8 @@ public class Wheel {
   private boolean first_value = false;
   private double total_displacement;
   private double force;
-  
+  private double forward_displacement;
+  private double backward_displacement;
   // Constructor
   public Wheel(float x, float y, float w, float h, float angle) {
     this.h = h;
@@ -25,6 +26,8 @@ public class Wheel {
     prev_pos = new Vec2();
     prev_ang = 0;
     total_displacement = 0.0;
+    forward_displacement = 0.0;
+    backward_displacement = 0.0;
     wheelCircumference = PI * (h/2) * (h/2);
   }
   
@@ -39,6 +42,8 @@ public class Wheel {
     prev_pos = new Vec2();
     prev_ang = 0;
     total_displacement = 0.0;
+    forward_displacement = 0.0;
+    backward_displacement = 0.0;
     wheelCircumference = PI * h * h;
   }
   
@@ -117,12 +122,13 @@ public class Wheel {
       // in order for the wheel to be moving forward, the heading of the movement vector and the direction angle of the wheel
       // must be the same or within PI/2 of each other (plus or minus PI/2), otherwise the movement is backwards
       if(abs(movement_heading - restricted_ang) < HALF_PI) { // wheel moving forward
-        println("FORWARD"); 
-        total_displacement += cos(new_ang - prev_ang) * dist(prev_pos.x, prev_pos.y, new_pos.x, new_pos.y);
+        println("FORWARD before ", total_displacement, cos(new_ang - prev_ang) * dist(prev_pos.x, prev_pos.y, new_pos.x, new_pos.y)); 
+        forward_displacement += cos(new_ang - prev_ang) * dist(prev_pos.x, prev_pos.y, new_pos.x, new_pos.y);
       } else { // backward
-        total_displacement -= cos(new_ang - prev_ang) * dist(prev_pos.x, prev_pos.y, new_pos.x, new_pos.y);
-        println("BACKWARD");  
+        println("BACKWARD before ", total_displacement, cos(new_ang - prev_ang) * dist(prev_pos.x, prev_pos.y, new_pos.x, new_pos.y));
+        backward_displacement += dist(prev_pos.x, prev_pos.y, new_pos.x, new_pos.y);
       }
+      total_displacement = forward_displacement  - backward_displacement;
       revolutionAngle = total_displacement / wheelCircumference * 2*PI;
     }
     
@@ -164,7 +170,7 @@ public class Wheel {
   public void display() {
     // We look at each body and get its screen position //<>//
     Vec2 pos = box2d.coordWorldToPixels(getPosition());
-    // Get its angle of rotation
+    // Get its angle of rotation //<>//
     float a = getAngle();
     
     pushMatrix();

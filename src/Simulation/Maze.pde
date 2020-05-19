@@ -137,22 +137,22 @@ public class Maze {
     case TOP_WALL:    // top
       offset.set(0.5 * boxW, 0); 
       angle = 0.0f;
-      wall_radius = boxW * ratio; wall_len = boxW * (1-ratio); 
+      wall_radius = boxW * ratio; wall_len = boxW * (1+ratio); 
       break;
     case RIGHT_WALL:  // right
       offset.set(boxW, 0.5 * boxW); 
       angle = HALF_PI; 
-      wall_radius = boxH * ratio; wall_len = boxH * (1-ratio); 
+      wall_radius = boxH * ratio; wall_len = boxH * (1+ratio); 
       break;
     case BOTTOM_WALL: // bottom
       offset.set(0.5 * boxW, boxW);
       angle = 0.0f;    
-      wall_radius = boxW * ratio; wall_len = boxW * (1-ratio);
+      wall_radius = boxW * ratio; wall_len = boxW * (1+ratio);
       break;
     case LEFT_WALL:   // left
       offset.set(0, 0.5 * boxW); 
       angle = HALF_PI;
-      wall_radius = boxH * ratio; wall_len = boxH * (1-ratio); 
+      wall_radius = boxH * ratio; wall_len = boxH * (1+ratio); 
       break;
     }
 
