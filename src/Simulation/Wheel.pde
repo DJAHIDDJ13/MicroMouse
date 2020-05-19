@@ -105,7 +105,6 @@ public class Wheel {
      
     if(first_value) {
       total_displacement += cos(new_ang - prev_ang) * dist(prev_pos.x, prev_pos.y, new_pos.x, new_pos.y);
-      println("Displacement ", total_displacement / wheelCircumference * 2*PI);
       revolutionAngle = total_displacement / wheelCircumference * 2*PI;
     }
     

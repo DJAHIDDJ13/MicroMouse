@@ -123,10 +123,10 @@ public class Maze {
   }
   
   public void addWall(Wall wall){
-    walls.push(wall);
+    walls.add(wall);
   }
   
-  public Wall addWallAt(int x, int y, WallOrientation o) {    
+  public void addWallAt(int x, int y, WallOrientation o) {    
     float wall_len = 0.0f;
     float wall_radius = 0.0f;
     
@@ -135,22 +135,22 @@ public class Maze {
 
     switch(o) {
     case TOP_WALL:    // top
-      offset.set(0.5 * boxW, 0         ); 
+      offset.set(0.5 * boxW, 0); 
       angle = 0.0f;
       wall_radius = boxW * ratio; wall_len = boxW * (1-ratio); 
       break;
     case RIGHT_WALL:  // right
-      offset.set(boxW      , 0.5 * boxW); 
+      offset.set(boxW, 0.5 * boxW); 
       angle = HALF_PI; 
       wall_radius = boxH * ratio; wall_len = boxH * (1-ratio); 
       break;
     case BOTTOM_WALL: // bottom
-      offset.set(0.5 * boxW, boxW      );
+      offset.set(0.5 * boxW, boxW);
       angle = 0.0f;    
       wall_radius = boxW * ratio; wall_len = boxW * (1-ratio);
       break;
     case LEFT_WALL:   // left
-      offset.set(0         , 0.5 * boxW); 
+      offset.set(0, 0.5 * boxW); 
       angle = HALF_PI;
       wall_radius = boxH * ratio; wall_len = boxH * (1-ratio); 
       break;
@@ -159,9 +159,18 @@ public class Maze {
     Vec2 top_left_corner = box2d.coordPixelsToWorld(new Vec2(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY));
     Vec2 cur = top_left_corner.add(new Vec2(x * boxW + offset.x, -y * boxH - offset.y));
     Wall added = new Wall(cur.x, cur.y, wall_len / 2, wall_radius / 2, angle);
-    addWall(added);
     
-    return added;
+    boolean add = true;
+    for(Wall wall_temp : walls) {
+      Vec2 pos = wall_temp.getPosition();
+
+      if(pos.x == cur.x && pos.y == cur.y) {
+        add = false;
+      }
+    }
+    
+    if(add)
+      addWall(added);
   }
   
   // TODO: change this

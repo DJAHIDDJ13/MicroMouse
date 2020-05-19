@@ -12,9 +12,6 @@ public class SimulationController {
   private ControlPanel controlPanel;
   private InformationPanel informationPanel;
 
-  // TO BE REMOVED
-  private int dashed;
-
   private int size;
     
   public SimulationController(ControlP5 cp5, int size){
@@ -22,7 +19,6 @@ public class SimulationController {
     this.size = size;
     comCon = new CommunicationController();
     refreshMaze();
-    dashed = 0;
   }
   
   public SimulationEntry getSimulationEntry(){
@@ -110,10 +106,5 @@ public class SimulationController {
     maze.display();
     controlPanel.display();
     informationPanel.display();
-    dashed++;
-  }
-  
-  public int getDashed() {
-    return dashed; 
   }
 }

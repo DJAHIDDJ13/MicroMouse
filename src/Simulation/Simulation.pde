@@ -41,6 +41,10 @@ void controlEvent(ControlEvent event) {
   simCon.controlEventHandler(event);
 }
 
+void mousePressed() {  
+  simCon.mousePressedHandler();
+}
+
 void keyPressed() {
   simCon.keyPressedHandler();
 }
