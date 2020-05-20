@@ -11,7 +11,8 @@ public class SimulationController {
   
   private ControlPanel controlPanel;
   private InformationPanel informationPanel;
-
+  private DebugPanel debugPanel;
+  
   private int size;
   
   private final static float box2d_scalar = 80.0f;
@@ -55,6 +56,7 @@ public class SimulationController {
    // Initializing the GUI Panels
    controlPanel = new ControlPanel(cp5, maze);
    informationPanel = new InformationPanel(maze);
+   debugPanel = new DebugPanel(cp5);
    
    // initializing the communication controller
    comCon.setMaze(maze);
@@ -71,11 +73,13 @@ public class SimulationController {
   public void createControllers() {
     controlPanel.createControllers();
     informationPanel.createControllers();
+    debugPanel.createControllers();
   } 
   
   public void keyPressedHandler() {
     controlPanel.keyPressedHandler();
     informationPanel.keyPressedHandler();
+    debugPanel.keyPressedHandler();
     
     if(key == 'z')
       maze.moveVehicle(user_motor_force, user_motor_force);
@@ -90,16 +94,19 @@ public class SimulationController {
   public void controlEventHandler(ControlEvent event) {
     controlPanel.controlEventHandler(event);
     informationPanel.controlEventHandler(event);
+    debugPanel.controlEventHandler(event);
   }
   
   public void mousePressedHandler() {
     controlPanel.mousePressedHandler();
     informationPanel.mousePressedHandler();
+    debugPanel.mousePressedHandler();
   }
 
   public void update() {
     controlPanel.update();
     informationPanel.update();
+    debugPanel.update();
     
     maze.update();
     comCon.update();
@@ -109,5 +116,6 @@ public class SimulationController {
     maze.display();
     controlPanel.display();
     informationPanel.display();
+    debugPanel.display();
   }
 }
