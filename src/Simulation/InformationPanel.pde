@@ -237,7 +237,7 @@ public class InformationPanel {
   }
 
   public void display() {
-    fill(81,92,94);
+    fill(137,147,177,150);
     rect(830, 5, 640, 300);
     GenericVehicleInformations();
   }

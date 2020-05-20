@@ -131,7 +131,7 @@ public class ControlPanel {
       ;
 
     cp5.addCheckBox("SnapCheckBox")
-      .setPosition(772, 830)
+      .setPosition(745, 830)
       .setSize(10, 10)
       .addItem("Snap to grid", 0)
       .activateAll()
