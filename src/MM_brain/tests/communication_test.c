@@ -21,6 +21,7 @@
 
 #include "box.h"
 #include "brain.h"
+#include "control.h"
 #include "maze.h"
 #include "position.h"
 #include "communication.h"
@@ -96,13 +97,9 @@ int main(void)
 
    create_fifo();
    
-   float test[2] = {50, 50};
-
    struct Micromouse status;
 
    iVec2 cell;
-   status.engines[0] = test[0];
-   status.engines[1] = test[1];
 
    while(1) {
       read_fifo(&rx_msg);
@@ -116,6 +113,7 @@ int main(void)
          case SENSOR_FLAG:
 //            dump_sensor_data(status);
             cell = update_cell(status);
+            update_control(&status, 0);
             break;
       }
 

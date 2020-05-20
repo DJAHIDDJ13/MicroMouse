@@ -66,36 +66,6 @@ struct Position update_pos(struct Micromouse m, float time_step)
 //   printf("Position estimate: %g, %g, %g\n", cur.pos.x, cur.pos.y, cur.pos.z); 
    
    prev = cur;
-/*
-   // perform 3d rotation
-   // the displacement estimate
-   next.pos.x = cur.pos.x - prev.pos.x + m.sensor_data.gyro.xyz.x * ts * ts;
-   next.pos.y = cur.pos.y - prev.pos.y + m.sensor_data.gyro.xyz.y * ts * ts;
-   next.pos.z = cur.pos.z - prev.pos.z + m.sensor_data.gyro.xyz.z * ts * ts;
-*/
- 
-   // applying the z axis rotation
-   /**
-    * θ rotation in z axis,
-    *
-    * [cosθ, −sinθ, 0]   [x]
-    * |sinθ,  cosθ, 0| * |y|
-    * [0   ,     0, 1]   [z]
-    */
-/*
-   next.pos.x = next.pos.x * cos(next.ang.z) - next.pos.y * sin(next.ang.z);
-   next.pos.y = next.pos.x * sin(next.ang.z) + next.pos.y * cos(next.ang.z);
-   next.pos.z = next.pos.z;
-
-   // adding the current estimate
-   next.pos.x += cur.pos.x;
-   next.pos.y += cur.pos.y;
-   next.pos.z += cur.pos.z;
- 
-*/
-   //cur = next;
-
-//   printf("current time step: %gms\n", ts);
    return cur;
 }
 
