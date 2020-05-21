@@ -158,7 +158,6 @@ public class Wheel {
   //tire class function
   void move(float desiredSpeed) {      
       float m_maxDriveForce = 300;
-      // this.force = force;
       
       //find current speed in forward direction
       Vec2 currentForwardNormal = body.getWorldVector(new Vec2(0, 1));
@@ -169,8 +168,9 @@ public class Wheel {
           force = m_maxDriveForce;
       else if ( desiredSpeed < currentSpeed ) //<>// //<>// //<>//
           force = -m_maxDriveForce;
-      else
+      else //<>// //<>// //<>//
           return;
+      this.force = force;
       //m_body->ApplyForce( force * currentForwardNormal, m_body->GetWorldCenter() );
       body.applyForce(currentForwardNormal.mul(force), body.getWorldCenter());
   }
@@ -184,7 +184,7 @@ public class Wheel {
     pushMatrix();
     rectMode(CENTER);
     fill(127,127,127);
-      translate(pos.x, pos.y);
+      translate(pos.x, pos.y); //<>// //<>// //<>//
       translate(-SimulationUtility.MAZE_SHIFTX, -SimulationUtility.MAZE_SHIFTY);
       rotate(-a);
       stroke(0);

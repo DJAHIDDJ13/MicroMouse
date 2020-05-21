@@ -20,6 +20,10 @@ public class Target {
     pos.x = x;
     pos.y = y;
   }
+  
+  public float getR() {
+    return r;
+  }
 
   public void display() {
     pushMatrix();
