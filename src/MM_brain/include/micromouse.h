@@ -24,7 +24,7 @@ typedef struct vec3 {
 } Vec3;
 
 typedef struct ivec2 {
-   int x, y;
+   float x, y;
 } iVec2;
 
 struct Position {
@@ -45,6 +45,8 @@ typedef struct {
    float encoders[NB_ENCODER];
 } SensorData;
 
+enum sensor_position{SensorLeft, SensorTopLeft, SensorTopRight, SensorRight};
+
 // TODO: change these to Vec2
 typedef struct {
    float maze_width,
@@ -58,14 +60,7 @@ typedef struct {
        box_height;
    float lines_per_revolution, 
          wheel_circumference;
-   float left_sensor_position_x,
-         left_sensor_position_y,
-         top_left_sensor_position_x,
-         top_left_sensor_position_y,
-         top_right_sensor_position_x,
-         top_right_sensor_position_y,
-         right_sensor_position_x,
-         right_sensor_position_y;
+   iVec2 sensors_position[4];
    float origin_x, origin_y;
 } HeaderData;
 
