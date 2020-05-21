@@ -153,7 +153,7 @@ public class ControlPanel {
     /* FIX THIS */
     float boxW = box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE) / simCon.simulationEntry.getRows();
     float boxH = boxW * simCon.simulationEntry.getRatio();
-    toAddW = boxW - boxH;
+    toAddW = boxW + boxH;
     toAddH = boxH;
     toAddX = round(temp.x / boxW) * boxW - cos(toAddA) * (boxW / 2) + top_left_corner.x;
     toAddY = round(temp.y / boxW) * boxW - sin(toAddA) * (boxW / 2) + top_left_corner.y;

@@ -167,7 +167,7 @@ public class Wheel {
       float force = 0;
       if ( desiredSpeed > currentSpeed )
           force = m_maxDriveForce;
-      else if ( desiredSpeed < currentSpeed ) //<>//
+      else if ( desiredSpeed < currentSpeed ) //<>// //<>// //<>//
           force = -m_maxDriveForce;
       else
           return;
@@ -176,9 +176,9 @@ public class Wheel {
   }
 
   public void display() {
-    // We look at each body and get its screen position //<>//
+    // We look at each body and get its screen position //<>// //<>// //<>//
     Vec2 pos = box2d.coordWorldToPixels(getPosition());
-    // Get its angle of rotation //<>//
+    // Get its angle of rotation //<>// //<>// //<>//
     float a = getAngle();
     
     pushMatrix();
@@ -194,7 +194,7 @@ public class Wheel {
   }
   
   public void makeBody(float x, float y, float angle) {
-    // Define a polygon (this is what we use for a rectangle) //<>//
+    // Define a polygon (this is what we use for a rectangle) //<>// //<>// //<>//
     PolygonShape sd = new PolygonShape();
     sd.setAsBox(w / 2, h / 2);
     
