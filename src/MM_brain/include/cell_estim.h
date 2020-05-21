@@ -3,7 +3,6 @@
 
 extern struct timeval cur_celltime, prevtime;
 
-iVec2 init_cell(struct Micromouse status);
-iVec2 update_cell(struct Micromouse status);
-
+void init_cell(struct Micromouse* status);
+void update_cell(struct Micromouse* status);
 #endif

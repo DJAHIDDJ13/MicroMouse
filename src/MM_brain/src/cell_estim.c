@@ -6,48 +6,48 @@
 #include <micromouse.h>
 #include <position.h>
 #include <communication.h>
-// TODO: send this in communication
-// #define BOX_SIZE 10.0
 
-iVec2 cur_cell;
-struct Position estim;
+// time vals to track the time step more accurately
 struct timeval cur_celltime, prevtime;
 
-iVec2 init_cell(struct Micromouse status)
+void init_cell(struct Micromouse* status)
 {
-   Vec3 i_pos = {.x = status.header_data.initial_x, .y = status.header_data.initial_y, .z = 0};
+   // initializing the timevals
+   gettimeofday(&cur_celltime, NULL);
+   
+   // setting the initial values are static at the initial coordinates
+   Vec3 i_pos = {.x = status->header_data.initial_x, .y = status->header_data.initial_y, .z = 0};
    Vec3 i_vel = {.x = 0, .y = 0, .z = 0};
    Vec3 i_acc = {.x = 0, .y = 0, .z = 0};
 
-   Vec3 i_ang     = {.x = 0, .y = 0, .z = status.header_data.initial_angle};
+   // same for the angles with the initial yaw value
+   Vec3 i_ang     = {.x = 0, .y = 0, .z = status->header_data.initial_angle};
    Vec3 i_ang_vel = {.x = 0, .y = 0, .z = 0};
    Vec3 i_ang_acc = {.x = 0, .y = 0, .z = 0};
 
-   float time_step = 0.0f;
-
-   estim = init_pos(i_pos, i_vel, i_acc, i_ang, i_ang_vel, i_ang_acc, time_step);
+   // set the first time step to 0 and initialize the position estimator
+   status->time_step = 0.0f;
+   init_pos(i_pos, i_vel, i_acc, i_ang, i_ang_vel, i_ang_acc, status);
    
-   cur_cell.x = (-74.5 - estim.pos.x) / status.header_data.box_width;
-   cur_cell.y = (45.5 - estim.pos.y) / status.header_data.box_width;
-
-   gettimeofday(&cur_celltime, NULL);
-
-   return cur_cell;
+   // get the cell estimation
+   status->cur_cell.x = (status->header_data.origin_x - status->cur_pose.pos.x) / status->header_data.box_width;
+   status->cur_cell.y = (status->header_data.origin_y - status->cur_pose.pos.y) / status->header_data.box_width;
 }
 
-iVec2 update_cell(struct Micromouse status)
+void update_cell(struct Micromouse* status)
 {
+   // updating the previous timeval and getting the new value
    prevtime = cur_celltime;
    gettimeofday(&cur_celltime, NULL);
 
-   float mdiff = (1e6 * (cur_celltime.tv_sec - prevtime.tv_sec) + cur_celltime.tv_usec - prevtime.tv_usec) / 1000.0f;
-   estim = update_pos(status, mdiff);
+   // calculating the value in ms, (second difference * 100,000 + microsecond diff) / 1000
+   float mdiff = (1e6 * (cur_celltime.tv_sec - prevtime.tv_sec) + 
+                         cur_celltime.tv_usec - prevtime.tv_usec) / 1000.0f;
+   // setting the diff as the time_step
+   status->time_step = mdiff;
+   
+   update_pos(status);
 
-   cur_cell.x = (-74.5 - estim.pos.x) / status.header_data.box_width;
-   cur_cell.y = (45.5 - estim.pos.y) / status.header_data.box_width;
-
-   printf("Position: %g, %g, %g\n", estim.pos.x, estim.pos.y, estim.pos.z);
-   printf("Angle: %g, %g, %g\n", estim.ang.x, estim.ang.y, estim.ang.z);
-
-   return cur_cell;
+   status->cur_cell.x = (status->header_data.origin_x - status->cur_pose.pos.x) / status->header_data.box_width;
+   status->cur_cell.y = (status->header_data.origin_y - status->cur_pose.pos.y) / status->header_data.box_width;
 }

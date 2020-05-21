@@ -3,9 +3,9 @@ public class MazeBuilder{
   public Maze emptyMazeSetup(float mazeW, float mazeH, int size, float ratio) {
     float boxW = mazeW / size;
     float boxH = mazeH / size;
-    
-    Maze maze = new Maze(mazeH, mazeW, boxW, boxH, ratio);
 
+    Maze maze = new Maze(mazeH, mazeW, boxW, boxH, ratio);
+    println(boxW, boxH);
     final int targetX = ceil(((float)size) / 2.0) -1;
     final int targetY = ceil(((float)size) / 2.0) -1;
     Vec2 center = maze.getCellWorldCenterAt(targetX, targetY);
