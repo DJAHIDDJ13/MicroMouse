@@ -161,7 +161,6 @@ public class Wheel {
   //tire class function
   void move(float desiredSpeed) {      
       float m_maxDriveForce = 300;
-      // this.force = force;
       
       //find current speed in forward direction
       Vec2 currentForwardNormal = body.getWorldVector(new Vec2(0, 1));
@@ -170,24 +169,25 @@ public class Wheel {
       float force = 0;
       if ( desiredSpeed > currentSpeed )
           force = m_maxDriveForce;
-      else if ( desiredSpeed < currentSpeed ) //<>//
+      else if ( desiredSpeed < currentSpeed ) //<>// //<>// //<>//
           force = -m_maxDriveForce;
-      else
+      else //<>// //<>// //<>//
           return;
+      this.force = force;
       //m_body->ApplyForce( force * currentForwardNormal, m_body->GetWorldCenter() );
       body.applyForce(currentForwardNormal.mul(force), body.getWorldCenter());
   }
 
   public void display() {
-    // We look at each body and get its screen position //<>//
+    // We look at each body and get its screen position //<>// //<>// //<>//
     Vec2 pos = box2d.coordWorldToPixels(getPosition());
-    // Get its angle of rotation //<>//
+    // Get its angle of rotation //<>// //<>// //<>//
     float a = getAngle();
     
     pushMatrix();
     rectMode(CENTER);
     fill(127,127,127);
-      translate(pos.x, pos.y);
+      translate(pos.x, pos.y); //<>// //<>// //<>//
       translate(-SimulationUtility.MAZE_SHIFTX, -SimulationUtility.MAZE_SHIFTY);
       rotate(-a);
       stroke(0);
@@ -197,7 +197,7 @@ public class Wheel {
   }
   
   public void makeBody(float x, float y, float angle) {
-    // Define a polygon (this is what we use for a rectangle) //<>//
+    // Define a polygon (this is what we use for a rectangle) //<>// //<>// //<>//
     PolygonShape sd = new PolygonShape();
     sd.setAsBox(w / 2, h / 2);
     

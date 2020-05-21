@@ -3,27 +3,26 @@ public class ControlPanel {
   private ControlP5 cp5;
   private Maze maze;
 
-  private float toAddX, toAddY, toAddR, toAddW, toAddH, toAddA;
+  private float toAddX, toAddY, toAddW, toAddH, toAddA;
 
-  private int objectPanelState;
   private boolean showingMovingObject;
   private boolean deleteMode;
   private boolean snap;
+  private boolean setPosition;
 
   private final float panelX = 40;
   private final float panelY = 865;
   private final float panelW = 40;
   private final float panelH = 20;
-  private final float panelR = 10;  
             
   public ControlPanel(ControlP5 cp5, Maze maze) {
     this.maze = maze;
     this.cp5 = cp5;
 
-    objectPanelState = 0;
     showingMovingObject = false;
     deleteMode = false;
     snap = false;
+    setPosition = false;
   }
 
   public void mousePressedHandler() {
@@ -31,12 +30,10 @@ public class ControlPanel {
     if (mouseX < SimulationUtility.MAZE_SIZE + SimulationUtility.MAZE_SHIFTX && mouseY < SimulationUtility.MAZE_SIZE + SimulationUtility.MAZE_SHIFTY) {
       // if showing moving object , means we're adding
       if (showingMovingObject) {
-        if (objectPanelState == 0) {
           Wall toAdd = new Wall(toAddX, toAddY, toAddW / 2, toAddH / 2, toAddA);
           maze.addWall(toAdd);
-        } else {
-          maze.getTarget().setPosition((float) mouseX, (float) mouseY);
-        }
+      } else if (setPosition) {
+        
       } else if (deleteMode) { // otherwise we're deleting
         maze.removeBodyAt((float) mouseX, (float) mouseY);
       }
@@ -61,13 +58,13 @@ public class ControlPanel {
       } else {
         toAddA = 0;
       }
-    } else if (eventControllerName.equals("+") || eventControllerName.equals("-")) {
-      objectPanelState = 1 - objectPanelState;
     } else if (eventControllerName.equals("Add")) {
       showingMovingObject = !showingMovingObject;
+      setPosition = false;
     } else if (eventControllerName.equals("Remove")) {
       showingMovingObject = false;
       deleteMode = true;
+      setPosition = false;
     } else if (eventControllerName.equals("Refresh")) {
       simCon.refreshMaze();
     } else if (eventControllerName.equals("Size")) {
@@ -75,43 +72,34 @@ public class ControlPanel {
       simCon.setSize(size);
     } else if (eventControllerName.equals("SnapCheckBox")) {
       snap = !snap;
+    } else if (eventControllerName.equals("Set position")) {
+      setPosition = !setPosition;
+      showingMovingObject = false;
     }
   }
 
   public void createControllers() {
-    cp5.addButton("+")
-      .setValue(1)
-      .setPosition(80, 840)
-      .setSize(20, 20)
-      ;
-
-    cp5.addButton("-")
-      .setValue(2)
-      .setPosition(80, 870)
-      .setSize(20, 20)
-      ;
-
     cp5.addButton("Turn+")
       .setValue(1)
-      .setPosition(110, 830)
+      .setPosition(80, 830)
       .setSize(40, 30)
       ;
 
     cp5.addButton("Turn-")
       .setValue(2)
-      .setPosition(110, 870)
+      .setPosition(80, 870)
       .setSize(40, 30)
       ;
 
     cp5.addButton("Add")
       .setValue(3)
-      .setPosition(160, 855)
+      .setPosition(130, 855)
       .setSize(40, 30)
       ;
 
     cp5.addButton("Remove")
       .setValue(4)
-      .setPosition(210, 855)
+      .setPosition(180, 855)
       .setSize(40, 30)
       ;
 
@@ -122,12 +110,18 @@ public class ControlPanel {
       ;
 
     cp5.addNumberbox("Size")
-      .setPosition(260, 855)
+      .setPosition(230, 855)
       .setSize(40, 30)
       .setScrollSensitivity(1.1)
       .setDirection(Controller.HORIZONTAL)
       .setValue(8)
       .setRange(4, 32)
+      ;
+      
+    cp5.addButton("Set position")
+      .setValue(6)
+      .setPosition(280, 855)
+      .setSize(60, 30)
       ;
 
     cp5.addCheckBox("SnapCheckBox")
@@ -155,9 +149,9 @@ public class ControlPanel {
     float boxH = boxW * simCon.simulationEntry.getRatio();
     toAddW = boxW - boxH;
     toAddH = boxH;
+
     toAddX = round(temp.x / boxW) * boxW - cos(toAddA) * (boxW / 2) + top_left_corner.x;
     toAddY = round(temp.y / boxW) * boxW - sin(toAddA) * (boxW / 2) + top_left_corner.y;
-    toAddR = toAddH / 2;
   }
 
   // updates the gui
@@ -175,7 +169,6 @@ public class ControlPanel {
         toAddY = temp.y;
         toAddW = boxW - boxH;
         toAddH = boxH;
-        toAddR = toAddH / 2;
       }
     } else {
       Vec2 temp = box2d.coordPixelsToWorld(panelX, panelY);
@@ -183,7 +176,6 @@ public class ControlPanel {
       toAddY = temp.y;
       toAddW = box2d.scalarPixelsToWorld(panelW);
       toAddH = box2d.scalarPixelsToWorld(panelH);
-      toAddR = panelR;
     }
   }
 
@@ -191,27 +183,17 @@ public class ControlPanel {
     rectMode(CENTER);
     // diplay wall at mouseX, mouseY
     pushMatrix();
-    Vec2 temp = box2d.coordWorldToPixels(toAddX, toAddY);
-    translate(temp.x, temp.y);
-    rotate(-toAddA);
 
-    float pixelW = box2d.scalarWorldToPixels(toAddW);
-    float pixelH = box2d.scalarWorldToPixels(toAddH);
-
-    if (objectPanelState == 0) {
+      float pixelW = box2d.scalarWorldToPixels(toAddW);
+      float pixelH = box2d.scalarWorldToPixels(toAddH);
+    
+      Vec2 temp = box2d.coordWorldToPixels(toAddX, toAddY);
+      translate(temp.x, temp.y);
+      rotate(-toAddA);      
       fill(127, 0, 0, 150);
       stroke(0, 150);
       rect(0, 0, pixelW, pixelH);
       fill(255);
-    } // display target
-    else {
-      fill(127);
-      strokeWeight(1);
-      ellipse(0, 0, toAddR*2, toAddR*2);
-      line(-toAddR, 0, toAddR, 0);
-      line(0, -toAddR, 0, toAddR);
-      fill(255);
-    }
 
     popMatrix();
 
