@@ -24,6 +24,14 @@ public class Maze {
     walls = new LinkedList<Wall>();
   }
 
+  public int getRows() {
+    return rows;
+  }
+
+  public int getCols() {
+    return cols;
+  }
+
   public float getBoxW() {
     return boxW;
   }

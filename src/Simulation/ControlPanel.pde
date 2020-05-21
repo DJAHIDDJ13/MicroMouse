@@ -33,7 +33,12 @@ public class ControlPanel {
           Wall toAdd = new Wall(toAddX, toAddY, toAddW / 2, toAddH / 2, toAddA);
           maze.addWall(toAdd);
       } else if (setPosition) {
+        int j = (int) (box2d.scalarPixelsToWorld(mouseX-SimulationUtility.MAZE_SHIFTX) / maze.getBoxH());
+        int i = (int) (box2d.scalarPixelsToWorld(mouseY-SimulationUtility.MAZE_SHIFTY) / maze.getBoxW());
         
+        Vec2 p = maze.getCellWorldCenterAt(j, i);
+        Vehicle vehicle = new Vehicle(p.x, p.y, PI, 1.0);
+        maze.setVehicle(vehicle);
       } else if (deleteMode) { // otherwise we're deleting
         maze.removeBodyAt((float) mouseX, (float) mouseY);
       }
