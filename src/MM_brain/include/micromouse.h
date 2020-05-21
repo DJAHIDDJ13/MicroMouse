@@ -27,10 +27,16 @@ typedef struct ivec2 {
    float x, y;
 } iVec2;
 
+struct Position {
+   Vec3 pos;
+   Vec3 ang; // yaw, pitch, roll
+};
+
 struct Gyro {
    Vec3 xyz; // x, y, z acceleration
    Vec3 ypr; // yaw, pitch and roll (angular acceleration)
 };
+
 typedef struct {
    float sensors[NB_SENSOR];
 
@@ -58,7 +64,6 @@ typedef struct {
    float origin_x, origin_y;
 } HeaderData;
 
-
 /*            Main structure for the micromouse "robot"           */
 struct Micromouse {
    /*     Our robot need two engine and four infrared sensor     */
@@ -68,7 +73,12 @@ struct Micromouse {
    
    HeaderData header_data;
 
-   
+   float time_step;
+   struct Position cur_pose;
+   struct Position prev_pose;
+
+   float prev_enc[NB_ENCODER];
+   iVec2 cur_cell;
 };
 
 #endif
