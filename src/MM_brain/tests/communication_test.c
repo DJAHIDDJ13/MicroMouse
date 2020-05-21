@@ -19,7 +19,7 @@
 #include <time.h>
 
 #include "box.h"
-#include "brain.h"
+#include "flood_fill.h"
 #include "control.h"
 #include "maze.h"
 #include "position.h"

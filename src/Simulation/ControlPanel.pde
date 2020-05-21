@@ -18,11 +18,6 @@ public class ControlPanel {
   public ControlPanel(ControlP5 cp5, Maze maze) {
     this.maze = maze;
     this.cp5 = cp5;
-
-    showingMovingObject = false;
-    deleteMode = false;
-    snap = false;
-    setPosition = false;
   }
 
   public void mousePressedHandler() {
@@ -208,5 +203,9 @@ public class ControlPanel {
   public void displayPanel() {
     stroke(0);
     rect(5, 830, 70, 70);
+  }
+  
+  public boolean getSnap() {
+    return snap;
   }
 }
