@@ -7,8 +7,8 @@
 
 int main(int argc, const char *argv[])
 {
-   struct Position estim;
-
+/* TODO
+ * This test doesn't make sense now since the gyroscope measures the angular velocity instead of accelratio, needs to be redone
    Vec3 i_pos = {.x = 0, .y = 0, .z = 0};
    Vec3 i_vel = {.x = 0, .y = 0, .z = 0};
    Vec3 i_acc = {.x = 0, .y = 0, .z = 0};
@@ -16,12 +16,7 @@ int main(int argc, const char *argv[])
    Vec3 i_ang = {.x = 0, .y = 0, .z = M_PI / 4};
    Vec3 i_ang_vel = {.x = 0, .y = 0, .z = 0};
    Vec3 i_ang_acc = {.x = 0, .y = 0, .z = 0};
-
-   float time_step = 16.66666f;
-
-   estim = init_pos(i_pos, i_vel, i_acc, i_ang, i_ang_vel, i_ang_acc, time_step);
-   printf("(%g %g %g), (%g %g %g)\n", estim.pos.x, estim.pos.y, estim.pos.z, estim.ang.x, estim.ang.y, estim.ang.z);
-
+:
    struct Micromouse x_forward = {
       .sensor_data = {
          .gyro = {
@@ -48,6 +43,10 @@ int main(int argc, const char *argv[])
          }
       }
    };
+
+   estim = init_pos(i_pos, i_vel, i_acc, i_ang, i_ang_vel, i_ang_acc, time_step);
+   printf("(%g %g %g), (%g %g %g)\n", estim.pos.x, estim.pos.y, estim.pos.z, estim.ang.x, estim.ang.y, estim.ang.z);
+
 
    // One forward acceleration on x for one time_step
    estim = update_pos(x_forward, time_step);
@@ -97,6 +96,6 @@ int main(int argc, const char *argv[])
       estim = update_pos(still, time_step);
       printf("(%g %g %g), (%g %g %g)\n", estim.pos.x, estim.pos.y, estim.pos.z, estim.ang.x, estim.ang.y, estim.ang.z);
    }
-
+*/
    return 0;
 }

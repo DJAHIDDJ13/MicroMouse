@@ -118,15 +118,12 @@ public class Wheel {
       // Here we phase the angle by HALF_PI and then restrict it between 0,2*PI. then back to -PI,PI
       float restricted_ang = (((new_ang - HALF_PI) % TWO_PI) + TWO_PI) % TWO_PI - PI; 
       float movement_heading = atan2(diff.y, diff.x); // the angle of the movement vector (heading)
-      println("diff ", diff, " restr_ang ", restricted_ang, " movement_heading ", movement_heading);
       
       // in order for the wheel to be moving forward, the heading of the movement vector and the direction angle of the wheel
       // must be the same or within PI/2 of each other (plus or minus PI/2), otherwise the movement is backwards
       if(abs(movement_heading - restricted_ang) < HALF_PI) { // wheel moving forward
-        println("FORWARD before ", total_displacement, cos(new_ang - prev_ang) * dist(prev_pos.x, prev_pos.y, new_pos.x, new_pos.y)); 
         forward_displacement += cos(new_ang - prev_ang) * dist(prev_pos.x, prev_pos.y, new_pos.x, new_pos.y);
       } else { // backward
-        println("BACKWARD before ", total_displacement, cos(new_ang - prev_ang) * dist(prev_pos.x, prev_pos.y, new_pos.x, new_pos.y));
         backward_displacement += dist(prev_pos.x, prev_pos.y, new_pos.x, new_pos.y);
       }
       total_displacement = forward_displacement  - backward_displacement;
