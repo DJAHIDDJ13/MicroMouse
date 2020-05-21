@@ -314,12 +314,12 @@ void dump_header_data(struct Micromouse data)
    printf("\tOrigin pos: %g, %g\n", data.header_data.origin_x, 
                                     data.header_data.origin_y);
    printf("\tSensor placement:\n");
-   printf("\t\tBottom left %g, %g\n", data.header_data.left_sensor_position_x, 
-                               data.header_data.left_sensor_position_y);
-   printf("\t\tTop left %g, %g\n", data.header_data.top_left_sensor_position_x, 
-                               data.header_data.top_left_sensor_position_y);
-   printf("\t\tTop right %g, %g\n", data.header_data.top_right_sensor_position_x, 
-                               data.header_data.top_right_sensor_position_y);
-   printf("\t\tBottom right %g, %g\n", data.header_data.right_sensor_position_x, 
-                               data.header_data.right_sensor_position_y);
+   printf("\t\tBottom left %g, %g\n",  data.header_data.sensors_position[SensorLeft].x, 
+                                       data.header_data.sensors_position[SensorLeft].y);
+   printf("\t\tTop left %g, %g\n",     data.header_data.sensors_position[SensorTopLeft].x, 
+                                       data.header_data.sensors_position[SensorTopLeft].y);
+   printf("\t\tTop right %g, %g\n",    data.header_data.sensors_position[SensorTopRight].x, 
+                                       data.header_data.sensors_position[SensorTopRight].y);
+   printf("\t\tBottom right %g, %g\n", data.header_data.sensors_position[SensorRight].x, 
+                                       data.header_data.sensors_position[SensorRight].y);
 }
