@@ -5,11 +5,41 @@
 #include <math.h>
 #include <stdio.h>
 
-#define BASE_SPEED 100
+#define BASE_SPEED 200
 #define TURNING_LENGTH_THRESHOLD 540
 #define MAX_SPEED 500
+
+float PID(struct Micromouse* status, float err,
+         const float Kp, const float Ki, const float Kd,
+         char reset) 
+{
+   static float old_err = 0.0f, cumul_err = 0.0f;
+   
+   if(reset > 0) {
+      old_err = 0.0f;
+      cumul_err = 0.0f;
+   }
+
+   // updating the derivative
+   float derivative = (err - old_err) / status->time_step;
+   /* Maybe necessary when there is significant noise
+   // applying a low pass filter
+   float N = 10; // low pass filter strength
+   fwd_derivative = N / (1 + N * (1 / fwd_derivative)); */
+
+   // integral
+   float integral = cumul_err * status->time_step;
+   
+   // output
+   float out = Kp * err + Kd * derivative + Ki * integral;
+
+   old_err = err;
+   cumul_err = fmin(err, MAX_SPEED);
+
+   return out;
+}
+
 enum ControlState {DEFAULT, MOVE_FWD, TURN_BACK, TURN_DIST, TURN_POS} control_state;
-float turn_back_old_err = 0, turn_back_cumul_err = 0;
 void turn_back_PID(struct Micromouse* status)
 {
    printf("NEED TO GO BACK\n");
@@ -44,7 +74,6 @@ void turn_back_PID(struct Micromouse* status)
    */
 }
 
-float fwd_old_err = 0, fwd_cumul_err = 0;
 void fwd_PID(struct Micromouse* status)
 {
    printf("NEED TO GO FORWARD\n");
@@ -64,25 +93,15 @@ void fwd_PID(struct Micromouse* status)
       err = -left_sensor;
    }
 
-   // updating the derivative
-   float fwd_derivative = (err - fwd_old_err) / status->time_step;
-   /* Maybe necessary when there is significant noise
-   // applying a low pass filter
-   float N = 10; // low pass filter strength
-   fwd_derivative = N / (1 + N * (1 / fwd_derivative));
-   */
-   // integral
-   float fwd_integral = fwd_cumul_err * status->time_step;
-   
-   const float Kp = 1, Kd = 50, Ki = 0.01;
-   float out = Kp * err + Kd * fwd_derivative + Ki * fwd_integral;
+   // calling the general PID function   
+   const float Kp = 1.5, Kd = 300, Ki = 0.01;
+   float out = PID(status, err, Kp, Ki, Kd, 0);
 
+   // using the output value
    status->engines[0] = BASE_SPEED + out;
    status->engines[1] = BASE_SPEED - out;
 
-   fwd_old_err = err;
-   fwd_cumul_err = fmin(err, MAX_SPEED);
-
+   // resetting the control to default
    control_state = DEFAULT;
 }
 
@@ -141,7 +160,7 @@ void update_control(struct Micromouse* status)
    {
       control_state = TURN_DIST;
       turn_PID_dist(status);
-   } else if(//(status->sensor_data.sensors[0] < 0 || status->sensor_data.sensors[3] < 0) &&
+   } else if((status->sensor_data.sensors[0] < 0 || status->sensor_data.sensors[3] < 0) &&
              ((status->sensor_data.sensors[1] < 0 && status->sensor_data.sensors[2] > 0) ||
               (status->sensor_data.sensors[1] > 0 && status->sensor_data.sensors[2] < 0))) {
       control_state = TURN_POS;
