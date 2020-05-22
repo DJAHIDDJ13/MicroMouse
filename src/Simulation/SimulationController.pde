@@ -16,7 +16,7 @@ public class SimulationController {
   private int size;
   
   private final static float box2d_scalar = 80.0f;
-  private final static float user_motor_force = 300;
+  private final static float user_motor_force = 600;
   
   public SimulationController(ControlP5 cp5, int size){
     this.cp5 = cp5;
