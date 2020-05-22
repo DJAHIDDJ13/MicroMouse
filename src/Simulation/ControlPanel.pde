@@ -15,9 +15,9 @@ public class ControlPanel {
   private final float panelW = 40;
   private final float panelH = 20;
             
-  public ControlPanel(ControlP5 cp5, Maze maze) {
-    this.maze = maze;
+  public ControlPanel(ControlP5 cp5) {
     this.cp5 = cp5;
+    showingMovingObject = deleteMode = snap = setPosition = false;
   }
 
   public void mousePressedHandler() {
@@ -207,5 +207,9 @@ public class ControlPanel {
   
   public boolean getSnap() {
     return snap;
+  }
+  
+  public void setMaze(Maze maze) {
+    this.maze = maze;
   }
 }

@@ -1,6 +1,5 @@
 public class SimulationEntry{
   
-  private String file;
   private float mazeH,mazeW;
   private float boxH,boxW;
   private float shiftX,shiftY;
@@ -9,18 +8,8 @@ public class SimulationEntry{
   private int rows, cols;
   //add here all the variable that can be used for simulation
   
-  public SimulationEntry(String file, float mazeH, float mazeW, 
+  public SimulationEntry(float mazeH, float mazeW, 
                   float boxH, float boxW, float shiftX, float shiftY) {
-    this.file = file;
-    this.mazeH = mazeH;
-    this.mazeW = mazeW;
-    this.boxH = boxH;
-    this.boxW = boxW;
-    this.shiftX = shiftX;
-    this.shiftY = shiftY;
-  }
-  
-  public SimulationEntry(float mazeH, float mazeW, float boxH, float boxW, float shiftX, float shiftY) {
     this.mazeH = mazeH;
     this.mazeW = mazeW;
     this.boxH = boxH;
@@ -43,10 +32,6 @@ public class SimulationEntry{
     this.shiftY = SimulationUtility.MAZE_SHIFTY;
   }
   
-  public SimulationEntry(String file){
-    this.file = file;
-  }
-  
   public int getRows() {
     return rows;
   }
@@ -60,14 +45,6 @@ public class SimulationEntry{
     this.boxH = boxW /10; //it has to be boxH = boxW/2 to work well
     this.mazeH = rows*boxW;
     this.mazeW = cols*boxW;
-  }
-  
-  public String getFile(){
-    return file;
-  }
-  
-  public void setFile(String file){
-    this.file = file;
   }
   
   public float getRatio() {

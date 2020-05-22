@@ -91,9 +91,10 @@ public class Sensor {
 
      push();
      translate(-SimulationUtility.MAZE_SHIFTX, -SimulationUtility.MAZE_SHIFTY);
-
-     stroke(180);
-       line(sourceP.x ,sourceP.y, targetP.x, targetP.y);
+     
+     stroke(255, 0, 0, 100);
+     line(sourceP.x ,sourceP.y, targetP.x, targetP.y);
+     
      stroke(255, 0, 0);
      if(value != -1)
        ellipse(castP.x, castP.y, 10, 10);

@@ -183,7 +183,7 @@ public class Wheel {
     
     pushMatrix();
     rectMode(CENTER);
-    fill(127,127,127);
+    fill(0,0,0,150);
       translate(pos.x, pos.y); //<>// //<>// //<>//
       translate(-SimulationUtility.MAZE_SHIFTX, -SimulationUtility.MAZE_SHIFTY);
       rotate(-a);

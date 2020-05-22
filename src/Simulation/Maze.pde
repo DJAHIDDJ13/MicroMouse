@@ -222,6 +222,7 @@ public class Maze {
     
     // maze canvas
     strokeWeight(2);
+    fill(250,50);
     rect(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY, size, size);
     
     
