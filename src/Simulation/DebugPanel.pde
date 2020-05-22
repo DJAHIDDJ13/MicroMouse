@@ -3,10 +3,12 @@ public class DebugPanel {
   private ControlP5 cp5; 
   
   private int panel;
+  private boolean bot;
             
   public DebugPanel(ControlP5 cp5) {
     this.cp5 = cp5;
     panel = 0;
+    bot = true;
   }
 
   public void mousePressedHandler() {
@@ -54,15 +56,27 @@ public class DebugPanel {
     text("Maze heigth : ", 1090, 380);
     text("Maze Width : " , 1090, 420);
     
-    line(1000, 440, 1270, 440);
+    line(900, 440, 1370, 440);
     
     text("Box heigth : ", 1090, 470);
     text("Box Width : " , 1090, 510);
     
-    line(1000, 530, 1270, 530);
+    line(900, 530, 1370, 530);
 
     text("Rows : ", 1090, 560);
     text("Columns : " , 1090, 600);
+    
+    line(900, 620, 1370, 620);
+    
+    text("Nulber of mice : ", 1090, 650);
+    text("Controled by : " , 1090, 690);
+    
+    line(900, 710, 1370, 710);
+    
+    text("Nulber of walls : ", 1090, 740);
+    text("Mice hit the wall : ", 1090, 780);
+    text("Reach the target : ", 1090, 820);
+    text("Number of boxes visited : ", 1090, 860);
     
     fill(255);
     strokeWeight(1);
@@ -115,5 +129,9 @@ public class DebugPanel {
     rect(830, 350, 640, 535);
     strokeWeight(0);
     fill(255);
+  }
+  
+  public void setBot(boolean bot) {
+    this.bot = bot;
   }
 }
