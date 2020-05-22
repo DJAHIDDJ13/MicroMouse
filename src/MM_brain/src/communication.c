@@ -344,24 +344,3 @@ void dump_data(struct Micromouse data)
    dump_sensor_data(data);
    dump_estimation_data(data);
 }
-
-void dump_estimation_data(struct Micromouse data) 
-{
-   printf("Estimation data:\n");
-   printf("\tTime step: %gms\n", data.time_step);
-   printf("\tPosition: (%g, %g, %g)\n", data.cur_pose.pos.x, 
-                                        data.cur_pose.pos.y,
-                                        data.cur_pose.pos.z);
-   printf("\tAngle: (%g, %g, %g)\n", data.cur_pose.ang.x, 
-                                     data.cur_pose.ang.y,
-                                     data.cur_pose.ang.z);
-   printf("\tCell: (%d, %d)\n", data.cur_cell.x,
-                                data.cur_cell.y);
-}
-
-void dump_data(struct Micromouse data)
-{
-   dump_header_data(data);
-   dump_sensor_data(data);
-   dump_estimation_data(data);
-}
