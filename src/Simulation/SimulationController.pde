@@ -21,7 +21,13 @@ public class SimulationController {
   public SimulationController(ControlP5 cp5, int size){
     this.cp5 = cp5;
     this.size = size;
+    
     comCon = new CommunicationController();
+    
+    informationPanel = new InformationPanel();
+    controlPanel = new ControlPanel(cp5);
+    debugPanel = new DebugPanel(cp5);
+    
     refreshMaze();
   }
   
@@ -35,6 +41,11 @@ public class SimulationController {
   
   public void setSize(int size) {
     this.size = size;
+  }
+  
+  public void printConsole() {
+    debugPanel.addText(CommunicationUtility.consoleText);
+    CommunicationUtility.consoleText = "";
   }
   
   public void refreshMaze() {   
@@ -53,13 +64,10 @@ public class SimulationController {
                                          size,
                                          simulationEntry.getRatio());
    
-   // Initializing the GUI Panels
-   controlPanel = new ControlPanel(cp5, maze);
-   informationPanel = new InformationPanel(maze);
-   debugPanel = new DebugPanel(cp5);
-   
    // initializing the communication controller
    comCon.setMaze(maze);
+   informationPanel.setMaze(maze);
+   controlPanel.setMaze(maze);
   }
   
   public void setController(ControlP5 cp5) {
@@ -110,6 +118,7 @@ public class SimulationController {
     
     maze.update();
     comCon.update();
+    printConsole();
   }
   
   public void display() {

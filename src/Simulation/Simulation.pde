@@ -16,7 +16,7 @@ private final static int initialSize = 8;
 
 void setup(){
   
-  size(1500,920);
+  size(1500,905);
   smooth();
   
   // Initialize box2d physics and create the world

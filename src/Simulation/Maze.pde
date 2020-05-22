@@ -24,6 +24,14 @@ public class Maze {
     walls = new LinkedList<Wall>();
   }
 
+  public int getRows() {
+    return rows;
+  }
+
+  public int getCols() {
+    return cols;
+  }
+
   public float getBoxW() {
     return boxW;
   }
@@ -214,6 +222,7 @@ public class Maze {
     
     // maze canvas
     strokeWeight(2);
+    fill(250,50);
     rect(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY, size, size);
     
     

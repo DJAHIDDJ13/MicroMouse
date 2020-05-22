@@ -12,8 +12,7 @@ public class InformationPanel {
   private final int RWheelX1 = 1045, RWheelY1 = 180, RWheelX2 = 1045;
   
   //constructor
-  public InformationPanel(Maze maze) {
-    this.maze = maze;
+  public InformationPanel() {
     float vehicleSize = 1.5;
     
     // top
@@ -39,8 +38,8 @@ public class InformationPanel {
     bottomShape[3] = new Vec2(-52, 35).mul(vehicleSize);
     
     // get the acceleration vectors 
-    acc = maze.getVehicleAcceleration();
-    angAcc = maze.getVehicleAngularAcceleration();
+    acc = new PVector();
+    angAcc = new PVector();
   }
   
   public void mousePressedHandler() {
@@ -240,5 +239,9 @@ public class InformationPanel {
     fill(137,147,177,150);
     rect(830, 5, 640, 300);
     GenericVehicleInformations();
+  }
+  
+  public void setMaze(Maze maze) {
+    this.maze = maze;
   }
 }

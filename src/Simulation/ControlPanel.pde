@@ -11,29 +11,29 @@ public class ControlPanel {
   private boolean setPosition;
 
   private final float panelX = 40;
-  private final float panelY = 865;
+  private final float panelY = 845;
   private final float panelW = 40;
   private final float panelH = 20;
             
-  public ControlPanel(ControlP5 cp5, Maze maze) {
-    this.maze = maze;
+  public ControlPanel(ControlP5 cp5) {
     this.cp5 = cp5;
-
-    showingMovingObject = false;
-    deleteMode = false;
-    snap = false;
-    setPosition = false;
+    showingMovingObject = deleteMode = snap = setPosition = false;
   }
 
   public void mousePressedHandler() {
-    // if the click was on the canvas
+    // if the click was on the canvas  
     if (mouseX < SimulationUtility.MAZE_SIZE + SimulationUtility.MAZE_SHIFTX && mouseY < SimulationUtility.MAZE_SIZE + SimulationUtility.MAZE_SHIFTY) {
       // if showing moving object , means we're adding
       if (showingMovingObject) {
           Wall toAdd = new Wall(toAddX, toAddY, toAddW / 2, toAddH / 2, toAddA);
           maze.addWall(toAdd);
       } else if (setPosition) {
+        int j = (int) (box2d.scalarPixelsToWorld(mouseX-SimulationUtility.MAZE_SHIFTX) / maze.getBoxH());
+        int i = (int) (box2d.scalarPixelsToWorld(mouseY-SimulationUtility.MAZE_SHIFTY) / maze.getBoxW());
         
+        Vec2 position = maze.getCellWorldCenterAt(j, i);
+        Vehicle vehicle = new Vehicle(position.x, position.y, PI/2, 1.0);
+        maze.setVehicle(vehicle);
       } else if (deleteMode) { // otherwise we're deleting
         maze.removeBodyAt((float) mouseX, (float) mouseY);
       }
@@ -57,7 +57,9 @@ public class ControlPanel {
         toAddA = HALF_PI;
       } else {
         toAddA = 0;
-      }
+      }    
+    } else if (eventControllerName.equals("Clear")) {
+
     } else if (eventControllerName.equals("Add")) {
       showingMovingObject = !showingMovingObject;
       setPosition = false;
@@ -75,43 +77,63 @@ public class ControlPanel {
     } else if (eventControllerName.equals("Set position")) {
       setPosition = !setPosition;
       showingMovingObject = false;
+    } else if(eventControllerName.equals("algo")) { 
+      ButtonBar bar = (ButtonBar)event.getController();
+      switch(bar.hover()) {
+        case 1 :
+          println("Algorithme Q learning");
+          break;
+        case 2 :
+          println("Algorithme RRT");
+          break;
+        default :
+          println("Algorithme Flood fill");
+          break;
+      }
+    } else if(eventControllerName.equals("Maze")) {
+      ScrollableList list = (ScrollableList)event.getController();
+      if((int)list.getValue() == 0) {
+        println("Generate perfect maze");
+      } else {
+        println("Generate imperfect maze");
+      }
     }
   }
 
   public void createControllers() {
     cp5.addButton("Turn+")
       .setValue(1)
-      .setPosition(80, 830)
-      .setSize(40, 30)
+      .setPosition(80, 810)
+      .setSize(50, 30)
       ;
 
     cp5.addButton("Turn-")
       .setValue(2)
-      .setPosition(80, 870)
-      .setSize(40, 30)
+      .setPosition(80, 850)
+      .setSize(50, 30)
       ;
 
     cp5.addButton("Add")
       .setValue(3)
-      .setPosition(130, 855)
-      .setSize(40, 30)
+      .setPosition(140, 830)
+      .setSize(50, 30)
       ;
 
     cp5.addButton("Remove")
       .setValue(4)
-      .setPosition(180, 855)
-      .setSize(40, 30)
+      .setPosition(200, 830)
+      .setSize(50, 30)
       ;
 
     cp5.addButton("Refresh")
       .setValue(5)
-      .setPosition(772, 855)
-      .setSize(40, 30)
+      .setPosition(772, 830)
+      .setSize(50, 30)
       ;
 
     cp5.addNumberbox("Size")
-      .setPosition(230, 855)
-      .setSize(40, 30)
+      .setPosition(260, 830)
+      .setSize(50, 30)
       .setScrollSensitivity(1.1)
       .setDirection(Controller.HORIZONTAL)
       .setValue(8)
@@ -120,16 +142,42 @@ public class ControlPanel {
       
     cp5.addButton("Set position")
       .setValue(6)
-      .setPosition(280, 855)
-      .setSize(60, 30)
+      .setPosition(320, 830)
+      .setSize(70, 30)
+      ;
+      
+    cp5.addButton("Clear")
+      .setValue(7)
+      .setPosition(400, 830)
+      .setSize(50, 30)
       ;
 
     cp5.addCheckBox("SnapCheckBox")
-      .setPosition(745, 830)
-      .setSize(10, 10)
+      .setPosition(745, 810)
+      .setSize(15, 15)
       .addItem("Snap to grid", 0)
       .activateAll()
       ;
+      
+    ButtonBar b = cp5.addButtonBar("algo")
+       .setPosition(460, 830)
+       .setSize(191, 30)
+       .addItems(split("a b c"," "))
+       ;
+       
+    b.changeItem("a","text","Flood fill");
+    b.changeItem("b","text","Q learning");
+    b.changeItem("c","text","RRT*");
+    
+    List l = Arrays.asList("perfect", "imperfect");
+    /* add a ScrollableList, by default it behaves like a DropdownList */
+    cp5.addScrollableList("Maze")
+       .setPosition(662, 830)
+       .setSize(100, 100)
+       .setBarHeight(20)
+       .setItemHeight(20)
+       .addItems(l)
+       ;    
   }
 
   public void update() {
@@ -202,6 +250,19 @@ public class ControlPanel {
 
   public void displayPanel() {
     stroke(0);
-    rect(5, 830, 70, 70);
+    rect(5, 810, 70, 70);
+    
+    fill(0);
+    textSize(13);
+    strokeWeight(2);
+    text("Choose a navigation algorithm", 460, 825);
+  }
+  
+  public boolean getSnap() {
+    return snap;
+  }
+  
+  public void setMaze(Maze maze) {
+    this.maze = maze;
   }
 }

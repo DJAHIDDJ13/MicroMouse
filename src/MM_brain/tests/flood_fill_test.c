@@ -9,7 +9,7 @@
 */
 #include <stdio.h>
 #include <stdint.h>
-#include <brain.h>
+#include <flood_fill.h>
 
 struct Maze createMaze() {
    /* # # # # # # # # # # # # 
