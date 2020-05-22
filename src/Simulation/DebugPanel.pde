@@ -4,6 +4,8 @@ public class DebugPanel {
   
   private int panel;
   private boolean bot;
+  
+  private Textarea myTextarea;
             
   public DebugPanel(ControlP5 cp5) {
     this.cp5 = cp5;
@@ -39,6 +41,18 @@ public class DebugPanel {
     b.changeItem("c","text","Flood fill");
     b.changeItem("d","text","Q learning");
     b.changeItem("e","text","RRT*");
+    
+    
+    myTextarea = cp5.addTextarea("txt")
+                  .setPosition(850,370)
+                  .setFont(createFont(PFont.list()[17],18))
+                  .setLineHeight(18)
+                  .setColor(color(255))
+                  .setColorBackground(color(0, 200))
+                  .setColorForeground(color(0, 200))
+                  .setWidth(600)
+                  .setHeight(500)
+                  ;      
   }
 
   public void update() {
@@ -46,7 +60,7 @@ public class DebugPanel {
   }
   
   public void displayCommunication_debug() {
-    
+    myTextarea.show();
   }
   
   public void displayUserUtility_debug() {
@@ -101,15 +115,19 @@ public class DebugPanel {
     
     switch(panel) {
       case 1 :
+        myTextarea.hide();
         displayUserUtility_debug();
         break;
       case 2 :
+        myTextarea.hide();
         displayFloodFill_debug();
         break;
       case 3 :
+        myTextarea.hide();
         displayQLearning_debug();
         break;
       case 4 :
+        myTextarea.hide();
         displayRRT_debug();
         break;        
       default :
@@ -133,5 +151,12 @@ public class DebugPanel {
   
   public void setBot(boolean bot) {
     this.bot = bot;
+  }
+  
+  public void addText(String text) {
+    if(!text.isEmpty()) {
+      myTextarea.setText(myTextarea.getText() + text);
+      myTextarea.scroll(1);
+    }
   }
 }

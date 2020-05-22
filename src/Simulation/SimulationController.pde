@@ -43,6 +43,11 @@ public class SimulationController {
     this.size = size;
   }
   
+  public void printConsole() {
+    debugPanel.addText(CommunicationUtility.consoleText);
+    CommunicationUtility.consoleText = "";
+  }
+  
   public void refreshMaze() {   
    // Creating the box2d world
    Vec2 gravity = new Vec2(0, 0);
@@ -113,6 +118,7 @@ public class SimulationController {
     
     maze.update();
     comCon.update();
+    printConsole();
   }
   
   public void display() {
