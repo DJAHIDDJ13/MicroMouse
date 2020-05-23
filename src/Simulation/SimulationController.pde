@@ -2,7 +2,6 @@ import controlP5.*;
 
 public class SimulationController {
   
-  public SimulationEntry simulationEntry;
   private Maze maze;
   private MazeBuilder mazeBuilder;
   private CommunicationController comCon;
@@ -33,10 +32,6 @@ public class SimulationController {
     refreshMaze(true);
   }
   
-  public SimulationEntry getSimulationEntry(){
-    return simulationEntry;
-  }
-  
   public Maze getMaze() {
     return maze;
   }
@@ -63,9 +58,6 @@ public class SimulationController {
    Vec2 gravity = new Vec2(0, 0);
    box2d.createWorld(gravity);
    box2d.setScaleFactor(box2d_scalar / size);
-
-   // new simulation entry
-   simulationEntry = new SimulationEntry(size, size);
    
    // build the maze
    mazeBuilder = new MazeBuilder();
@@ -73,7 +65,7 @@ public class SimulationController {
                                          box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
                                          box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
                                          size,
-                                         simulationEntry.getRatio());
+                                         SimulationUtility.RATIO);
    
    // initializing the communication controller
    comCon.setMaze(maze);
@@ -87,16 +79,13 @@ public class SimulationController {
    Vec2 gravity = new Vec2(0, 0);
    box2d.createWorld(gravity);
    box2d.setScaleFactor(box2d_scalar / size);
-
-   // new simulation entry
-   simulationEntry = new SimulationEntry(size, size);
    
    // build the maze
    mazeBuilder = new MazeBuilder();
    maze = mazeBuilder.builderInitialMaze(box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
                                          box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
                                          size,
-                                         simulationEntry.getRatio());
+                                         SimulationUtility.RATIO);
    
    // initializing the communication controller
    comCon.setMaze(maze);

@@ -205,8 +205,8 @@ public class ControlPanel {
     Vec2 top_left_corner = box2d.coordPixelsToWorld(new Vec2(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY));
     Vec2 temp = box2d.coordPixelsToWorld(mouseX, mouseY).sub(top_left_corner);
     /* FIX THIS */
-    float boxW = box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE) / simCon.simulationEntry.getRows();
-    float boxH = boxW * simCon.simulationEntry.getRatio();
+    float boxW = box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE) / simCon.getMaze().getRows();
+    float boxH = boxW * SimulationUtility.RATIO;
     toAddW = boxW + boxH;
     toAddH = boxH;
 
@@ -221,8 +221,8 @@ public class ControlPanel {
       if (snap) {
         snapToGrid();
       } else {
-        float boxW = box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE) / simCon.simulationEntry.getRows();
-        float boxH = boxW * simCon.simulationEntry.getRatio();
+        float boxW = box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE) / simCon.getMaze().getRows();
+        float boxH = boxW * SimulationUtility.RATIO;
 
         Vec2 temp = box2d.coordPixelsToWorld(mouseX, mouseY);
         toAddX = temp.x;
