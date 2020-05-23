@@ -334,7 +334,7 @@ void dump_estimation_data(struct Micromouse data)
    printf("\tAngle: (%g, %g, %g)\n", data.cur_pose.ang.x, 
                                      data.cur_pose.ang.y,
                                      data.cur_pose.ang.z);
-   printf("\tCell: (%f, %f)\n", data.cur_cell.x,
+   printf("\tCell: (%d, %d)\n", data.cur_cell.x,
                                 data.cur_cell.y);
 }
 

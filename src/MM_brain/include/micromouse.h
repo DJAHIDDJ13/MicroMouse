@@ -23,8 +23,12 @@ typedef struct vec3 {
    float x, y, z;
 } Vec3;
 
-typedef struct ivec2 {
+typedef struct vec2 {
    float x, y;
+} Vec2;
+
+typedef struct ivec2 {
+   int x, y;
 } iVec2;
 
 struct Position {
@@ -60,7 +64,7 @@ typedef struct {
        box_height;
    float lines_per_revolution, 
          wheel_circumference;
-   iVec2 sensors_position[4];
+   Vec2 sensors_position[4];
    float origin_x, origin_y;
 } HeaderData;
 
