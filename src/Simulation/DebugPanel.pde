@@ -95,12 +95,12 @@ public class DebugPanel {
     
     line(900, 620, 1370, 620);
     
-    text("Nulber of mice : ", 1090, 650);
+    text("Number of mice : ", 1090, 650);
     text("Controled by : " , 1090, 690);
     
     line(900, 710, 1370, 710);
     
-    text("Nulber of walls : ", 1090, 740);
+    text("Number of walls : ", 1090, 740);
     text("Mice hit the wall : ", 1090, 780);
     text("Reach the target : ", 1090, 820);
     text("Number of boxes visited : ", 1090, 860);
