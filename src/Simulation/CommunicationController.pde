@@ -67,14 +67,14 @@ public class CommunicationController {
     /* SENSORS POSITIONS
      *    _______________
      *   / 2          1  \
-     *  / 3             0 \ //<>// //<>//
+     *  / 3             0 \ //<>// //<>// //<>//
      *  Rearrange to become : //<>//
      *    _______________
      *   / 1          2  \
-     *  / 0             3 \ //<>// //<>//
+     *  / 0             3 \ //<>// //<>// //<>//
      */
     //float[] accelerometerData = ArrayUtils.addAll(maze.getVehicleAcceleration().array(), getVehicleAngularAcceleration().array());
-    float[] accelerometerData = new float[6]; //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+    float[] accelerometerData = new float[6]; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
     System.arraycopy(maze.getVehicleAcceleration().array(), 0, accelerometerData, 0, 3);
     System.arraycopy(maze.getVehicleAngularAcceleration().array(), 0, accelerometerData, 3, 3);
     
@@ -94,8 +94,8 @@ public class CommunicationController {
     this.writer.writeFifo(sensorMessage);
     /* CODE SNIPET TO USE RX MSG*/
     Message rxMsg = this.listener.getRxMessage();
-    Message rxMsg = this.listener.getRxMessage();
-    if (rxMsg != null && simCon.getBotControl())
+
+    if (rxMsg != null)
       //System.out.println("Using received data : " + rxMsg.getLeftPowerMotor() + " AND " + rxMsg.getRightPowerMotor());
       maze.moveVehicle(rxMsg.getLeftPowerMotor(), rxMsg.getRightPowerMotor());
   }
