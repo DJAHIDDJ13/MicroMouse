@@ -44,65 +44,67 @@ enum ControlState {DEFAULT, MOVE_FWD, TURN_BACK, TURN_DIST, TURN_POS} control_st
 void turn_back_PID(struct Micromouse* status, int init)
 {
    static float init_ang = 0;
+   static float init_enc[NB_ENCODER];
+
    if(init) {
       init_ang = M_PI_2 * round(status->cur_pose.ang.z / (M_PI_2));
+      init_enc[0] = status->prev_enc[0];
+      init_enc[1] = status->prev_enc[1];
    }
    
-   printf("Init ang %g\n", init_ang);
    float left_sensor = status->sensor_data.sensors[1],
          right_sensor = status->sensor_data.sensors[2],
          left_middle_sensor = status->sensor_data.sensors[0],
          right_middle_sensor = status->sensor_data.sensors[3];
+
    float ang_diff = M_PI - (init_ang - status->cur_pose.ang.z);
+   float diff_enc = (status->prev_enc[0] - init_enc[0]) - (status->prev_enc[1] - init_enc[1]);
+   printf("Init ang %g, And diff %g, Init enc %g, %g, Enc diff = %g\n", init_ang, ang_diff, init_enc[0], init_enc[1], diff_enc);
    
    printf("NEED TO GO BACK\n");
    // NO CHOICE HERE
    // Go backwards until threshold is cleared then
    // Actually do the turning until it's over
    
-   float maintain_value = 250;
-   float upper_limit = 300;
    // Exit condition in case there isn't really a dead end
    /*if((left_middle_sensor > maintain_value || right_middle_sensor > maintain_value) &&
       (left_sensor > TURNING_LENGTH_THRESHOLD || right_sensor > TURNING_LENGTH_THRESHOLD)) 
    {
       control_state = TURN_DIST;
    }*/
-   if(fabs(ang_diff) > M_PI) {
+   if(fabs(ang_diff) > M_PI || (left_middle_sensor > 700 && right_middle_sensor > 700)) {
       control_state = DEFAULT;
    }
 
    float err1 = 0.0f, err2 = 0.0f;
    /*
-   if(left_middle_sensor > 0 && left_middle_sensor < maintain_value &&
-      right_middle_sensor > 0 && right_middle_sensor < maintain_value)
-   {
-      err1 = -left_middle_sensor;
-      err2 = -right_middle_sensor;
-      printf("TOO CLOSE %g, %g\n", err1, err2);
-   } else if(left_middle_sensor > upper_limit &&
-             right_middle_sensor > upper_limit)
-   {
-      err1 = -(middle_ground - left_middle_sensor);
-      err2 = -(middle_ground - right_middle_sensor );
-      printf("TOO FAR %g, %g\n", err1, err2);
-   } else {
-      err1 = 50 * ang_diff + (middle_ground - right_middle_sensor);
-      err2 = -50 * ang_diff + (middle_ground - left_middle_sensor);
-      printf("TURNING %g, %g\n", err1, err2);
-   }
-   */
    if((left_middle_sensor > 0 && (left_middle_sensor < 200 || left_middle_sensor > 400)) ||
       (right_middle_sensor > 0 && (right_middle_sensor < 200 || right_middle_sensor > 400)))
    {
+      Kd = 10000;
       err1 = -300 + left_middle_sensor;
       err2 = -300 + left_middle_sensor;
    } else {
       err1 = 50 * ang_diff;// + ((left_middle_sensor) - 300) / 3;
       err2 = -50 * ang_diff;// + ((right_middle_sensor) - 300) / 3;
+   }*/
+
+   if((left_middle_sensor > 0 && (left_middle_sensor < 200 || left_middle_sensor > 500)) ||
+      (right_middle_sensor > 0 && (right_middle_sensor < 200 || right_middle_sensor > 500)))
+   {
+      // reinit enc
+      init_enc[0] = status->prev_enc[0]; 
+      init_enc[1] = status->prev_enc[1];
+      
+      // set the optimal distance from the front wall 
+      err1 = 300 - left_middle_sensor;
+      err1 = 300 - right_middle_sensor;
+   } else {
+      err1 = ang_diff + diff_enc;
+      err1 = -ang_diff - diff_enc;
    }
    // calling the general PID function   
-   const float Kp = 1, Kd = 1000, Ki = 0.0f;
+   float Kp = 1, Kd = 1000, Ki = 0.0f;
    float out1 = PID(status, err1, Kp, Ki, Kd, 0);
    float out2 = PID(status, err2, Kp, Ki, Kd, 0);
 
