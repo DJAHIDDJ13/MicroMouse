@@ -20,7 +20,7 @@ public class Writer extends Thread {
 
     public void run() {
         if (!this.txFile.exists()) {
-            if (osName.toLowerCase().contains("linux") || osName.toLowerCase().contains("macos")) {
+            if (osName.toLowerCase().contains("linux") || osName.toLowerCase().contains("mac")) {
                 try {
                     Process p = Runtime.getRuntime().exec("mkfifo " + CommunicationUtility.FIFO_PATH + CommunicationUtility.FIFO_TX_FILENAME);
                 } catch(Exception e) {
