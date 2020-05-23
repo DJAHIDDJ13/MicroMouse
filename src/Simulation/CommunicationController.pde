@@ -36,14 +36,17 @@ public class CommunicationController {
                         targetPosData = {tp.x, tp.y},
                         cellSizeData = {maze.getBoxW(), maze.getBoxH()},
                         encoderData = {encoderLinesPerRevolution, wheelCircumference},
-                        sensorsPos = new float[8],
+                        sensorsPos = new float[12],
                         originPos = {origin.x, origin.y};
 
     int i = 0;
+    
     for (Vec2 sensorPos : maze.getVehicle().getSensorPos()) {
       sensorsPos[i] = sensorPos.x;
       i++;
       sensorsPos[i] = sensorPos.y;
+      i++;
+      sensorsPos[i] = maze.getVehicle().getSensorAngles()[(i+1)/maze.getVehicle().getSensorPos().length];
       i++;
   }
     

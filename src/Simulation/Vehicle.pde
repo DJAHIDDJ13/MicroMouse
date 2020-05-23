@@ -167,6 +167,10 @@ public class Vehicle {
     return this.sensorPos;
   }
 
+  float[] getSensorAngles() {
+    return this.sensorAngles;
+  }
+
   public void updateDrag() {
     // apply drag force
     Vec2 currentForwardNormal = getForwardVelocity();
