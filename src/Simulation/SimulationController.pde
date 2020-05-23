@@ -29,7 +29,7 @@ public class SimulationController {
     debugPanel = new DebugPanel(cp5);
     
     botControl = true; 
-    displaySensors = false;
+    displaySensors = true;
     
     refreshMaze(true);
   }
