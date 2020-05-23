@@ -18,6 +18,8 @@ public class SimulationController {
   private final static float box2d_scalar = 80.0f;
   private final static float user_motor_force = 300;
   
+  private boolean botControl;
+  
   public SimulationController(ControlP5 cp5, int size){
     this.cp5 = cp5;
     this.size = size;
@@ -29,6 +31,8 @@ public class SimulationController {
     debugPanel = new DebugPanel(cp5);
     
     refreshMaze();
+    
+    botControl = true; 
   }
   
   public SimulationEntry getSimulationEntry(){
@@ -41,6 +45,14 @@ public class SimulationController {
   
   public void setSize(int size) {
     this.size = size;
+  }
+  
+  public void setBotControl(boolean botControl) {
+    this.botControl = botControl;
+  }
+  
+  public boolean getBotControl() {
+    return botControl;
   }
   
   public void printConsole() {

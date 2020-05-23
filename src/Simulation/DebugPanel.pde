@@ -3,14 +3,14 @@ public class DebugPanel {
   private ControlP5 cp5; 
   
   private int panel;
-  private boolean bot;
   
-  private Textarea myTextarea;
-            
+  private Textarea console;
+  
+  private Button buttonControl;      
+  
   public DebugPanel(ControlP5 cp5) {
     this.cp5 = cp5;
     panel = 0;
-    bot = true;
   }
 
   public void mousePressedHandler() {
@@ -26,6 +26,8 @@ public class DebugPanel {
     if(eventControllerName.equals("bar")) { 
       ButtonBar bar = (ButtonBar)event.getController();
       panel = bar.hover();
+    } else if (eventControllerName.equals("Control")) {
+      simCon.setBotControl(!simCon.getBotControl());
     }
   }
 
@@ -43,7 +45,7 @@ public class DebugPanel {
     b.changeItem("e","text","RRT*");
     
     
-    myTextarea = cp5.addTextarea("txt")
+    console = cp5.addTextarea("txt")
                   .setPosition(850,370)
                   .setFont(createFont(PFont.list()[17],18))
                   .setLineHeight(18)
@@ -52,7 +54,13 @@ public class DebugPanel {
                   .setColorForeground(color(0, 200))
                   .setWidth(600)
                   .setHeight(500)
-                  ;      
+                  ;
+                  
+    buttonControl = cp5.addButton("Control")
+      .setValue(1)
+      .setPosition(1015, 670)
+      .setSize(60, 30)
+      ;                  
   }
 
   public void update() {
@@ -60,13 +68,18 @@ public class DebugPanel {
   }
   
   public void displayCommunication_debug() {
-    myTextarea.show();
+    console.show();
   }
   
   public void displayUserUtility_debug() {
+    buttonControl.show();
+    
+    Maze maze = simCon.getMaze();
+    
     fill(0);
     textSize(18);
     strokeWeight(2);
+    
     text("Maze heigth : ", 1090, 380);
     text("Maze Width : " , 1090, 420);
     
@@ -93,6 +106,24 @@ public class DebugPanel {
     text("Number of boxes visited : ", 1090, 860);
     
     fill(255);
+    
+    text(maze.getMazeH(), 1205, 380);
+    text(maze.getMazeW(), 1200, 420);
+    
+    text(maze.getBoxH(), 1190, 470);
+    text(maze.getBoxW(), 1185, 510); 
+    
+    text(maze.getRows(), 1150, 560);
+    text(maze.getCols(), 1182, 600);
+    
+    text(maze.getNumberOfMice(), 1233, 650);
+    text((simCon.getBotControl()) ? "Bot" : "USER", 1220, 690);
+
+    text(maze.getWalls().size(), 1235, 740);
+    text("no", 1250, 780);
+    text("no", 1250, 820);
+    text("10", 1317, 860);    
+    
     strokeWeight(1);
   }
   
@@ -115,22 +146,26 @@ public class DebugPanel {
     
     switch(panel) {
       case 1 :
-        myTextarea.hide();
+        console.hide();
         displayUserUtility_debug();
         break;
       case 2 :
-        myTextarea.hide();
+        console.hide();
+        buttonControl.hide();
         displayFloodFill_debug();
         break;
       case 3 :
-        myTextarea.hide();
+        console.hide();
+        buttonControl.hide();
         displayQLearning_debug();
         break;
       case 4 :
-        myTextarea.hide();
+        console.hide();
+        buttonControl.hide();
         displayRRT_debug();
         break;        
       default :
+        buttonControl.hide();
         displayCommunication_debug();
         break;
     }
@@ -149,14 +184,10 @@ public class DebugPanel {
     fill(255);
   }
   
-  public void setBot(boolean bot) {
-    this.bot = bot;
-  }
-  
   public void addText(String text) {
     if(!text.isEmpty()) {
-      myTextarea.setText(myTextarea.getText() + text);
-      myTextarea.scroll(1);
+      console.setText(console.getText() + text);
+      console.scroll(1);
     }
   }
 }

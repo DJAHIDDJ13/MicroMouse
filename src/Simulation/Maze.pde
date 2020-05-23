@@ -13,6 +13,8 @@ public class Maze {
   private Target target;
   private Vehicle vehicle;
   
+  private int numberOfMice = 1;
+  
   public Maze(float mazeW, float mazeH, float boxW, float boxH, float ratio) {
     this.mazeW = mazeW;
     this.mazeH = mazeH;
@@ -50,6 +52,10 @@ public class Maze {
 
   public Vehicle getVehicle(){
    return vehicle;
+  }
+  
+  public int getNumberOfMice() {
+    return numberOfMice;
   }
   
   public PVector getVehicleAcceleration() {
