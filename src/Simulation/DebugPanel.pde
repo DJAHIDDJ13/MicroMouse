@@ -27,6 +27,7 @@ public class DebugPanel {
       ButtonBar bar = (ButtonBar)event.getController();
       panel = bar.hover();
     } else if (eventControllerName.equals("Control")) {
+      simCon.getComCon().sendHeaders();
       simCon.setBotControl(!simCon.getBotControl());
     }
   }

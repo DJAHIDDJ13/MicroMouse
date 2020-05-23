@@ -17,7 +17,7 @@ public class SimulationController {
   private final static float box2d_scalar = 80.0f;
   private final static float user_motor_force = 300;
   
-  private boolean botControl;
+  private boolean botControl = false;
   private boolean displaySensors;
   
   public SimulationController(ControlP5 cp5, int size){
@@ -48,6 +48,10 @@ public class SimulationController {
   
   public boolean getBotControl() {
     return botControl;
+  }
+  
+  public CommunicationController getComCon() {
+    return comCon; 
   }
   
   public void setDisplaySensors(boolean displaySensors) {
