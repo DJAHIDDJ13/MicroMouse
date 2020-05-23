@@ -18,16 +18,18 @@ public class SimulationController {
   private final static float user_motor_force = 300;
   
   private boolean botControl;
+  private boolean displaySensors;
   
   public SimulationController(ControlP5 cp5, int size){
     this.cp5 = cp5;
     this.size = size;
     comCon = new CommunicationController();
-    informationPanel = new InformationPanel();
+    informationPanel = new InformationPanel(cp5);
     controlPanel = new ControlPanel(cp5);
     debugPanel = new DebugPanel(cp5);
     
     botControl = true; 
+    displaySensors = false;
     
     refreshMaze(true);
   }
@@ -46,6 +48,14 @@ public class SimulationController {
   
   public boolean getBotControl() {
     return botControl;
+  }
+  
+  public void setDisplaySensors(boolean displaySensors) {
+    this.displaySensors = displaySensors;
+  }
+  
+  public boolean getDisplaySensors() {
+    return displaySensors;
   }
   
   public void printConsole() {

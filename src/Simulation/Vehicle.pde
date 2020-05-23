@@ -204,9 +204,11 @@ public class Vehicle {
   }
   
   private void displaySensors() {
-    for(int i = 0; i < sensors.length; i++) {
-      sensors[i].display();
-    } 
+    if(simCon.getDisplaySensors()) {
+      for(int i = 0; i < sensors.length; i++) {
+        sensors[i].display();
+      }
+    }
   }
    
   public void display() {

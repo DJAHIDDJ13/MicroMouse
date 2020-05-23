@@ -28,7 +28,7 @@ void fill(struct Maze maze, int16_t OX, int16_t OY, int16_t color)
 }
 
 /* Push the destination boxs of the maze to the queue */
-void pushDestinationBoxs(Queue_XY* queue, int16_t OX, int16_t OY, bool cellNumber)
+void pushDestinationBoxs(Queue_XY* queue, int16_t OX, int16_t OY)
 {
    struct oddpair_XY XY;
 
@@ -37,24 +37,8 @@ void pushDestinationBoxs(Queue_XY* queue, int16_t OX, int16_t OY, bool cellNumbe
       exit(0);
    }
 
-   if(!cellNumber) {
-      XY = createOddpair_XY(OX, OY, 0);
-      pushQueue_XY(queue, XY);
-   } else {
-      XY = createOddpair_XY(OX, OY, 0);
-      pushQueue_XY(queue, XY);
-
-
-      XY = createOddpair_XY(OX + 1, OY, 0);
-      pushQueue_XY(queue, XY);
-
-
-      XY = createOddpair_XY(OX, OY + 1, 0);
-      pushQueue_XY(queue, XY);
-
-      XY = createOddpair_XY(OX + 1, OY + 1, 0);
-      pushQueue_XY(queue, XY);
-   }
+   XY = createOddpair_XY(OX, OY, 0);
+   pushQueue_XY(queue, XY);
 }
 
 /*---- The FloodFill algorithm ----*/
@@ -64,7 +48,7 @@ void pushDestinationBoxs(Queue_XY* queue, int16_t OX, int16_t OY, bool cellNumbe
    starting position of the mouse. */
 
 /* Flood fill algorithm */
-void floodFill(struct Maze maze, int16_t OX, int16_t OY, bool cellDestinationNumber)
+void floodFill(struct Maze maze, int16_t OX, int16_t OY)
 {
    struct oddpair_XY XY;
 
@@ -80,7 +64,7 @@ void floodFill(struct Maze maze, int16_t OX, int16_t OY, bool cellDestinationNum
 
    Queue_XY queue = initQueue_XY();
 
-   pushDestinationBoxs(&queue, OX, OY, cellDestinationNumber);
+   pushDestinationBoxs(&queue, OX, OY);
 
    uint8_t sign = 0;
 
