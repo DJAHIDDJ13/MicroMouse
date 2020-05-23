@@ -63,16 +63,28 @@ public class CommunicationController {
   public void update() {
     /* SENSORS POSITIONS
      *    _______________
-     *   / 0          2  \
-     *  / 1             3 \
-     *
+     *   / 2          1  \
+     *  / 3             0 \ //<>// //<>//
+     *  Rearrange to become :
+     *    _______________
+     *   / 1          2  \
+     *  / 0             3 \ //<>// //<>//
      */
     //float[] accelerometerData = ArrayUtils.addAll(maze.getVehicleAcceleration().array(), getVehicleAngularAcceleration().array());
     float[] accelerometerData = new float[6]; //<>// //<>// //<>// //<>// //<>// //<>// //<>//
     System.arraycopy(maze.getVehicleAcceleration().array(), 0, accelerometerData, 0, 3);
     System.arraycopy(maze.getVehicleAngularAcceleration().array(), 0, accelerometerData, 3, 3);
+    
+    float tmp_float;
+    float[] distanceData = maze.getVehicleSensorValues();
+    
+    for (int i = 0; i < distanceData.length / 2; i++) {
+      tmp_float = distanceData[i];
+      distanceData[i] = distanceData[distanceData.length - 1 - i];
+      distanceData[distanceData.length - 1 - i] = tmp_float;
+    }
 
-    sensorMessage.setDistanceData(maze.getVehicleSensorValues());
+    sensorMessage.setDistanceData(distanceData);
     sensorMessage.setAccelerometerData(accelerometerData);
     sensorMessage.setEncoderData(maze.vehicle.getEncoderData());
     sensorMessage.setContent();
