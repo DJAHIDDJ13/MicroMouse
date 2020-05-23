@@ -29,7 +29,7 @@ public class SimulationController {
     debugPanel = new DebugPanel(cp5);
     
     botControl = true; 
-    displaySensors = false;
+    displaySensors = true;
     
     refreshMaze(true);
   }
@@ -156,7 +156,10 @@ public class SimulationController {
     debugPanel.update();
     
     maze.update();
-    comCon.update();
+    
+    if(botControl)
+      comCon.update();
+    
     printConsole();
   }
   
