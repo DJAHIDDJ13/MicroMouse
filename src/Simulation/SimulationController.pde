@@ -112,14 +112,16 @@ public class SimulationController {
     informationPanel.keyPressedHandler();
     debugPanel.keyPressedHandler();
     
-    if(key == 'z')
-      maze.moveVehicle(user_motor_force, user_motor_force);
-    else if(key == 's')
-      maze.moveVehicle(-user_motor_force, -user_motor_force);
-    else if(key == 'q')
-      maze.moveVehicle(-user_motor_force, user_motor_force);
-    else if(key == 'd')
-      maze.moveVehicle(user_motor_force, -user_motor_force);
+    if(!botControl) {
+      if(key == 'z')
+        maze.moveVehicle(user_motor_force, user_motor_force);
+      else if(key == 's')
+        maze.moveVehicle(-user_motor_force, -user_motor_force);
+      else if(key == 'q')
+        maze.moveVehicle(-user_motor_force, user_motor_force);
+      else if(key == 'd')
+        maze.moveVehicle(user_motor_force, -user_motor_force);
+    }
   }
 
   public void controlEventHandler(ControlEvent event) {
