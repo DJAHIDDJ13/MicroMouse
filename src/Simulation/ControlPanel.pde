@@ -33,8 +33,7 @@ public class ControlPanel {
         int i = (int) (box2d.scalarPixelsToWorld(mouseY-SimulationUtility.MAZE_SHIFTY) / maze.getBoxW());
         
         Vec2 position = maze.getCellWorldCenterAt(j, i);
-        Vehicle vehicle = new Vehicle(position.x, position.y, PI/2, 1.0);
-        maze.setVehicle(vehicle);
+        maze.getVehicle().setTransform(position.x, position.y, PI);
       } else if (deleteMode) { // otherwise we're deleting
         maze.removeBodyAt((float) mouseX, (float) mouseY);
       }

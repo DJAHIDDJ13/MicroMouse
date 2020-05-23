@@ -50,8 +50,8 @@ void update_pos(struct Micromouse* m)
    displacement = displacement / m->header_data.lines_per_revolution * m->header_data.wheel_circumference;
    
    // finding the displacement
-   m->cur_pose.pos.x = m->prev_pose.pos.x + displacement * cos(m->cur_pose.ang.z);
-   m->cur_pose.pos.y = m->prev_pose.pos.y + displacement * sin(m->cur_pose.ang.z);
+   m->cur_pose.pos.x = m->prev_pose.pos.x - displacement * sin(m->cur_pose.ang.z);
+   m->cur_pose.pos.y = m->prev_pose.pos.y + displacement * cos(m->cur_pose.ang.z);
    m->cur_pose.pos.z = 0;
    
    // updating the previous encoder values

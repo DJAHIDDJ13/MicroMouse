@@ -23,8 +23,12 @@ typedef struct vec3 {
    float x, y, z;
 } Vec3;
 
-typedef struct ivec2 {
+typedef struct vec2 {
    float x, y;
+} Vec2;
+
+typedef struct ivec2 {
+   int x, y;
 } iVec2;
 
 struct Position {

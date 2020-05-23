@@ -103,7 +103,7 @@ public class HeaderData extends Message {
         }
     }
 
-    public String dumpContent() { //<>// //<>// //<>//
+    public String dumpContent() { //<>//
         if (this.content == null || this.content.length == 0) {
             CommunicationUtility.logMessage("INFO", "HeaderData", "dumpContent", "Content is empty");
             return "";
@@ -111,7 +111,7 @@ public class HeaderData extends Message {
             String strContent = "";
 
             float[] arr = CommunicationUtility.extractByteArray(content);
-            for(float f: arr) { //<>// //<>// //<>//
+            for(float f: arr) { //<>//
                strContent += f + " ";
             }
             return strContent;
