@@ -67,11 +67,11 @@ void turn_back_PID(struct Micromouse* status, int init)
    // Actually do the turning until it's over
    
    // Exit condition in case there isn't really a dead end
-   /*if((left_middle_sensor > 320 || right_middle_sensor > 320) &&
-      (left_sensor > 400 || right_sensor > 400)) 
+   if((left_middle_sensor > 320 || right_middle_sensor > 320) &&
+      (left_sensor > TURNING_LENGTH_THRESHOLD || right_sensor > TURNING_LENGTH_THRESHOLD)) 
    {
       control_state = TURN_DIST;
-   }*/
+   }
    float ang_dist = fmin(fabs(2*M_PI - status->cur_pose.ang.z - init_ang), 
                          fabs(status->cur_pose.ang.z - init_ang));
    if(fabs(ang_diff) > M_PI || (left_middle_sensor > 700 && right_middle_sensor > 700)) {
@@ -164,7 +164,7 @@ void turn_PID_dist(struct Micromouse* status)
    control_state = DEFAULT;
 }
 
-void update_control(struct Micromouse* status)
+void update_control(struct Micromouse* status, char init)
 {
    // first reset previous operation
    status->engines[0] = 0;
@@ -172,7 +172,7 @@ void update_control(struct Micromouse* status)
    
    switch(control_state) {
    case TURN_BACK:
-      turn_back_PID(status, 0);
+      turn_back_PID(status, init);
       return;
 
    case MOVE_FWD:

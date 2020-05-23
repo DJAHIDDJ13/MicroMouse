@@ -94,7 +94,6 @@ public class CommunicationController {
     this.writer.writeFifo(sensorMessage);
     /* CODE SNIPET TO USE RX MSG*/
     Message rxMsg = this.listener.getRxMessage();
-    Message rxMsg = this.listener.getRxMessage();
     if (rxMsg != null && simCon.getBotControl())
       //System.out.println("Using received data : " + rxMsg.getLeftPowerMotor() + " AND " + rxMsg.getRightPowerMotor());
       maze.moveVehicle(rxMsg.getLeftPowerMotor(), rxMsg.getRightPowerMotor());

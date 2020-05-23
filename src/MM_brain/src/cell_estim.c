@@ -30,8 +30,8 @@ void init_cell(struct Micromouse* status)
    init_pos(i_pos, i_vel, i_acc, i_ang, i_ang_vel, i_ang_acc, status);
    
    // get the cell estimation
-   status->cur_cell.x = 1 + (status->header_data.origin_x - status->cur_pose.pos.x) / status->header_data.box_width;
-   status->cur_cell.y = (status->header_data.origin_y - status->cur_pose.pos.y) / status->header_data.box_height;
+   status->cur_cell.x = (status->cur_pose.pos.x - status->header_data.origin_x) / status->header_data.box_width;
+   status->cur_cell.y = -(status->cur_pose.pos.y - status->header_data.origin_y) / status->header_data.box_height;
 }
 
 void update_cell(struct Micromouse* status)
@@ -49,6 +49,6 @@ void update_cell(struct Micromouse* status)
    update_pos(status);
 
    // get the cell estimation
-   status->cur_cell.x = 1 + (status->header_data.origin_x - status->cur_pose.pos.x) / status->header_data.box_width;
-   status->cur_cell.y = (status->header_data.origin_y - status->cur_pose.pos.y) / status->header_data.box_height;
+   status->cur_cell.x = (status->cur_pose.pos.x - status->header_data.origin_x) / status->header_data.box_width;
+   status->cur_cell.y = -(status->cur_pose.pos.y - status->header_data.origin_y) / status->header_data.box_height;
 }

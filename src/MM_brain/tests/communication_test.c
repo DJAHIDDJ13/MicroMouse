@@ -52,11 +52,12 @@ int main(void)
          case HEADER_FLAG:
             dump_header_data(status);
             init_cell(&status);
+            update_control(&status, 1); // initialise values
             break;
          case SENSOR_FLAG:
             dump_sensor_data(status);
             update_cell(&status);
-            update_control(&status);
+            update_control(&status, 0); // initialise values
             break;
       }
       dump_estimation_data(status);
