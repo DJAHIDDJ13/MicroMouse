@@ -22,19 +22,15 @@ public class MazeBuilder{
 
   public Maze builderInitialMaze(float mazeW, float mazeH, int size, float ratio){
     int num_walls = size;
-    
     Maze maze = emptyMazeSetup(mazeH, mazeW, size, ratio);
     
     for(int i = 0; i < num_walls; i++) {
       // TOP
       maze.addWallAt(i, 0, WallOrientation.TOP_WALL);
-      
       // RIGHT
       maze.addWallAt(size-1, i, WallOrientation.RIGHT_WALL);
-      
       // BOTTOM
-      maze.addWallAt(i, size-1, WallOrientation.BOTTOM_WALL);
-      
+      maze.addWallAt(i, size-1, WallOrientation.BOTTOM_WALL); 
       // LEFT
       maze.addWallAt(0, i, WallOrientation.LEFT_WALL);
     }
@@ -42,7 +38,9 @@ public class MazeBuilder{
     return maze;
   }
   
-  public boolean[][][] ImperfectMaze(int size, boolean[][][] res) {
+  
+  // take a perfect maze and delete specific walls to create multiple paths (imperfect maze)
+  public boolean[][][] Perfect_to_Imperfect(int size, boolean[][][] res) {
     int neiX=0,  neiY=0, k=0;
     int[][] neiIndex = { {0,-1}, {0,1}, {-1,0}, {1,0} };
     
@@ -94,13 +92,13 @@ public class MazeBuilder{
         }    
       }
     }
-  
     return res;
   }
-  
-  public Maze generateRandomMaze(float mazeW, float mazeH, int size, float ratio) {
+ 
+ 
+  // generate a random maze (maze type depending on the boolean PerfectMaze value)
+  public Maze generateRandomMaze(Boolean PerfectMaze, float mazeW, float mazeH, int size, float ratio) {     
     int w = size, h = size;
-
     Maze maze = emptyMazeSetup(mazeH, mazeW, size, ratio);
     
     boolean[][] visited = new boolean[w][h];
@@ -153,7 +151,10 @@ public class MazeBuilder{
       }
     }    
      
-//    res = ImperfectMaze(size,res);
+     //PerfectMaze = false;
+     if (!PerfectMaze) {
+       res = Perfect_to_Imperfect(size,res); 
+     }
      
     for(int i = 0; i < w; i++) {
       for(int j = 0; j < h; j++) {

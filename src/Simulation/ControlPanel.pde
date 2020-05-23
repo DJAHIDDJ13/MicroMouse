@@ -9,6 +9,7 @@ public class ControlPanel {
   private boolean deleteMode;
   private boolean snap;
   private boolean setPosition;
+  private boolean PerfectMaze = true ;
 
   private final float panelX = 40;
   private final float panelY = 845;
@@ -58,17 +59,20 @@ public class ControlPanel {
       } else {
         toAddA = 0;
       }    
-    } else if (eventControllerName.equals("Clear")) {
+    } 
+    else if (eventControllerName.equals("Clear")) {
+      simCon.clearMaze();
 
-    } else if (eventControllerName.equals("Add")) {
+    } else if (eventControllerName.equals("Refresh")) {
+      simCon.refreshMaze(PerfectMaze);
+     }
+     else if (eventControllerName.equals("Add")) {
       showingMovingObject = !showingMovingObject;
       setPosition = false;
     } else if (eventControllerName.equals("Remove")) {
       showingMovingObject = false;
       deleteMode = true;
       setPosition = false;
-    } else if (eventControllerName.equals("Refresh")) {
-      simCon.refreshMaze();
     } else if (eventControllerName.equals("Size")) {
       int size = (int) cp5.get("Size").getValue();
       simCon.setSize(size);
@@ -90,11 +94,13 @@ public class ControlPanel {
           println("Algorithme Flood fill");
           break;
       }
-    } else if(eventControllerName.equals("Maze")) {
+    } else if(eventControllerName.equals("Maze type")) {
       ScrollableList list = (ScrollableList)event.getController();
       if((int)list.getValue() == 0) {
+        PerfectMaze = true;
         println("Generate perfect maze");
       } else {
+        PerfectMaze = false;
         println("Generate imperfect maze");
       }
     }
@@ -124,15 +130,22 @@ public class ControlPanel {
       .setPosition(200, 830)
       .setSize(50, 30)
       ;
-
+      
+    cp5.addButton("Clear")
+      .setValue(7)
+      .setPosition(772, 865)
+      .setSize(50, 30)
+      ;
+      
     cp5.addButton("Refresh")
       .setValue(5)
-      .setPosition(772, 830)
+      .setPosition(772, 832)
       .setSize(50, 30)
       ;
 
     cp5.addNumberbox("Size")
-      .setPosition(260, 830)
+      //.setPosition(260, 830)
+      .setPosition(662, 867)
       .setSize(50, 30)
       .setScrollSensitivity(1.1)
       .setDirection(Controller.HORIZONTAL)
@@ -146,11 +159,7 @@ public class ControlPanel {
       .setSize(70, 30)
       ;
       
-    cp5.addButton("Clear")
-      .setValue(7)
-      .setPosition(400, 830)
-      .setSize(50, 30)
-      ;
+
 
     cp5.addCheckBox("SnapCheckBox")
       .setPosition(745, 810)
@@ -169,14 +178,19 @@ public class ControlPanel {
     b.changeItem("b","text","Q learning");
     b.changeItem("c","text","RRT*");
     
-    List l = Arrays.asList("perfect", "imperfect");
+    List type_maze_list = Arrays.asList("Perfect maze", "Imperfect maze");
     /* add a ScrollableList, by default it behaves like a DropdownList */
-    cp5.addScrollableList("Maze")
+    cp5.addScrollableList("Maze type")
        .setPosition(662, 830)
        .setSize(100, 100)
        .setBarHeight(20)
        .setItemHeight(20)
-       .addItems(l)
+       .addItems(type_maze_list)
+       .setType(ScrollableList.DROPDOWN)
+       .setValue(0)
+       .setBackgroundColor(#EA0037)
+       .setColorForeground(#EA0037)
+       .setOpen(false)  
        ;    
   }
 
@@ -256,6 +270,8 @@ public class ControlPanel {
     textSize(13);
     strokeWeight(2);
     text("Choose a navigation algorithm", 460, 825);
+    text("Maze Type", 662, 825);
+    text("Maze Size", 662, 862);
   }
   
   public boolean getSnap() {
