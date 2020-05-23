@@ -133,20 +133,21 @@ public class ControlPanel {
       
     cp5.addButton("Clear")
       .setValue(7)
-      .setPosition(772, 865)
-      .setSize(50, 30)
+      .setPosition(772, 870)
+      .setSize(50, 25)
+      .setColorForeground(#EA0037)
       ;
       
     cp5.addButton("Refresh")
       .setValue(5)
-      .setPosition(772, 832)
-      .setSize(50, 30)
+      .setPosition(772, 830)
+      .setSize(50, 25)
       ;
 
     cp5.addNumberbox("Size")
       //.setPosition(260, 830)
-      .setPosition(662, 867)
-      .setSize(50, 30)
+      .setPosition(662, 870)
+      .setSize(50, 25)
       .setScrollSensitivity(1.1)
       .setDirection(Controller.HORIZONTAL)
       .setValue(8)
@@ -271,7 +272,7 @@ public class ControlPanel {
     strokeWeight(2);
     text("Choose a navigation algorithm", 460, 825);
     text("Maze Type", 662, 825);
-    text("Maze Size", 662, 862);
+    text("Maze Size", 662, 865);
   }
   
   public boolean getSnap() {
