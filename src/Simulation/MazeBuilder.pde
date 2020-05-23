@@ -14,7 +14,7 @@ public class MazeBuilder{
     
     // put vehicle on cell (0, 0)
     Vec2 p = maze.getCellWorldCenterAt(0, 0);
-    Vehicle vehicle = new Vehicle(p.x, p.y, PI, 1.0);
+    Vehicle vehicle = new Vehicle(p.x, p.y, PI, 0.8);
     maze.setVehicle(vehicle);
     
     return maze;

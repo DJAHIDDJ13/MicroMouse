@@ -5,7 +5,7 @@
 #include <math.h>
 #include <stdio.h>
 
-#define BASE_SPEED 200
+#define BASE_SPEED 300
 #define TURNING_LENGTH_THRESHOLD 540
 #define MAX_SPEED 500
 
@@ -45,47 +45,64 @@ void turn_back_PID(struct Micromouse* status, int init)
 {
    static float init_ang = 0;
    if(init) {
-      init_ang = status->cur_pose.ang.z;
+      init_ang = M_PI_2 * round(status->cur_pose.ang.z / (M_PI_2));
    }
    
+   printf("Init ang %g\n", init_ang);
    float left_sensor = status->sensor_data.sensors[1],
          right_sensor = status->sensor_data.sensors[2],
          left_middle_sensor = status->sensor_data.sensors[0],
          right_middle_sensor = status->sensor_data.sensors[3];
-
-   float ang_diff = init_ang - status->cur_pose.ang.z;
+   float ang_diff = M_PI - (init_ang - status->cur_pose.ang.z);
    
    printf("NEED TO GO BACK\n");
    // NO CHOICE HERE
    // Go backwards until threshold is cleared then
    // Actually do the turning until it's over
    
-   // Exit condition in case of false alarm
-   if((left_middle_sensor > 200 || right_middle_sensor > 200) &&
+   float maintain_value = 250;
+   float upper_limit = 300;
+   // Exit condition in case there isn't really a dead end
+   /*if((left_middle_sensor > maintain_value || right_middle_sensor > maintain_value) &&
       (left_sensor > TURNING_LENGTH_THRESHOLD || right_sensor > TURNING_LENGTH_THRESHOLD)) 
    {
       control_state = TURN_DIST;
-   }
-   if(fabs(ang_diff) > 2 * M_PI) {
+   }*/
+   if(fabs(ang_diff) > M_PI) {
       control_state = DEFAULT;
    }
 
-
    float err1 = 0.0f, err2 = 0.0f;
-   if(left_middle_sensor > 0 && left_middle_sensor < 100 &&
-      right_middle_sensor > 0 && right_middle_sensor < 100)
+   /*
+   if(left_middle_sensor > 0 && left_middle_sensor < maintain_value &&
+      right_middle_sensor > 0 && right_middle_sensor < maintain_value)
    {
-      err1 = 100 - left_middle_sensor;
-      err2 = 100 - right_middle_sensor;
+      err1 = -left_middle_sensor;
+      err2 = -right_middle_sensor;
       printf("TOO CLOSE %g, %g\n", err1, err2);
+   } else if(left_middle_sensor > upper_limit &&
+             right_middle_sensor > upper_limit)
+   {
+      err1 = -(middle_ground - left_middle_sensor);
+      err2 = -(middle_ground - right_middle_sensor );
+      printf("TOO FAR %g, %g\n", err1, err2);
    } else {
-      err1 = 50 * ang_diff + (100 - right_middle_sensor)/20;
-      err2 = -50 * ang_diff + (100 - left_middle_sensor)/20;
-      printf("TOO FAR%g, %g\n", err1, err2);
+      err1 = 50 * ang_diff + (middle_ground - right_middle_sensor);
+      err2 = -50 * ang_diff + (middle_ground - left_middle_sensor);
+      printf("TURNING %g, %g\n", err1, err2);
    }
-   
+   */
+   if((left_middle_sensor > 0 && (left_middle_sensor < 200 || left_middle_sensor > 400)) ||
+      (right_middle_sensor > 0 && (right_middle_sensor < 200 || right_middle_sensor > 400)))
+   {
+      err1 = -300 + left_middle_sensor;
+      err2 = -300 + left_middle_sensor;
+   } else {
+      err1 = 50 * ang_diff;// + ((left_middle_sensor) - 300) / 3;
+      err2 = -50 * ang_diff;// + ((right_middle_sensor) - 300) / 3;
+   }
    // calling the general PID function   
-   const float Kp = 1.5, Kd = 300, Ki = 0.0f;
+   const float Kp = 1, Kd = 1000, Ki = 0.0f;
    float out1 = PID(status, err1, Kp, Ki, Kd, 0);
    float out2 = PID(status, err2, Kp, Ki, Kd, 0);
 
@@ -114,7 +131,7 @@ void fwd_PID(struct Micromouse* status)
    }
 
    // calling the general PID function   
-   const float Kp = 1.5, Kd = 300, Ki = 0.01;
+   const float Kp = 1.5, Kd = 1000, Ki = 0.01;
    float out = PID(status, err, Kp, Ki, Kd, 0);
 
    // using the output value
@@ -184,10 +201,10 @@ void update_control(struct Micromouse* status)
               (status->sensor_data.sensors[1] > 0 && status->sensor_data.sensors[2] < 0))) {
       control_state = TURN_POS;
       turn_PID_pos(status);
-   } else if(status->sensor_data.sensors[0] > 0 &&
-             status->sensor_data.sensors[1] > 0 &&
-             status->sensor_data.sensors[2] > 0 &&
-             status->sensor_data.sensors[3] > 0) {
+   } else if(status->sensor_data.sensors[0] > 0 && status->sensor_data.sensors[0] < 500 &&
+             status->sensor_data.sensors[1] > 0 && status->sensor_data.sensors[1] < 500 &&
+             status->sensor_data.sensors[2] > 0 && status->sensor_data.sensors[2] < 500 &&
+             status->sensor_data.sensors[3] > 0 && status->sensor_data.sensors[3] < 500 ) {
       control_state = TURN_BACK;
       turn_back_PID(status, 1);
    } else {
