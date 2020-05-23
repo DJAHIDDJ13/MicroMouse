@@ -156,7 +156,7 @@ public class SimulationController {
     debugPanel.update();
     
     maze.update();
-    
+
     comCon.update();
     
     printConsole();
