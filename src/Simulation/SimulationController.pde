@@ -23,16 +23,14 @@ public class SimulationController {
   public SimulationController(ControlP5 cp5, int size){
     this.cp5 = cp5;
     this.size = size;
-    
     comCon = new CommunicationController();
-    
     informationPanel = new InformationPanel();
     controlPanel = new ControlPanel(cp5);
     debugPanel = new DebugPanel(cp5);
     
-    refreshMaze();
-    
     botControl = true; 
+    
+    refreshMaze(true);
   }
   
   public SimulationEntry getSimulationEntry(){
@@ -60,7 +58,7 @@ public class SimulationController {
     CommunicationUtility.consoleText = "";
   }
   
-  public void refreshMaze() {   
+  public void refreshMaze(Boolean PerfectMaze) {   
    // Creating the box2d world
    Vec2 gravity = new Vec2(0, 0);
    box2d.createWorld(gravity);
@@ -71,7 +69,31 @@ public class SimulationController {
    
    // build the maze
    mazeBuilder = new MazeBuilder();
-   maze = mazeBuilder.generateRandomMaze(box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
+   maze = mazeBuilder.generateRandomMaze(PerfectMaze, 
+                                         box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
+                                         box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
+                                         size,
+                                         simulationEntry.getRatio());
+   
+   // initializing the communication controller
+   comCon.setMaze(maze);
+   informationPanel.setMaze(maze);
+   controlPanel.setMaze(maze);
+  }
+  
+  
+    public void clearMaze() {   
+   // Creating the box2d world
+   Vec2 gravity = new Vec2(0, 0);
+   box2d.createWorld(gravity);
+   box2d.setScaleFactor(box2d_scalar / size);
+
+   // new simulation entry
+   simulationEntry = new SimulationEntry(size, size);
+   
+   // build the maze
+   mazeBuilder = new MazeBuilder();
+   maze = mazeBuilder.builderInitialMaze(box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
                                          box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
                                          size,
                                          simulationEntry.getRatio());
