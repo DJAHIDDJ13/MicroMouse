@@ -86,7 +86,7 @@ int main(int argc, char **argv) {
    printf("\n---------------\n\n");
 
    //One destination cell
-   floodFill(logicalMaze, 2, 2, false);
+   floodFill(logicalMaze, 2, 2);
    displayMaze(logicalMaze);
 
    Queue_XY path = backwardFloodFill(logicalMaze, 3, 1);

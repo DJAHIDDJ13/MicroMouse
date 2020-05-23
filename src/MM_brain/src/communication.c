@@ -314,14 +314,18 @@ void dump_header_data(struct Micromouse data)
    printf("\tOrigin pos: %g, %g\n", data.header_data.origin_x, 
                                     data.header_data.origin_y);
    printf("\tSensor placement:\n");
-   printf("\t\tBottom left %g, %g\n",  data.header_data.sensors_position[SensorLeft].x, 
-                                       data.header_data.sensors_position[SensorLeft].y);
-   printf("\t\tTop left %g, %g\n",     data.header_data.sensors_position[SensorTopLeft].x, 
-                                       data.header_data.sensors_position[SensorTopLeft].y);
-   printf("\t\tTop right %g, %g\n",    data.header_data.sensors_position[SensorTopRight].x, 
-                                       data.header_data.sensors_position[SensorTopRight].y);
-   printf("\t\tBottom right %g, %g\n", data.header_data.sensors_position[SensorRight].x, 
-                                       data.header_data.sensors_position[SensorRight].y);
+   printf("\t\tBottom left %g, %g, angle : %g\n",  data.header_data.sensors_position[SensorLeft].x, 
+                                                   data.header_data.sensors_position[SensorLeft].y,
+                                                   data.header_data.sensors_position[SensorLeft].z);
+   printf("\t\tTop left %g, %g, angle : %g\n",     data.header_data.sensors_position[SensorTopLeft].x, 
+                                                   data.header_data.sensors_position[SensorTopLeft].y,
+                                                   data.header_data.sensors_position[SensorTopLeft].z);
+   printf("\t\tTop right %g, %g, angle : %g\n",    data.header_data.sensors_position[SensorTopRight].x, 
+                                                   data.header_data.sensors_position[SensorTopRight].y,
+                                                   data.header_data.sensors_position[SensorTopRight].z);
+   printf("\t\tBottom right %g, %g, angle : %g\n", data.header_data.sensors_position[SensorRight].x, 
+                                                   data.header_data.sensors_position[SensorRight].y,
+                                                   data.header_data.sensors_position[SensorRight].z);
 }
 
 void dump_estimation_data(struct Micromouse data) 

@@ -27,13 +27,10 @@
 void fill(struct Maze maze, int16_t OX, int16_t OY, int16_t color);
 
 /* Push the destination boxs of the maze to the queue */
-void pushDestinationBoxs(Queue_XY* queue, int16_t OX, int16_t OY, bool cellNumber);
-
-/* Fill the destination boxs of the maze */
-void pushDestinationBoxs(Queue_XY* queue, int16_t OX, int16_t OY, bool cellNumber);
+void pushDestinationBoxs(Queue_XY* queue, int16_t OX, int16_t OY);
 
 /* The FloodFill algorithm */
-void floodFill(struct Maze maze, int16_t OX, int16_t OY, bool cellDestinationNumber);
+void floodFill(struct Maze maze, int16_t OX, int16_t OY);
 
 /* Backward flood fill algorithm */
 Queue_XY backwardFloodFill(struct Maze maze, int16_t OX, int16_t OY);

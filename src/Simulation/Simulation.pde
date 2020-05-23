@@ -15,8 +15,8 @@ public static final long  STARTING_TIME = System.currentTimeMillis();
 private final static int initialSize = 8;
 
 void setup(){
-  
-  size(1500,905);
+  size(1500,910);
+
   //fullScreen();
   smooth();
   

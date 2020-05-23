@@ -1,6 +1,7 @@
 public class InformationPanel {
   
   private Maze maze;
+  private ControlP5 cp5; 
   
   private PVector acc;
   private PVector angAcc;
@@ -12,7 +13,9 @@ public class InformationPanel {
   private final int RWheelX1 = 1045, RWheelY1 = 180, RWheelX2 = 1045;
   
   //constructor
-  public InformationPanel() {
+  public InformationPanel(ControlP5 cp5) {
+    this.cp5 = cp5;
+    
     float vehicleSize = 1.5;
     
     // top
@@ -51,11 +54,18 @@ public class InformationPanel {
   }
   
   public void controlEventHandler(ControlEvent event) {
-
+    String eventControllerName = event.getName();
+    if(eventControllerName.equals("Display sensors")) { 
+      simCon.setDisplaySensors(!simCon.getDisplaySensors());
+    }
   }
   
   public void createControllers() {
-    
+    cp5.addButton("Display sensors")
+       .setValue(1)
+       .setPosition(955, 20)
+       .setSize(90, 30)
+    ;     
   }
   
   public void update() {
@@ -111,7 +121,7 @@ public class InformationPanel {
 
   public void GenericVehicleInformations( )  {
     int vehicleX= 1000;
-    int vehicleY=170;
+    int vehicleY=190;
   
     // proximity bar
     int numProx = 6;
@@ -172,19 +182,19 @@ public class InformationPanel {
     //print sensors
     float[] sensors = maze.getVehicleSensorValues();
     
-    drawSensor(970,70,sensors[0]);    // sensor 0
-    drawSensor(1027,70,sensors[2]);   // sensor 1
-    drawSensor(930,100,sensors[1]);   // sensor 2
-    drawSensor(1070,100,sensors[3]);  // sensor 3
+    drawSensor(970,90,sensors[0]);    // sensor 0
+    drawSensor(1027,90,sensors[2]);   // sensor 1
+    drawSensor(930,120,sensors[1]);   // sensor 2
+    drawSensor(1070,120,sensors[3]);  // sensor 3
     colorMode(RGB, 255, 255, 255);
     
     // print sensors value
     fill(255);
     textSize(14);
-    text((int)sensors[0],950,55);
-    text((int)sensors[2],1007,55);
-    text((int)sensors[1],910,85);
-    text((int)sensors[3],1050,85);
+    text((int)sensors[0],950,75);
+    text((int)sensors[2],1007,75);
+    text((int)sensors[1],910,105);
+    text((int)sensors[3],1050,105);
 
     // Gyroscope x,y,z values
     int div=1;

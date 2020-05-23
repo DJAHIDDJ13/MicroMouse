@@ -12,6 +12,7 @@ public class Vehicle {
   private float[] encoderData;
   private float vehicleSize;
   private Body body;
+  private int vehicleId;
 
   private final static float sensorAngle1 = 90, sensorAngle2 = 10, sensorAngle3 = 60; 
 
@@ -73,6 +74,10 @@ public class Vehicle {
     left_encoder = new RotaryEncoder();
     right_encoder = new RotaryEncoder();
     encoderData = new float[2];
+  }
+  
+  public int getVehicleId() {
+    return vehicleId;
   }
   
   public Vec2 getPosition() {    
@@ -162,6 +167,10 @@ public class Vehicle {
     return this.sensorPos;
   }
 
+  float[] getSensorAngles() {
+    return this.sensorAngles;
+  }
+
   public void updateDrag() {
     // apply drag force
     Vec2 currentForwardNormal = getForwardVelocity();
@@ -195,9 +204,11 @@ public class Vehicle {
   }
   
   private void displaySensors() {
-    for(int i = 0; i < sensors.length; i++) {
-      sensors[i].display();
-    } 
+    if(simCon.getDisplaySensors()) {
+      for(int i = 0; i < sensors.length; i++) {
+        sensors[i].display();
+      }
+    }
   }
    
   public void display() {

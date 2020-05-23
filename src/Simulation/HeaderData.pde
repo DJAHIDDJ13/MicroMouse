@@ -68,11 +68,12 @@ public class HeaderData extends Message {
             this.cellSizeData = cellSizeData;
     }
 
+    /* x, y, angle */
     public void setSensorsPos(float[] sensorsPos) {
-        if (sensorsPos.length != 8)
+        if (sensorsPos.length != 12)
             CommunicationUtility.logMessage("WARNING", "HeaderData", "sensorsPos", 
                                             "sensorsPos array size not matching : is " 
-                                            + sensorsPos.length + " - should be 8.");
+                                            + sensorsPos.length + " - should be 12.");
         else
             this.sensorsPos = sensorsPos;
     }

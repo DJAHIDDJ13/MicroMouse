@@ -108,26 +108,26 @@ public class ControlPanel {
   public void createControllers() {
     cp5.addButton("Turn+")
       .setValue(1)
-      .setPosition(80, 810)
-      .setSize(50, 30)
+      .setPosition(90, 810)
+      .setSize(60, 30)
       ;
 
     cp5.addButton("Turn-")
       .setValue(2)
-      .setPosition(80, 850)
-      .setSize(50, 30)
+      .setPosition(90, 850)
+      .setSize(60, 30)
       ;
 
     cp5.addButton("Add")
       .setValue(3)
-      .setPosition(140, 830)
-      .setSize(50, 30)
+      .setPosition(160, 830)
+      .setSize(60, 30)
       ;
 
     cp5.addButton("Remove")
       .setValue(4)
-      .setPosition(200, 830)
-      .setSize(50, 30)
+      .setPosition(230, 830)
+      .setSize(60, 30)
       ;
       
     cp5.addButton("Clear")
@@ -144,7 +144,6 @@ public class ControlPanel {
       ;
 
     cp5.addNumberbox("Size")
-      //.setPosition(260, 830)
       .setPosition(662, 870)
       .setSize(50, 25)
       .setScrollSensitivity(1.1)
@@ -155,11 +154,9 @@ public class ControlPanel {
       
     cp5.addButton("Set position")
       .setValue(6)
-      .setPosition(320, 830)
-      .setSize(70, 30)
+      .setPosition(300, 830)
+      .setSize(80, 30)
       ;
-      
-
 
     cp5.addCheckBox("SnapCheckBox")
       .setPosition(745, 810)
@@ -169,7 +166,7 @@ public class ControlPanel {
       ;
       
     ButtonBar b = cp5.addButtonBar("algo")
-       .setPosition(460, 830)
+       .setPosition(425, 830)
        .setSize(191, 30)
        .addItems(split("a b c"," "))
        ;
@@ -207,8 +204,8 @@ public class ControlPanel {
     Vec2 top_left_corner = box2d.coordPixelsToWorld(new Vec2(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY));
     Vec2 temp = box2d.coordPixelsToWorld(mouseX, mouseY).sub(top_left_corner);
     /* FIX THIS */
-    float boxW = box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE) / simCon.simulationEntry.getRows();
-    float boxH = boxW * simCon.simulationEntry.getRatio();
+    float boxW = box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE) / simCon.getMaze().getRows();
+    float boxH = boxW * SimulationUtility.RATIO;
     toAddW = boxW + boxH;
     toAddH = boxH;
 
@@ -223,8 +220,8 @@ public class ControlPanel {
       if (snap) {
         snapToGrid();
       } else {
-        float boxW = box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE) / simCon.simulationEntry.getRows();
-        float boxH = boxW * simCon.simulationEntry.getRatio();
+        float boxW = box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE) / simCon.getMaze().getRows();
+        float boxH = boxW * SimulationUtility.RATIO;
 
         Vec2 temp = box2d.coordPixelsToWorld(mouseX, mouseY);
         toAddX = temp.x;
@@ -269,7 +266,7 @@ public class ControlPanel {
     fill(0);
     textSize(13);
     strokeWeight(2);
-    text("Choose a navigation algorithm", 460, 825);
+    text("Choose a navigation algorithm", 425, 825);
     text("Maze Type", 662, 825);
     text("Maze Size", 662, 865);
   }

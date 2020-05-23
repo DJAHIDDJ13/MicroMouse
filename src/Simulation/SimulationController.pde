@@ -2,7 +2,6 @@ import controlP5.*;
 
 public class SimulationController {
   
-  public SimulationEntry simulationEntry;
   private Maze maze;
   private MazeBuilder mazeBuilder;
   private CommunicationController comCon;
@@ -18,19 +17,21 @@ public class SimulationController {
   private final static float box2d_scalar = 80.0f;
   private final static float user_motor_force = 600;
   
+  private boolean botControl;
+  private boolean displaySensors;
+  
   public SimulationController(ControlP5 cp5, int size){
     this.cp5 = cp5;
     this.size = size;
     comCon = new CommunicationController();
-    informationPanel = new InformationPanel();
+    informationPanel = new InformationPanel(cp5);
     controlPanel = new ControlPanel(cp5);
     debugPanel = new DebugPanel(cp5);
     
+    botControl = true; 
+    displaySensors = false;
+    
     refreshMaze(true);
-  }
-  
-  public SimulationEntry getSimulationEntry(){
-    return simulationEntry;
   }
   
   public Maze getMaze() {
@@ -39,6 +40,22 @@ public class SimulationController {
   
   public void setSize(int size) {
     this.size = size;
+  }
+  
+  public void setBotControl(boolean botControl) {
+    this.botControl = botControl;
+  }
+  
+  public boolean getBotControl() {
+    return botControl;
+  }
+  
+  public void setDisplaySensors(boolean displaySensors) {
+    this.displaySensors = displaySensors;
+  }
+  
+  public boolean getDisplaySensors() {
+    return displaySensors;
   }
   
   public void printConsole() {
@@ -51,9 +68,6 @@ public class SimulationController {
    Vec2 gravity = new Vec2(0, 0);
    box2d.createWorld(gravity);
    box2d.setScaleFactor(box2d_scalar / size);
-
-   // new simulation entry
-   simulationEntry = new SimulationEntry(size, size);
    
    // build the maze
    mazeBuilder = new MazeBuilder();
@@ -61,7 +75,7 @@ public class SimulationController {
                                          box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
                                          box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
                                          size,
-                                         simulationEntry.getRatio());
+                                         SimulationUtility.RATIO);
    
    // initializing the communication controller
    comCon.setMaze(maze);
@@ -75,16 +89,13 @@ public class SimulationController {
    Vec2 gravity = new Vec2(0, 0);
    box2d.createWorld(gravity);
    box2d.setScaleFactor(box2d_scalar / size);
-
-   // new simulation entry
-   simulationEntry = new SimulationEntry(size, size);
    
    // build the maze
    mazeBuilder = new MazeBuilder();
    maze = mazeBuilder.builderInitialMaze(box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
                                          box2d.scalarPixelsToWorld(SimulationUtility.MAZE_SIZE),
                                          size,
-                                         simulationEntry.getRatio());
+                                         SimulationUtility.RATIO);
    
    // initializing the communication controller
    comCon.setMaze(maze);
@@ -111,14 +122,16 @@ public class SimulationController {
     informationPanel.keyPressedHandler();
     debugPanel.keyPressedHandler();
     
-    if(key == 'z')
-      maze.moveVehicle(user_motor_force, user_motor_force);
-    else if(key == 's')
-      maze.moveVehicle(-user_motor_force, -user_motor_force);
-    else if(key == 'q')
-      maze.moveVehicle(-user_motor_force, user_motor_force);
-    else if(key == 'd')
-      maze.moveVehicle(user_motor_force, -user_motor_force);
+    if(!botControl) {
+      if(key == 'z')
+        maze.moveVehicle(user_motor_force, user_motor_force);
+      else if(key == 's')
+        maze.moveVehicle(-user_motor_force, -user_motor_force);
+      else if(key == 'q')
+        maze.moveVehicle(-user_motor_force, user_motor_force);
+      else if(key == 'd')
+        maze.moveVehicle(user_motor_force, -user_motor_force);
+    }
   }
 
   public void controlEventHandler(ControlEvent event) {

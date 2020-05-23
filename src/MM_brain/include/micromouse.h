@@ -51,7 +51,6 @@ typedef struct {
 
 enum sensor_position{SensorLeft, SensorTopLeft, SensorTopRight, SensorRight};
 
-// TODO: change these to Vec2
 typedef struct {
    float maze_width,
        maze_height;
@@ -64,7 +63,7 @@ typedef struct {
        box_height;
    float lines_per_revolution, 
          wheel_circumference;
-   Vec2 sensors_position[4];
+   Vec3 sensors_position[4];
    float origin_x, origin_y;
 } HeaderData;
 
