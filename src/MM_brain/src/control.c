@@ -37,7 +37,7 @@ enum ControlState {DEFAULT, MOVE_FWD, TURN_BACK, TURN_DIST, TURN_POS} control_st
 
 void turn_back_PID(struct Micromouse* status, int init)
 {
-   static float old_err1 = 0.0, old_err2 = 0.0, cumul_err1 = 0.0, cumul_err2 = 0.0;
+   /*static float old_err1 = 0.0, old_err2 = 0.0, cumul_err1 = 0.0, cumul_err2 = 0.0;
 
    static float init_ang = 0;
    static float init_enc[NB_ENCODER];
@@ -56,12 +56,12 @@ void turn_back_PID(struct Micromouse* status, int init)
    float ang_diff = M_PI - (init_ang - status->cur_pose.ang.z);
    float diff_enc = (status->prev_enc[0] - init_enc[0]) - (status->prev_enc[1] - init_enc[1]);
    printf("Init ang %g, And diff %g, Init enc %g, %g, Enc diff = %g\n", init_ang, ang_diff, init_enc[0], init_enc[1], diff_enc);
-   printf("NEED TO GO BACK\n");
+   */printf("NEED TO GO BACK\n");
    // NO CHOICE HERE
    // Go backwards until threshold is cleared then
    // Actually do the turning until it's over
    // Exit condition in case there isn't really a dead end
-   if((left_middle_sensor > 320 || right_middle_sensor > 320) &&
+   /*if((left_middle_sensor > 320 || right_middle_sensor > 320) &&
       (left_sensor > TURNING_LENGTH_THRESHOLD || right_sensor > TURNING_LENGTH_THRESHOLD)) 
    {
       control_state = TURN_DIST;
@@ -70,16 +70,16 @@ void turn_back_PID(struct Micromouse* status, int init)
                          fabs(status->cur_pose.ang.z - init_ang));
    if(fabs(ang_diff) > M_PI || (left_middle_sensor > 700 && right_middle_sensor > 700)) {
       control_state = DEFAULT;
-   }
+   }*/
    /*if(fabs(right_middle_sensor - 400) < 100 && fabs(left_middle_sensor - 400) < 100) {
       init_enc[0] = status->prev_enc[0];
       init_enc[1] = status->prev_enc[1];
-   }*/
+   }*//*
    float err1 = 0.0f, err2 = 0.0f;
    float Kp = 1, Kd = 1000, Ki = 0.0f;
    
    Vec2 speed = {.x=status->cur_pose.pos.x - status->cur_pose.pos.x,
-                 .y=status->cur_pose.pog.y - status->cur_pose.pos.y};
+                 .y=status->cur_pose.pos.y - status->cur_pose.pos.y};
 
    if(speed > 10) {
       printf("TOO FAST\n");
@@ -89,11 +89,11 @@ void turn_back_PID(struct Micromouse* status, int init)
       printf("TOO CLOSE\n");
       err1 = -left_middle_sensor/2;
       err2 = -right_middle_sensor/2;
-   } /*else if(diff_enc > 100) {
+   } *//*else if(diff_enc > 100) {
       printf("TOO FAR FROM AXIS\n");
       err1 = diff_enc/10;
       err2 = -diff_enc/10;
-   }*/ else {
+   }*//* else {
       printf("TURNING\n");
       err1 = 10 * ang_diff;
       err2 = -10 * ang_diff;
@@ -106,6 +106,8 @@ void turn_back_PID(struct Micromouse* status, int init)
    status->engines[1] = out2; 
    
    prev_middle = (right_middle_sensor + left_middle_sensor) / 2;
+*/
+   control_state = DEFAULT;
 }
 
 void fwd_PID(struct Micromouse* status)
