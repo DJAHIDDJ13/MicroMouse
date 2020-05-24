@@ -19,6 +19,7 @@ public class SimulationController {
   
   private boolean botControl = false;
   private boolean displaySensors;
+  private boolean debugMode;
   
   public SimulationController(ControlP5 cp5, int size){
     this.cp5 = cp5;
@@ -30,8 +31,17 @@ public class SimulationController {
     
     botControl = true; 
     displaySensors = true;
+    debugMode = false;
     
     refreshMaze(true);
+  }
+  
+  public boolean getDebugMode() {
+    return debugMode;
+  }
+  
+  public void setDebigMode(boolean debugMode) {
+    this.debugMode = debugMode;
   }
   
   public Maze getMaze() {
@@ -152,6 +162,7 @@ public class SimulationController {
 
   public void update() {
     controlPanel.update();
+    
     informationPanel.update();
     debugPanel.update();
     
@@ -165,7 +176,52 @@ public class SimulationController {
   public void display() {
     maze.display();
     controlPanel.display();
-    informationPanel.display();
-    debugPanel.display();
+
+    if(debugMode) {
+      informationPanel.display();
+      debugPanel.display();
+    } else {
+      displayTeamInformation();      
+    }
+    
+    displayFPS();
+  }
+  
+  public void displayTeamInformation() {
+    fill(0);
+    
+    textSize(18);
+    strokeWeight(2);
+    text("Master 1 Informatique et Ingénieurie des Systèmes Complexes (IISC)", 860, 30);
+  
+    text("Cergy Paris Université" , 1050, 70);
+    
+    line(900, 100, 1370, 100);
+    
+    text("Résolution de labyrinthes par véhicule intelligent", 920, 130);
+    text("Micromouse" , 1090, 170);
+    
+    line(900, 200, 1370, 200);
+
+    text("This program is a simulator for the Micromouse competition featuring :", 860, 230);
+    text("-A simulated Micromouse vehicle" , 870, 260);
+    text("-A world editor", 870, 280);
+    text("-A graphical user interface" , 870, 300);
+    text("-C programming facilities" , 870, 320);
+    
+    text("Author : ABDELMOUMENE Djahid, AGRANE Amine, AYAD Ishak, LAY Donald.", 820, 370);
+    
+    fill(0,0,255);
+    text("https://github.com/DJAHIDDJ13/MicroMouse", 940, 390);
+    
+    fill(255);    
+  }
+  
+  public void displayFPS() {  
+    textSize(18);
+    strokeWeight(2);
+    fill(0,0,255);
+    text("FPS : " + (int)frameRate, 300, 885); 
+    fill(255);
   }
 }
