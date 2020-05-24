@@ -80,6 +80,8 @@ public class ControlPanel {
     } else if (eventControllerName.equals("Set position")) {
       setPosition = !setPosition;
       showingMovingObject = false;
+    } else if (eventControllerName.equals("DebugCheckBox")) {
+      simCon.setDebigMode(!simCon.getDebugMode());
     } else if(eventControllerName.equals("algo")) { 
       ButtonBar bar = (ButtonBar)event.getController();
       switch(bar.hover()) {
@@ -164,6 +166,13 @@ public class ControlPanel {
       .addItem("Snap to grid", 0)
       .activateAll()
       ;
+      
+    cp5.addCheckBox("DebugCheckBox")
+      .setPosition(425, 870)
+      .setSize(15, 15)
+      .addItem("Show debug panel", 0)
+      .activateAll()
+      ;      
       
     ButtonBar b = cp5.addButtonBar("algo")
        .setPosition(425, 830)

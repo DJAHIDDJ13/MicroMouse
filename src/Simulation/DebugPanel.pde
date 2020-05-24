@@ -6,7 +6,9 @@ public class DebugPanel {
   
   private Textarea console;
   
-  private Button buttonControl;      
+  private Button buttonControl;  
+  
+  private ButtonBar b;
   
   public DebugPanel(ControlP5 cp5) {
     this.cp5 = cp5;
@@ -33,7 +35,7 @@ public class DebugPanel {
   }
 
   public void createControllers() {
-    ButtonBar b = cp5.addButtonBar("bar")
+    b = cp5.addButtonBar("bar")
        .setPosition(845, 317)
        .setSize(600, 30)
        .addItems(split("a b c d e"," "))
@@ -174,7 +176,15 @@ public class DebugPanel {
 
   // updates the gui
   public void updateController() {
-
+    if(!simCon.getDebugMode()) {
+      b.hide();
+      console.hide();
+      buttonControl.hide();
+    } else {
+      b.show();
+      console.show();
+      buttonControl.show();
+    }
   }
 
   public void displayPanel() {

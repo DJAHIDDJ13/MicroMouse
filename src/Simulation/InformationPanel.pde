@@ -12,6 +12,8 @@ public class InformationPanel {
   private final int LWheelX1 = 955, LWheelY1 = 180, LWheelX2 = 955;
   private final int RWheelX1 = 1045, RWheelY1 = 180, RWheelX2 = 1045;
   
+  private Button buttonSensors;
+  
   //constructor
   public InformationPanel(ControlP5 cp5) {
     this.cp5 = cp5;
@@ -61,7 +63,7 @@ public class InformationPanel {
   }
   
   public void createControllers() {
-    cp5.addButton("Display sensors")
+    buttonSensors = cp5.addButton("Display sensors")
        .setValue(1)
        .setPosition(955, 20)
        .setSize(90, 30)
@@ -70,7 +72,13 @@ public class InformationPanel {
   
   public void update() {
     acc = maze.getVehicleAcceleration();
-    angAcc = maze.getVehicleAngularAcceleration();    
+    angAcc = maze.getVehicleAngularAcceleration();
+    
+    if(!simCon.getDebugMode()) {
+      buttonSensors.hide();
+    } else {
+      buttonSensors.show();
+    }
   }
 
   public void drawSensor(int sensorX, int sensorY, float sensorValue) {
