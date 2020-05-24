@@ -192,36 +192,35 @@ public class SimulationController {
     
     textSize(18);
     strokeWeight(2);
-    text("Master 1 Informatique et Ingénieurie des Systèmes Complexes (IISC)", 860, 30);
+    int baseY = 200;
+    text("Master 1 Informatique et Ingénieurie des Systèmes Complexes (IISC)", 860, baseY+30);
   
-    text("Cergy Paris Université" , 1050, 70);
+    text("Cergy Paris Université" , 1050, baseY+70);
     
-    line(900, 100, 1370, 100);
+    line(900, baseY+100, 1370, baseY+100);
     
-    text("Résolution de labyrinthes par véhicule intelligent", 920, 130);
-    text("Micromouse" , 1090, 170);
+    text("Résolution de labyrinthes par véhicule intelligent", 920, baseY+130);
+    text("Micromouse" , 1090, baseY+170);
     
-    line(900, 200, 1370, 200);
+    line(900, baseY+200, 1370, baseY+200);
 
-    text("This program is a simulator for the Micromouse competition featuring :", 860, 230);
-    text("-A simulated Micromouse vehicle" , 870, 260);
-    text("-A world editor", 870, 280);
-    text("-A graphical user interface" , 870, 300);
-    text("-C programming facilities" , 870, 320);
+    text("This program is a simulator for the Micromouse competition featuring :", 860, baseY+230);
+    text("-A simulated Micromouse vehicle" , 870, baseY+260);
+    text("-A world editor", 870, baseY+280);
+    text("-A graphical user interface" , 870, baseY+300);
+    text("-C programming facilities" , 870, baseY+320);
     
-    text("Author : ABDELMOUMENE Djahid, AGRANE Amine, AYAD Ishak, LAY Donald.", 820, 370);
+    text("Authors : ABDELMOUMENE Djahid, AGRANE Amine, AYAD Ishak, LAY Donald.", 820, baseY+370);
     
     fill(0,0,255);
-    text("https://github.com/DJAHIDDJ13/MicroMouse", 940, 390);
+    text("https://github.com/DJAHIDDJ13/MicroMouse", 940, baseY+390);
     
     fill(255);    
   }
   
   public void displayFPS() {  
-    textSize(18);
-    strokeWeight(2);
-    fill(0,0,255);
-    text("FPS : " + (int)frameRate, 300, 885); 
     fill(255);
+    textSize(15);
+    text("FPS: "+round(frameRate), 1400, 20);
   }
 }

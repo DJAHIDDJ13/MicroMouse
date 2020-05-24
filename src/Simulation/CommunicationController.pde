@@ -74,19 +74,25 @@ public class CommunicationController {
      *  / 0             3 \  //<>//
      */
     //float[] accelerometerData = ArrayUtils.addAll(maze.getVehicleAcceleration().array(), getVehicleAngularAcceleration().array());
-    float[] accelerometerData = new float[6]; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+    float[] accelerometerData = new float[6]; //<>//
     System.arraycopy(maze.getVehicleAcceleration().array(), 0, accelerometerData, 0, 3);
     System.arraycopy(maze.getVehicleAngularAcceleration().array(), 0, accelerometerData, 3, 3);
     
-    float tmp_float;
-    float[] distanceData = maze.getVehicleSensorValues();
-    
+    //float tmp_float;
+    Sensor[] sensors = maze.getVehicleSensorValues();
+    // reversing the order before sending
+    float[] distanceData = {sensors[3].getValue(), 
+                            sensors[2].getValue(), 
+                            sensors[1].getValue(), 
+                            sensors[0].getValue()};
+
+    /*
     for (int i = 0; i < distanceData.length / 2; i++) {
-      tmp_float = distanceData[i];
+      tmp_float = distanceData[i].getValue();
       distanceData[i] = distanceData[distanceData.length - 1 - i];
       distanceData[distanceData.length - 1 - i] = tmp_float;
     }
-
+    */
     sensorMessage.setDistanceData(distanceData);
     sensorMessage.setAccelerometerData(accelerometerData);
     sensorMessage.setEncoderData(maze.vehicle.getEncoderData());

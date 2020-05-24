@@ -78,7 +78,7 @@ public class Maze {
     return vehicle.getEncoderData();  
   }
   
-  public float[] getVehicleSensorValues() {
+  public Sensor[] getVehicleSensorValues() {
     return vehicle.getSensorValues(); 
   }
 

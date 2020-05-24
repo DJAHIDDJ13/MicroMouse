@@ -1,3 +1,4 @@
+import java.awt.Color;
 public class InformationPanel {
   
   private Maze maze;
@@ -92,6 +93,11 @@ public class InformationPanel {
     }
   
     ellipse(sensorX,sensorY,sensorSize,sensorSize);
+        
+    // print sensors value
+    fill(0, 0, 100); // white in hsb
+    textSize(14);
+    text(round(sensorValue),sensorX - 20, sensorY - 15);
   }
 
   public void drawEngine() {
@@ -188,22 +194,22 @@ public class InformationPanel {
     }
 
     //print sensors
-    float[] sensors = maze.getVehicleSensorValues();
+    Sensor[] sensors = maze.getVehicleSensorValues();
     
-    drawSensor(970,90,sensors[0]);    // sensor 0
-    drawSensor(1027,90,sensors[1]);   // sensor 1
-    drawSensor(930,120,sensors[2]);   // sensor 2
-    drawSensor(1070,120,sensors[3]);  // sensor 3
+    drawSensor(1070, 120, sensors[0].getValue());    // sensor 0
+    drawSensor(1027, 90, sensors[1].getValue());   // sensor 1
+    drawSensor(970, 90, sensors[2].getValue());   // sensor 2
+    drawSensor(930, 120, sensors[3].getValue());  // sensor 3
     colorMode(RGB, 255, 255, 255);
     
-    // print sensors value
+/*    // print sensors value
     fill(255);
     textSize(14);
-    text((int)sensors[0],950,75);
-    text((int)sensors[1],1007,75);
-    text((int)sensors[2],910,105);
-    text((int)sensors[3],1050,105);
-
+    text(round(sensors[0].getValue()),950,75);
+    text(round(sensors[1].getValue()),1007,75);
+    text(round(sensors[2].getValue()),910,105);
+    text(round(sensors[3].getValue()),1050,105);
+*/
     // Gyroscope x,y,z values
     int div=1;
 
@@ -250,7 +256,6 @@ public class InformationPanel {
     fill(255);
     text((int)rightForce, rectX-155,rectY+210);
     
-    text("FPS: "+round(frameRate), 1400, 20);
     drawEngine();
   }
 

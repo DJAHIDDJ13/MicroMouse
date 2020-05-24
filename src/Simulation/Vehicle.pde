@@ -286,12 +286,8 @@ public class Vehicle {
     return accelerometer.getGyro();
   }
   
-  public float[] getSensorValues() {
-    float[] res = new float[sensors.length];
-    for(int i = 0; i < sensors.length; i++) {
-      res[i] = sensors[i].getValue();
-    }
-    return res;
+  public Sensor[] getSensorValues() {
+    return sensors;
   }
   
   public void makeSensors(int nbSensors) {
