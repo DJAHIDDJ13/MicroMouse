@@ -67,11 +67,11 @@ public class CommunicationController {
     /* SENSORS POSITIONS
      *    _______________
      *   / 2          1  \
-     *  / 3             0 \ //<>// //<>// //<>//
-     *  Rearrange to become : //<>// //<>//
+     *  / 3             0 \  //<>//
+     *  Rearrange to become :  //<>//
      *    _______________
      *   / 1          2  \
-     *  / 0             3 \ //<>// //<>// //<>//
+     *  / 0             3 \  //<>//
      */
     //float[] accelerometerData = ArrayUtils.addAll(maze.getVehicleAcceleration().array(), getVehicleAngularAcceleration().array());
     float[] accelerometerData = new float[6]; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//

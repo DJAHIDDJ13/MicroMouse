@@ -183,8 +183,8 @@ public class InformationPanel {
     float[] sensors = maze.getVehicleSensorValues();
     
     drawSensor(970,90,sensors[0]);    // sensor 0
-    drawSensor(1027,90,sensors[2]);   // sensor 1
-    drawSensor(930,120,sensors[1]);   // sensor 2
+    drawSensor(1027,90,sensors[1]);   // sensor 1
+    drawSensor(930,120,sensors[2]);   // sensor 2
     drawSensor(1070,120,sensors[3]);  // sensor 3
     colorMode(RGB, 255, 255, 255);
     
@@ -192,8 +192,8 @@ public class InformationPanel {
     fill(255);
     textSize(14);
     text((int)sensors[0],950,75);
-    text((int)sensors[2],1007,75);
-    text((int)sensors[1],910,105);
+    text((int)sensors[1],1007,75);
+    text((int)sensors[2],910,105);
     text((int)sensors[3],1050,105);
 
     // Gyroscope x,y,z values
@@ -242,6 +242,7 @@ public class InformationPanel {
     fill(255);
     text((int)rightForce, rectX-155,rectY+210);
     
+    text("FPS: "+round(frameRate), 1400, 20);
     drawEngine();
   }
 

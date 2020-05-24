@@ -123,6 +123,25 @@ public class Vehicle {
     
     body.setTransform(getPosition(), angle);
   }
+  
+  public void setLinearVelocity(float x, float y) {
+    FRWheel.getBody().setLinearVelocity(new Vec2(x, y));
+    FLWheel.getBody().setLinearVelocity(new Vec2(x, y));
+    BRWheel.getBody().setLinearVelocity(new Vec2(x, y));
+    BLWheel.getBody().setLinearVelocity(new Vec2(x, y));
+    
+    body.setLinearVelocity(new Vec2(x, y));
+  }
+  
+  public void setAngularVelocity(float w) {
+    FRWheel.getBody().setAngularVelocity(w);
+    FLWheel.getBody().setAngularVelocity(w);
+    BRWheel.getBody().setAngularVelocity(w);
+    BLWheel.getBody().setAngularVelocity(w);
+    
+    body.setAngularVelocity(w);
+
+  }
 
   public void setTransform(float x, float y, float angle) {
     FRWheel.setTransform(translateVec2(rotateVec2(wheelPos[0], angle), x, y), angle);

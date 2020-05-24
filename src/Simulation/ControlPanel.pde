@@ -34,6 +34,10 @@ public class ControlPanel {
         
         Vec2 position = maze.getCellWorldCenterAt(j, i);
         maze.getVehicle().setTransform(position.x, position.y, PI);
+        // stop the vehicle from moving
+        maze.getVehicle().setLinearVelocity(0, 0);
+        maze.getVehicle().setAngularVelocity(0);
+        
       } else if (deleteMode) { // otherwise we're deleting
         maze.removeBodyAt((float) mouseX, (float) mouseY);
       }
