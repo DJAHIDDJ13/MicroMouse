@@ -215,7 +215,8 @@ public class Maze {
   }
   
   public void moveVehicle(float l, float r) {
-    vehicle.move(l, r);
+    if(simCon.getStart())
+      vehicle.move(l, r);
   }
   
   public void update() {

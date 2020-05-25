@@ -15,6 +15,8 @@ public class ControlPanel {
   private final float panelY = 845;
   private final float panelW = 40;
   private final float panelH = 20;
+  
+  private Button buttonStart;  
             
   public ControlPanel(ControlP5 cp5) {
     this.cp5 = cp5;
@@ -86,6 +88,8 @@ public class ControlPanel {
       showingMovingObject = false;
     } else if (eventControllerName.equals("DebugCheckBox")) {
       simCon.setDebigMode(!simCon.getDebugMode());
+    } else if (eventControllerName.equals("Start")) {
+      simCon.setStart(!simCon.getStart());
     } else if(eventControllerName.equals("algo")) { 
       ButtonBar bar = (ButtonBar)event.getController();
       switch(bar.hover()) {
@@ -162,6 +166,13 @@ public class ControlPanel {
       .setValue(6)
       .setPosition(300, 830)
       .setSize(80, 30)
+      ;
+
+    buttonStart = cp5.addButton("Start")
+      .setValue(6)
+      .setPosition(300, 870)
+      .setSize(80, 30)
+      .setColorBackground(#FC0000); 
       ;
 
     cp5.addCheckBox("SnapCheckBox")
@@ -249,6 +260,11 @@ public class ControlPanel {
       toAddW = box2d.scalarPixelsToWorld(panelW);
       toAddH = box2d.scalarPixelsToWorld(panelH);
     }
+    
+    if(simCon.getStart())
+      buttonStart.setColorBackground(#0BFC00);
+    else
+      buttonStart.setColorBackground(#FC0000);
   }
 
   public void displayMovingObject() {
