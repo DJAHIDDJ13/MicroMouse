@@ -5,7 +5,7 @@
 #include <math.h>
 #include <stdio.h>
 
-#define BASE_SPEED 70
+#define BASE_SPEED 40
 #define TURNING_LENGTH_THRESHOLD 850
 #define MAX_SPEED 500
 
@@ -40,11 +40,8 @@ void turn_back_PID(struct Micromouse* status, int init)
    static float old_err1 = 0.0, old_err2 = 0.0, cumul_err1 = 0.0, cumul_err2 = 0.0;
 
    static float init_ang = 0;
-   //static float init_enc[NB_ENCODER];
    if(init) {
       init_ang = M_PI_2 * round(status->cur_pose.ang.z / (M_PI_2));
-     // init_enc[0] = status->prev_enc[0];
-     // init_enc[1] = status->prev_enc[1];
       old_err1 = old_err2 = cumul_err1 = cumul_err2 = 0.0f;
    }
    
@@ -54,8 +51,6 @@ void turn_back_PID(struct Micromouse* status, int init)
          left_middle_sensor = status->sensor_data.sensors[3];
 
    float ang_diff = M_PI - (init_ang - status->cur_pose.ang.z);
-  // float diff_enc = (status->prev_enc[0] - init_enc[0]) - (status->prev_enc[1] - init_enc[1]);
-  // printf("Init ang %g, And diff %g, Init enc %g, %g, Enc diff = %g\n", init_ang, ang_diff, init_enc[0], init_enc[1], diff_enc);
    printf("NEED TO GO BACK\n");
    // NO CHOICE HERE
    // Go backwards until threshold is cleared then
@@ -71,31 +66,28 @@ void turn_back_PID(struct Micromouse* status, int init)
    if(fabs(ang_dist) > 0.9 * M_PI || ((left_middle_sensor > 800 || left_middle_sensor < 0) && (right_middle_sensor > 800 || right_middle_sensor < 0))) {
       control_state = DEFAULT;
    }
-   /*if(fabs(right_middle_sensor - 400) < 100 && fabs(left_middle_sensor - 400) < 100) {
-      init_enc[0] = status->prev_enc[0];
-      init_enc[1] = status->prev_enc[1];
-   }*/
+   
    float err1 = 0.0f, err2 = 0.0f;
    float Kp = 1, Kd = 1000, Ki = 0.0f;
-   
+  
+   // calculating the speed for each wheel 
    Vec2 speed = {.x=status->cur_pose.pos.x - status->cur_pose.pos.x,
                  .y=status->cur_pose.pos.y - status->cur_pose.pos.y};
    speed.x = cos(status->cur_pose.ang.z) * speed.x - sin(status->cur_pose.ang.z) * speed.y;
    speed.y = sin(status->cur_pose.ang.z) * speed.x + cos(status->cur_pose.ang.z) * speed.y;
 
-   if((left_middle_sensor < 250 || right_middle_sensor < 250) && left_middle_sensor > 0 && right_middle_sensor > 0) {
-      printf("TOO CLOSE\n");
+   if((left_middle_sensor < 250 || right_middle_sensor < 250) && 
+       left_middle_sensor > 0 && right_middle_sensor > 0) {
       err1 = -right_middle_sensor/100;
       err2 = -left_middle_sensor/100;
-   } else if((left_middle_sensor > 300 && right_middle_sensor > 300) || (fabs(speed.x) > 5 || fabs(speed.y) > 5)) {
-      printf("TOO FAST\n");
-      err1 = -25*speed.x + right_middle_sensor/100;
-      err2 = -25*speed.y + left_middle_sensor/100;
+   } else if((left_middle_sensor > 300 && right_middle_sensor > 300) || 
+             (fabs(speed.x) > 5 || fabs(speed.y) > 5)) {
+      err1 = -200*speed.x + right_middle_sensor/100;
+      err2 = -200*speed.y + left_middle_sensor/100;
    } else {
       Kd = 0;
-      printf("TURNING\n");
-      err1 = 20 * ang_diff;
-      err2 = -20 * ang_diff;
+      err1 = 30 * ang_diff;
+      err2 = -30 * ang_diff;
    }
    // calling the general PID function   
    float out1 = PID(status, err1, Kp, Ki, Kd, &old_err1, &cumul_err1);
@@ -118,18 +110,17 @@ void fwd_PID(struct Micromouse* status)
          left_sensor = status->sensor_data.sensors[2],
          right_middle_sensor = status->sensor_data.sensors[0],
          left_middle_sensor = status->sensor_data.sensors[3];
-   float err = left_sensor - right_sensor;
+   float err = (left_sensor - right_sensor) / 3;
 
    if(left_sensor < 0 && right_sensor > 0) {
-      err = right_sensor;
+      err = right_sensor / 3;
    } else if(right_sensor < 0 && left_sensor > 0) {
-      err = -left_sensor;
+      err = -left_sensor / 3;
    }
 
    // calling the general PID function   
    const float Kp = 1.2, Kd = 400, Ki = 0.005;
    float out = PID(status, err, Kp, Ki, Kd, &old_err, &cumul_err);
-   printf("************** err = %g, out = %g *** \n", err, out);
 
    // using the output value
    status->engines[0] = BASE_SPEED + out;
@@ -146,6 +137,7 @@ void turn_PID_pos(struct Micromouse* status)
    // CHOICE HERE: EITHER (LEFT OR RIGHT OR FORWARD) OR (LEFT OR FORWARD) OR (RIGHT OR FORWARD)
    // keep checking for forward sensors while doing the turning
    // if forward found go to dist_turning state
+   
    control_state = DEFAULT;
 }
 
