@@ -22,6 +22,8 @@ public class SimulationController {
   private boolean debugMode;
   private int numberOfConsoleTextChange;
   
+  private boolean start;
+  
   public SimulationController(ControlP5 cp5, int size){
     this.cp5 = cp5;
     this.size = size;
@@ -33,6 +35,7 @@ public class SimulationController {
     botControl = true; 
     displaySensors = true;
     debugMode = false;
+    start = true;
     
     numberOfConsoleTextChange = 0;
     
@@ -45,6 +48,14 @@ public class SimulationController {
   
   public void setDebigMode(boolean debugMode) {
     this.debugMode = debugMode;
+  }
+  
+  public boolean getStart() {
+    return start;
+  }
+  
+  public void setStart(boolean start) {
+     this.start = start; 
   }
   
   public Maze getMaze() {
