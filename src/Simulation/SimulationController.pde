@@ -20,6 +20,7 @@ public class SimulationController {
   private boolean botControl = false;
   private boolean displaySensors;
   private boolean debugMode;
+  private int numberOfConsoleTextChange;
   
   public SimulationController(ControlP5 cp5, int size){
     this.cp5 = cp5;
@@ -32,6 +33,8 @@ public class SimulationController {
     botControl = true; 
     displaySensors = true;
     debugMode = false;
+    
+    numberOfConsoleTextChange = 0;
     
     refreshMaze(true);
   }
@@ -72,9 +75,18 @@ public class SimulationController {
     return displaySensors;
   }
   
+  public int getNumberOfConsoleTextChange() {
+    return numberOfConsoleTextChange;
+  }
+  
+  public void setNumberOfConsoleTextChange(int numberOfConsoleTextChange) {
+    this.numberOfConsoleTextChange = numberOfConsoleTextChange;
+  }
+  
   public void printConsole() {
     debugPanel.addText(CommunicationUtility.consoleText);
     CommunicationUtility.consoleText = "";
+    numberOfConsoleTextChange++;
   }
   
   public void refreshMaze(Boolean PerfectMaze) {   
@@ -221,6 +233,6 @@ public class SimulationController {
   public void displayFPS() {  
     fill(255);
     textSize(15);
-    text("FPS: "+round(frameRate), 1400, 20);
+    text("FPS: "+round(frameRate), 1400, 25);
   }
 }

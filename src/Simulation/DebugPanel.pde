@@ -197,8 +197,17 @@ public class DebugPanel {
   
   public void addText(String text) {
     if(!text.isEmpty()) {
+      if(simCon.getNumberOfConsoleTextChange() >= SimulationUtility.MAX_CONSOLE_TEXT_CHANGE) {
+        setTextToNull();
+        simCon.setNumberOfConsoleTextChange(0);
+      }
+      
       console.setText(console.getText() + text);
       console.scroll(1);
     }
+  }
+  
+  public void setTextToNull() {
+    console.setText("");
   }
 }
