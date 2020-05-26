@@ -125,18 +125,18 @@ Soit $G$ un graphe. L'arbre couvrant de $G$ est le sous graphe qui est connexe, 
 Sur la figure ci-dessous on peut apercevoir deux labyrinthes. Celui de gauche est un labyrinthe parfait, celui de droite un labyrinthe imparfait (car il contient des boucles). Il existe une autre approche pour visualiser nos labyrinthes. Au lieu de penser aux murs constituants le labyrinthe, nous pouvons penser aux chemins entre les cellules. 
 Les chemins à l'intérieur du labyrinthe forment un graphe. Le graphe de chaque labyrinthe est illustré ci-dessous en rouge. \newline
 \fig{pics/graphe_theory.png}{12cm}{9cm}
-{Géénration d'un labyritnhe 3*3 à l'aide de l'algortihme d'arbre binaire.}{mmcomp}
+{Géénration d'un labyritnhe 3*3 à l'aide de l'algortihme d'arbre binaire.}{grapheTheory1}
 
 
 Dans le cas du labyrinthe imparfait à droite, on va bien qu'il existe une boucle à l'intérieur du graphe.
 \fig{pics/graph_theory3.png}{10cm}{7cm}
-{Modélisation des labyritnhes sous forme de graphes.}{mmcomp}
+{Modélisation des labyritnhes sous forme de graphes.}{grapheTheory2}
 
 De cela, nous arrivons à la conclusion que la génération d'un labyrinthe parfait aléatoire consiste à générer un arbre couvrant aléatoire qui relie toutes les cellules du labyrinthe.
 Les différentes procédures et approches utilisées pour la génération d'arbres couvrant forment les bases des différents algorithmes de génération de labyrinthes. 
 
 
-\section{État de l’art: études des solutions existantes} \label{sec:etatDeLart2}
+\section{État de l’art: études des solutions existantes}
 Dans cette section, nous passons en revue certains des algorithmes les plus populaires utilisés pour la génération de labyrinthes parfaits.
 L'ensemble des algorithmes présentés dans cette section suivent l'approche "sculpture de passages" pour générer un labyrinthe. Pour chaque algorithme, on démarre à chaque fois d'une grille remplie de murs, puis l'algorithme se chargera de creuser un chemin parmis ces murs afin de construire son labyrinthe. 
 \subsection{Algorithme de Kruskal}
@@ -149,7 +149,7 @@ L'algorithme de Kruskal randomnisé pour la génération de labyrinthe fonctionn
     \item On réitère l'opération jusqu'à ce qu'il n'y est plus aucune cellule isolée.
 \end{enumerate}
 \fig{pics/kruskal.png}{16cm}{12cm}
-{Géénration d'un labyritnhe 3*3 à l'aide de l'algortihme de Kruskal.}{mmcomp}
+{Géénration d'un labyritnhe 3*3 à l'aide de l'algortihme de Kruskal.}{kruskal}
 
 
 \subsection{Algorithme d'arbre binaire}
@@ -164,7 +164,7 @@ Son principe de fonctionnement est très simple :
 \end{enumerate}
 \newline
 \fig{pics/binary_tree.png}{10cm}{7cm}
-{Géénration d'un labyritnhe 3*3 à l'aide de l'algortihme d'arbre binaire.}{mmcomp}
+{Géénration d'un labyritnhe 3*3 à l'aide de l'algortihme d'arbre binaire.}{binaryTree}
 
 
 
@@ -181,7 +181,7 @@ L'algorithme de Prim randomnisé pour la génération de labyrinthe suit les ét
 \newpage
 Sur la figure ci-dessous on est illustrée la génération d'un labyrinthe à l'aide de l'algorithme de Prim étape par étape. Les cellules appartenant à l'ensemble V (au labyrinthe) sont marquées en blanc, leurs cellules voisines en rose et en jaune on marque à chaque quelle cellule a été chosiit de manière aléatoire.
 \fig{pics/prim.png}{16cm}{12cm}
-{Géénration d'un labyritnhe 3*3 à l'aide de l'algortihme de Prim.}{mmcomp}
+{Géénration d'un labyritnhe 3*3 à l'aide de l'algortihme de Prim.}{prim}
 
 \subsection{Algorithme de Backtracking}
 Le Backtracking est une approche et une famille d'algorithmes utilisés pour résoudre des problèmes algorithmiques.
@@ -205,7 +205,7 @@ D'un point de vu de la Micromouse, et dans le but de tester l'intelligence de ce
 Ce n'est clairement pas intéressant comme algorithme de navigation, ce qui nous conforte dans notre choix d'opter pour un algorithme qui génère peu d'impasses. La figure suivante montre le nombre moyen d'impasses générées au sein du labyrinthe par différents algorithmes.
 
 \fig{pics/impasse.png}{14.5cm}{12cm}
-{Moyenne d'impasses engendrées par différents algorithmes de génération de labyrinthes}{mmcomp}
+{Moyenne d'impasses engendrées par différents algorithmes de génération de labyrinthes}{impasse}
 
 
 On constate que l'algorithme de Prim a tendance à produire des labyrinthes où environ 45\% des cellules sont des impasses. En parallèle l'algorithme de Backtracking en génère un nombre beaucoup moins important.
@@ -217,7 +217,7 @@ Dans un labyrinthe un faible variation de directions, la majorité des chemins s
 
 
 \fig{pics/variation_directions}{16cm}{12cm}
-{Taux de variation de directions moyens pour différents algorithmes de génération de labyrinthes}{mmcomp}
+{Taux de variation de directions moyens pour différents algorithmes de génération de labyrinthes}{variationDirection}
 On s'aperçoit que l'algorithme de Backtracking dispose d'un fréquence de variation de directions de quasiment 50\%, tandis que l'algorithme de Kruskal, de Prim et d'arbre binaire ont des fréquences de variations plus petites.
 \subsection{Conclusion}
 
@@ -318,14 +318,14 @@ Une pile vide est le signal de terminaison de l'algorithme. On se retrouve alors
 
 Sur les figures ci-dessous, on montre différents labyrinthes parfaits générés par notre algorithme de Backtracking une fois ce dernier implémenté.
 \fig{pics/perfect1.png}{10.5cm}{11cm}
-{Génération d'un labyrinthe parfait 8*8 dans notre simulation.}{mmcomp}
+{Génération d'un labyrinthe parfait 8*8 dans notre simulation.}{perfect1}
 \newpage
 
 \fig{pics/perfect2.png}{10.5cm}{11cm}
-{Génération d'un labyrinthe parfait 12*12 dans notre simulation.}{mmcomp}
+{Génération d'un labyrinthe parfait 12*12 dans notre simulation.}{perfect2}
 
 \fig{pics/perfect3.png}{10.5cm}{11cm}
-{Génération d'un labyrinthe parfait 16*16 dans notre simulation.}{mmcomp}
+{Génération d'un labyrinthe parfait 16*16 dans notre simulation.}{perfect3}
 
 \subsection{Génération de labyrinthes imparfaits}
 Une des propriétées de base d'un labyrinthe parfait et qu'il existe un seul et unique chemin reliant deux cellules du labyrinthe. Cette propriété n'est pas respecté dans un labyrinthe imparfait, tel qu'il peut exister des boucles ou plusieurs chemins reliant deux cellules. Un labyrinthe imparfait peut être intéressant dans le cas ou l'on souhaite avoir plusieurs parcours possible entre deux cellules du labyrinthe afin de tester l'intelligence de notre Micromouse. Par exemple, dans le cas ou notre Micromouse démarre d'une cellule de départ A, qu'elle a pour objectif d'atteindre la cellule B, et qu'entre ces deux cellules il existe plus d'un chemin possible, on souhaiterais qu'après un certain nombre de parcours la Micromouse puisse distinguer entre les deux chemins et choisir le chemin optimal (le chemin le plus court).
@@ -345,10 +345,9 @@ On génère un labyrinthe imparfait de la manière suivante :
 On peut voir sur la figure ci-dessous le processus de génération d'un labyrinthe imparfait : 
 
 \fig{pics/imperfect1.png}{7.5cm}{5cm}
-{Génération d'un labyrinthe 6*6 imparfait.}{mmcomp}
+{Génération d'un labyrinthe 6*6 imparfait.}{imperfect1}
 
 Sur la figure ci-dessous est illustrée un labyrinthe imparfait généré par notre algorithme au sein de notre simulation : 
 \newpage
 \fig{pics/imperfect2.png}{10.5cm}{11cm}
-{Génération d'un labyrinthe 8*8 imparfait dans notre simulation.}{mmcomp}
-
+{Génération d'un labyrinthe 8*8 imparfait dans notre simulation.}{imperfect2}

@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/ishak/MicroMouse/src/Gtest_MM_brain/sample.cpp
+gtest/gtest.h
+-
+squareRoot.c
+/home/ishak/MicroMouse/src/Gtest_MM_brain/squareRoot.c
+
+/home/ishak/MicroMouse/src/Gtest_MM_brain/squareRoot.c
+math.h
+-
+

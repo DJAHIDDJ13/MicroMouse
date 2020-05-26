@@ -7,7 +7,7 @@ CC=gcc
 BINDIR=bin
 SRCDIR=src
 INCDIR=include
-TESTDIR=tests
+TESTDIR=test
 OBJDIR=obj
 
 CFLAGS=-Wall -I$(INCDIR) -lpthread -g

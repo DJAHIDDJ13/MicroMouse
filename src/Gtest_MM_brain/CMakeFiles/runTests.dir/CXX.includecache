@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/ishak/MicroMouse/src/Gtest_MM_brain/operation.cpp
+gtest/gtest.h
+-
+operationRoot.c
+/home/ishak/MicroMouse/src/Gtest_MM_brain/operationRoot.c
+
+/home/ishak/MicroMouse/src/Gtest_MM_brain/operationRoot.c
+
+/home/ishak/MicroMouse/src/Gtest_MM_brain/square.cpp
+gtest/gtest.h
+-
+squareRoot.c
+/home/ishak/MicroMouse/src/Gtest_MM_brain/squareRoot.c
+
+/home/ishak/MicroMouse/src/Gtest_MM_brain/squareRoot.c
+math.h
+-
+
