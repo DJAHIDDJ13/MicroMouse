@@ -18,7 +18,7 @@ La dimension d'un labyrinthe corresponds à l'espace dimensionnel couvert par le
 \begin{figure*}[htp] 
     \centering
     \subfloat[Labyrinthe en 2 dimensions.]{%
-        \includegraphics[width=0.35\textwidth]{report/pics/2D_maze.png}%
+        \includegraphics[width=0.35\textwidth]{pics/2D_maze.png}%
         \label{fig:a}%
         }%
     \hfill%
@@ -43,17 +43,17 @@ La classe de tessellation est la géométrie des cellules individuelles qui comp
 \begin{figure*}[htp] 
     \centering
     \subfloat[Labyrinthe orthogonal.]{%
-        \includegraphics[width=0.27\textwidth]{report/pics/orthogonal_maze.png}%
+        \includegraphics[width=0.27\textwidth]{pics/orthogonal_maze.png}%
         \label{fig:a}%
         }%
     \hfill%
     \subfloat[Labyrinthe delta.]{%
-        \includegraphics[width=0.3\textwidth]{report/pics/delta_maze.png}%
+        \includegraphics[width=0.3\textwidth]{pics/delta_maze.png}%
         \label{fig:b}%
         }%
         \hfill%
     \subfloat[Labyrinthe theta.]{%
-        \includegraphics[width=0.3\textwidth]{report/pics/theta_maze.png}%
+        \includegraphics[width=0.3\textwidth]{pics/theta_maze.png}%
         \label{fig:c}%
         }%
     \caption{Exemple de labyrinthes avec différentes classes de tessellation.}
@@ -78,12 +78,12 @@ Un labyrinthe qui ne remplit pas les conditions pour être labélisé comme parf
 \begin{figure*}[htp] 
     \centering
     \subfloat[Labyrinthe parfait.]{%
-        \includegraphics[width=0.5\textwidth]{report/pics/perfect_maze.png}%
+        \includegraphics[width=0.5\textwidth]{pics/perfect_maze.png}%
         \label{fig:a}%
         }%
     \hfill%
     \subfloat[Labyrinthe imparfait.]{%
-        \includegraphics[width=0.5\textwidth]{report/pics/imperfect_maze.png}%
+        \includegraphics[width=0.5\textwidth]{pics/imperfect_maze.png}%
         \label{fig:b}%
         }%
     \caption{Exemple d'un labyrinthe parfait et d'un labyrinthe imparfait.}
@@ -249,14 +249,14 @@ On rappelle qu'un pile ne peut être manipulé que via ses opération "empiler" 
 Au départ de l'algorithme, on choisit une cellule aléatoire du labyrinthe qu'on empile dans notre pile. Dans notre exemple on démarre avec la cellule A4. À chaque itération, la cellule au sommet de la pile est considérée comme étant la cellule actuelle.
 \end{minipage}
 \begin{minipage}{0.4\textwidth}
-\includegraphics[width=\linewidth]{report/pics/backtracking1.png}
+\includegraphics[width=\linewidth]{pics/backtracking1.png}
 \end{minipage}
 
 \begin{minipage}{0.6\textwidth}
 On choisit un voisin aléatoire de la cellule actuelle (dans notre exemple A3) et on supprime le mur qui sépare les deux cellules. On empile le voisin choisit dans notre pile, ce qui en fait la nouvelle cellule actuelle.
 \end{minipage}
 \begin{minipage}{0.4\textwidth}
-\includegraphics[width=\linewidth]{report/pics/backtracking2.png}
+\includegraphics[width=\linewidth]{pics/backtracking2.png}
 \end{minipage}
 
 \newpage
@@ -265,7 +265,7 @@ On choisit un voisin aléatoire de la cellule actuelle (dans notre exemple A3) e
 Ce processus itérative se poursuit, on explore aléatoirement les cellules voisines comme on peut le voir sur la figure. Chaque cellule visitée sera ajouter à notre pile.
 \end{minipage}
 \begin{minipage}{0.4\textwidth}
-\includegraphics[width=\linewidth]{report/pics/backtracking3.png}
+\includegraphics[width=\linewidth]{pics/backtracking3.png}
 \end{minipage}
 
 
@@ -274,7 +274,7 @@ Ce processus itérative se poursuit, on explore aléatoirement les cellules vois
 Notre processus aléatoire nous emmène vers la cellule B4 qui elle ne dispose pas de voisins nos visités.
 \end{minipage}
 \begin{minipage}{0.4\textwidth}
-\includegraphics[width=\linewidth]{report/pics/backtracking4.png}
+\includegraphics[width=\linewidth]{pics/backtracking4.png}
 \end{minipage}
 
 
@@ -282,21 +282,21 @@ Notre processus aléatoire nous emmène vers la cellule B4 qui elle ne dispose p
 À cette étape, on dépile la cellule B4 de notre pile car elle ne possède plus de voisins non visités. Cette opération a pour effet de faire de la cellule précédente (cellule C4) la nouvelle cellule actuelle de l'algorithme.
 \end{minipage}
 \begin{minipage}{0.4\textwidth}
-\includegraphics[width=\linewidth]{report/pics/backtracking5.png}
+\includegraphics[width=\linewidth]{pics/backtracking5.png}
 \end{minipage}
 
 \begin{minipage}{0.6\textwidth}
 La cellule C4 dispose encore d'un voisin non visité (D4). On poursuit alors notre exploration aléatoire en choisissant ce voisin.
 \end{minipage}
 \begin{minipage}{0.4\textwidth}
-\includegraphics[width=\linewidth]{report/pics/backtracking6.png}
+\includegraphics[width=\linewidth]{pics/backtracking6.png}
 \end{minipage}
 
 \begin{minipage}{0.6\textwidth}
 Le processus se poursuit de cette manière, en revenant en arrière à chaque fois qu'on tombe sur une cellule ne possédant pas de voisins visitable jusqu'à ce que chaque cellule du labyrinthe ait été visitée.
 \end{minipage}
 \begin{minipage}{0.4\textwidth}
-\includegraphics[width=\linewidth]{report/pics/backtracking7.png}
+\includegraphics[width=\linewidth]{pics/backtracking7.png}
 \end{minipage}
 
 
@@ -304,7 +304,7 @@ Le processus se poursuit de cette manière, en revenant en arrière à chaque fo
 La dernière cellule à visiter sera toujours une cellule n'ayant pas de voisins visitables. Nous revenons alors sur nos pas, en dépilant les cellules de la pile, à la recherche d'un voisin nos visité. Cependant dans notre cas, l'ensemble des cellules du labyrinthe ont été visitées, on dépilera alors les cellules jusqu'à revenir à notre cellule de départ (la cellule A4) qu'on supprimera également de la pile, ce qui nous laisse avec une pile vide.
 \end{minipage}
 \begin{minipage}{0.4\textwidth}
-\includegraphics[width=\linewidth]{report/pics/backtracking9.png}
+\includegraphics[width=\linewidth]{pics/backtracking9.png}
 \end{minipage}
 
 \begin{minipage}{0.6\textwidth}
@@ -313,7 +313,7 @@ Une pile vide est le signal de terminaison de l'algorithme. On se retrouve alors
 
 \end{minipage}
 \begin{minipage}{0.42\textwidth}
-\includegraphics[width=\linewidth]{report/pics/backtracking8.png}
+\includegraphics[width=\linewidth]{pics/backtracking8.png}
 \end{minipage}
 
 Sur les figures ci-dessous, on montre différents labyrinthes parfaits générés par notre algorithme de Backtracking une fois ce dernier implémenté.
