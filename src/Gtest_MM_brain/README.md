@@ -72,7 +72,7 @@ add_executable(runTests tests.cpp)
 target_link_libraries(runTests ${GTEST_LIBRARIES} pthread)
 ```
 
-## Compile and run the tests
+## Compile and run the tests
 ```bash
 cmake CMakeLists.txt
 make
