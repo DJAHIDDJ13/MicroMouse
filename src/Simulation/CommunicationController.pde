@@ -40,13 +40,18 @@ public class CommunicationController {
                         originPos = {origin.x, origin.y};
 
     int i = 0;
-    
-    for (Vec2 sensorPos : maze.getVehicle().getSensorPos()) {
+    Vec2[] sensorsPosTmp = {  maze.getVehicle().getSensorPos()[3],
+                              maze.getVehicle().getSensorPos()[2],
+                              maze.getVehicle().getSensorPos()[1],
+                              maze.getVehicle().getSensorPos()[0]
+                            };
+
+    for (Vec2 sensorPos : sensorsPosTmp) {
       sensorsPos[i] = sensorPos.x;
       i++;
       sensorsPos[i] = sensorPos.y;
       i++;
-      sensorsPos[i] = maze.getVehicle().getSensorAngles()[(i+1)/maze.getVehicle().getSensorPos().length];
+      sensorsPos[i] = maze.getVehicle().getSensorAngles()[(maze.getVehicle().getSensorPos().length - 1) - ((i+1)/maze.getVehicle().getSensorPos().length)];
       i++;
   }
     
@@ -62,14 +67,14 @@ public class CommunicationController {
     headerMessage.setContent();
     this.writer.writeFifo(headerMessage);
   }
-  
-  public void update() {
+   //<>//
+  public void update() { //<>//
     /* SENSORS POSITIONS
      *    _______________
-     *   / 2          1  \
+     *   / 2          1  \ //<>//
      *  / 3             0 \  //<>// //<>//
      *  Rearrange to become :  //<>// //<>//
-     *    _______________
+     *    _______________ //<>//
      *   / 1          2  \
      *  / 0             3 \  //<>// //<>//
      */
@@ -86,13 +91,6 @@ public class CommunicationController {
                             sensors[1].getValue(), 
                             sensors[0].getValue()};
 
-    /*
-    for (int i = 0; i < distanceData.length / 2; i++) {
-      tmp_float = distanceData[i].getValue();
-      distanceData[i] = distanceData[distanceData.length - 1 - i];
-      distanceData[distanceData.length - 1 - i] = tmp_float;
-    }
-    */
     sensorMessage.setDistanceData(distanceData);
     sensorMessage.setAccelerometerData(accelerometerData);
     sensorMessage.setEncoderData(maze.vehicle.getEncoderData());

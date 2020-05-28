@@ -57,49 +57,56 @@ void update_cell(struct Micromouse* status)
 
 WallPosition* detect_wall(struct Micromouse status) {
    WallPosition *wall_positions = malloc(sizeof(WallPosition) * 4);
-
    int i = 0;
    Vec2 source = { .x = 0, .y = 0 };
    Vec2 target = { .x = 0, .y = 0 };
    Vec2 relative_cell_pos;
-
-   WallPosition wall_position;
+   float current_vehicle_angle, doubt_range = 1.5;
 
    for (i = 0; i < NB_SENSOR; i++) {
       if (status.sensor_data.sensors[i] > 0) {
+         current_vehicle_angle = status.cur_pose.ang.z + M_PI;
          /* Compute source position */
-         source.x = status.cur_pose.pos.x + status.header_data.sensors_position[i].x * cos(status.cur_pose.ang.z+M_PI) - status.header_data.sensors_position[i].y * sin(status.cur_pose.ang.z+M_PI);
-         source.y = status.cur_pose.pos.y + status.header_data.sensors_position[i].x * sin(status.cur_pose.ang.z+M_PI) + status.header_data.sensors_position[i].y * cos(status.cur_pose.ang.z+M_PI);
+         source.x = status.cur_pose.pos.x + status.header_data.sensors_position[i].x * cos(current_vehicle_angle) - status.header_data.sensors_position[i].y * sin(current_vehicle_angle);
+         source.y = status.cur_pose.pos.y + status.header_data.sensors_position[i].x * sin(current_vehicle_angle) + status.header_data.sensors_position[i].y * cos(current_vehicle_angle);
          /* Compute sensor and wall intersection */
-         target.x = source.x + status.sensor_data.sensors[i] * (10.0/1024.0) * cos(status.header_data.sensors_position[i].z*(M_PI/180) + status.cur_pose.ang.z+M_PI);
-         target.y = source.y + status.sensor_data.sensors[i] * (10.0/1024.0) * sin(status.header_data.sensors_position[i].z*(M_PI/180) + status.cur_pose.ang.z+M_PI);
+         target.x = source.x + status.sensor_data.sensors[i] * (10.0/1024.0) * cos(status.header_data.sensors_position[i].z*(M_PI/180) + current_vehicle_angle);
+         target.y = source.y + status.sensor_data.sensors[i] * (10.0/1024.0) * sin(status.header_data.sensors_position[i].z*(M_PI/180) + current_vehicle_angle);
          /* Add offset */
          source.x = source.x - status.header_data.origin_x;
          source.y = source.y - status.header_data.origin_y;
 
          target.x = target.x - status.header_data.origin_x;
          target.y = target.y - status.header_data.origin_y;
+
          /* Compute cell */
          relative_cell_pos.x = fmod(target.x, status.header_data.box_width);
          relative_cell_pos.y = fmod(target.y, status.header_data.box_height);
 
          wall_positions[i].cell_pos.x = (int)(target.x / status.header_data.box_width);
          wall_positions[i].cell_pos.y = (int)-(target.y / status.header_data.box_height);
+
          /* Compute wall position */
-         if (  relative_cell_pos.x > -relative_cell_pos.y && 
-               status.header_data.box_width - relative_cell_pos.x > -relative_cell_pos.y) {
+         if (  relative_cell_pos.x - doubt_range > -relative_cell_pos.y && 
+               status.header_data.box_width - relative_cell_pos.x - doubt_range > -relative_cell_pos.y) {
             wall_positions[i].wall_pos = WallTop;
-         } else if ( relative_cell_pos.x > -relative_cell_pos.y && 
-                     status.header_data.box_width - relative_cell_pos.x < -relative_cell_pos.y) {
+         } else if ( relative_cell_pos.x - doubt_range > -relative_cell_pos.y && 
+                     status.header_data.box_width - relative_cell_pos.x + doubt_range < -relative_cell_pos.y) {
             wall_positions[i].wall_pos = WallRight;
-         } else if ( relative_cell_pos.x < -relative_cell_pos.y && 
-                     status.header_data.box_width - relative_cell_pos.x < -relative_cell_pos.y) {
+         } else if ( relative_cell_pos.x + doubt_range < -relative_cell_pos.y && 
+                     status.header_data.box_width - relative_cell_pos.x + doubt_range < -relative_cell_pos.y) {
             wall_positions[i].wall_pos = WallBottom;
-         } else if ( relative_cell_pos.x < -relative_cell_pos.y && 
-                     status.header_data.box_width - relative_cell_pos.x > -relative_cell_pos.y) {
+         } else if ( relative_cell_pos.x + doubt_range < -relative_cell_pos.y && 
+                     status.header_data.box_width - relative_cell_pos.x - doubt_range > -relative_cell_pos.y) {
             wall_positions[i].wall_pos = WallLeft;
+         } else {
+            /* can't decide */
+            wall_positions[i].cell_pos.x = -1;
+            wall_positions[i].cell_pos.y = -1;
+            wall_positions[i].wall_pos = NoWall;
          }
       } else {
+         /* No wall */
          wall_positions[i].cell_pos.x = -1;
          wall_positions[i].cell_pos.y = -1;
          wall_positions[i].wall_pos = NoWall;
@@ -113,4 +120,40 @@ float float_abs(float val) {
       return -val;
    else
       return val;
+}
+
+void vote_for_walls(WallPosition *detected_walls, int **vertical_walls, int **horizontal_walls) {
+   int i = 0, cell_x, cell_y;
+
+   for (i = 0; i < NB_SENSOR; i++) {
+
+      if (detected_walls[i].cell_pos.x >= 0 && detected_walls[i].cell_pos.y >= 0) {
+         cell_x = detected_walls[i].cell_pos.x + 1;
+         cell_y = detected_walls[i].cell_pos.y + 1;
+         if ((detected_walls[i].wall_pos & 24) > 0)
+            vertical_walls[cell_x - (detected_walls[i].wall_pos & 1)][cell_y]++;
+         else
+            horizontal_walls[cell_x][cell_y - (detected_walls[i].wall_pos & 1)]++;
+      }
+   }
+}
+
+void display_logical_maze(struct Micromouse status, int threshold, int **vertical_walls, int **horizontal_walls) {
+   int i = 0, j = 0;
+   printf("##################\n");
+   for (i = 0; i < (status.header_data.maze_width / status.header_data.box_width) + 1; i++) {
+      for (j = 0; j < (status.header_data.maze_height / status.header_data.box_height) + 1; j++) {
+         if (horizontal_walls[j][i] > threshold) {
+            printf("_");
+         } else
+            printf(" ");
+         
+         if (vertical_walls[j][i] > threshold)
+            printf("|");
+         else
+            printf(" ");
+      }
+      printf("\n");
+   }
+   printf("##################\n");
 }
