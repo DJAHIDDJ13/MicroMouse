@@ -38,7 +38,7 @@ public class Listener extends Thread {
 
         CommunicationUtility.logMessage("INFO", "Listener", "run", "Starting listener...");
         while (true) {
-            CommunicationUtility.logMessage("INFO", "Listener", "run", "Listening...");
+            /*CommunicationUtility.logMessage("INFO", "Listener", "run", "Listening...");*/
             readFifo();
         }
     }
