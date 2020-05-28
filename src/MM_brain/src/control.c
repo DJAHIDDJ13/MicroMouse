@@ -110,12 +110,16 @@ void fwd_PID(struct Micromouse* status)
          left_sensor = status->sensor_data.sensors[2],
          right_middle_sensor = status->sensor_data.sensors[0],
          left_middle_sensor = status->sensor_data.sensors[3];
-   float err = (left_sensor - right_sensor) / 3;
-
+   float err = (left_sensor - right_sensor) / 4;
+/*
+   if(err < 10) {
+      status->
+   }
+*/
    if(left_sensor < 0 && right_sensor > 0) {
-      err = right_sensor / 3;
+      err = right_sensor / 4;
    } else if(right_sensor < 0 && left_sensor > 0) {
-      err = -left_sensor / 3;
+      err = -left_sensor / 4;
    }
 
    // calling the general PID function   
