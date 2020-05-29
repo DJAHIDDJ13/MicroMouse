@@ -101,7 +101,6 @@ void fwd_PID(struct Micromouse* status)
 {
    static float old_err = 0.0, cumul_err = 0.0;
    static int err_counter = 0;
-   static int adj = 0;
    printf("NEED TO GO FORWARD\n");
    // NO CHOICE HERE
    // do one step of moving then back to default state
@@ -130,8 +129,7 @@ void fwd_PID(struct Micromouse* status)
       err_counter = 0;
 
    if(err_counter > 10) {
-      adj++;
-      printf("\x1b[32m" "[%d]Readjusting the estimation ang = %g -> ", adj, status->cur_pose.ang.z);
+      printf("\x1b[32m" "Readjusting the estimation ang = %g -> ", status->cur_pose.ang.z);
       int direction = round(status->cur_pose.ang.z / (M_PI_2));
       status->cur_pose.ang.z = M_PI_2 * direction;
       status->prev_pose.ang.z = M_PI_2 * direction;
