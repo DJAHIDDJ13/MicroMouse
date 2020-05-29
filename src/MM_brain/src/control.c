@@ -100,7 +100,8 @@ void turn_back_PID(struct Micromouse* status, int init)
 void fwd_PID(struct Micromouse* status)
 {
    static float old_err = 0.0, cumul_err = 0.0;
-   
+   static int err_counter = 0;
+   static int adj = 0;
    printf("NEED TO GO FORWARD\n");
    // NO CHOICE HERE
    // do one step of moving then back to default state
@@ -111,19 +112,49 @@ void fwd_PID(struct Micromouse* status)
          right_middle_sensor = status->sensor_data.sensors[0],
          left_middle_sensor = status->sensor_data.sensors[3];
    float err = (left_sensor - right_sensor) / 4;
-/*
-   if(err < 10) {
-      status->
-   }
-*/
+
+   printf("\x1b[31m" "ERRROR = %g, err counter = %d\n" "\x1b[0m", err, err_counter);
+
    if(left_sensor < 0 && right_sensor > 0) {
       err = right_sensor / 4;
    } else if(right_sensor < 0 && left_sensor > 0) {
       err = -left_sensor / 4;
    }
 
+   /**
+    * Readjusting the position and angle estimation if the vehicle is moving forward
+    */
+   if(fabs(err) < 13.0) 
+      err_counter++;
+   else
+      err_counter = 0;
+
+   if(err_counter > 10) {
+      adj++;
+      printf("\x1b[32m" "[%d]Readjusting the estimation ang = %g -> ", adj, status->cur_pose.ang.z);
+      int direction = round(status->cur_pose.ang.z / (M_PI_2));
+      status->cur_pose.ang.z = M_PI_2 * direction;
+      status->prev_pose.ang.z = M_PI_2 * direction;
+      printf("%g ", status->cur_pose.ang.z);
+      if(direction % 2 == 0) {
+         float boxw = status->header_data.box_width;
+         printf("posx = %g -> ", status->cur_pose.pos.x);
+         status->cur_pose.pos.x = status->header_data.origin_x + boxw * (0.5f + status->cur_cell.x);
+         status->prev_pose.pos.x = status->header_data.origin_x + boxw * (0.5f + status->cur_cell.x);
+
+         printf("%g ", status->cur_pose.pos.x);
+      } else {
+         float boxh = status->header_data.box_height;
+         printf("posy = %g -> ", status->cur_pose.pos.y);
+         status->cur_pose.pos.y = status->header_data.origin_y + boxh * (0.5f + status->cur_cell.y);
+         status->prev_pose.pos.y = status->header_data.origin_y + boxh * (0.5f + status->cur_cell.y);
+         printf("%g""\x1b[0m\n", status->cur_pose.pos.y);
+      }
+      err_counter = 0;
+   }
+ 
    // calling the general PID function   
-   const float Kp = 1.2, Kd = 400, Ki = 0.005;
+   const float Kp = 1.2, Kd = 100, Ki = 0.005;
    float out = PID(status, err, Kp, Ki, Kd, &old_err, &cumul_err);
 
    // using the output value
@@ -185,7 +216,6 @@ void update_control(struct Micromouse* status, char init)
    }
    if(((status->sensor_data.sensors[0] > 0 || status->sensor_data.sensors[3] > 0) &&
        (status->sensor_data.sensors[1] < 0 || status->sensor_data.sensors[2] < 0)) ||
-
       ((status->sensor_data.sensors[0] > 0 || status->sensor_data.sensors[3] > 0) &&
        (status->sensor_data.sensors[1] > TURNING_LENGTH_THRESHOLD || status->sensor_data.sensors[2] > TURNING_LENGTH_THRESHOLD)))
 
