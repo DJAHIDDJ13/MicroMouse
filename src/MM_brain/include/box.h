@@ -28,11 +28,11 @@ enum wall_indicator{
     BottomIndicator = 8
 };
 
-#define ADD_INDICATOR(X, Y) (X | Y)
-#define GET_LEFT(X) (X & 1)
-#define GET_RIGHT(X) (X & 2)
-#define GET_TOP(X) (X & 4)
-#define GET_BOTTOM(X) (X & 8)
+#define ADD_INDICATOR(X, Y) ((X) | (Y))
+#define GET_LEFT(X) ((X) & 1)
+#define GET_RIGHT(X) ((X) & 2)
+#define GET_TOP(X) ((X) & 4)
+#define GET_BOTTOM(X) ((X) & 8)
 
 /*    Structure representing a Box of the maze    */
 struct Box {
