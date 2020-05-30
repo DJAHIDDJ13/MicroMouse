@@ -5,9 +5,9 @@
 #include <math.h>
 #include <stdio.h>
 
-#define BASE_SPEED 40
+#define BASE_SPEED 20
 #define TURNING_LENGTH_THRESHOLD 850
-#define MAX_SPEED 500
+#define MAX_SPEED 40
 
 float PID(struct Micromouse* status, float err,
          const float Kp, const float Ki, const float Kd,
@@ -152,7 +152,7 @@ void fwd_PID(struct Micromouse* status)
    }
  
    // calling the general PID function   
-   const float Kp = 1.2, Kd = 100, Ki = 0.005;
+   const float Kp = .5, Kd = 50, Ki = 0.001;
    float out = PID(status, err, Kp, Ki, Kd, &old_err, &cumul_err);
 
    // using the output value
