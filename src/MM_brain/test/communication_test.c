@@ -66,18 +66,18 @@ int main(void)
 
             break;
          case SENSOR_FLAG:
-            dump_sensor_data(status);
+            //dump_sensor_data(status);
             update_cell(&status);
             update_control(&status, 0); // initialise values
             break;
       }
-      dump_estimation_data(status);
+      //dump_estimation_data(status);
       write_fifo(tx_msg, MOTOR_FLAG, &status);
       
       vote_for_walls(detect_wall(status), vertical_walls, horizontal_walls);
       /* Adjust display time step */
-      if ((int)time(NULL)%5 == 4)
-         display_logical_maze(status, 25, vertical_walls, horizontal_walls);
+      //if ((int)time(NULL)%5 == 4)
+         //display_logical_maze(status, 25, vertical_walls, horizontal_walls);
 
    }
 
