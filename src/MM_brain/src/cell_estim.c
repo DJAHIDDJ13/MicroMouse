@@ -122,21 +122,71 @@ float float_abs(float val) {
       return val;
 }
 
-void vote_for_walls(WallPosition *detected_walls, int **vertical_walls, int **horizontal_walls) {
-   int i = 0, cell_x, cell_y;
+void vote_for_walls(struct Maze *logical_maze, WallPosition *detected_walls, int **vertical_walls, int **horizontal_walls, int threshold) {
+   struct Box box_to_add;
+   int i = 0;
+   int16_t cell_x, cell_y;
 
    for (i = 0; i < NB_SENSOR; i++) {
 
       if (detected_walls[i].cell_pos.x >= 0 && detected_walls[i].cell_pos.y >= 0) {
          cell_x = detected_walls[i].cell_pos.x + 1;
          cell_y = detected_walls[i].cell_pos.y + 1;
-         if ((detected_walls[i].wall_pos & 24) > 0)
+         if ((detected_walls[i].wall_pos & 24) > 0) {
             vertical_walls[cell_x - (detected_walls[i].wall_pos & 1)][cell_y]++;
-         else
+            /* Populate maze data struct. */
+            if (vertical_walls[cell_x - (detected_walls[i].wall_pos & 1)][cell_y] > threshold) {
+               /* ADD RIGHT AT (OX, OY) WALL */
+               box_to_add = get_box(*logical_maze, (cell_x - (detected_walls[i].wall_pos & 1)) - 1, cell_y - 1);
+               if (box_to_add.OX < 0 || box_to_add.OY < 0) {
+                  box_to_add.OX = (cell_x - (detected_walls[i].wall_pos & 1)) - 1;
+                  box_to_add.OY = cell_y - 1;
+                  box_to_add.wallIndicator = ADD_INDICATOR(box_to_add.wallIndicator, RightIndicator);
+                  insertBox(box_to_add, *logical_maze);
+               }
+               /* ADD LEFT AT (OX+1, OY) WALL */
+               box_to_add = get_box(*logical_maze, cell_x - (detected_walls[i].wall_pos & 1), cell_y - 1);
+               if (box_to_add.OX < 0 || box_to_add.OY < 0) {
+                  box_to_add.OX = cell_x - (detected_walls[i].wall_pos & 1);
+                  box_to_add.OY = cell_y - 1;
+                  box_to_add.wallIndicator = ADD_INDICATOR(box_to_add.wallIndicator, LeftIndicator);
+                  insertBox(box_to_add, *logical_maze);
+               }
+            }
+         } else {
             horizontal_walls[cell_x][cell_y - (detected_walls[i].wall_pos & 1)]++;
+            /* Populate maze data struct. */
+            if (horizontal_walls[cell_x][cell_y - (detected_walls[i].wall_pos & 1)] > threshold) {
+               /* ADD BOTTOM AT (OX, OY) WALL */
+               box_to_add = get_box(*logical_maze, cell_x - 1, (cell_y - (detected_walls[i].wall_pos & 1)) - 1);
+               if (box_to_add.OX < 0 || box_to_add.OY < 0) {
+                  box_to_add.OX = cell_x - 1;
+                  box_to_add.OY = (cell_y - (detected_walls[i].wall_pos & 1)) - 1;
+                  box_to_add.wallIndicator = ADD_INDICATOR(box_to_add.wallIndicator, BottomIndicator);
+                  insertBox(box_to_add, *logical_maze);
+               }
+               /* ADD TOP AT (OX, OY+1) WALL */
+               box_to_add = get_box(*logical_maze, cell_x - 1, cell_y - (detected_walls[i].wall_pos & 1));
+               if (box_to_add.OX < 0 || box_to_add.OY < 0) {
+                  box_to_add.OX = cell_x - 1;
+                  box_to_add.OY = cell_y - (detected_walls[i].wall_pos & 1);
+                  box_to_add.wallIndicator = ADD_INDICATOR(box_to_add.wallIndicator, TopIndicator);
+                  insertBox(box_to_add, *logical_maze);
+               }
+            } 
+         } 
       }
    }
 }
+
+int **init_vote_array(int size) {
+   int **vote_array, i = 0;
+   vote_array = malloc(size * sizeof(*vote_array));
+   for ( i = 0; i < size; i++)
+      vote_array[i] = malloc(size * sizeof(*vote_array[i]));
+   return vote_array;
+}
+
 
 void display_logical_maze(struct Micromouse status, int threshold, int **vertical_walls, int **horizontal_walls) {
    int i = 0, j = 0;
