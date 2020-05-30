@@ -32,3 +32,20 @@ void displayBox(struct Box box)
 {
    printf("(wallIndicator = %d, value = %d)\n", box.wallIndicator, box.value);
 }
+
+/* Create wallIndicator using booleans */
+int16_t createWallIndicator(bool top, bool bottom, bool left, bool right)
+{
+   int16_t wallIndicator = NoneIndicator;
+
+   if(top)
+      wallIndicator = ADD_INDICATOR(wallIndicator, TopIndicator);
+   if(bottom)
+      wallIndicator = ADD_INDICATOR(wallIndicator, BottomIndicator);
+   if(left)
+      wallIndicator = ADD_INDICATOR(wallIndicator, LeftIndicator);
+   if(right)
+      wallIndicator = ADD_INDICATOR(wallIndicator, RightIndicator);
+
+   return wallIndicator;
+}

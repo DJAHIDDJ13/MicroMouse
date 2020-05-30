@@ -67,4 +67,7 @@ struct Box createBox(int16_t OX, int16_t OY, int16_t wallIndicator);
 /* Display a box */
 void displayBox(struct Box box);
 
+/* Create wallIndicator using booleans */
+int16_t createWallIndicator(bool top, bool bottom, bool left, bool right);
+
 #endif

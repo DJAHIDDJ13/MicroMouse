@@ -77,7 +77,7 @@ struct Box minValueNeighbour(struct Maze maze, int16_t OX, int16_t OY)
    box.value = INT16_MAX;
 
    //Top neighbour
-   if((OY - 1 >= 0) && top_access_check(boxs[OY * size + OX])
+   if((OY - 1 >= 0) && GET_TOP(boxs[OY * size + OX].wallIndicator) == 0
          && boxs[(OY - 1)*size + OX].value < box.value) {
 
       box.OX = OX;
@@ -86,7 +86,7 @@ struct Box minValueNeighbour(struct Maze maze, int16_t OX, int16_t OY)
    }
 
    //Bottom neighbour
-   if((OY + 1 < size) && bottom_access_check(boxs[OY * size + OX])
+   if((OY + 1 < size) && GET_BOTTOM(boxs[OY * size + OX].wallIndicator) == 0
          && boxs[(OY + 1)*size + OX].value < box.value) {
 
       box.OX = OX;
@@ -95,7 +95,7 @@ struct Box minValueNeighbour(struct Maze maze, int16_t OX, int16_t OY)
    }
 
    //Left neighbour
-   if((OX - 1 >= 0) && left_access_check(boxs[OY * size + OX])
+   if((OX - 1 >= 0) && GET_LEFT(boxs[OY * size + OX].wallIndicator) == 0
          && boxs[OY * size + (OX - 1)].value < box.value) {
 
       box.OX = OX - 1;
@@ -104,7 +104,7 @@ struct Box minValueNeighbour(struct Maze maze, int16_t OX, int16_t OY)
    }
 
    //Right neighbour
-   if((OX + 1 < size) && right_access_check(boxs[OY * size + OX])
+   if((OX + 1 < size) && GET_RIGHT(boxs[OY * size + OX].wallIndicator) == 0
          && boxs[OY * size + (OX + 1)].value < box.value) {
 
       box.OX = OX + 1;
