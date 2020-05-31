@@ -20,6 +20,7 @@ public class SimulationController {
   private boolean botControl = false;
   private boolean displaySensors;
   private boolean debugMode;
+  private boolean contact;
   private int numberOfConsoleTextChange;
   
   private boolean start;
@@ -36,10 +37,15 @@ public class SimulationController {
     displaySensors = true;
     debugMode = false;
     start = true;
+    contact = false;
     
     numberOfConsoleTextChange = 0;
     
     refreshMaze(true);
+  }
+  
+  public boolean getContact() {
+    return contact;
   }
   
   public boolean getDebugMode() {
@@ -182,6 +188,30 @@ public class SimulationController {
     informationPanel.mousePressedHandler();
     debugPanel.mousePressedHandler();
   }
+  
+  // Collision event functions!
+  void beginContact(Contact cp) {
+    // Get both fixtures
+    Fixture f1 = cp.getFixtureA();
+    Fixture f2 = cp.getFixtureB();
+    // Get both bodies
+    Body b1 = f1.getBody();
+    Body b2 = f2.getBody();
+  
+    // Get our objects that reference these bodies
+    Object o1 = b1.getUserData();
+    Object o2 = b2.getUserData();
+    
+    println(o1);
+  
+    if (o1.getClass() == Vehicle.class && o2.getClass() == Wall.class) {
+       contact = true;     
+    }
+  } 
+  
+  void endContact(Contact cp) {
+    
+  }
 
   public void update() {
     controlPanel.update();
@@ -245,5 +275,5 @@ public class SimulationController {
     fill(255);
     textSize(15);
     text("FPS: "+round(frameRate), 1400, 25);
-  }
+  } 
 }

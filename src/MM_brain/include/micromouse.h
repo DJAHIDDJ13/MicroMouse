@@ -53,17 +53,17 @@ enum sensor_position{SensorLeft, SensorTopLeft, SensorTopRight, SensorRight};
 
 typedef struct {
    float maze_width,
-       maze_height;
+         maze_height;
 
    float initial_x,
-       initial_y,
-       initial_angle;
+         initial_y,
+         initial_angle;
 
    float target_x,
-       target_y;
+         target_y;
 
    float box_width,
-       box_height;
+         box_height;
 
    float lines_per_revolution, 
          wheel_circumference;
