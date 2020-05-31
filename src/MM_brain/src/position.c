@@ -16,13 +16,13 @@ void init_pos(Vec3 i_pos, Vec3 i_vel, Vec3 i_acc,
    // ms to s
    float ts = status->time_step / 1000.0f;
    
-   status->prev_pose.pos.x = i_pos.x + i_vel.x * ts + 0.5f * i_acc.x * ts * ts;
-   status->prev_pose.pos.y = i_pos.y + i_vel.y * ts + 0.5f * i_acc.y * ts * ts;
-   status->prev_pose.pos.z = i_pos.z + i_vel.z * ts + 0.5f * i_acc.z * ts * ts;
+   status->prev_pose.pos.x = status->cur_pose.pos.x = i_pos.x + i_vel.x * ts + 0.5f * i_acc.x * ts * ts;
+   status->prev_pose.pos.y = status->cur_pose.pos.y = i_pos.y + i_vel.y * ts + 0.5f * i_acc.y * ts * ts;
+   status->prev_pose.pos.z = status->cur_pose.pos.z = i_pos.z + i_vel.z * ts + 0.5f * i_acc.z * ts * ts;
 
-   status->prev_pose.ang.x = i_ang.x + i_ang_vel.x * ts + 0.5f * i_ang_acc.x * ts * ts;
-   status->prev_pose.ang.y = i_ang.y + i_ang_vel.y * ts + 0.5f * i_ang_acc.y * ts * ts;
-   status->prev_pose.ang.z = i_ang.z + i_ang_vel.z * ts + 0.5f * i_ang_acc.z * ts * ts;
+   status->prev_pose.ang.x = status->cur_pose.ang.x = i_ang.x + i_ang_vel.x * ts + 0.5f * i_ang_acc.x * ts * ts;
+   status->prev_pose.ang.y = status->cur_pose.ang.y =  i_ang.y + i_ang_vel.y * ts + 0.5f * i_ang_acc.y * ts * ts;
+   status->prev_pose.ang.z = status->cur_pose.ang.z = i_ang.z + i_ang_vel.z * ts + 0.5f * i_ang_acc.z * ts * ts;
 }
 
 
@@ -31,12 +31,15 @@ void init_pos(Vec3 i_pos, Vec3 i_vel, Vec3 i_acc,
  */
 void update_pos(struct Micromouse* m)
 {
+   // updating the previous pose value
+   m->prev_pose = m->cur_pose;
+
    // ms to s
    float ts = m->time_step / 1000.0f;
 
-   m->cur_pose.ang.x = m->prev_pose.ang.x +  m->sensor_data.gyro.ypr.x * ts;
-   m->cur_pose.ang.y = m->prev_pose.ang.y +  m->sensor_data.gyro.ypr.y * ts;
-   m->cur_pose.ang.z = m->prev_pose.ang.z +  m->sensor_data.gyro.ypr.z * ts;
+   m->cur_pose.ang.x = m->cur_pose.ang.x +  m->sensor_data.gyro.ypr.x * ts;
+   m->cur_pose.ang.y = m->cur_pose.ang.y +  m->sensor_data.gyro.ypr.y * ts;
+   m->cur_pose.ang.z = m->cur_pose.ang.z +  m->sensor_data.gyro.ypr.z * ts;
    
    // normalize to [0, 2*PI]
    if(m->cur_pose.ang.z > 2 * M_PI || m->cur_pose.ang.z < 0)
@@ -50,15 +53,13 @@ void update_pos(struct Micromouse* m)
    displacement = displacement / m->header_data.lines_per_revolution * m->header_data.wheel_circumference;
    
    // finding the displacement
-   m->cur_pose.pos.x = m->prev_pose.pos.x - displacement * sin(m->cur_pose.ang.z);
-   m->cur_pose.pos.y = m->prev_pose.pos.y + displacement * cos(m->cur_pose.ang.z);
+   m->cur_pose.pos.x = m->cur_pose.pos.x - displacement * sin(m->cur_pose.ang.z);
+   m->cur_pose.pos.y = m->cur_pose.pos.y + displacement * cos(m->cur_pose.ang.z);
    m->cur_pose.pos.z = 0;
    
    // updating the previous encoder values
    m->prev_enc[0] = m->sensor_data.encoders[0];
    m->prev_enc[1] = m->sensor_data.encoders[1];
  
-   // updating the previous pose value
-   m->prev_pose = m->cur_pose;
 }
 
