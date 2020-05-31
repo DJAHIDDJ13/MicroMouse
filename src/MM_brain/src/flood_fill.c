@@ -80,7 +80,7 @@ void floodFill(struct Maze maze, int16_t OX, int16_t OY)
       fill(maze, XY.OX, XY.OY, colorMaze);
 
       //Top neighbour, check if ther is no wall
-      if(top_access_check(boxs[(XY.OY)*size + XY.OX])
+      if(GET_TOP(boxs[(XY.OY)*size + XY.OX].wallIndicator) == 0
             && boxs[(XY.OY - 1)*size + XY.OX].value == -1 && boxs[(XY.OY - 1)*size + XY.OX].value != -2) {
 
          pushQueue_XY(&queue, createOddpair_XY(XY.OX, XY.OY - 1, 1 - XY.sign));
@@ -88,7 +88,7 @@ void floodFill(struct Maze maze, int16_t OX, int16_t OY)
       }
 
       //Bottom neighbour, check if ther is no wall
-      if(bottom_access_check(boxs[(XY.OY)*size + XY.OX])
+      if(GET_BOTTOM(boxs[(XY.OY)*size + XY.OX].wallIndicator) == 0
             && boxs[(XY.OY + 1)*size + XY.OX].value == -1 && boxs[(XY.OY + 1)*size + XY.OX].value != -2) {
 
          pushQueue_XY(&queue, createOddpair_XY(XY.OX, XY.OY + 1, 1 - XY.sign));
@@ -96,7 +96,7 @@ void floodFill(struct Maze maze, int16_t OX, int16_t OY)
       }
 
       //Left neighbour, check if ther is no wall
-      if(left_access_check(boxs[XY.OY * size + (XY.OX)])
+      if(GET_LEFT(boxs[XY.OY * size + (XY.OX)].wallIndicator) == 0
             && boxs[XY.OY * size + (XY.OX - 1)].value == -1 && boxs[XY.OY * size + (XY.OX - 1)].value != -2) {
 
          pushQueue_XY(&queue, createOddpair_XY(XY.OX - 1, XY.OY, 1 - XY.sign));
@@ -104,7 +104,7 @@ void floodFill(struct Maze maze, int16_t OX, int16_t OY)
       }
 
       //Right neighbour, check if ther is no wall
-      if(right_access_check(boxs[XY.OY * size + (XY.OX)])
+      if(GET_RIGHT(boxs[XY.OY * size + (XY.OX)].wallIndicator) == 0
             && boxs[XY.OY * size + (XY.OX + 1)].value == -1 && boxs[XY.OY * size + (XY.OX + 1)].value != -2) {
          pushQueue_XY(&queue, createOddpair_XY(XY.OX + 1, XY.OY, 1 - XY.sign));
          boxs[XY.OY * size + (XY.OX + 1)].value = -2;

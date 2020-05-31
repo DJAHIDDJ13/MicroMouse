@@ -36,6 +36,8 @@ struct Maze {
 /* Initialize a maze of size N */
 struct Maze initMaze(int16_t N);
 
+struct Box get_box(struct Maze maze, int16_t OX, int16_t OY);
+
 /* Insert a box with (OX, OY) coordinates in the maze */
 int insertBox(struct Box box, struct Maze maze);
 

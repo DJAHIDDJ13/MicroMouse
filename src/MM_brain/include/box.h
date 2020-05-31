@@ -20,6 +20,20 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+enum wall_indicator{
+    NoneIndicator = 0, 
+    LeftIndicator = 1, 
+    RightIndicator = 2, 
+    TopIndicator = 4, 
+    BottomIndicator = 8
+};
+
+#define ADD_INDICATOR(X, Y) ((X) | (Y))
+#define GET_LEFT(X) ((X) & 1)
+#define GET_RIGHT(X) ((X) & 2)
+#define GET_TOP(X) ((X) & 4)
+#define GET_BOTTOM(X) ((X) & 8)
+
 /*    Structure representing a Box of the maze    */
 struct Box {
    /* Our orthonormal mark
@@ -50,19 +64,10 @@ struct Box {
 /* Create a box with (wallIndicator) as a indicator for the walls of this box */
 struct Box createBox(int16_t OX, int16_t OY, int16_t wallIndicator);
 
-/* Check the access for the left box*/
-bool left_access_check(struct Box box);
-
-/* Check the access for the top box*/
-bool top_access_check(struct Box box);
-
-/* Check the access for the rigth box*/
-bool right_access_check(struct Box box);
-
-/* Check the access for the bottom box*/
-bool bottom_access_check(struct Box box);
-
 /* Display a box */
 void displayBox(struct Box box);
+
+/* Create wallIndicator using booleans */
+int16_t createWallIndicator(bool top, bool bottom, bool left, bool right);
 
 #endif

@@ -34,8 +34,6 @@ TX_Message tx_msg;
 SensorData sensor_data;
 HeaderData header_data;
 
-int **vertical_walls, **horizontal_walls;
-
 int main(void)
 {
    log_message("INFO", "Listener", "run", "Starting listener...");
@@ -44,8 +42,9 @@ int main(void)
 
    create_fifo();
    
+   int **vertical_walls, **horizontal_walls;
+   struct Maze logical_maze;
    struct Micromouse status;
-   int i = 0;
 
    while(1) {
       read_fifo(&rx_msg);
@@ -57,12 +56,10 @@ int main(void)
             init_cell(&status);
             update_control(&status, 1); // initialise values
 
-            vertical_walls = malloc(((status.header_data.maze_width / status.header_data.box_width) + 1) * sizeof(*vertical_walls));
-            horizontal_walls = malloc(((status.header_data.maze_width / status.header_data.box_width) + 1) * sizeof(*horizontal_walls));
-            for ( i = 0; i < (status.header_data.maze_width / status.header_data.box_width) + 1; i++) {
-               vertical_walls[i] = malloc(((status.header_data.maze_height / status.header_data.box_height) + 1) * sizeof(*vertical_walls[i]));
-               horizontal_walls[i] = malloc(((status.header_data.maze_height / status.header_data.box_height) + 1) * sizeof(*horizontal_walls[i]));
-            }
+            vertical_walls = init_vote_array((status.header_data.maze_width / status.header_data.box_width) + 1);
+            horizontal_walls = init_vote_array((status.header_data.maze_width / status.header_data.box_width) + 1);
+
+            logical_maze = initMaze(status.header_data.maze_height / status.header_data.box_height);
 
             break;
          case SENSOR_FLAG:
@@ -75,10 +72,13 @@ int main(void)
       //dump_estimation_data(status);
       write_fifo(tx_msg, MOTOR_FLAG, &status);
       
-      vote_for_walls(detect_wall(status), vertical_walls, horizontal_walls);
+      vote_for_walls(&logical_maze, detect_wall(status), vertical_walls, horizontal_walls, 15);
       /* Adjust display time step */
-      //if ((int)time(NULL)%5 == 4)
-         //display_logical_maze(status, 25, vertical_walls, horizontal_walls);
+      if ((int)time(NULL)%5 == 4) {
+         //display_logical_maze(status, 15, vertical_walls, horizontal_walls);
+         displayMaze(logical_maze);
+      }
+         
 
    }
 
