@@ -108,10 +108,22 @@ void fwd_PID(struct Micromouse* status)
 
    printf("\x1b[31m" "ERRROR = %g, err counter = %d\n" "\x1b[0m", err, err_counter);
 
-   if(left_sensor < 0 && right_sensor > 0) {
+/*   if(left_sensor < 0 && right_sensor > 0) {
       err = right_sensor / 4;
    } else if(right_sensor < 0 && left_sensor > 0) {
       err = -left_sensor / 4;
+   }*/
+
+   float goal_ang = M_PI_2 * round(status->cur_pose.ang.z / (M_PI_2));
+   float ang_diff = status->cur_pose.ang.z - goal_ang;
+   if(left_sensor < 0 || right_sensor < 0) {
+      err = ang_diff * 5;
+
+      if(right_sensor > 0) {
+         err += (right_sensor - 500) / 100;
+      } else if(left_sensor > 0) {
+         err += (left_sensor - 500) / 100;
+      }
    }
 
    /**
