@@ -1,0 +1,1 @@
+Pour génerer les fichier STL, installer le logiciel FreeCad puis lancer ces fichier dans le program
