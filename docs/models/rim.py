@@ -36,6 +36,6 @@ miniholes = [(minihole_position * sin(radians(i * 360. / MINIHOLES)),
 rim = rim.faces('>Z').workplane()\
     .pushPoints(miniholes).hole(diameter=MINIHOLE_D)
 
-print("test")
-with open("C:\\Users\\djahi\\Desktop\\rim.stl", "w") as f:
+# Change the path to where you want the file
+with open("rim.stl", "w") as f:
 	cadquery.exporters.exportShape(rim, "STL", fileLike=f, tolerance=0.01)
