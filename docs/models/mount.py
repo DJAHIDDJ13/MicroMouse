@@ -72,5 +72,6 @@ mount = mount.faces('<Z').workplane()\
 mount = mount.edges('|Z').fillet(MOUNT_FILLET)
 
 print("test")
-with open("C:\\Users\\djahi\\Desktop\\mount.stl", "w") as f:
+# Change the path accordingly
+with open("mount.stl", "w") as f:
 	cadquery.exporters.exportShape(mount, "STL", fileLike=f, tolerance=0.01)
