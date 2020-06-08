@@ -56,8 +56,9 @@ int main(void)
             //dump_header_data(status);
             init_cell(&status);
 
-            vertical_walls = init_vote_array((status.header_data.maze_width / status.header_data.box_width) + 1);
-            horizontal_walls = init_vote_array((status.header_data.maze_width / status.header_data.box_width) + 1);
+
+            vertical_walls = init_vote_array((int)((status.header_data.maze_width / status.header_data.box_width) + 1.0));
+            horizontal_walls = init_vote_array((int)((status.header_data.maze_width / status.header_data.box_width) + 1.0));
 
             logical_maze = initMaze(status.header_data.maze_height / status.header_data.box_height);
             
