@@ -52,6 +52,8 @@ void floodFill(struct Maze maze, int16_t OX, int16_t OY)
 {
    struct oddpair_XY XY;
 
+   initFFMaze(maze);
+
    struct Box* boxs = maze.maze;
    int16_t size = maze.size;
 

@@ -45,6 +45,17 @@ struct Maze initMaze(int16_t N)
    return maze;
 }
 
+void initFFMaze(struct Maze maze) {
+   int x = 0, y = 0;
+   int N = maze.size;
+
+   for (y = 0; y < N; y++) {
+      for (x = 0; x < N; x++) {
+         maze.maze[y*N+x].value = -1;
+      }
+   }
+}
+
 struct Box get_box(struct Maze maze, int16_t OX, int16_t OY) {
    return maze.maze[OY*maze.size+OX];
 }
