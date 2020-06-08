@@ -36,8 +36,6 @@ struct Maze initMaze(int16_t N)
             maze.maze[y*N+x].wallIndicator = ADD_INDICATOR(maze.maze[y*N+x].wallIndicator, LeftIndicator);
          if (x == N-1 && y >= 0 && y < N) 
             maze.maze[y*N+x].wallIndicator = ADD_INDICATOR(maze.maze[y*N+x].wallIndicator, RightIndicator);
-         
-
          maze.maze[y*N+x].value = -1;
       }
    }
