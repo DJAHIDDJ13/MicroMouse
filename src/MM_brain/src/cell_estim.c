@@ -172,13 +172,19 @@ void vote_for_walls(struct Maze *logical_maze, WallPosition *detected_walls, int
 }
 
 int **init_vote_array(int size) {
-   int **vote_array, i = 0;
+   int **vote_array, i = 0, j = 0;
    vote_array = malloc(size * sizeof(*vote_array));
-   for ( i = 0; i < size; i++)
+   for (i = 0; i < size; i++)
       vote_array[i] = malloc(size * sizeof(*vote_array[i]));
+
+   for (i = 0; i < size; i++) {
+      for (j = 0; j < size; j++) {
+         vote_array[i][j] = 0;
+      }
+   }
+   
    return vote_array;
 }
-
 
 void display_logical_maze(struct Micromouse status, int threshold, int **vertical_walls, int **horizontal_walls) {
    int i = 0, j = 0;
