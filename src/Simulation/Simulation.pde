@@ -6,6 +6,9 @@ import org.jbox2d.collision.shapes.Shape;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.*;
+import org.jbox2d.callbacks.ContactListener;
+import org.jbox2d.callbacks.ContactImpulse;
+import org.jbox2d.collision.Manifold;
 import org.jbox2d.callbacks.RayCastCallback;
 
 // A reference to our box2d world
@@ -13,7 +16,7 @@ public static Box2DProcessing box2d;
 SimulationController simCon;
 
 public static final long  STARTING_TIME = System.currentTimeMillis();
-private final static int initialSize = 8;
+private final static int initialSize = 4;
 
 void setup(){
   size(1500,910);

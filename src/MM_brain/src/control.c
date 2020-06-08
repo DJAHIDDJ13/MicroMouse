@@ -25,7 +25,7 @@ float PID(struct Micromouse* status, float err,
 
    // integral
    float integral = *cumul_err * status->time_step;
-//   printf("derivative = %g, integral = %g\n", derivative, integral);
+////   printf("derivative = %g, integral = %g\n", derivative, integral);
    // output
    float out = Kp * err + Kd * derivative + Ki * integral;
 
@@ -35,7 +35,7 @@ float PID(struct Micromouse* status, float err,
    return out;
 }
 
-enum ControlState {DEFAULT, MOVE_FWD, TURN_BACK, TURN_DIST, TURN_POS} control_state;
+enum ControlState {DEFAULT, MOVE_FWD, TURN_BACK, TURN} control_state;
 
 void turn_back_PID(struct Micromouse* status, int init)
 {
@@ -55,7 +55,7 @@ void turn_back_PID(struct Micromouse* status, int init)
          left_middle_sensor = status->sensor_data.sensors[3];
 
    float ang_diff = -M_PI - (init_ang - status->cur_pose.ang.z);
-   printf("NEED TO GO BACK\n");
+   //printf("NEED TO GO BACK\n");
    // NO CHOICE HERE
    // Go backwards until threshold is cleared then
    // Actually do the turning until it's over
@@ -111,25 +111,25 @@ void readjust_position(struct Micromouse* status, float err, int init)
    }
 
    if(err_counter > 10) {
-//      printf("\x1b[32m" "Readjusting the estimation ang = %g -> ", status->cur_pose.ang.z);
-      printf("READJUSTING\n");
+////      printf("\x1b[32m" "Readjusting the estimation ang = %g -> ", status->cur_pose.ang.z);
+      //printf("READJUSTING\n");
       int direction = round(status->cur_pose.ang.z / (M_PI_2));
       status->cur_pose.ang.z = M_PI_2 * direction;
       status->prev_pose.ang.z = M_PI_2 * direction;
 
-//      printf("%g ", status->cur_pose.ang.z);
+////      printf("%g ", status->cur_pose.ang.z);
       if(direction % 2 == 0) {
          float boxw = status->header_data.box_width;
-//         printf("posx = %g -> ", status->cur_pose.pos.x);
+////         printf("posx = %g -> ", status->cur_pose.pos.x);
          status->cur_pose.pos.x = status->header_data.origin_x + boxw * (0.5f + status->cur_cell.x);
          status->prev_pose.pos.x = status->header_data.origin_x + boxw * (0.5f + status->cur_cell.x);
 
-//         printf("%g ", status->cur_pose.pos.x);
+////         printf("%g ", status->cur_pose.pos.x);
       } else {
          float boxh = status->header_data.box_height;
          status->cur_pose.pos.y = status->header_data.origin_y + boxh * (0.5f + status->cur_cell.y);
          status->prev_pose.pos.y = status->header_data.origin_y + boxh * (0.5f + status->cur_cell.y);
-//         printf("%g""\x1b[0m\n", status->cur_pose.pos.y);
+////         printf("%g""\x1b[0m\n", status->cur_pose.pos.y);
       }
 
       err_counter = 0;
@@ -142,7 +142,7 @@ void fwd_PID(struct Micromouse* status, int init)
    static float old_err2 = 0.0, cumul_err2 = 0.0;
    static Vec3 target_pos;
    static int check_x;
-   printf("NEED TO GO FORWARD\n");
+   //printf("NEED TO GO FORWARD\n");
 
    if(init) {
       target_pos = status->cur_pose.pos;
@@ -172,13 +172,13 @@ void fwd_PID(struct Micromouse* status, int init)
 
    // NO CHOICE HERE
    // do one step of moving then back to default state
-   printf("cell %d %d, pos = %g %g, target = %g %g\n",
+   /*printf("cell %d %d, pos = %g %g, target = %g %g\n",
           status->cur_cell.x,
           status->cur_cell.y,
           status->cur_pose.pos.x,
           status->cur_pose.pos.y,
           target_pos.x,
-          target_pos.y);
+          target_pos.y);*/
 
    // Calculating th error
    float right_sensor = status->sensor_data.sensors[1],
@@ -191,7 +191,7 @@ void fwd_PID(struct Micromouse* status, int init)
    if((check_x == 1 && fabs(status->cur_pose.pos.x - target_pos.x) < 1) ||
          (check_x == 0 && fabs(status->cur_pose.pos.y - target_pos.y) < 1)) {
       control_state = DEFAULT;
-      printf("\x1b[32m" "RETURN TO DEFAULT\n" "\x1b[0m");
+      //printf("\x1b[32m" "RETURN TO DEFAULT\n" "\x1b[0m");
    }
 
    /**
@@ -233,7 +233,7 @@ void fwd_PID(struct Micromouse* status, int init)
    {
       err1 = -(200 - left_middle_sensor) / 20; 
       err2 = -(200 - right_middle_sensor) / 20; 
-      printf("WALL IN FRONT TURNING BACK %g %g\n", err1, err2);
+      //printf("WALL IN FRONT TURNING BACK %g %g\n", err1, err2);
    }*/
    
 
@@ -247,9 +247,9 @@ void fwd_PID(struct Micromouse* status, int init)
 }
 
 
-void turn_PID_pos(struct Micromouse* status, int direction, int init)
+void turn_PID(struct Micromouse* status, int direction, int init)
 {
-   printf("NEED TO TURN USING POS\n");
+   //printf("NEED TO TURN USING POS\n");
    // CHOICE HERE: EITHER (LEFT OR RIGHT OR FORWARD) OR (LEFT OR FORWARD) OR (RIGHT OR FORWARD)
    // keep checking for forward sensors while doing the turning
    // if forward found go to dist_turning state
@@ -291,7 +291,7 @@ void turn_PID_pos(struct Micromouse* status, int direction, int init)
    float ang_dist = fmin(fabs(2 * M_PI - (status->cur_pose.ang.z - init_ang)),
                          fabs(status->cur_pose.ang.z - init_ang));
 
-   printf("ang_dist = %g\n", ang_dist);
+   //printf("ang_dist = %g\n", ang_dist);
 
    if(ang_dist > 0.9 * M_PI_2) {
       control_state = DEFAULT;
@@ -310,11 +310,11 @@ void turn_PID_pos(struct Micromouse* status, int direction, int init)
    speed.y = sin(status->cur_pose.ang.z) * speed.x + cos(status->cur_pose.ang.z) * speed.y;
 
 
-   printf("SPEED %g, %g\n", speed.x, speed.y);
+   //printf("SPEED %g, %g\n", speed.x, speed.y);
    // shouldn't be too close
    if((left_middle_sensor < 250 || right_middle_sensor < 250) &&
          (left_middle_sensor > 0 && right_middle_sensor > 0)) {
-      printf("TOO CLOSE");
+      //printf("TOO CLOSE");
       err1 = -right_middle_sensor / 100;
       err2 = -left_middle_sensor / 100;
 
@@ -328,7 +328,7 @@ void turn_PID_pos(struct Micromouse* status, int direction, int init)
    }
    // shouldn't be too fast
    else if(/*fabs(speed.x) > 2 || */fabs(speed.y) > 2) {
-      printf("TOO FAST");
+      //printf("TOO FAST");
       err1 = -1000 * speed.y;
       err2 = -1000 * speed.y;
    }
@@ -338,7 +338,7 @@ void turn_PID_pos(struct Micromouse* status, int direction, int init)
    else {
       err1 = turn_dir * 30 * ang_diff;
       err2 = -turn_dir * 30 * ang_diff;
-      printf("ACTUALLY TURNING (%g, %g) %g %g\n", err1, err2, turn_dir, ang_diff);
+      //printf("ACTUALLY TURNING (%g, %g) %g %g\n", err1, err2, turn_dir, ang_diff);
    }
 
    // calling the general PID function
@@ -367,30 +367,26 @@ void update_control(struct Micromouse* status, struct Box box, char init)
    case MOVE_FWD:
       fwd_PID(status, 0);
       return;
-/*
-   case TURN_POS:
-      turn_PID_pos(status, 0, 0);
-      return;
-*/
-   case TURN_POS:
-      turn_PID_pos(status, 0, 0);
+   case TURN:
+      turn_PID(status, 0, 0);
       return;
 
    default:
       break;
    }
 
-   printf("\33[0;34m" "Restarting\n" "\33[0m");
+   if(init)
+      printf("\33[0;34m" "Restarting\n" "\33[0m");
 
       
    int ang = round(status->cur_pose.ang.z / (M_PI_2));
- 
+    
    int goal = 0;
-   if(status->cur_cell.x == box.OY && status->cur_cell.y - 1 == box.OX ) {
+   if(status->cur_cell.x == box.OX && status->cur_cell.y - 1 == box.OY ) {
       goal = 0;
-   } else if(status->cur_cell.x + 1 == box.OY && status->cur_cell.y == box.OX ) {
+   } else if(status->cur_cell.x + 1 == box.OX && status->cur_cell.y == box.OY ) {
       goal = 1;
-   } else if(status->cur_cell.x == box.OY && status->cur_cell.y - 1 == box.OX ) {
+   } else if(status->cur_cell.x == box.OX && status->cur_cell.y + 1 == box.OY ) {
       goal = 2;
    } else {
       goal = 3;
@@ -406,63 +402,9 @@ void update_control(struct Micromouse* status, struct Box box, char init)
       turn_back_PID(status, 1);
    } else if(abs(ang - goal) == 1) {
       printf("TURNING*****************************************\n");
-      control_state = TURN_POS;
-      turn_PID_pos(status, ang-goal, 1);
+      control_state = TURN;
+      turn_PID(status, goal-ang, 1);
    }
    printf("*****************************%d %d\n", ang, goal);
-   printf("*****************************(%d %d)\n", box.OY, box.OX);
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   /*
-   if(((status->sensor_data.sensors[0] > 0 || status->sensor_data.sensors[3] > 0) &&
-         (status->sensor_data.sensors[1] < 0 || status->sensor_data.sensors[2] < 0)) ||
-         ((status->sensor_data.sensors[0] > 0 || status->sensor_data.sensors[3] > 0) &&
-          (status->sensor_data.sensors[1] > TURNING_LENGTH_THRESHOLD || status->sensor_data.sensors[2] > TURNING_LENGTH_THRESHOLD)))
-
-   {
-      control_state = TURN_POS;
-      turn_PID_pos(status, 1);
-   } else if((status->sensor_data.sensors[0] < 0 || status->sensor_data.sensors[3] < 0) &&
-             ((status->sensor_data.sensors[1] < 0 && status->sensor_data.sensors[2] > 0) ||
-              (status->sensor_data.sensors[1] > 0 && status->sensor_data.sensors[2] < 0))) {
-      control_state = TURN_POS;
-      turn_PID_pos(status, 1);
-   } else if(status->sensor_data.sensors[0] > 0 &&// status->sensor_data.sensors[0] < 700 &&
-             status->sensor_data.sensors[1] > 0 &&// status->sensor_data.sensors[1] < 700 &&
-             status->sensor_data.sensors[2] > 0 &&// status->sensor_data.sensors[2] < 700 &&
-             status->sensor_data.sensors[3] > 0// && status->sensor_data.sensors[3] < 700
-            ) {
-      control_state = TURN_BACK;
-      turn_back_PID(status, 1);
-   } else {
-      control_state = MOVE_FWD;
-      fwd_PID(status, 1);
-   }
-*/
+   printf("*****************************(%d %d)\n", status->cur_cell.x, status->cur_cell.y);
 }

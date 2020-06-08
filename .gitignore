@@ -330,4 +330,4 @@ TSWLatexianTemp*
 /bin/
 *.DS_Store
 .vscode/
-
+docs/*
