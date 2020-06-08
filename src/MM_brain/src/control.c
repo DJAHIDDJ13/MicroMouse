@@ -386,11 +386,11 @@ void update_control(struct Micromouse* status, struct Box box, char init)
    int ang = round(status->cur_pose.ang.z / (M_PI_2));
  
    int goal = 0;
-   if(status->cur_cell.x == box.OX && status->cur_cell.y - 1 == box.OY ) {
+   if(status->cur_cell.x == box.OY && status->cur_cell.y - 1 == box.OX ) {
       goal = 0;
-   } else if(status->cur_cell.x + 1 == box.OX && status->cur_cell.y == box.OY ) {
+   } else if(status->cur_cell.x + 1 == box.OY && status->cur_cell.y == box.OX ) {
       goal = 1;
-   } else if(status->cur_cell.x == box.OX && status->cur_cell.y - 1 == box.OY ) {
+   } else if(status->cur_cell.x == box.OY && status->cur_cell.y - 1 == box.OX ) {
       goal = 2;
    } else {
       goal = 3;
@@ -410,6 +410,7 @@ void update_control(struct Micromouse* status, struct Box box, char init)
       turn_PID_pos(status, ang-goal, 1);
    }
    printf("*****************************%d %d\n", ang, goal);
+   printf("*****************************(%d %d)\n", box.OY, box.OX);
    
    
    
