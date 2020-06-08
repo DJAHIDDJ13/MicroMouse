@@ -22,8 +22,8 @@ struct Maze initMaze(int16_t N)
 
    maze.maze = (struct Box* ) malloc(N * N * sizeof(struct Box));
 
-   for (x = 0; x < N; x++) {
-      for (y = 0; y < N; y++) {
+   for (y = 0; y < N; y++) {
+      for (x = 0; x < N; x++) {
          maze.maze[y*N+x].OX = x;
          maze.maze[y*N+x].OY = y;
 
@@ -40,6 +40,7 @@ struct Maze initMaze(int16_t N)
       }
    }
    maze.maze[0].wallIndicator = ADD_INDICATOR(maze.maze[0].wallIndicator, RightIndicator);
+   maze.maze[1].wallIndicator = ADD_INDICATOR(maze.maze[1].wallIndicator, LeftIndicator);
 
    return maze;
 }
@@ -119,16 +120,22 @@ struct Box minValueNeighbour(struct Maze maze, int16_t OX, int16_t OY)
 }
 
 /* Display a maze */
-void displayMaze(struct Maze maze)
+void displayMaze(struct Maze maze, bool displayValue)
 {
    
    for(int16_t y = 0; y < maze.size; y++) {
       for(int16_t x = 0; x < maze.size; x++) {
-         printf("%d\t", maze.maze[y * maze.size + x].wallIndicator);
+
+         if(displayValue)
+            printf("%d\t", maze.maze[y * maze.size + x].value);
+         else
+            printf("%d\t", maze.maze[y * maze.size + x].wallIndicator);
       }
 
       printf("\n");
    }
+
+   printf("###################\n");
 }
 
 /* Free the memory occupied by a maze */

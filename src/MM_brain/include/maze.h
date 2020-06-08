@@ -45,7 +45,7 @@ int insertBox(struct Box box, struct Maze maze);
 struct Box minValueNeighbour(struct Maze maze, int16_t OX, int16_t OY);
 
 /* Display a maze */
-void displayMaze(struct Maze maze);
+void displayMaze(struct Maze maze, bool displayValue);
 
 /* Free the memory occupied by a maze */
 void freeMaze(struct Maze* maze);

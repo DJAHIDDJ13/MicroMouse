@@ -81,13 +81,13 @@ struct Maze createMaze() {
 int main(int argc, char **argv) {
 
    struct Maze logicalMaze = createMaze();
-   displayMaze(logicalMaze);
+   displayMaze(logicalMaze,true);
 
    printf("\n---------------\n\n");
 
    //One destination cell
    floodFill(logicalMaze, 2, 2);
-   displayMaze(logicalMaze);
+   displayMaze(logicalMaze,true);
 
    Queue_XY path = backwardFloodFill(logicalMaze, 3, 1);
 

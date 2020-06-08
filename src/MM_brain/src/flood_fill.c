@@ -18,7 +18,7 @@
 void fill(struct Maze maze, int16_t OX, int16_t OY, int16_t color)
 {
    int16_t size = maze.size;
-
+   
    if((OX < 0 || OX >= size) || (OY < 0 || OY >= size)) {
       printf("fill:invalide file entering %s %d\n", __FUNCTION__, __LINE__);
       exit(0);
