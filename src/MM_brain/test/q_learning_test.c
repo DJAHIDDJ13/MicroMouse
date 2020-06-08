@@ -9,11 +9,6 @@
 #include <stdint.h>
 #include <q_learning.h>
 
-/*********************/
-// Amine Agrane code //
-/*********************/
-
-
 
 void displayMazeWallsVal(struct Maze maze)
 {
@@ -25,45 +20,6 @@ void displayMazeWallsVal(struct Maze maze)
       printf("\n");
    }
 }
-
-
-struct QMAZE logical_to_Qmaze(struct Maze logicalmaze )
-{
-   struct QMAZE Qmaze = init_Qmaze(logicalmaze.size);
-   int currentWallIndicator = 0;
-   bool top,  bottom,  left,  right;
-   for(int i=0;i<logicalmaze.size;i++) 
-   {
-      for(int j=0;j<logicalmaze.size;j++) 
-      {
-         currentWallIndicator = logicalmaze.maze[j*logicalmaze.size+i].wallIndicator;
-         top = GET_TOP(currentWallIndicator) == 4;
-         bottom = GET_BOTTOM(currentWallIndicator) == 8;
-         left = GET_LEFT(currentWallIndicator) == 1;
-         right = GET_RIGHT(currentWallIndicator) == 2;
-         /*printf("wall indic %d   ",currentWallIndicator);
-         printf("|top %d  ",GET_TOP(currentWallIndicator));
-         printf("|bottom %d  ",GET_BOTTOM(currentWallIndicator));
-         printf("|left %d  ",GET_LEFT(currentWallIndicator));
-         printf("|right %d  ",GET_RIGHT(currentWallIndicator));*/
-
-         printf("wall indic %d   ",currentWallIndicator);
-         printf("|top %d  ",top);
-         printf("|bottom %d  ",bottom);
-         printf("|left %d  ",left);
-         printf("|right %d  ", right);
-
-         printf("\n");
-         break_Qmaze_Cell_Walls(Qmaze,j, i, !top, !bottom, !left, !right); 
-         //set_Qmaze_cell(Qmaze,'X',i,j);
-      }
-     //printf("\n");
-   }
-   return Qmaze;
-}
-/* Display a maze physical structure*/
-
-
 
 
 struct Maze createMaze() {
@@ -147,14 +103,17 @@ int main(int argc, char **argv) {
   // qLearning(initial_maze);
   // print_QTable(initial_maze);
   // print_Qmaze(initial_maze);
+
    struct Maze logicalMaze = createMaze();
    struct QMAZE test = logical_to_Qmaze(logicalMaze);
    break_Qmaze_Cell_Walls(test, 0,0, false, false, false, true);
+
    qLearning(test);
-   print_QTable(test);
-
    printQueue_XY(QLPath(test));
-   freeMaze(&logicalMaze);
+   print_QTable(test);
+   printf("\n\n\n\n\n");
+   print_RValues(test);
 
+   freeMaze(&logicalMaze);
    return 0;
 }
