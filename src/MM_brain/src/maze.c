@@ -24,9 +24,10 @@ struct Maze initMaze(int16_t N)
 
    for (x = 0; x < N; x++) {
       for (y = 0; y < N; y++) {
-         maze.maze[y*N+x].OX = -1;
-         maze.maze[y*N+x].OY = -1;
+         maze.maze[y*N+x].OX = 0;
+         maze.maze[y*N+x].OY = 0;
 
+         maze.maze[y*N+x].wallIndicator = 0;
          if (y == 0 && x >= 0 && x < N) 
             maze.maze[y*N+x].wallIndicator = ADD_INDICATOR(maze.maze[y*N+x].wallIndicator, TopIndicator);
          if (y == N-1 && x >= 0 && x < N) 
@@ -35,6 +36,8 @@ struct Maze initMaze(int16_t N)
             maze.maze[y*N+x].wallIndicator = ADD_INDICATOR(maze.maze[y*N+x].wallIndicator, LeftIndicator);
          if (x == N-1 && y >= 0 && y < N) 
             maze.maze[y*N+x].wallIndicator = ADD_INDICATOR(maze.maze[y*N+x].wallIndicator, RightIndicator);
+      
+         maze.maze[y*N+x].value = -1;
       }
    }
 
