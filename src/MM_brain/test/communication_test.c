@@ -52,7 +52,7 @@ int main(void)
 
       switch(rx_msg.flag) {
          case HEADER_FLAG:
-            dump_header_data(status);
+            //dump_header_data(status);
             init_cell(&status);
             update_control(&status, 1); // initialise values
 
@@ -63,8 +63,8 @@ int main(void)
 
             break;
          case SENSOR_FLAG:
-            dump_sensor_data(status);
-            dump_estimation_data(status);
+            //dump_sensor_data(status);
+            //dump_estimation_data(status);
             update_cell(&status);
             update_control(&status, 0); // initialise values
             break;
@@ -76,7 +76,7 @@ int main(void)
       /* Adjust display time step */
       if ((int)time(NULL)%5 == 4) {
          //display_logical_maze(status, 15, vertical_walls, horizontal_walls);
-         displayMaze(logical_maze);
+         //displayMaze(logical_maze);
       }
          
 

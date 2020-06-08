@@ -341,8 +341,8 @@ public class Vehicle {
 
     // Parameters that affect physics (Surface)
     top_fd.density = 1;
-    top_fd.friction = 0.5;
-    top_fd.restitution = 0.6; 
+    top_fd.friction = 0.3;
+    top_fd.restitution = 0.5; 
     
     
     // Define a fixture middle

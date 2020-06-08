@@ -157,7 +157,7 @@ public class Wheel {
   
   //tire class function
   void move(float desiredSpeed) {      
-      float m_maxDriveForce = 300;
+      float m_maxDriveForce = 200;
       
       //find current speed in forward direction
       Vec2 currentForwardNormal = body.getWorldVector(new Vec2(0, 1));

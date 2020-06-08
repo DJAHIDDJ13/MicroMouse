@@ -15,7 +15,7 @@ public class SimulationController {
   private int size;
   
   private final static float box2d_scalar = 80.0f;
-  private final static float user_motor_force = 300;
+  private final static float user_motor_force = 200;
   
   private boolean botControl = false;
   private boolean displaySensors;
@@ -36,7 +36,7 @@ public class SimulationController {
     botControl = true; 
     displaySensors = true;
     debugMode = false;
-    start = true;
+    start = false;
     contact = false;
     
     numberOfConsoleTextChange = 0;
