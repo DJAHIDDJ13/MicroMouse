@@ -184,6 +184,7 @@ void fwd_PID(struct Micromouse* status, int init)
          left_sensor = status->sensor_data.sensors[2],
          right_middle_sensor = status->sensor_data.sensors[0],
          left_middle_sensor = status->sensor_data.sensors[3];
+   const float Kp = .5, Kd = 50, Ki = 0.001;
    float err1 = (left_sensor - right_sensor) / 4;
    float err2 = -(left_sensor - right_sensor) / 4;
    
@@ -201,32 +202,44 @@ void fwd_PID(struct Micromouse* status, int init)
    float goal_ang = M_PI_2 * round(status->cur_pose.ang.z / (M_PI_2));
    float ang_diff = status->cur_pose.ang.z - goal_ang;
 
+   Vec2 speed = {.x = status->cur_pose.pos.x - status->prev_pose.pos.x,
+                 .y = status->cur_pose.pos.y - status->prev_pose.pos.y
+                };
+   speed.x = cos(status->cur_pose.ang.z) * speed.x - sin(status->cur_pose.ang.z) * speed.y;
+   speed.y = sin(status->cur_pose.ang.z) * speed.x + cos(status->cur_pose.ang.z) * speed.y;
    if(left_sensor < 0 || right_sensor < 0) {
       err1 = ang_diff * 5;
       err2 = -ang_diff * 5;
-      if(right_sensor > 0) {
+      if(ang_diff < 1) {
+         err1 -= 100 * speed.y;
+         err2 -= 100 * speed.y;
+      }
+      /*if(right_sensor > 0) {
          err1 += (right_sensor - 500) / 100;
          err2 -= (right_sensor - 500) / 100;
       } else if(left_sensor > 0) {
          err1 += (left_sensor - 500) / 100;
          err2 -= (left_sensor - 500) / 100;
-      }
+      }*/
    }
 
    /**
     * Readjusting the position and angle estimation if the vehicle is moving forward
     */
-   readjust_position(status, err1, init);
+   if(left_sensor > 0 && right_sensor > 0)
+      readjust_position(status, left_sensor - right_sensor, init);
 
+   /*
    if(left_middle_sensor > 0 && left_middle_sensor < 700 &&
       right_middle_sensor > 0 && right_middle_sensor < 700) 
    {
-      err1 = (200 - left_middle_sensor) / 4; 
-      err2 = (200 - right_middle_sensor) / 4; 
-   } 
+      err1 = -(200 - left_middle_sensor) / 20; 
+      err2 = -(200 - right_middle_sensor) / 20; 
+      printf("WALL IN FRONT TURNING BACK %g %g\n", err1, err2);
+   }*/
+   
 
    // calling the general PID function
-   const float Kp = .5, Kd = 50, Ki = 0.001;
    float out1 = PID(status, err1, Kp, Ki, Kd, &old_err1, &cumul_err1);
    float out2 = PID(status, err2, Kp, Ki, Kd, &old_err2, &cumul_err2);
 
@@ -246,8 +259,8 @@ void turn_PID_pos(struct Micromouse* status, int init)
                 cumul_err1 = 0.0, cumul_err2 = 0.0;
    static float turn_dir = 1;
    static float init_ang = 0;
-   static Vec3 target_pos;
-   static int check_x;
+   //static Vec3 target_pos;
+   //static int check_x;
    float right_sensor = status->sensor_data.sensors[1],
          left_sensor = status->sensor_data.sensors[2],
          right_middle_sensor = status->sensor_data.sensors[0],
@@ -269,10 +282,10 @@ void turn_PID_pos(struct Micromouse* status, int init)
          turn_dir = 1; // always forwards if we have two choices
       }
 
-      target_pos.x = status->header_data.origin_x + (status->cur_cell.x *status->header_data.box_width);
-      target_pos.y = status->header_data.origin_y + (status->cur_cell.y *status->header_data.box_height);
+      //target_pos.x = status->header_data.origin_x + ((status->cur_cell.x+0.5f) *status->header_data.box_width);
+      //target_pos.y = status->header_data.origin_y + ((-status->cur_cell.y+0.5f) *status->header_data.box_height);
 
-      float ang = status->cur_pose.ang.z;
+     /* float ang = status->cur_pose.ang.z;
 
       if(ang > M_PI_4 && ang < 3 * M_PI_4) {
          check_x = 1;
@@ -282,7 +295,7 @@ void turn_PID_pos(struct Micromouse* status, int init)
          check_x = 1;
       } else {
          check_x = 0;
-      }
+      }*/
   
    }
 
@@ -314,8 +327,11 @@ void turn_PID_pos(struct Micromouse* status, int init)
 
 
    printf("SPEED %g, %g\n", speed.x, speed.y);
-
-   // shouldn't be too close
+/*
+   printf("CENTER %g %g\n", target_pos.x, target_pos.y);
+   printf("DIST = %g %g\n", fabs(status->cur_pose.pos.x - target_pos.x),
+         fabs(status->cur_pose.pos.y - target_pos.y));
+*/   // shouldn't be too close
    if((left_middle_sensor < 250 || right_middle_sensor < 250) &&
          (left_middle_sensor > 0 && right_middle_sensor > 0)) {
       printf("TOO CLOSE");
@@ -331,18 +347,20 @@ void turn_PID_pos(struct Micromouse* status, int init)
       }
    }
    // shouldn't be too fast
-   else if(fabs(speed.x) > 2 || fabs(speed.y) > 2) {
+   else if(/*fabs(speed.x) > 2 || */fabs(speed.y) > 2) {
       printf("TOO FAST");
-      err1 = -5 * speed.y;
-      err2 = -5 * speed.y;
+      err1 = -1000 * speed.y;
+      err2 = -1000 * speed.y;
    }
    // move to the center of the cell 
-   else if((check_x == 1 && fabs(status->cur_pose.pos.x - target_pos.x) < 1) ||
+  /* else if((check_x == 1 && fabs(status->cur_pose.pos.x - target_pos.x) < 1) ||
          (check_x == 0 && fabs(status->cur_pose.pos.y - target_pos.y) < 1)) 
    {
-      err1 = status->cur_pose.pos.x - target_pos.x;
-      err2 = status->cur_pose.pos.x - target_pos.x;
-   }
+      printf("MOVE TO CENTER\n");
+      err1 = 5*(status->cur_pose.pos.x - target_pos.x);
+      err2 = 5*(status->cur_pose.pos.y - target_pos.y);
+      printf("ERR %g %g\n", err1, err2);
+   }*/
    // start turning when everything else is met
    else {
       err1 = turn_dir * 30 * ang_diff;

@@ -64,7 +64,7 @@ int main(void)
             break;
          case SENSOR_FLAG:
             //dump_sensor_data(status);
-            //dump_estimation_data(status);
+            dump_estimation_data(status);
             update_cell(&status);
             update_control(&status, 0); // initialise values
             break;
