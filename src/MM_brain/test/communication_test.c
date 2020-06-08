@@ -82,9 +82,9 @@ int main(void)
 
             /* Adjust display time step */
             if ((int)time(NULL)%5 == 4) {
-               //display_logical_maze(status, 15, vertical_walls, horizontal_walls);
-               //displayMaze(logical_maze, true);
-               //displayMaze(logical_maze, false);
+               display_logical_maze(status, 15, vertical_walls, horizontal_walls);
+               displayMaze(logical_maze, true);
+               displayMaze(logical_maze, false);
             }
     
             break;
