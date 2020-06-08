@@ -72,7 +72,7 @@ int main(void)
             //dump_sensor_data(status);
             //dump_estimation_data(status);
             update_cell(&status);
-            vote_for_walls(&logical_maze, detect_wall(status), vertical_walls, horizontal_walls, 15);
+            vote_for_walls(status, &logical_maze, detect_wall(status), vertical_walls, horizontal_walls, 15);
 
             //floodFill(logical_maze, status.header_data.target_x, status.header_data.target_y);
             floodFill(logical_maze, 1, 1);

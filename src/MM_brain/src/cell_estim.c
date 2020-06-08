@@ -122,7 +122,7 @@ float float_abs(float val) {
       return val;
 }
 
-void vote_for_walls(struct Maze *logical_maze, WallPosition *detected_walls, int **vertical_walls, int **horizontal_walls, int threshold) {
+void vote_for_walls(struct Micromouse status, struct Maze* logical_maze, WallPosition *detected_walls, int **vertical_walls, int **horizontal_walls, int threshold) {
    struct Box box_to_add;
    int i = 0;
    int16_t cell_x, cell_y;
@@ -143,11 +143,13 @@ void vote_for_walls(struct Maze *logical_maze, WallPosition *detected_walls, int
                box_to_add.wallIndicator = ADD_INDICATOR(box_to_add.wallIndicator, RightIndicator);
                insertBox(box_to_add, *logical_maze);
                /* ADD LEFT AT (OX+1, OY) WALL */
-               box_to_add = get_box(*logical_maze, cell_x - (detected_walls[i].wall_pos & 1), cell_y - 1);
-               box_to_add.OX = cell_x - (detected_walls[i].wall_pos & 1);
-               box_to_add.OY = cell_y - 1;
-               box_to_add.wallIndicator = ADD_INDICATOR(box_to_add.wallIndicator, LeftIndicator);
-               insertBox(box_to_add, *logical_maze);
+               if (cell_x - (detected_walls[i].wall_pos & 1) < status.header_data.maze_width/status.header_data.box_width) {
+                  box_to_add = get_box(*logical_maze, cell_x - (detected_walls[i].wall_pos & 1), cell_y - 1);
+                  box_to_add.OX = cell_x - (detected_walls[i].wall_pos & 1);
+                  box_to_add.OY = cell_y - 1;
+                  box_to_add.wallIndicator = ADD_INDICATOR(box_to_add.wallIndicator, LeftIndicator);
+                  insertBox(box_to_add, *logical_maze);
+               }
             }
          } else {
             horizontal_walls[cell_x][cell_y - (detected_walls[i].wall_pos & 1)]++;            
@@ -160,11 +162,13 @@ void vote_for_walls(struct Maze *logical_maze, WallPosition *detected_walls, int
                box_to_add.wallIndicator = ADD_INDICATOR(box_to_add.wallIndicator, BottomIndicator);
                insertBox(box_to_add, *logical_maze);
                /* ADD TOP AT (OX, OY+1) WALL */
-               box_to_add = get_box(*logical_maze, cell_x - 1, cell_y - (detected_walls[i].wall_pos & 1));                  
-               box_to_add.OX = cell_x - 1;
-               box_to_add.OY = cell_y - (detected_walls[i].wall_pos & 1);
-               box_to_add.wallIndicator = ADD_INDICATOR(box_to_add.wallIndicator, TopIndicator);
-               insertBox(box_to_add, *logical_maze);
+               if (cell_y - (detected_walls[i].wall_pos & 1) < status.header_data.maze_height/status.header_data.box_height) {
+                  box_to_add = get_box(*logical_maze, cell_x - 1, cell_y - (detected_walls[i].wall_pos & 1));                  
+                  box_to_add.OX = cell_x - 1;
+                  box_to_add.OY = cell_y - (detected_walls[i].wall_pos & 1);
+                  box_to_add.wallIndicator = ADD_INDICATOR(box_to_add.wallIndicator, TopIndicator);
+                  insertBox(box_to_add, *logical_maze);
+               }
             } 
          } 
       }
