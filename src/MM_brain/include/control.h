@@ -1,5 +1,5 @@
 #ifndef CONTROL_H
 #define CONTROL_H
-
-void update_control(struct Micromouse* status, char init);
+#include "brain.h"
+void update_control(struct Micromouse* status, struct Box box, char init);
 #endif 

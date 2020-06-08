@@ -25,7 +25,7 @@ public class CommunicationController {
   
   public void sendHeaders() {
     Vec2 p = maze.getVehicle().getPosition();
-    Vec2 tp = maze.getTarget().getPosition();
+    Vec2 tp = maze.getTarget().getCell(maze.getRows());
     Vec2 origin = box2d.coordPixelsToWorld(SimulationUtility.MAZE_SHIFTX, SimulationUtility.MAZE_SHIFTY);
     
     float a = maze.getVehicle().getAngle();

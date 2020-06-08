@@ -12,6 +12,12 @@ public class Target {
     this.r = box2d.scalarWorldToPixels(r) / 10;
   }
   
+  
+  public Vec2 getCell(int rows) {
+    final int targetX = ceil(((float)rows) / 2.0) -1;
+    final int targetY = ceil(((float)rows) / 2.0) -1;
+     return new Vec2(targetX, targetY);
+  }
   public Vec2 getPosition() {
     return box2d.coordPixelsToWorld(pos);
   }
