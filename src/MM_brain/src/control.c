@@ -68,7 +68,8 @@ void turn_back_PID(struct Micromouse* status, int init)
    float ang_dist = fmin(fabs(2 * M_PI - (status->cur_pose.ang.z - init_ang)),
                          fabs(status->cur_pose.ang.z - init_ang));
 
-   if(fabs(ang_dist) > 0.9 * M_PI || ((left_middle_sensor > 800 || left_middle_sensor < 0) && (right_middle_sensor > 800 || right_middle_sensor < 0))) {
+   if(fabs(ang_dist) > 0.9 * M_PI) {
+      //|| ((left_middle_sensor > 800 || left_middle_sensor < 0) && (right_middle_sensor > 800 || right_middle_sensor < 0))) {
       control_state = DEFAULT;
    }
 
@@ -209,8 +210,8 @@ void fwd_PID(struct Micromouse* status, int init)
       err1 = ang_diff * 5;
       err2 = -ang_diff * 5;
       if(ang_diff < 1) {
-         err1 -= 100 * speed.y;
-         err2 -= 100 * speed.y;
+         err1 -= 200 * speed.y;
+         err2 -= 200 * speed.y;
       }
       if(right_sensor > 0) {
          err1 += (right_sensor - 500) / 100;
@@ -392,11 +393,7 @@ void update_control(struct Micromouse* status, struct Box box, char init)
       goal = 3;
    }
    
-   if(ang == goal) {
-      printf("FORWARD*****************************************\n");
-      control_state = MOVE_FWD;
-      fwd_PID(status, 1);
-   } else if(abs(ang - goal) == 2) {
+   if(abs(ang - goal) == 2) {
       printf("TURN BACK*****************************************\n");
       control_state = TURN_BACK;
       turn_back_PID(status, 1);
@@ -404,6 +401,10 @@ void update_control(struct Micromouse* status, struct Box box, char init)
       printf("TURNING*****************************************\n");
       control_state = TURN;
       turn_PID(status, goal-ang, 1);
+   } else {
+      printf("FORWARD*****************************************\n");
+      control_state = MOVE_FWD;
+      fwd_PID(status, 1);
    }
    printf("*****************************%d %d\n", ang, goal);
    printf("*****************************(%d %d)\n", status->cur_cell.x, status->cur_cell.y);
