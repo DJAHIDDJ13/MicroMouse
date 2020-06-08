@@ -55,17 +55,22 @@ int main(void)
          case HEADER_FLAG:
             //dump_header_data(status);
             init_cell(&status);
-            update_control(&status, box, 1); // initialise values
 
             vertical_walls = init_vote_array((status.header_data.maze_width / status.header_data.box_width) + 1);
             horizontal_walls = init_vote_array((status.header_data.maze_width / status.header_data.box_width) + 1);
 
             logical_maze = initMaze(status.header_data.maze_height / status.header_data.box_height);
+            
+            vote_for_walls(&logical_maze, detect_wall(status), vertical_walls, horizontal_walls, 15);
+            floodFill(logical_maze, status.header_data.target_x, status.header_data.target_y);
+            box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
+            
+            update_control(&status, box, 1); // initialise values
             break;
 
          case SENSOR_FLAG:
             //dump_sensor_data(status);
-            dump_estimation_data(status);
+            //dump_estimation_data(status);
             update_cell(&status);
             vote_for_walls(&logical_maze, detect_wall(status), vertical_walls, horizontal_walls, 15);
 
@@ -77,8 +82,8 @@ int main(void)
 
             /* Adjust display time step */
             if ((int)time(NULL)%5 == 4) {
-               //display_logical_maze(status, 15, vertical_walls, horizontal_walls);
-               //displayMaze(logical_maze);
+               display_logical_maze(status, 15, vertical_walls, horizontal_walls);
+               displayMaze(logical_maze);
             }
     
             break;

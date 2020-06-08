@@ -39,6 +39,7 @@ struct Maze initMaze(int16_t N)
          maze.maze[y*N+x].value = -1;
       }
    }
+   maze.maze[0].wallIndicator = ADD_INDICATOR(maze.maze[0].wallIndicator, RightIndicator);
 
    return maze;
 }
@@ -120,9 +121,10 @@ struct Box minValueNeighbour(struct Maze maze, int16_t OX, int16_t OY)
 /* Display a maze */
 void displayMaze(struct Maze maze)
 {
+   
    for(int16_t y = 0; y < maze.size; y++) {
       for(int16_t x = 0; x < maze.size; x++) {
-         printf("%d\t", maze.maze[y * maze.size + x].value);
+         printf("%d\t", maze.maze[y * maze.size + x].wallIndicator);
       }
 
       printf("\n");

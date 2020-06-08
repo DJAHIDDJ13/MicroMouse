@@ -143,6 +143,11 @@ public class MazeBuilder{
         stack.push(cur);
         
         MazeCell choice = neighbors.get(rand.nextInt(neighbors.size()));
+        
+        if(cur.x == 0 && cur.y == 0) {
+          choice.x = 0;
+          choice.y = 1;
+        }
         stack.push(choice);
         // make a hole between cur and chosen cell
         res[cur.x][cur.y][choice.relativeOrientation(cur).getValue()] = true;

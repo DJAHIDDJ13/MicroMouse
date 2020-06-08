@@ -409,7 +409,7 @@ void update_control(struct Micromouse* status, struct Box box, char init)
       control_state = TURN_POS;
       turn_PID_pos(status, ang-goal, 1);
    }
-   printf("%d %d\n", ang, goal);
+   printf("*****************************%d %d\n", ang, goal);
    
    
    
