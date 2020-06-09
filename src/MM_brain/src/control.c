@@ -297,7 +297,7 @@ void turn_PID(struct Micromouse* status, int direction, int init)
    float ang_dist = fmin(fabs(2 * M_PI - (status->cur_pose.ang.z - init_ang)),
                          fabs(status->cur_pose.ang.z - init_ang));
 
-   printf("ang_dist = %g\n", ang_dist);
+   // printf("ang_dist = %g\n", ang_dist);
 
    if(ang_dist > 0.9 * M_PI_2) {
       control_state = DEFAULT;
@@ -315,10 +315,10 @@ void turn_PID(struct Micromouse* status, int direction, int init)
    speed.x = cos(status->cur_pose.ang.z) * speed.x - sin(status->cur_pose.ang.z) * speed.y;
    speed.y = sin(status->cur_pose.ang.z) * speed.x + cos(status->cur_pose.ang.z) * speed.y;
 
-   //printf("SPEED %g, %g\n", speed.x, speed.y);
+   // printf("SPEED %g, %g\n", speed.x, speed.y);
    // shouldn't be too close
    if((left_middle_sensor < 250 || right_middle_sensor < 250) &&
-         (left_middle_sensor > 0 && right_middle_sensor > 0)) {
+      (left_middle_sensor > 0 && right_middle_sensor > 0)) {
       //printf("TOO CLOSE");
       err1 = -right_middle_sensor / 100;
       err2 = -left_middle_sensor / 100;
@@ -341,9 +341,9 @@ void turn_PID(struct Micromouse* status, int direction, int init)
 
    // start turning when everything else is met
    else {
-      Kd = 1000;
-      err1 = turn_dir * 20 * ang_diff;
-      err2 = -turn_dir * 20 * ang_diff;
+      // Kd = 1000;
+      err1 = turn_dir * 10 * ang_diff;
+      err2 = -turn_dir * 10 * ang_diff;
       //printf("ACTUALLY TURNING (%g, %g) %g %g\n", err1, err2, turn_dir, ang_diff);
    }
 
@@ -398,15 +398,25 @@ void update_control(struct Micromouse* status, struct Box box, char init)
    } else {
       goal = 1;
    }
+   int diff = goal - ang;
+   int ang_dist = (4 - abs(diff) < abs(diff))? 4-abs(diff): diff;
+   int ang_decision = goal - ang;
+   
+   if(ang == 0 && goal == 3) {
+      ang_decision = -1;
+   } else if(ang == 3 && goal == 0) {
+      ang_decision = 1;
+   }
 
-   if(abs(ang - goal) == 2) {
+   if(abs(ang_dist) == 2) {
       printf("TURN BACK\n");
       control_state = TURN_BACK;
       turn_back_PID(status, 1);
-   } else if(abs(ang - goal) == 1 || abs(ang - goal) == 3) {
+   } else if(abs(ang_dist) == 1) {
+      
       printf("TURNING\n");
       control_state = TURN;
-      turn_PID(status, ang - goal, 1);
+      turn_PID(status, -ang_decision, 1);
    } else {
       printf("FORWARD\n");
       control_state = MOVE_FWD;
