@@ -1,3 +1,0 @@
-/home/ishak/MicroMouse/src/Gtest_MM_brain/CMakeFiles/rebuild_cache.dir
-/home/ishak/MicroMouse/src/Gtest_MM_brain/CMakeFiles/runTests.dir
-/home/ishak/MicroMouse/src/Gtest_MM_brain/CMakeFiles/edit_cache.dir
