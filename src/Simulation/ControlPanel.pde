@@ -35,7 +35,7 @@ public class ControlPanel {
         int i = (int) (box2d.scalarPixelsToWorld(mouseY-SimulationUtility.MAZE_SHIFTY) / maze.getBoxW());
         
         Vec2 position = maze.getCellWorldCenterAt(j, i);
-        maze.getVehicle().setTransform(position.x, position.y, 0);
+        maze.getVehicle().setTransform(position.x, position.y, PI);
         // stop the vehicle from moving
         maze.getVehicle().setLinearVelocity(0, 0);
         maze.getVehicle().setAngularVelocity(0);
