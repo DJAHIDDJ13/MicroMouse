@@ -240,7 +240,7 @@ void fwd_PID(struct Micromouse* status, int init)
     * Readjusting the position and angle estimation if the vehicle is moving forward
     */
    if(left_sensor > 0 && right_sensor > 0) {
-//      readjust_position(status, left_sensor - right_sensor, init);
+      readjust_position(status, left_sensor - right_sensor, init);
    }
 
    /*

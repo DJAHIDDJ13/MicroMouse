@@ -61,7 +61,7 @@ WallPosition* detect_wall(struct Micromouse status) {
    Vec2 source = { .x = 0, .y = 0 };
    Vec2 target = { .x = 0, .y = 0 };
    Vec2 relative_cell_pos;
-   float current_vehicle_angle, doubt_range = 1.5;
+   float current_vehicle_angle, doubt_range = 2;
 
    for (i = 0; i < NB_SENSOR; i++) {
       if (status.sensor_data.sensors[i] > 0) {

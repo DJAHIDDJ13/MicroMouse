@@ -41,7 +41,7 @@ void update_pos(struct Micromouse* m)
    float java = (m->sensor_data.time_stamp - m->prev_time_stamp) / 1000;
    float c = m->time_step;
    float ts = java / 1000.0f;
-   printf("JAVA STAMP = %g, C STAMP = %g, ERR = %g\n", java, c, java-c);
+   //printf("JAVA STAMP = %g, C STAMP = %g, ERR = %g\n", java, c, java-c);
    m->cur_pose.ang.x = m->cur_pose.ang.x +  m->sensor_data.gyro.ypr.x * ts;
    m->cur_pose.ang.y = m->cur_pose.ang.y +  m->sensor_data.gyro.ypr.y * ts;
    m->cur_pose.ang.z = m->cur_pose.ang.z +  m->sensor_data.gyro.ypr.z * ts;
