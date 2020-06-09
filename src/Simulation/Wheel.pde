@@ -146,7 +146,7 @@ public class Wheel {
     body.applyLinearImpulse(impulse, body.getWorldCenter(), true);
 
     // limiting angular velocity
-    body.applyAngularImpulse(10f * body.getAngularVelocity() * -body.getInertia() * 10f);
+    body.applyAngularImpulse(10f * body.getAngularVelocity() * -body.getInertia() * 7f);
 
     // apply drag force
     Vec2 currentForwardNormal = getForwardVelocity();

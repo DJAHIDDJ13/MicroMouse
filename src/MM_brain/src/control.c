@@ -64,7 +64,7 @@ void turn_back_PID(struct Micromouse* status, int init)
    float ang_dist = fmin(fabs(2 * M_PI - (status->cur_pose.ang.z - init_ang)),
                          fabs(status->cur_pose.ang.z - init_ang));
 
-   if(fabs(ang_dist) > 0.9 * M_PI) {
+   if(fabs(ang_dist) > 0.95 * M_PI) {
       control_state = DEFAULT;
    }
 
@@ -120,26 +120,25 @@ void readjust_position(struct Micromouse* status, float err, int init)
       err_counter = 0;
    }
 
-   if(err_counter > 10) {
-//      printf("\x1b[32m" "Readjusting the estimation ang = %g -> ", status->cur_pose.ang.z);
-      //printf("READJUSTING\n");
+   if(err_counter > 4) {
+      printf("\x1b[32m" "Readjusting the estimation ang = %g -> ", status->cur_pose.ang.z);
       int direction = round(status->cur_pose.ang.z / (M_PI_2));
       status->cur_pose.ang.z = M_PI_2 * direction;
       status->prev_pose.ang.z = M_PI_2 * direction;
 
-//      printf("%g ", status->cur_pose.ang.z);
+      printf("%g ", status->cur_pose.ang.z);
       if(direction % 2 == 0) {
          float boxw = status->header_data.box_width;
-//         printf("posx = %g -> ", status->cur_pose.pos.x);
+         printf("posx = %g -> ", status->cur_pose.pos.x);
          status->cur_pose.pos.x = status->header_data.origin_x + boxw * (0.5f + status->cur_cell.x);
          status->prev_pose.pos.x = status->header_data.origin_x + boxw * (0.5f + status->cur_cell.x);
 
-//         printf("%g ", status->cur_pose.pos.x);
+         printf("%g ", status->cur_pose.pos.x);
       } else {
          float boxh = status->header_data.box_height;
-         status->cur_pose.pos.y = status->header_data.origin_y + boxh * (0.5f + status->cur_cell.y);
-         status->prev_pose.pos.y = status->header_data.origin_y + boxh * (0.5f + status->cur_cell.y);
-//         printf("%g""\x1b[0m\n", status->cur_pose.pos.y);
+         status->cur_pose.pos.y = status->header_data.origin_y - boxh * (0.5f + status->cur_cell.y);
+         status->prev_pose.pos.y = status->header_data.origin_y - boxh * (0.5f + status->cur_cell.y);
+         printf("%g""\x1b[0m\n", status->cur_pose.pos.y);
       }
 
       err_counter = 0;
@@ -299,7 +298,7 @@ void turn_PID(struct Micromouse* status, int direction, int init)
 
    // printf("ang_dist = %g\n", ang_dist);
 
-   if(ang_dist > 0.9 * M_PI_2) {
+   if(ang_dist > 0.95 * M_PI_2) {
       control_state = DEFAULT;
    }
 
@@ -342,8 +341,8 @@ void turn_PID(struct Micromouse* status, int direction, int init)
    // start turning when everything else is met
    else {
       // Kd = 1000;
-      err1 = turn_dir * 10 * ang_diff;
-      err2 = -turn_dir * 10 * ang_diff;
+      err1 = turn_dir * 30 * ang_diff;
+      err2 = -turn_dir * 30 * ang_diff;
       //printf("ACTUALLY TURNING (%g, %g) %g %g\n", err1, err2, turn_dir, ang_diff);
    }
 
@@ -383,10 +382,10 @@ void update_control(struct Micromouse* status, struct Box box, char init)
    }
 
    if(init) {
-      printf("\33[0;34m" "Restarting\n" "\33[0m");
+      printf("\33[0;34m" "Re-navigating\n" "\33[0m");
    }
 
-   int ang = round(fmod(status->cur_pose.ang.z, 2 * M_PI) / (M_PI_2));
+   int ang = (int)round(fmod(status->cur_pose.ang.z, 2 * M_PI) / (M_PI_2))%4;
    int goal = 0;
 
    if(status->cur_cell.x == box.OX && status->cur_cell.y - 1 == box.OY ) {
@@ -413,8 +412,7 @@ void update_control(struct Micromouse* status, struct Box box, char init)
       control_state = TURN_BACK;
       turn_back_PID(status, 1);
    } else if(abs(ang_dist) == 1) {
-      
-      printf("TURNING\n");
+      printf("TURNING %s\n", (ang_decision > 0)? "LEFT": "RIGHT");
       control_state = TURN;
       turn_PID(status, -ang_decision, 1);
    } else {
