@@ -64,7 +64,7 @@ void turn_back_PID(struct Micromouse* status, int init)
    float ang_dist = fmin(fabs(2 * M_PI - (status->cur_pose.ang.z - init_ang)),
                          fabs(status->cur_pose.ang.z - init_ang));
 
-   if(fabs(ang_dist) > 0.95 * M_PI) {
+   if(fabs(ang_dist) > 0.9 * M_PI) {
       control_state = DEFAULT;
    }
 
@@ -120,7 +120,7 @@ void readjust_position(struct Micromouse* status, float err, int init)
       err_counter = 0;
    }
 
-   if(err_counter > 4) {
+   if(err_counter > 6) {
       printf("\x1b[32m" "Readjusting the estimation ang = %g -> ", status->cur_pose.ang.z);
       int direction = round(status->cur_pose.ang.z / (M_PI_2));
       status->cur_pose.ang.z = M_PI_2 * direction;
@@ -216,7 +216,7 @@ void fwd_PID(struct Micromouse* status, int init)
    speed.x = cos(status->cur_pose.ang.z) * speed.x - sin(status->cur_pose.ang.z) * speed.y;
    speed.y = sin(status->cur_pose.ang.z) * speed.x + cos(status->cur_pose.ang.z) * speed.y;
 
-   if(left_sensor < 0 || right_sensor < 0 || 
+   if((left_sensor < 0 || left_sensor > 900) || (right_sensor < 0 || right_sensor > 900) || 
       (left_middle_sensor > 0 && right_middle_sensor > 0)) 
    {
       err1 = ang_diff * 5;
@@ -240,7 +240,7 @@ void fwd_PID(struct Micromouse* status, int init)
     * Readjusting the position and angle estimation if the vehicle is moving forward
     */
    if(left_sensor > 0 && right_sensor > 0) {
-      readjust_position(status, left_sensor - right_sensor, init);
+//      readjust_position(status, left_sensor - right_sensor, init);
    }
 
    /*
@@ -298,7 +298,7 @@ void turn_PID(struct Micromouse* status, int direction, int init)
 
    // printf("ang_dist = %g\n", ang_dist);
 
-   if(ang_dist > 0.95 * M_PI_2) {
+   if(ang_dist > 0.9 * M_PI_2) {
       control_state = DEFAULT;
    }
 
@@ -341,8 +341,8 @@ void turn_PID(struct Micromouse* status, int direction, int init)
    // start turning when everything else is met
    else {
       // Kd = 1000;
-      err1 = turn_dir * 30 * ang_diff;
-      err2 = -turn_dir * 30 * ang_diff;
+      err1 = turn_dir * 20 * ang_diff;
+      err2 = -turn_dir * 20 * ang_diff;
       //printf("ACTUALLY TURNING (%g, %g) %g %g\n", err1, err2, turn_dir, ang_diff);
    }
 

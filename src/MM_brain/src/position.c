@@ -23,6 +23,8 @@ void init_pos(Vec3 i_pos, Vec3 i_vel, Vec3 i_acc,
    status->prev_pose.ang.x = status->cur_pose.ang.x = i_ang.x + i_ang_vel.x * ts + 0.5f * i_ang_acc.x * ts * ts;
    status->prev_pose.ang.y = status->cur_pose.ang.y =  i_ang.y + i_ang_vel.y * ts + 0.5f * i_ang_acc.y * ts * ts;
    status->prev_pose.ang.z = status->cur_pose.ang.z = i_ang.z + i_ang_vel.z * ts + 0.5f * i_ang_acc.z * ts * ts;
+
+   status->prev_time_stamp = status->sensor_data.time_stamp;
 }
 
 
@@ -35,8 +37,11 @@ void update_pos(struct Micromouse* m)
    m->prev_pose = m->cur_pose;
 
    // ms to s
-   float ts = m->time_step / 1000.0f;
 
+   float java = (m->sensor_data.time_stamp - m->prev_time_stamp) / 1000;
+   float c = m->time_step;
+   float ts = java / 1000.0f;
+   printf("JAVA STAMP = %g, C STAMP = %g, ERR = %g\n", java, c, java-c);
    m->cur_pose.ang.x = m->cur_pose.ang.x +  m->sensor_data.gyro.ypr.x * ts;
    m->cur_pose.ang.y = m->cur_pose.ang.y +  m->sensor_data.gyro.ypr.y * ts;
    m->cur_pose.ang.z = m->cur_pose.ang.z +  m->sensor_data.gyro.ypr.z * ts;
@@ -61,5 +66,6 @@ void update_pos(struct Micromouse* m)
    m->prev_enc[0] = m->sensor_data.encoders[0];
    m->prev_enc[1] = m->sensor_data.encoders[1];
  
+   m->prev_time_stamp = m->sensor_data.time_stamp;
 }
 

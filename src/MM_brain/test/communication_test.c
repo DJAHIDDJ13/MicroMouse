@@ -70,7 +70,7 @@ int main(void)
 
          case SENSOR_FLAG:
             //dump_sensor_data(status);
-//            dump_estimation_data(status);
+            dump_estimation_data(status);
             update_cell(&status);
             vote_for_walls(status, &logical_maze, detect_wall(status), vertical_walls, horizontal_walls, 15);
 
@@ -82,8 +82,8 @@ int main(void)
 
             /* Adjust display time step */
             if ((int)time(NULL)%5 == 4) {
-               display_logical_maze(status, 15, vertical_walls, horizontal_walls);
-               displayMaze(logical_maze, true);
+//               display_logical_maze(status, 15, vertical_walls, horizontal_walls);
+//               displayMaze(logical_maze, true);
 //               displayMaze(logical_maze, false);
             }
     

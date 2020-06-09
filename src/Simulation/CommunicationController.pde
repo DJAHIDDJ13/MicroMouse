@@ -94,6 +94,7 @@ public class CommunicationController {
     sensorMessage.setDistanceData(distanceData);
     sensorMessage.setAccelerometerData(accelerometerData);
     sensorMessage.setEncoderData(maze.vehicle.getEncoderData());
+    sensorMessage.setTimeStamp(maze.vehicle.getTimeStamp());
     sensorMessage.setContent();
     this.writer.writeFifo(sensorMessage);
     /* CODE SNIPET TO USE RX MSG*/

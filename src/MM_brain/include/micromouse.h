@@ -47,6 +47,7 @@ typedef struct {
    struct Gyro gyro;
 
    float encoders[NB_ENCODER];
+   float time_stamp;
 } SensorData;
 
 enum sensor_position{SensorLeft, SensorTopLeft, SensorTopRight, SensorRight};
@@ -88,6 +89,7 @@ struct Micromouse {
 
    float prev_enc[NB_ENCODER];
    iVec2 cur_cell;
+   float prev_time_stamp;
 };
 
 #endif
