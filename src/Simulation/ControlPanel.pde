@@ -158,7 +158,7 @@ public class ControlPanel {
       .setSize(50, 25)
       .setScrollSensitivity(1.1)
       .setDirection(Controller.HORIZONTAL)
-      .setValue(8)
+      .setValue(4)
       .setRange(4, 32)
       ;
       

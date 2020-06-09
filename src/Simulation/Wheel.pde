@@ -156,7 +156,8 @@ public class Wheel {
   }
   
   //tire class function
-  void move(float desiredSpeed) {      
+  void move(float desiredSpeed) { 
+      // 200
       float m_maxDriveForce = 200;
       
       //find current speed in forward direction

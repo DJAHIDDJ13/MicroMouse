@@ -64,7 +64,7 @@ int main(void)
             //floodFill(logical_maze, status.header_data.target_x, status.header_data.target_y);
             floodFill(logical_maze, 1, 1);
             box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
-            printf("%d %d\n",  box.OX, box.OY);
+//            printf("%d %d\n",  box.OX, box.OY);
             update_control(&status, box, 1); // initialise values
             break;
 
@@ -77,14 +77,14 @@ int main(void)
             //floodFill(logical_maze, status.header_data.target_x, status.header_data.target_y);
             floodFill(logical_maze, 1, 1);
             box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
-            printf("%d %d\n",  box.OX, box.OY);
+//            printf("%d %d\n",  box.OX, box.OY);
             update_control(&status, box, 0); // initialise values
 
             /* Adjust display time step */
             if ((int)time(NULL)%5 == 4) {
-               display_logical_maze(status, 15, vertical_walls, horizontal_walls);
-               displayMaze(logical_maze, true);
-               displayMaze(logical_maze, false);
+//               display_logical_maze(status, 15, vertical_walls, horizontal_walls);
+//               displayMaze(logical_maze, true);
+//               displayMaze(logical_maze, false);
             }
     
             break;
