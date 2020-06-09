@@ -150,25 +150,6 @@ void fwd_PID(struct Micromouse* status, int init)
       target_pos.x = status->header_data.origin_x;
       target_pos.y = status->header_data.origin_y;
 
-      float ang = status->cur_pose.ang.z;
-
-      if(ang > M_PI_4 && ang < 3 * M_PI_4) {
-         check_x = 1;
-         target_pos.x += (status->cur_cell.x + 0.5f + 1) * status->header_data.box_width;
-         target_pos.y -= (status->cur_cell.y + 0.5f) * status->header_data.box_height;
-      } else if(ang > 3 * M_PI_4 && ang < 5 * M_PI_4) {
-         check_x = 0;
-         target_pos.x += (status->cur_cell.x + 0.5f) * status->header_data.box_width;
-         target_pos.y -= (status->cur_cell.y + 0.5f + 1) * status->header_data.box_height;
-      } else if(ang > 5 * M_PI && ang < 7 * M_PI_4) {
-         check_x = 1;
-         target_pos.x += (status->cur_cell.x + 0.5f - 1) * status->header_data.box_width;
-         target_pos.y -= (status->cur_cell.y + 0.5f) * status->header_data.box_height;
-      } else {
-         check_x = 0;
-         target_pos.x += (status->cur_cell.x + 0.5f) * status->header_data.box_width;
-         target_pos.y -= (status->cur_cell.y + 0.5f - 1) * status->header_data.box_height;
-      }
       float ang = fmod(status->cur_pose.ang.z, 2*M_PI);
 
       if(ang > M_PI_4 && ang < 3 * M_PI_4) {
@@ -398,6 +379,7 @@ void update_control(struct Micromouse* status, struct Box box, char init)
    if(init)
       printf("\33[0;34m" "Restarting\n" "\33[0m");
 
+   int ang = round(fmod(status->cur_pose.ang.z, 2*M_PI) / (M_PI_2));
    int goal = 0;
    if(status->cur_cell.x == box.OX && status->cur_cell.y - 1 == box.OY ) {
       goal = 0;
