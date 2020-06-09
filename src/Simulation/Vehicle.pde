@@ -194,7 +194,7 @@ public class Vehicle {
     // apply drag force
     Vec2 currentForwardNormal = getForwardVelocity();
     float currentForwardSpeed = currentForwardNormal.normalize();
-    float dragForceMagnitude = -2 * currentForwardSpeed;
+    float dragForceMagnitude = -10 * currentForwardSpeed;
     body.applyForce(currentForwardNormal.mul(dragForceMagnitude), body.getWorldCenter()); 
   }
 
