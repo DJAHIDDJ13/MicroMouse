@@ -1,99 +1,57 @@
-/*!
-   \file communication_test.c
-   \author MMteam
-
-
-   \brief Main test for the communication module.
-
-   \date 2020
-*/
-
 #include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <errno.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <signal.h>
-#include <pthread.h>
-#include <time.h>
+#include <sys/time.h>
+#include <math.h>
 
-#include "box.h"
-#include "flood_fill.h"
-#include "communication.h"
-#include "maze.h"
-#include "micromouse.h"
 #include "position.h"
-#include "queue.h"
-#include "utils.h"
+#include "micromouse.h"
 
-/* MUTEX */
-pthread_cond_t condition = PTHREAD_COND_INITIALIZER;
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-/* GLOBAL VARIABLES */
-RX_Message rx_msg;
-TX_Message tx_msg;
-SensorData sensor_data;
-HeaderData header_data;
-
-/* LISTENER */
-void *thread_1(void *arg)
+int main(int argc, const char *argv[])
 {
-   log_message("INFO", "Listener", "run", "Starting listener...");
+   // the test is passed initially
+   int verif = 1;
 
-   while (1) {
-      read_fifo(&rx_msg);
-      format_rx_data(rx_msg, &sensor_data, &header_data);
-      pthread_mutex_lock (&mutex);
-      pthread_cond_signal (&condition);
-      pthread_mutex_unlock (&mutex);
+   // fixed time step of 60FPS
+   const float time_step = 1000 / 60; // 16.66666ms
+
+   // initialize the estimator 
+   Vec3 i_pos = {.x = 0, .y = 0, .z = 0};
+   Vec3 i_vel = {.x = 0, .y = 0, .z = 0};
+   Vec3 i_acc = {.x = 0, .y = 0, .z = 0};
+
+   Vec3 i_ang = {.x = 0, .y = 0, .z = 0};
+   Vec3 i_ang_vel = {.x = 0, .y = 0, .z = 0};
+   Vec3 i_ang_acc = {.x = 0, .y = 0, .z = 0};
+
+   struct Micromouse status = {
+      .sensor_data = {
+         .gyro = {
+            .xyz = {0, 0, 0},
+            .ypr = {0, 0, 0}
+         }
+      },
+      .time_step = time_step
+   };
+ 
+   init_pos(i_pos, i_vel, i_acc, i_ang, i_ang_vel, i_ang_acc, &status);
+
+   /** 
+    * Test the angle estimation
+    */
+   // dummy gyroscope angle 1 radians/sec for 1 sec or 60 time steps
+   status.sensor_data.gyro.ypr.z = 1;
+
+   int num_time_steps = (int) (1000 / time_step); // should be 60
+   for (int i = 0; i < num_time_steps; i++) {
+       update_pos(&status);
    }
 
-   /* No warning */
-   (void) arg;
-   pthread_exit(NULL);
-}
+   // We verify that the estimated angle is actually 1
+   if(fabs(status.cur_pose.ang.z - 1) < 0.01)
+      verif = 0;
 
-/* WRITER */
-void *thread_2(void *arg)
-{
-   float test[2] = { 1.23, 4.56 };
-   log_message("INFO", "Writer", "run", "Starting writer...");
+   // reset
+   status.sensor_data.gyro.ypr.z = 0;
 
-   while (1) {
-      pthread_mutex_lock(&mutex);
-      pthread_cond_wait (&condition, &mutex);
-      /* WRITING */
-      /* ...Processing...*/
-      write_fifo(tx_msg, MOTOR_FLAG, test);
-      pthread_mutex_unlock(&mutex);
-   }
-
-   /* No warning */
-   (void) arg;
-   pthread_exit(NULL);
-}
-
-int main(void)
-{
-
-   pthread_t listener;
-   pthread_t reader;
-
-   set_starting_time();
-
-   create_fifo();
-
-   if (pthread_create(&listener, NULL, thread_1, NULL) || pthread_create(&reader, NULL, thread_2, NULL) ) {
-      perror("pthread_create");
-      return 1;
-   }
-
-   if (pthread_join(listener, NULL) || pthread_join(reader, NULL)) {
-      perror("pthread_join");
-      return 1;
-   }
-
-   return 0;
+   // we use the return value as the verification
+   return !verif;
 }

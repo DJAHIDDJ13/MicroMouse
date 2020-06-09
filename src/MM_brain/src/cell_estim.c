@@ -43,7 +43,7 @@ void update_cell(struct Micromouse* status)
    gettimeofday(&cur_celltime, NULL);
 
    // calculating the value in ms, (second difference * 100,000 + microsecond diff) / 1000
-   float mdiff = (1e6 * (cur_celltime.tv_sec - prevtime.tv_sec) + 
+   float mdiff = (float)(1e6 * (cur_celltime.tv_sec - prevtime.tv_sec) + 
                          cur_celltime.tv_usec - prevtime.tv_usec) / 1000.0f;
    // setting the diff as the time_step
    status->time_step = mdiff;

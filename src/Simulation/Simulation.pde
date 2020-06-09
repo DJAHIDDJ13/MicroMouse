@@ -24,7 +24,7 @@ void setup(){
 
   //fullScreen();
   smooth();
-  
+
   // Initialize box2d physics and create the world
   box2d = new Box2DProcessing(this, 10.0f);
   Vec2 gravity = new Vec2(0, 0);

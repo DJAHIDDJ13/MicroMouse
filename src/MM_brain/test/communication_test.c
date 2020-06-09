@@ -61,8 +61,8 @@ int main(void)
             vertical_walls = init_vote_array((int)((status.header_data.maze_width / status.header_data.box_width) + 1.0));
             horizontal_walls = init_vote_array((int)((status.header_data.maze_width / status.header_data.box_width) + 1.0));
             
-            //floodFill(logical_maze, status.header_data.target_x, status.header_data.target_y);
-            floodFill(logical_maze, 1, 1);
+            floodFill(logical_maze, status.header_data.target_x, status.header_data.target_y);
+            //floodFill(logical_maze, 1, 1);
             box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
 //            printf("%d %d\n",  box.OX, box.OY);
             update_control(&status, box, 1); // initialise values
@@ -70,12 +70,12 @@ int main(void)
 
          case SENSOR_FLAG:
             //dump_sensor_data(status);
-            //dump_estimation_data(status);
+            dump_estimation_data(status);
             update_cell(&status);
             vote_for_walls(status, &logical_maze, detect_wall(status), vertical_walls, horizontal_walls, 15);
 
-            //floodFill(logical_maze, status.header_data.target_x, status.header_data.target_y);
-            floodFill(logical_maze, 1, 1);
+            floodFill(logical_maze, status.header_data.target_x, status.header_data.target_y);
+            //floodFill(logical_maze, 1, 1);
             box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
 //            printf("%d %d\n",  box.OX, box.OY);
             update_control(&status, box, 0); // initialise values

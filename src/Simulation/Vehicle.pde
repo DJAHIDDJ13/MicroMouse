@@ -13,7 +13,9 @@ public class Vehicle {
   private float vehicleSize;
   private Body body;
   private int vehicleId;
-
+  private long time_stamp;
+  private long init_time;
+  
   private final static float sensorAngle1 = 90, sensorAngle2 = 10, sensorAngle3 = 60; 
 
   // Constructor
@@ -74,6 +76,7 @@ public class Vehicle {
     left_encoder = new RotaryEncoder();
     right_encoder = new RotaryEncoder();
     encoderData = new float[2];
+    init_time = System.nanoTime();
   }
   
   public int getVehicleId() {
@@ -104,6 +107,10 @@ public class Vehicle {
   
   public double getRightWheelForce() {
     return FRWheel.getForce();
+  }
+  
+  public float getTimeStamp() {
+    return (time_stamp - init_time) / 1000.0f; 
   }
   
   public void setPosition(float x, float y) {
@@ -212,6 +219,7 @@ public class Vehicle {
     accelerometer.update(getPosition(), getAngle());
     left_encoder.update(FRWheel.getRevolutionAngle());
     right_encoder.update(FLWheel.getRevolutionAngle());
+    time_stamp = System.nanoTime();
   }
   
   public void move(float left_m, float right_m) {

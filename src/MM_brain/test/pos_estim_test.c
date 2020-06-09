@@ -7,95 +7,73 @@
 
 int main(int argc, const char *argv[])
 {
-/* TODO
- * This test doesn't make sense now since the gyroscope measures the angular velocity instead of accelratio, needs to be redone
+   // the test is passed initially
+   int verif = 1;
+
+   // fixed time step of 60FPS
+   const float time_step = 1000.0f / 60.0f; // 16.66666ms
+   printf("%g\n", time_step);
+   // initialize the estimator
    Vec3 i_pos = {.x = 0, .y = 0, .z = 0};
    Vec3 i_vel = {.x = 0, .y = 0, .z = 0};
    Vec3 i_acc = {.x = 0, .y = 0, .z = 0};
 
-   Vec3 i_ang = {.x = 0, .y = 0, .z = M_PI / 4};
+   Vec3 i_ang = {.x = 0, .y = 0, .z = 0};
    Vec3 i_ang_vel = {.x = 0, .y = 0, .z = 0};
    Vec3 i_ang_acc = {.x = 0, .y = 0, .z = 0};
-:
-   struct Micromouse x_forward = {
-      .sensor_data = {
-         .gyro = {
-            .xyz = {1.0f, 0, 0},
-            .ypr = {0, 0, 0}
-         }
-      }
-   };
 
-   struct Micromouse x_2backward = {
-      .sensor_data = {
-         .gyro = {
-            .xyz = {-2.0f, 0, 0},
-            .ypr = {0, 0, 0}
-         }
-      }
-   };
-
-   struct Micromouse still = {
+   struct Micromouse status = {
       .sensor_data = {
          .gyro = {
             .xyz = {0, 0, 0},
             .ypr = {0, 0, 0}
          }
-      }
+      },
+      .time_step = time_step
    };
 
-   estim = init_pos(i_pos, i_vel, i_acc, i_ang, i_ang_vel, i_ang_acc, time_step);
-   printf("(%g %g %g), (%g %g %g)\n", estim.pos.x, estim.pos.y, estim.pos.z, estim.ang.x, estim.ang.y, estim.ang.z);
+   init_pos(i_pos, i_vel, i_acc, i_ang, i_ang_vel, i_ang_acc, &status);
 
+   /**
+    * Test the angle estimation
+    */
+   // dummy gyroscope angle 1 radians/sec for 1 sec or 60 time steps
+   status.sensor_data.gyro.ypr.z = 1;
 
-   // One forward acceleration on x for one time_step
-   estim = update_pos(x_forward, time_step);
-   printf("Applying 1m/s^2 on x axis for 1 time_step\n(%g %g %g), (%g %g %g)\n", estim.pos.x, 
-                                                                                 estim.pos.y, 
-                                                                                 estim.pos.z,
-                                                                                 estim.ang.x,
-                                                                                 estim.ang.y,
-                                                                                 estim.ang.z);
-   // no acceleration for 10 time_steps
-   printf("No acceleration for 10 time steps\n");
+   printf("Init: %g\n", status.cur_pose.ang.z);
+   int num_time_steps = (int) (1000 / time_step); // should be 60
 
-   for(int i = 0; i < 10; i++) {
-      estim = update_pos(still, time_step);
-      printf("(%g %g %g), (%g %g %g)\n", estim.pos.x, 
-                                         estim.pos.y, 
-                                         estim.pos.z, 
-                                         estim.ang.x, 
-                                         estim.ang.y, 
-                                         estim.ang.z);
+   for (int i = 0; i < num_time_steps; i++) {
+      printf("Going on 1rad/s: %g\n", status.cur_pose.ang.z);
+      update_pos(&status);
    }
 
-   // 2 backward acceleration on x for one time_step; This should stop it and
-   // make it go backwards
-   estim = update_pos(x_2backward, time_step);
-   printf("\nApplying -2m/s^2 on x axis for 1 time_step\n(%g %g %g), (%g %g %g)\n", estim.pos.x, 
-                                                                                    estim.pos.y, 
-                                                                                    estim.pos.z, 
-                                                                                    estim.ang.x, 
-                                                                                    estim.ang.y, 
-                                                                                    estim.ang.z);
-   // no acceleration for 10 time_steps
-   printf("No acceleration for 10 time steps\n");
+   printf("Verifying %g = 1\n", status.cur_pose.ang.z);
 
-   for(int i = 0; i < 10; i++) {
-      estim = update_pos(still, time_step);
-      printf("(%g %g %g), (%g %g %g)\n", estim.pos.x, estim.pos.y, estim.pos.z, estim.ang.x, estim.ang.y, estim.ang.z);
+   // We verify that the estimated angle is actually 1
+   if(fabs(status.cur_pose.ang.z - 1) > 0.1) {
+      verif = 0;
    }
 
-   // 1 forward acceleration on x for one time_step
-   estim = update_pos(x_forward, time_step);
-   printf("\nApplying 1m/s^2 on x axis for 1 time_step\n(%g %g %g), (%g %g %g)\n", estim.pos.x, estim.pos.y, estim.pos.z, estim.ang.x, estim.ang.y, estim.ang.z);
-   // no acceleration for 10 time_steps
-   printf("No acceleration for 10 time steps\n");
+   // dummy gyroscope angle -1 radians/sec for 1 sec or 60 time steps
+   status.sensor_data.gyro.ypr.z = -1;
 
-   for(int i = 0; i < 10; i++) {
-      estim = update_pos(still, time_step);
-      printf("(%g %g %g), (%g %g %g)\n", estim.pos.x, estim.pos.y, estim.pos.z, estim.ang.x, estim.ang.y, estim.ang.z);
+   for (int i = 0; i < num_time_steps; i++) {
+      printf("Going back %g\n", status.cur_pose.ang.z);
+      update_pos(&status);
+      printf("Verifying %g = 0, %g\n", status.cur_pose.ang.z, fabs(status.cur_pose.ang.z));
    }
-*/
-   return 0;
+
+
+   // return back to 0
+   // We verify that the estimated angle is actually 1
+   if(fabs(status.cur_pose.ang.z) > 0.1) {
+      verif = 0;
+   }
+
+   // reset
+   status.sensor_data.gyro.ypr.z = 0;
+
+   // we use the return value as the verification
+   return !verif;
 }
