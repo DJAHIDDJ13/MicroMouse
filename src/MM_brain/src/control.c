@@ -169,6 +169,25 @@ void fwd_PID(struct Micromouse* status, int init)
          target_pos.x += (status->cur_cell.x + 0.5f) * status->header_data.box_width;
          target_pos.y -= (status->cur_cell.y + 0.5f - 1) * status->header_data.box_height;
       }
+      float ang = fmod(status->cur_pose.ang.z, 2*M_PI);
+
+      if(ang > M_PI_4 && ang < 3 * M_PI_4) {
+         check_x = 1;
+         target_pos.x += (status->cur_cell.x + 0.5f - 1) * status->header_data.box_width;
+         target_pos.y -= (status->cur_cell.y + 0.5f) * status->header_data.box_height;
+      } else if(ang > 3 * M_PI_4 && ang < 5 * M_PI_4) {
+         check_x = 0;
+         target_pos.x += (status->cur_cell.x + 0.5f) * status->header_data.box_width;
+         target_pos.y -= (status->cur_cell.y + 0.5f + 1) * status->header_data.box_height;
+      } else if(ang > 5 * M_PI_4 && ang < 7 * M_PI_4) {
+         check_x = 1;
+         target_pos.x += (status->cur_cell.x + 0.5f + 1) * status->header_data.box_width;
+         target_pos.y -= (status->cur_cell.y + 0.5f) * status->header_data.box_height;
+      } else {
+         check_x = 0;
+         target_pos.x += (status->cur_cell.x + 0.5f) * status->header_data.box_width;
+         target_pos.y -= (status->cur_cell.y + 0.5f - 1) * status->header_data.box_height;
+      }
    }
 
    // NO CHOICE HERE
@@ -392,12 +411,23 @@ void update_control(struct Micromouse* status, struct Box box, char init)
    } else {
       goal = 3;
    }
-   
+*/
+   int goal = 0;
+   if(status->cur_cell.x == box.OX && status->cur_cell.y - 1 == box.OY ) {
+      goal = 0;
+   } else if(status->cur_cell.x + 1 == box.OX && status->cur_cell.y == box.OY ) {
+      goal = 3;
+   } else if(status->cur_cell.x == box.OX && status->cur_cell.y + 1 == box.OY ) {
+      goal = 2;
+   } else {
+      goal = 1;
+   }
+
    if(abs(ang - goal) == 2) {
       printf("TURN BACK*****************************************\n");
       control_state = TURN_BACK;
       turn_back_PID(status, 1);
-   } else if(abs(ang - goal) == 1) {
+   } else if(abs(ang - goal) == 1 || abs(ang - goal) == 3) {
       printf("TURNING*****************************************\n");
       control_state = TURN;
       turn_PID(status, goal-ang, 1);
