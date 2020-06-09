@@ -398,20 +398,6 @@ void update_control(struct Micromouse* status, struct Box box, char init)
    if(init)
       printf("\33[0;34m" "Restarting\n" "\33[0m");
 
-      
-   int ang = round(status->cur_pose.ang.z / (M_PI_2));
-    
-   int goal = 0;
-   if(status->cur_cell.x == box.OX && status->cur_cell.y - 1 == box.OY ) {
-      goal = 0;
-   } else if(status->cur_cell.x + 1 == box.OX && status->cur_cell.y == box.OY ) {
-      goal = 1;
-   } else if(status->cur_cell.x == box.OX && status->cur_cell.y + 1 == box.OY ) {
-      goal = 2;
-   } else {
-      goal = 3;
-   }
-*/
    int goal = 0;
    if(status->cur_cell.x == box.OX && status->cur_cell.y - 1 == box.OY ) {
       goal = 0;
