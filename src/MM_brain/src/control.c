@@ -224,8 +224,8 @@ void fwd_PID(struct Micromouse* status, int init)
       err2 = -ang_diff * 5;
 
       if(ang_diff < 1) {
-         err1 -= 200 * speed.y;
-         err2 -= 200 * speed.y;
+         err1 -= 150 * speed.y;
+         err2 -= 150 * speed.y;
       }
 
       if(right_sensor > 0) {

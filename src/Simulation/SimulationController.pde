@@ -34,7 +34,7 @@ public class SimulationController {
     debugPanel = new DebugPanel(cp5);
     
     botControl = true; 
-    displaySensors = true;
+    displaySensors = false;
     debugMode = false;
     start = false;
     contact = false;

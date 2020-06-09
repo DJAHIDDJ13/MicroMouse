@@ -340,7 +340,7 @@ public class Vehicle {
     top_fd.shape = top_s;
 
     // Parameters that affect physics (Surface)
-    top_fd.density = 1;
+    top_fd.density = 0.5;
     top_fd.friction = 0.3;
     top_fd.restitution = 0.5; 
     
@@ -350,7 +350,7 @@ public class Vehicle {
     middle_fd.shape = middle_s;
 
     // Parameters that affect physics (Surface)
-    middle_fd.density = 1;
+    middle_fd.density = 0.5;
     middle_fd.friction = 0.5;
     middle_fd.restitution = 0.6; 
 
@@ -359,7 +359,7 @@ public class Vehicle {
     bottom_fd.shape = bottom_s;
     
     // Parameters that affect physics (Surface)
-    bottom_fd.density = 1;
+    bottom_fd.density = 0.5;
     bottom_fd.friction = 0.5;
     bottom_fd.restitution = 0.6; 
     

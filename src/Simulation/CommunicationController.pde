@@ -67,19 +67,19 @@ public class CommunicationController {
     headerMessage.setContent();
     this.writer.writeFifo(headerMessage);
   }
-   //<>//
-  public void update() { //<>//
+   //<>// //<>// //<>//
+  public void update() { //<>// //<>// //<>//
     /* SENSORS POSITIONS
      *    _______________
-     *   / 2          1  \ //<>//
-     *  / 3             0 \  //<>// //<>//
-     *  Rearrange to become :  //<>// //<>//
-     *    _______________ //<>//
+     *   / 2          1  \ //<>// //<>// //<>//
+     *  / 3             0 \  //<>// //<>// //<>// //<>//
+     *  Rearrange to become :  //<>// //<>// //<>// //<>//
+     *    _______________ //<>// //<>// //<>//
      *   / 1          2  \
-     *  / 0             3 \  //<>// //<>//
+     *  / 0             3 \  //<>// //<>// //<>// //<>//
      */
     //float[] accelerometerData = ArrayUtils.addAll(maze.getVehicleAcceleration().array(), getVehicleAngularAcceleration().array());
-    float[] accelerometerData = new float[6]; //<>// //<>//
+    float[] accelerometerData = new float[6]; //<>// //<>// //<>// //<>//
     System.arraycopy(maze.getVehicleAcceleration().array(), 0, accelerometerData, 0, 3);
     System.arraycopy(maze.getVehicleAngularAcceleration().array(), 0, accelerometerData, 3, 3);
     
