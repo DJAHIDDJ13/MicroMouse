@@ -24,8 +24,10 @@ public static class CommunicationUtility {
                             " - " + function + "()",
                             "[" + logLevel + "] : " + 
                             msg);
+        /*
         if (logLevel.equals("ERROR"))
           System.exit(0);
+        */
     }
     
     public static byte[] packFloatArray(float[] arr) {
