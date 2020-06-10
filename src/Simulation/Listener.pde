@@ -64,6 +64,7 @@ public class Listener extends Thread {
             byte fileByte = 0;
             int cursor = 0;
             String logMsg = "";
+            int i = 0;
 
             /* READ PIPE */
             while ((fileByte = (byte) rxStream.read()) != -1 && cursor < 50) {
@@ -87,6 +88,20 @@ public class Listener extends Thread {
 
                     /* LOGS */
                     logMsg += this.rxMessage.getLeftPowerMotor() + " " + this.rxMessage.getRightPowerMotor();
+                    break;
+                case CommunicationUtility.PING_FLAG:
+                    
+                    sliced = Arrays.copyOfRange(rawData, 1, CommunicationUtility.PING_CONTENT_SIZE + 1);
+                    
+                    this.rxMessage = new RequestPingData();
+                    RequestPingData requestPingDataMsg = new RequestPingData();
+                    requestPingDataMsg.setContent(sliced);
+                    requestPingDataMsg.setRandomSequence();
+                    this.rxMessage = requestPingDataMsg;
+
+                    /* LOGS */
+                    for (i = 0; i < 10; i++)
+                        logMsg += this.rxMessage.getRandomSequence()[i] + " ";
                     break;
                 default:
                     CommunicationUtility.logMessage("ERROR", "Listener", "readFifo", "No matching flag found.");

@@ -4,6 +4,8 @@ public static class CommunicationUtility {
     public static final String FIFO_TX_FILENAME = "java_tx";
     public static final String FIFO_RX_FILENAME = "c_tx";
 
+    public static final byte PING_FLAG = 66;
+    public static final byte PING_CONTENT_SIZE = 40;
     public static final int MAX_MSG_SIZE = 50;
     public static final byte HEADER_FLAG = 11;
     public static final byte HEADER_CONTENT_SIZE = 40;
@@ -23,7 +25,7 @@ public static class CommunicationUtility {
                             "[" + logLevel + "] : " + 
                             msg);
         if (logLevel.equals("ERROR"))
-            System.exit(0); 
+          System.exit(0);
     }
     
     public static byte[] packFloatArray(float[] arr) {

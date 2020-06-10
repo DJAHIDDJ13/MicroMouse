@@ -5,10 +5,13 @@ public class CommunicationController {
   /* Communication */
   private Listener listener;
   private Writer writer;
+  /* TX */
   private SensorData sensorMessage;
-  private MotorData motorMessage;
   private HeaderData headerMessage;
-  
+  private ReplyPingData replyPingMessage;
+  /* RX */
+  private MotorData motorMessage;
+  private RequestPingData requestPingMessage;
 
   public CommunicationController() {
     listener = new Listener();
@@ -16,13 +19,15 @@ public class CommunicationController {
     sensorMessage = new SensorData();
     motorMessage = new MotorData();
     headerMessage = new HeaderData();
+    replyPingMessage = new ReplyPingData();
+    requestPingMessage = new RequestPingData();
   }
   
   public void setMaze(Maze maze) {
     this.maze = maze;
     sendHeaders();
   }
-  
+
   public void sendHeaders() {
     Vec2 p = maze.getVehicle().getPosition();
     Vec2 tp = maze.getTarget().getCell(maze.getRows());
@@ -53,9 +58,8 @@ public class CommunicationController {
       i++;
       sensorsPos[i] = maze.getVehicle().getSensorAngles()[(maze.getVehicle().getSensorPos().length - 1) - ((i+1)/maze.getVehicle().getSensorPos().length)];
       i++;
-  }
-    
-          
+    }
+
     headerMessage.setMazeData(mazeData);
     headerMessage.setInitialPosData(initialPosData);
     headerMessage.setTargetPosData(targetPosData);
@@ -67,23 +71,22 @@ public class CommunicationController {
     headerMessage.setContent();
     this.writer.writeFifo(headerMessage);
   }
-   //<>// //<>// //<>//
-  public void update() { //<>// //<>// //<>//
+  
+  public void update() {
+    float[] randomSequence = new float[10]; // PING
     /* SENSORS POSITIONS
      *    _______________
-     *   / 2          1  \ //<>// //<>// //<>//
-     *  / 3             0 \  //<>// //<>// //<>// //<>//
-     *  Rearrange to become :  //<>// //<>// //<>// //<>//
-     *    _______________ //<>// //<>// //<>//
+     *   / 2          1  \
+     *  / 3             0 \
+     *  Rearrange to become :
+     *    _______________
      *   / 1          2  \
-     *  / 0             3 \  //<>// //<>// //<>// //<>//
+     *  / 0             3 \  
      */
-    //float[] accelerometerData = ArrayUtils.addAll(maze.getVehicleAcceleration().array(), getVehicleAngularAcceleration().array());
-    float[] accelerometerData = new float[6]; //<>// //<>// //<>// //<>//
+    float[] accelerometerData = new float[6]; 
     System.arraycopy(maze.getVehicleAcceleration().array(), 0, accelerometerData, 0, 3);
     System.arraycopy(maze.getVehicleAngularAcceleration().array(), 0, accelerometerData, 3, 3);
     
-    //float tmp_float;
     Sensor[] sensors = maze.getVehicleSensorValues();
     // reversing the order before sending
     float[] distanceData = {sensors[3].getValue(), 
@@ -96,11 +99,18 @@ public class CommunicationController {
     sensorMessage.setEncoderData(maze.vehicle.getEncoderData());
     sensorMessage.setTimeStamp(maze.vehicle.getTimeStamp());
     sensorMessage.setContent();
-    this.writer.writeFifo(sensorMessage);
+    //this.writer.writeFifo(sensorMessage);
     /* CODE SNIPET TO USE RX MSG*/
     Message rxMsg = this.listener.getRxMessage();
-    if (rxMsg != null && simCon.getBotControl())
-      //System.out.println("Using received data : " + rxMsg.getLeftPowerMotor() + " AND " + rxMsg.getRightPowerMotor());
+    if (rxMsg != null && simCon.getBotControl()) {
       maze.moveVehicle(rxMsg.getLeftPowerMotor(), rxMsg.getRightPowerMotor());
+    } else if (rxMsg != null && rxMsg.getFlag() == CommunicationUtility.PING_FLAG) {
+      // PING REQUEST RECEIVED
+      randomSequence = rxMsg.getRandomSequence();
+      // PING REPLY
+      replyPingMessage.setRandomSequence(randomSequence);
+      replyPingMessage.setContent();
+      this.writer.writeFifo(replyPingMessage);
+    }
   }
 }

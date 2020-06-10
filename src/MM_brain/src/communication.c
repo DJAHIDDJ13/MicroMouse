@@ -31,6 +31,10 @@ void init_rx_message(RX_Message* rx_msg, unsigned char flag)
       rx_msg->content.float_array = malloc(sizeof(SensorData));
       break;
 
+   case PING_FLAG:
+      rx_msg->content.float_array = malloc(sizeof(PingData));
+      break;
+
    default:
       log_message("ERROR", "Listener", "init_rx_message", "No matching flag found.");
    }
@@ -104,7 +108,15 @@ int write_fifo(TX_Message tx_msg, unsigned char flag, void* content)
    format_tx_data(&tx_msg, flag, content);
 
    fwrite(&tx_msg.flag, sizeof(tx_msg.flag), 1, fp);
-   fwrite(tx_msg.content, sizeof(tx_msg.content), 1, fp);
+   switch(tx_msg.flag) {
+      case MOTOR_FLAG:
+         fwrite(tx_msg.content, MOTOR_CONTENT_SIZE, 1, fp);
+         break;
+      case PING_FLAG:
+         fwrite(tx_msg.content, PING_CONTENT_SIZE, 1, fp);
+         break;
+   }
+   
 
    fclose(fp);
 
@@ -194,6 +206,21 @@ int read_fifo(RX_Message* rx_msg)
 
       break;
 
+   case PING_FLAG:
+      for (i = 1; i < sizeof(PingData) + 1; i++) {
+         for (j = 0; j < 4; j++) {
+            byteToFloat.bytesNumber[j] = buffer[i + j];
+         }
+
+         i += 3;
+         sprintf(numberToStr, "%.6g ", byteToFloat.floatNumber);
+         strcat(logMsg, numberToStr);
+         rx_msg->content.float_array[cursor] = byteToFloat.floatNumber;
+         cursor++;
+      }
+
+      break;
+
    default:
       log_message("ERROR", "Listener", "init_rx_message", "No matching flag found.");
    }
@@ -205,7 +232,7 @@ int read_fifo(RX_Message* rx_msg)
    return 0;
 }
 
-void format_rx_data(RX_Message rx_msg, SensorData* sensor_data, HeaderData* header_data)
+void format_rx_data(RX_Message rx_msg, SensorData* sensor_data, HeaderData* header_data, PingData* ping_data)
 {
    switch (rx_msg.flag) {
    case HEADER_FLAG:
@@ -214,6 +241,10 @@ void format_rx_data(RX_Message rx_msg, SensorData* sensor_data, HeaderData* head
 
    case SENSOR_FLAG:
       memcpy(sensor_data, rx_msg.content.float_array, sizeof(*sensor_data));
+      break;
+
+   case PING_FLAG:
+      memcpy(ping_data, rx_msg.content.float_array, sizeof(*ping_data));
       break;
 
    default:
@@ -247,6 +278,7 @@ void format_tx_data(TX_Message *tx_msg, unsigned char flag, void* content)
       float float_number;
       unsigned char bytes_number[4];
    } floatToByte;
+
    tx_msg->flag = flag;
 
    strcpy(logMsg, "Sending : ");
@@ -268,7 +300,22 @@ void format_tx_data(TX_Message *tx_msg, unsigned char flag, void* content)
          sprintf(numberToStr, "%.6g ", data[i]);
          strcat(logMsg, numberToStr);
       }
+      break;
 
+   case PING_FLAG:
+      tx_msg->content = malloc(PING_CONTENT_SIZE);
+
+      for (i = 0; i < (int) (PING_CONTENT_SIZE / sizeof(float)); i++) {
+         floatToByte.float_number = data[i];
+
+         for (j = 0; j < 4; j++) {
+            tx_msg->content[cursor] = floatToByte.bytes_number[j];
+            cursor++;
+         }
+
+         sprintf(numberToStr, "%.6g ", data[i]);
+         strcat(logMsg, numberToStr);
+      }
       break;
 
    default:

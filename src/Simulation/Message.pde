@@ -24,6 +24,11 @@ public abstract class Message {
       return -999; 
   }
 
+  /* PING DATA */
+  public float[] getRandomSequence() {
+      return new float[10]; 
+  }
+
   public abstract void setContent();
   public abstract void setContent(byte[] content);
   public abstract String dumpContent();
