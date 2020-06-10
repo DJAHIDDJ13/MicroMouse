@@ -99,7 +99,7 @@ public class CommunicationController {
     sensorMessage.setEncoderData(maze.vehicle.getEncoderData());
     sensorMessage.setTimeStamp(maze.vehicle.getTimeStamp());
     sensorMessage.setContent();
-    //this.writer.writeFifo(sensorMessage);
+    this.writer.writeFifo(sensorMessage);
     /* CODE SNIPET TO USE RX MSG*/
     Message rxMsg = this.listener.getRxMessage();
     if (rxMsg != null && simCon.getBotControl()) {
