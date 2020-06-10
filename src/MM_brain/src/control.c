@@ -199,7 +199,9 @@ void fwd_PID(struct Micromouse* status, int init)
    float err2 = -(left_sensor - right_sensor) / 4;
 
    if((check_x == 1 && fabs(status->cur_pose.pos.x - target_pos.x) < 1) ||
-         (check_x == 0 && fabs(status->cur_pose.pos.y - target_pos.y) < 1)) {
+      (check_x == 0 && fabs(status->cur_pose.pos.y - target_pos.y) < 1) ||
+      (right_middle_sensor > 0 && right_middle_sensor < 100) ||
+      (left_middle_sensor > 0 && left_middle_sensor < 100)) {
       control_state = DEFAULT;
       //printf("\x1b[32m" "RETURN TO DEFAULT\n" "\x1b[0m");
    }
@@ -239,10 +241,11 @@ void fwd_PID(struct Micromouse* status, int init)
    /**
     * Readjusting the position and angle estimation if the vehicle is moving forward
     */
+   
    if(left_sensor > 0 && right_sensor > 0) {
       readjust_position(status, left_sensor - right_sensor, init);
    }
-
+   
    /*
    if(left_middle_sensor > 0 && left_middle_sensor < 700 &&
       right_middle_sensor > 0 && right_middle_sensor < 700)
@@ -299,6 +302,8 @@ void turn_PID(struct Micromouse* status, int direction, int init)
    // printf("ang_dist = %g\n", ang_dist);
 
    if(ang_dist > 0.9 * M_PI_2) {
+      status->cur_pose.pos.x = status->header_data.origin_x + (status->cur_cell.x + 0.5) * status->header_data.box_width;
+      status->cur_pose.pos.y = status->header_data.origin_y - (status->cur_cell.y + 0.5) * status->header_data.box_height;
       control_state = DEFAULT;
    }
 
@@ -408,15 +413,15 @@ void update_control(struct Micromouse* status, struct Box box, char init)
    }
 
    if(abs(ang_dist) == 2) {
-      printf("TURN BACK\n");
+      printf("*******************************\ TURN BACK\n");
       control_state = TURN_BACK;
       turn_back_PID(status, 1);
    } else if(abs(ang_dist) == 1) {
-      printf("TURNING %s\n", (ang_decision > 0)? "LEFT": "RIGHT");
+      printf("*******************************\ TURNING %s\n", (ang_decision > 0)? "LEFT": "RIGHT");
       control_state = TURN;
       turn_PID(status, -ang_decision, 1);
    } else {
-      printf("FORWARD\n");
+      printf("*******************************\ FORWARD\n");
       control_state = MOVE_FWD;
       fwd_PID(status, 1);
    }

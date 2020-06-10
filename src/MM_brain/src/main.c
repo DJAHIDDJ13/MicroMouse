@@ -78,7 +78,7 @@ int main(int argc, char const *argv[])
             //dump_sensor_data(status);
             //dump_estimation_data(status);
             update_cell(&status);
-            vote_for_walls(status, &logical_maze, detect_wall(status), vertical_walls, horizontal_walls, 20);
+            vote_for_walls(status, &logical_maze, detect_wall(status), vertical_walls, horizontal_walls, 10);
 
             floodFill(logical_maze, status.header_data.target_x, status.header_data.target_y);
             //floodFill(logical_maze, 1, 1);
@@ -87,11 +87,11 @@ int main(int argc, char const *argv[])
             update_control(&status, box, 0); // initialise values
 
             /* Adjust display time step */
-            if ((int)time(NULL)%5 == 4) {
-                 display_logical_maze(status, 20, vertical_walls, horizontal_walls);
+            //if ((int)time(NULL)%15 == 14) {
+                 display_logical_maze(status, 10, vertical_walls, horizontal_walls);
 //               displayMaze(logical_maze, true);
 //               displayMaze(logical_maze, false);
-            }
+            //}
     
             break;
       }
