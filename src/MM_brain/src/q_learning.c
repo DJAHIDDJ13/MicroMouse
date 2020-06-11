@@ -49,19 +49,52 @@ void break_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y, bool top, bool bot
       Qmaze.Qmaze[x*2+1][y*2+2]=' ';
 }
 
+// return a boolean if a cell has a specific wall
+// wall_id :
+// 0 => Top
+// 1 => Right
+// 2 => Bottom
+// 3 => Left
+int Qmaze_cell_has_wall(struct QMAZE Qmaze, int x, int y, int wall_id) {
+	switch(wall_id) {
+		case 0 :
+		if(Qmaze.Qmaze[x*2][y*2+1] == '_') { return 1;  }
+		break;
+
+		case 1 :
+		if(Qmaze.Qmaze[x*2+1][y*2+2] == '|') { return 1;  }
+		break;
+
+		case 2 :
+		if(Qmaze.Qmaze[x*2+2][y*2+1] == '_') { return 1;  }
+		break;
+
+		case 3 :
+		if(Qmaze.Qmaze[x*2+1][y*2] == '|') { return 1;  }
+		break;
+	}
+	return 0;
+}
+
 
 // Init a Qmaze from a given size
 struct QMAZE init_Qmaze(int size)
 {
-
-	// TO-DO change goal x and y 
-	// make it in the middle not in the bottom right
    struct QMAZE initial_maze;
    initial_maze.QRowCol = size;
    initial_maze.Qsize = initial_maze.QRowCol*2+1;
    initial_maze.Qmaze = (char**)calloc(initial_maze.Qsize , sizeof(char*));
    initial_maze.StartX = 0;
    initial_maze.StartY = 0;
+
+   if(initial_maze.QRowCol%2==0) {
+   	initial_maze.GoalX = (initial_maze.QRowCol/2) - 1;
+   	initial_maze.GoalY = (initial_maze.QRowCol/2) - 1;
+   } else {
+   	initial_maze.GoalX = (int) round(initial_maze.QRowCol/2);
+   	initial_maze.GoalY = (int) round(initial_maze.QRowCol/2);
+   }
+
    initial_maze.GoalX = initial_maze.QRowCol - 1;
    initial_maze.GoalY = initial_maze.QRowCol - 1;
 
@@ -153,7 +186,7 @@ void print_Qmaze(struct QMAZE maze)
    }
 }
 
-// Print QTable to the console
+// Print Qmaze QTable to the console
 void print_QTable(struct QMAZE maze)
 {
     for(int i=0;i<maze.QRowCol;i++) {
@@ -169,7 +202,7 @@ void print_QTable(struct QMAZE maze)
 }
 
 
-// Print rValues to the console
+// Print Qmaze rValues table to the console
 void print_RValues(struct QMAZE maze)
 {
     for(int i=0;i<maze.QRowCol;i++)  {
@@ -185,6 +218,14 @@ void print_RValues(struct QMAZE maze)
 }
 
 
+// Take a Qmaze (X, Y) cell and print its corresponding walls
+void print_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y) {
+	printf("QMAZE cell (%d,%d)\n",x,y);
+	printf(" TOP Wall : .%c.\n",Qmaze.Qmaze[x*2][y*2+1]);
+	printf(" BOTTOM Wall: .%c.\n",Qmaze.Qmaze[x*2+2][y*2+1]);
+	printf(" LEFT Wall: .%c.\n",Qmaze.Qmaze[x*2+1][y*2]);
+	printf(" RIGHT Wall: .%c.\n",Qmaze.Qmaze[x*2+1][y*2+2]);
+}
 
 /*******************************************************************/
 //move to the cell at given direction
@@ -239,13 +280,13 @@ int bestDirection(int *direction, struct QMAZE Qmaze)//find bestDirection by usi
 	{
 		if(Qmaze.qValues[posi/2][posj/2].directions[i]>max)
 		{
-			if(i==0 && Qmaze.Qmaze[posi-1][posj]==' ')//North
+			if(i==0 && Qmaze.Qmaze[posi-1][posj]==' ')//Top
 				{max=Qmaze.qValues[posi/2][posj/2].directions[i];tempDirs[0]=i;count=1;}
-			else if(i==1 && Qmaze.Qmaze[posi][posj+1]==' ')//East
+			else if(i==1 && Qmaze.Qmaze[posi][posj+1]==' ')//Right
 				{max=Qmaze.qValues[posi/2][posj/2].directions[i];tempDirs[0]=i;count=1;}
-			else if(i==2 && Qmaze.Qmaze[posi+1][posj]==' ')//South
+			else if(i==2 && Qmaze.Qmaze[posi+1][posj]==' ')//Bottom
 				{max=Qmaze.qValues[posi/2][posj/2].directions[i];tempDirs[0]=i;count=1;}
-			else if(i==3 && Qmaze.Qmaze[posi][posj-1]==' ')//West
+			else if(i==3 && Qmaze.Qmaze[posi][posj-1]==' ')//Left
 				{max=Qmaze.qValues[posi/2][posj/2].directions[i];tempDirs[0]=i;count=1;}
 		}
 		else if(Qmaze.qValues[posi/2][posj/2].directions[i]==max)
@@ -259,12 +300,15 @@ int bestDirection(int *direction, struct QMAZE Qmaze)//find bestDirection by usi
 	return max;
 }
 
+
 void restart(struct QMAZE Qmaze)
 {
-	posi=posj=1;
-	Qmaze.Qmaze[posi][posj]='*';
-	Qmaze.Qmaze[Qmaze.Qsize-2][Qmaze.Qsize-2]='G';
-}
+   posi=posj=1;
+   set_Qmaze_cell(Qmaze,'*',Qmaze.StartX, Qmaze.StartY);
+   set_Qmaze_cell(Qmaze,'G',Qmaze.GoalX, Qmaze.GoalY);
+}	
+
+
 
 void printSleepClear(int sleepMS, struct QMAZE Qmaze)
 {
@@ -278,12 +322,23 @@ void qLearning(struct QMAZE Qmaze)
 	int direction,tempI,tempJ,tempDir,tempCount;
 	double max;
 
-	//rewards to the finish
-	if(Qmaze.Qmaze[Qmaze.Qsize-2][Qmaze.Qsize-3]==' ')
-		Qmaze.rValues[Qmaze.QRowCol-1][Qmaze.QRowCol-2].directions[1]=100000;
-
-	if(Qmaze.Qmaze[Qmaze.Qsize-3][Qmaze.Qsize-2]==' ')
-		Qmaze.rValues[Qmaze.QRowCol-2][Qmaze.QRowCol-1].directions[2]=100000;
+	// rewards to the finish
+    // If target top wall is open, we reward going down to it
+	if(!Qmaze_cell_has_wall(Qmaze, Qmaze.GoalX, Qmaze.GoalY, 0)) {
+		set_rValues_cell(Qmaze, Qmaze.GoalX-1, Qmaze.GoalY, 2, 100000);
+	}
+	// If target right wall is open, we reward going left to it
+	if(!Qmaze_cell_has_wall(Qmaze, Qmaze.GoalX, Qmaze.GoalY, 1)) {
+		set_rValues_cell(Qmaze, Qmaze.GoalX, Qmaze.GoalY+1, 3, 100000);
+	}
+	// If target bottom wall is open, we reward going uo to it
+	if(!Qmaze_cell_has_wall(Qmaze, Qmaze.GoalX, Qmaze.GoalY, 2)) {
+		set_rValues_cell(Qmaze, Qmaze.GoalX+1, Qmaze.GoalY, 0, 100000);
+	}
+	// If target left wall is open, we reward goinf right to
+	if(!Qmaze_cell_has_wall(Qmaze, Qmaze.GoalX, Qmaze.GoalY, 3)) {
+		set_rValues_cell(Qmaze, Qmaze.GoalX, Qmaze.GoalY-1, 1, 100000);
+	}
 	
 	int count=0,countTotal=0;
 	int limit=4*Qmaze.QRowCol;
@@ -301,7 +356,8 @@ void qLearning(struct QMAZE Qmaze)
 		
 		printSleepClear(100, Qmaze);
 		count++;
-		if(posi==Qmaze.Qsize-2 && posj==Qmaze.Qsize-2)
+		//if(posi==Qmaze.Qsize-2 && posj==Qmaze.Qsize-2)
+		if(posi == Qmaze.GoalX*2+1 && posj == Qmaze.GoalY*2+1)
 		{
 			printf("#%d Move:%d\n",countTotal+1,count);
 			printSleepClear(999, Qmaze);
@@ -319,7 +375,7 @@ void qLearning(struct QMAZE Qmaze)
 }
 
 
-// Return a path in Queu form using a QTablered
+// Return a path in Queu form using a QTable
 Queue_XY QLPath(struct QMAZE Qmaze) {
 
 	int i=0, j=0;

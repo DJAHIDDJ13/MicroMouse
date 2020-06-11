@@ -10,18 +10,6 @@
 #include <q_learning.h>
 
 
-void displayMazeWallsVal(struct Maze maze)
-{
-   for(int16_t y = 0; y < maze.size; y++) {
-      for(int16_t x = 0; x < maze.size; x++) {
-         printf("%d\t", maze.maze[y * maze.size + x].wallIndicator);
-      }
-
-      printf("\n");
-   }
-}
-
-
 struct Maze createMaze() {
    /* # # # # # # # # # # # # 
       #   #                 #
@@ -113,6 +101,9 @@ int main(int argc, char **argv) {
    print_QTable(test);
    printf("\n\n\n\n\n");
    print_RValues(test);
+
+   printf(" TOP : .%d.\n",Qmaze_cell_has_wall(test, 3, 3, 0));
+   printf(" RIGHT : .%d.\n",Qmaze_cell_has_wall(test, 3, 3, 1));
 
    freeMaze(&logicalMaze);
    return 0;
