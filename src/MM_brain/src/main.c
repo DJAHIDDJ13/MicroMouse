@@ -64,9 +64,9 @@ int main(int argc, char const *argv[])
 
             logical_maze = initMaze(status.header_data.maze_height / status.header_data.box_height);
 
-            vertical_walls = init_vote_array((int)((status.header_data.maze_width / status.header_data.box_width) + 1.0));
-            horizontal_walls = init_vote_array((int)((status.header_data.maze_width / status.header_data.box_width) + 1.0));
-            
+            vertical_walls = init_vote_array((int)((status.header_data.maze_width / status.header_data.box_width) + 2.0));
+            horizontal_walls = init_vote_array((int)((status.header_data.maze_width / status.header_data.box_width) + 2.0));
+
             floodFill(logical_maze, status.header_data.target_x, status.header_data.target_y);
             //floodFill(logical_maze, 1, 1);
             box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
