@@ -46,7 +46,7 @@ public class Listener extends Thread {
     /***************************************************************************************************************************
     * GLOBAL FORMAT (in bytes)
     * +----------+-------------+
-    * | FLAG (1) | CONTENT (8) |
+    * | FLAG (1) | CONTENT (N) |
     * +----------+-------------+
     *
     * CONTENT :
@@ -55,6 +55,13 @@ public class Listener extends Thread {
     * +------------+------------+
     * | MOTORL (4) | MOTORR (4) |
     * +------------+------------+
+    * 
+    *      FLAG=WALL
+    *          - CELL# = cell coord.
+    *          - WALL = wall indicator
+    * +------------+------------+------------+
+    * | CELLX (4)  | CELLY  (4) | WALL (4)   |
+    * +------------+------------+------------+
     ***************************************************************************************************************************/
     public void readFifo() {
         try {
@@ -77,7 +84,6 @@ public class Listener extends Thread {
             switch (rawData[0]) {
                 case CommunicationUtility.MOTOR_FLAG:
                     sliced = Arrays.copyOfRange(rawData, 1, CommunicationUtility.MOTOR_CONTENT_SIZE + 1);
-                    
                     this.rxMessage = new MotorData();
                     MotorData motorDataMsg = new MotorData();
                     motorDataMsg.setContent(sliced);
@@ -85,23 +91,30 @@ public class Listener extends Thread {
                     motorDataMsg.setLeftPowerMotor();
                     motorDataMsg.setRightPowerMotor();
                     this.rxMessage = motorDataMsg;
-
                     /* LOGS */
-                    logMsg += this.rxMessage.getLeftPowerMotor() + " " + this.rxMessage.getRightPowerMotor();
+                    logMsg += rawData[0] + " " + this.rxMessage.getLeftPowerMotor() + " " + this.rxMessage.getRightPowerMotor();
                     break;
                 case CommunicationUtility.PING_FLAG:
-                    
                     sliced = Arrays.copyOfRange(rawData, 1, CommunicationUtility.PING_CONTENT_SIZE + 1);
-                    
                     this.rxMessage = new RequestPingData();
                     RequestPingData requestPingDataMsg = new RequestPingData();
                     requestPingDataMsg.setContent(sliced);
                     requestPingDataMsg.setRandomSequence();
                     this.rxMessage = requestPingDataMsg;
-
                     /* LOGS */
+                    logMsg += rawData[0] + " ";
                     for (i = 0; i < 10; i++)
                         logMsg += this.rxMessage.getRandomSequence()[i] + " ";
+                    break;
+                case CommunicationUtility.WALL_FLAG:
+                    sliced = Arrays.copyOfRange(rawData, 1, CommunicationUtility.WALL_CONTENT_SIZE + 1);
+                    this.rxMessage = new WallData();
+                    WallData wallData = new WallData();
+                    wallData.setContent(sliced);
+                    wallData.formatMessage();
+                    this.rxMessage = wallData;
+                    /* LOGS */
+                    logMsg += rawData[0] + " " + this.rxMessage.getCell().x + " " + this.rxMessage.getCell().y + " " + this.rxMessage.getWallIndicator() + " ";
                     break;
                 default:
                     CommunicationUtility.logMessage("ERROR", "Listener", "readFifo", "No matching flag found.");

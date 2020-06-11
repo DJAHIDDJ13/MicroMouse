@@ -104,22 +104,24 @@ int write_fifo(TX_Message tx_msg, unsigned char flag, void* content)
       perror("fopen");
       return 1;
    }
-
    format_tx_data(&tx_msg, flag, content);
-
    fwrite(&tx_msg.flag, sizeof(tx_msg.flag), 1, fp);
    switch(tx_msg.flag) {
       case MOTOR_FLAG:
          fwrite(tx_msg.content, MOTOR_CONTENT_SIZE, 1, fp);
+         fclose(fp);
+
          break;
       case PING_FLAG:
          fwrite(tx_msg.content, PING_CONTENT_SIZE, 1, fp);
          break;
+      case WALL_FLAG:
+         fwrite(tx_msg.content, WALL_CONTENT_SIZE, 1, fp);  
+         fclose(fp);
+         //sync();
+         break;
    }
    
-
-   fclose(fp);
-
    return 0;
 }
 
@@ -288,36 +290,40 @@ void format_tx_data(TX_Message *tx_msg, unsigned char flag, void* content)
    switch (flag) {
    case MOTOR_FLAG:
       tx_msg->content = malloc(MOTOR_CONTENT_SIZE);
-
       for (i = 0; i < (int) (MOTOR_CONTENT_SIZE / sizeof(float)); i++) {
          floatToByte.float_number = data[i];
-
          for (j = 0; j < 4; j++) {
             tx_msg->content[cursor] = floatToByte.bytes_number[j];
             cursor++;
          }
-
          sprintf(numberToStr, "%.6g ", data[i]);
          strcat(logMsg, numberToStr);
       }
       break;
-
    case PING_FLAG:
       tx_msg->content = malloc(PING_CONTENT_SIZE);
-
       for (i = 0; i < (int) (PING_CONTENT_SIZE / sizeof(float)); i++) {
          floatToByte.float_number = data[i];
-
          for (j = 0; j < 4; j++) {
             tx_msg->content[cursor] = floatToByte.bytes_number[j];
             cursor++;
          }
-
          sprintf(numberToStr, "%.6g ", data[i]);
          strcat(logMsg, numberToStr);
       }
       break;
-
+   case WALL_FLAG:
+      tx_msg->content = malloc(WALL_CONTENT_SIZE);
+      for (i = 0; i < (int) (WALL_CONTENT_SIZE / sizeof(float)); i++) {
+         floatToByte.float_number = data[i];
+         for (j = 0; j < 4; j++) {
+            tx_msg->content[cursor] = floatToByte.bytes_number[j];
+            cursor++;
+         }
+         sprintf(numberToStr, "%.6g ", data[i]);
+         strcat(logMsg, numberToStr);
+      }
+      break;
    default:
       log_message("ERROR", "Writer", "format_tx_data", "No matching flag found.");
    }

@@ -11,12 +11,17 @@
 /* FLAG(2) + MAX(CONTENT_SIZE) */
 #define MAX(a,b) (((a)>(b))?(a+2):(b+2))
 
+/* RX MSG */
 #define HEADER_FLAG 11
 #define SENSOR_FLAG 10
+
+/* TX MSG */
 #define MOTOR_FLAG 20
+#define MOTOR_CONTENT_SIZE 8
 #define PING_FLAG 66
 #define PING_CONTENT_SIZE 40
-#define MOTOR_CONTENT_SIZE 8
+#define WALL_FLAG 21
+#define WALL_CONTENT_SIZE 12
 
 typedef struct {
    unsigned char flag;

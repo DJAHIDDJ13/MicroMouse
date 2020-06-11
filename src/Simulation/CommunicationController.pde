@@ -13,6 +13,8 @@ public class CommunicationController {
   private MotorData motorMessage;
   private RequestPingData requestPingMessage;
 
+  private float old_l, old_r;
+
   public CommunicationController() {
     listener = new Listener();
     writer = new Writer();
@@ -102,8 +104,12 @@ public class CommunicationController {
     this.writer.writeFifo(sensorMessage);
     /* CODE SNIPET TO USE RX MSG*/
     Message rxMsg = this.listener.getRxMessage();
-    if (rxMsg != null && simCon.getBotControl()) {
+
+    // MOTOR
+    if (rxMsg != null && rxMsg.getFlag() == CommunicationUtility.MOTOR_FLAG && simCon.getBotControl()) {
       maze.moveVehicle(rxMsg.getLeftPowerMotor(), rxMsg.getRightPowerMotor());
+      this.old_l = rxMsg.getLeftPowerMotor();
+      this.old_r = rxMsg.getRightPowerMotor();
     } else if (rxMsg != null && rxMsg.getFlag() == CommunicationUtility.PING_FLAG) {
       // PING REQUEST RECEIVED
       randomSequence = rxMsg.getRandomSequence();
@@ -111,6 +117,8 @@ public class CommunicationController {
       replyPingMessage.setRandomSequence(randomSequence);
       replyPingMessage.setContent();
       this.writer.writeFifo(replyPingMessage);
+    } else if (rxMsg != null && rxMsg.getFlag() == CommunicationUtility.WALL_FLAG) {
+      println("RECU");
     }
   }
 }

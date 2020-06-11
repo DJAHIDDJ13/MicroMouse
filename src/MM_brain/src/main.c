@@ -78,7 +78,13 @@ int main(int argc, char const *argv[])
             //dump_sensor_data(status);
             //dump_estimation_data(status);
             update_cell(&status);
-            vote_for_walls(status, &logical_maze, detect_wall(status), vertical_walls, horizontal_walls, 10);
+            vote_for_walls(&tx_msg, status, &logical_maze, detect_wall(status), vertical_walls, horizontal_walls, 10);
+            for (int i = 0; i < 5; i++) {
+               for (int j = 0; j < 5; j++) {
+                  printf("%d\t", vertical_walls[j][i]);
+               }
+               printf("\n");
+            }
 
             floodFill(logical_maze, status.header_data.target_x, status.header_data.target_y);
             //floodFill(logical_maze, 1, 1);

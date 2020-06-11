@@ -17,16 +17,25 @@ public abstract class Message {
 
   /* MOTOR DATA */
   public float getLeftPowerMotor() {
-      return -999; 
+      return -1; 
   }
 
   public float getRightPowerMotor() {
-      return -999; 
+      return -1; 
   }
 
   /* PING DATA */
   public float[] getRandomSequence() {
       return new float[10]; 
+  }
+
+  /* WALL DATA */
+  public Vec2 getCell() {
+      return new Vec2();
+  }
+
+  public float getWallIndicator() {
+      return -1; 
   }
 
   public abstract void setContent();

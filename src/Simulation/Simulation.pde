@@ -20,9 +20,9 @@ public static final long  STARTING_TIME = System.currentTimeMillis();
 private final static int initialSize = 4;
 
 void setup(){
-  size(1500,910);
+  //size(1500,910);
 
-  //fullScreen();
+  fullScreen();
   smooth();
 
   // Initialize box2d physics and create the world
