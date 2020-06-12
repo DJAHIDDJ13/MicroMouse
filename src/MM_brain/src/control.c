@@ -416,15 +416,15 @@ void update_control(struct Micromouse* status, struct Box box, char init)
    }
 
    if(abs(ang_dist) == 2) {
-      printf("*******************************\ TURN BACK\n");
+      printf("*******************************TURN BACK\n");
       control_state = TURN_BACK;
       turn_back_PID(status, 1);
    } else if(abs(ang_dist) == 1) {
-      printf("*******************************\ TURNING %s\n", (ang_decision > 0)? "LEFT": "RIGHT");
+      printf("*******************************TURNING %s\n", (ang_decision > 0)? "LEFT": "RIGHT");
       control_state = TURN;
       turn_PID(status, -ang_decision, 1);
    } else {
-      printf("*******************************\ FORWARD\n");
+      printf("*******************************FORWARD\n");
       control_state = MOVE_FWD;
       fwd_PID(status, 1);
    }
