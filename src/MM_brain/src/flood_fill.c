@@ -33,7 +33,7 @@ void pushDestinationBoxs(Queue_XY* queue, int16_t OX, int16_t OY)
    struct oddpair_XY XY;
 
    if(queue == NULL) {
-      printf("flooFill:invalide file entering %s %d\n", __FUNCTION__, __LINE__);
+      printf("floodFill:invalide file entering %s %d\n", __FUNCTION__, __LINE__);
       exit(0);
    }
 
@@ -58,7 +58,7 @@ void floodFill(struct Maze maze, int16_t OX, int16_t OY)
    int16_t size = maze.size;
 
    if(boxs == NULL) {
-      printf("flooFill:invalide file entering %s %d\n", __FUNCTION__, __LINE__);
+      printf("floodFill:invalide file entering %s %d\n", __FUNCTION__, __LINE__);
       exit(0);
    }
 
@@ -124,7 +124,7 @@ Queue_XY backwardFloodFill(struct Maze maze, int16_t OX, int16_t OY)
    int16_t size = maze.size;
 
    if(boxs == NULL) {
-      printf("flooFill:invalide file entering %s %d\n", __FUNCTION__, __LINE__);
+      printf("floodFill:invalide file entering %s %d\n", __FUNCTION__, __LINE__);
       exit(0);
    }
 

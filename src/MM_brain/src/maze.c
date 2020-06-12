@@ -14,13 +14,13 @@
 #include <maze.h>
 
 /* Initialize a maze of size N*N */
-struct Maze initMaze(int16_t N)
+struct Maze initMaze(struct Box *boxes, int16_t N)
 {
    struct Maze maze;
    int x = 0, y = 0;
    maze.size = N;
 
-   maze.maze = (struct Box* ) malloc(N * N * sizeof(struct Box));
+   maze.maze = (struct Box* ) realloc(boxes, N * N * sizeof(struct Box));
 
    for (y = 0; y < N; y++) {
       for (x = 0; x < N; x++) {
@@ -67,8 +67,8 @@ int insertBox(struct Box box, struct Maze maze)
    int16_t OY = box.OY;
    int16_t size = maze.size;
 
-   if(OX >= size || OY >= size)  {
-      fprintf(stderr, "insertBox: entering %s %d\n", __FUNCTION__, __LINE__);
+   if(OX < 0 || OY < 0 || OX >= size || OY >= size)  {
+      // fprintf(stderr, "insertBox: entering %s %d\n", __FUNCTION__, __LINE__);
       return -1;
    }
 

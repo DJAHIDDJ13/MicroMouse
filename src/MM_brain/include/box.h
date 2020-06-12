@@ -29,6 +29,7 @@ enum wall_indicator{
 };
 
 #define ADD_INDICATOR(X, Y) ((X) | (Y))
+#define REMOVE_INDICATOR(X, Y) ((X) & ~(Y))
 #define GET_LEFT(X) ((X) & 1)
 #define GET_RIGHT(X) ((X) & 2)
 #define GET_TOP(X) ((X) & 4)

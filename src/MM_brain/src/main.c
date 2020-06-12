@@ -48,8 +48,11 @@ int main(int argc, char const *argv[])
 
    create_fifo();
    
-   int **vertical_walls, **horizontal_walls;
-   struct Maze logical_maze;
+   int init_width = 4;
+   int **vote_table = NULL;
+   vote_table = init_vote_array(vote_table, init_width);
+   struct Maze logical_maze = {.maze = NULL};
+   logical_maze = initMaze(logical_maze.maze, init_width);
    struct Micromouse status;
    struct Box box = {0};
 
@@ -62,10 +65,10 @@ int main(int argc, char const *argv[])
             //dump_header_data(status);
             init_cell(&status);
 
-            logical_maze = initMaze(status.header_data.maze_height / status.header_data.box_height);
+            logical_maze = initMaze(logical_maze.maze, status.header_data.maze_height / status.header_data.box_height);
 
-            vertical_walls = init_vote_array((int)((status.header_data.maze_width / status.header_data.box_width) + 1.0));
-            horizontal_walls = init_vote_array((int)((status.header_data.maze_width / status.header_data.box_width) + 1.0));
+//            vertical_walls = init_vote_array((int)((status.header_data.maze_width / status.header_data.box_width) + 1.0));
+            vote_table = init_vote_array(vote_table, (int)(status.header_data.maze_width / status.header_data.box_width));
             
             floodFill(logical_maze, status.header_data.target_x, status.header_data.target_y);
             //floodFill(logical_maze, 1, 1);
@@ -77,8 +80,8 @@ int main(int argc, char const *argv[])
          case SENSOR_FLAG:
             //dump_sensor_data(status);
             //dump_estimation_data(status);
-            update_cell(&status);
-            vote_for_walls(status, &logical_maze, detect_wall(status), vertical_walls, horizontal_walls, 10);
+            update_cell(&status); 
+            vote_for_walls(status, &logical_maze, vote_table, 6);
 
             floodFill(logical_maze, status.header_data.target_x, status.header_data.target_y);
             //floodFill(logical_maze, 1, 1);
@@ -88,7 +91,7 @@ int main(int argc, char const *argv[])
 
             /* Adjust display time step */
             //if ((int)time(NULL)%15 == 14) {
-                 display_logical_maze(status, 10, vertical_walls, horizontal_walls);
+                 display_logical_maze(status, 6, vote_table);
 //               displayMaze(logical_maze, true);
 //               displayMaze(logical_maze, false);
             //}

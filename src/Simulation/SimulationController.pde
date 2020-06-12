@@ -52,7 +52,7 @@ public class SimulationController {
     return debugMode;
   }
   
-  public void setDebigMode(boolean debugMode) {
+  public void setDebugMode(boolean debugMode) {
     this.debugMode = debugMode;
   }
   

@@ -87,7 +87,7 @@ public class ControlPanel {
       setPosition = !setPosition;
       showingMovingObject = false;
     } else if (eventControllerName.equals("DebugCheckBox")) {
-      simCon.setDebigMode(!simCon.getDebugMode());
+      simCon.setDebugMode(!simCon.getDebugMode());
     } else if (eventControllerName.equals("Start")) {
       simCon.setStart(!simCon.getStart());
     } else if(eventControllerName.equals("algo")) { 

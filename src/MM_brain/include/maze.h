@@ -34,7 +34,8 @@ struct Maze {
 /* --------------------------------------------- */
 
 /* Initialize a maze of size N */
-struct Maze initMaze(int16_t N);
+// struct Maze initMaze(int16_t N);
+struct Maze initMaze(struct Box *boxes, int16_t N);
 
 void initFFMaze(struct Maze maze);
 

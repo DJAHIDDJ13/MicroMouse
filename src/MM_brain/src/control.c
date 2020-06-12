@@ -114,13 +114,13 @@ void readjust_position(struct Micromouse* status, float err, int init)
       err_counter = 0;
    }
 
-   if(fabs(err) < 13.0) {
+   if(fabs(err) < 10.0) {
       err_counter++;
    } else {
       err_counter = 0;
    }
 
-   if(err_counter > 6) {
+   if(err_counter > 10) {
       printf("\x1b[32m" "Readjusting the estimation ang = %g -> ", status->cur_pose.ang.z);
       int direction = round(status->cur_pose.ang.z / (M_PI_2));
       status->cur_pose.ang.z = M_PI_2 * direction;
@@ -194,14 +194,14 @@ void fwd_PID(struct Micromouse* status, int init)
          left_sensor = status->sensor_data.sensors[2],
          right_middle_sensor = status->sensor_data.sensors[0],
          left_middle_sensor = status->sensor_data.sensors[3];
-   const float Kp = .5, Kd = 50, Ki = 0.001;
+   const float Kp = 0.6, Kd = 50, Ki = 0.001;
    float err1 = (left_sensor - right_sensor) / 4;
    float err2 = -(left_sensor - right_sensor) / 4;
 
    if((check_x == 1 && fabs(status->cur_pose.pos.x - target_pos.x) < 1) ||
       (check_x == 0 && fabs(status->cur_pose.pos.y - target_pos.y) < 1) ||
-      (right_middle_sensor > 0 && right_middle_sensor < 100) ||
-      (left_middle_sensor > 0 && left_middle_sensor < 100)) {
+      ((right_middle_sensor > 0 && right_middle_sensor < 200) &&
+      (left_middle_sensor > 0 && left_middle_sensor < 200))) {
       control_state = DEFAULT;
       //printf("\x1b[32m" "RETURN TO DEFAULT\n" "\x1b[0m");
    }
@@ -221,22 +221,25 @@ void fwd_PID(struct Micromouse* status, int init)
    if((left_sensor < 0 || left_sensor > 900) || (right_sensor < 0 || right_sensor > 900) || 
       (left_middle_sensor > 0 && right_middle_sensor > 0)) 
    {
-      err1 = ang_diff * 5;
-      err2 = -ang_diff * 5;
-
-      if(ang_diff < 1) {
+      printf("Aligning angle\n");
+      err1 = ang_diff * 20;
+      err2 = -ang_diff * 20;
+      if(fabs(ang_diff)  < 0.5) {
+         printf("Speeding down\n");
          err1 -= 150 * speed.y;
          err2 -= 150 * speed.y;
       }
 
-      if(right_sensor > 0) {
-         err1 += (right_sensor - 500) / 100;
-         err2 -= (right_sensor - 500) / 100;
-      } else if(left_sensor > 0) {
-         err1 += (left_sensor - 500) / 100;
-         err2 -= (left_sensor - 500) / 100;
+      if(right_sensor < 0 || right_sensor > 700) {
+         printf("Wall on the right\n");
+         err1 += (left_sensor - 500) / 50;
+         err2 -= (left_sensor - 500) / 50;
+      } else if(left_sensor < 0 || left_sensor > 700) {
+         printf("Wall on the left\n");
+         err1 -= (right_sensor - 500) / 50;
+         err2 += (right_sensor - 500) / 50;
       }
-   }
+  }
 
    /**
     * Readjusting the position and angle estimation if the vehicle is moving forward
