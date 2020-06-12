@@ -49,15 +49,15 @@ struct QMAZE init_Qmaze(int size);
 void break_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y, bool top, bool bottom, bool left, bool right);
 void add_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y, bool top, bool right, bool bottom, bool left);
 struct QMAZE init_Qmaze(int size);
-struct QMAZE logical_to_Qmaze(struct Maze logicalmaze );
+struct QMAZE logical_to_Qmaze(struct Maze logicalmaze);
 void print_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y);
 void print_Qmaze(struct QMAZE maze);
 void print_QTable(struct QMAZE maze);
-void move(int direction, struct QMAZE Qmaze);
-int bestDirection(int *direction, struct QMAZE Qmaze);
-void restart(struct QMAZE Qmaze);
+void move(int direction, struct QMAZE Qmaze, struct Box* box);
+int bestDirection(int *direction, struct QMAZE Qmaze, struct Box box);
+void restart(struct QMAZE Qmaze, struct Box* box);
 void printSleepClear(int sleepMS, struct QMAZE Qmaze);
-void qLearning(struct QMAZE Qmaze);
+void qLearning(struct QMAZE Qmaze, struct Box *box);
 Queue_XY QLPath(struct QMAZE Qmaze);
 
 #endif

@@ -24,7 +24,8 @@ struct Maze createMaze() {
       #                     #
       # # # # # # # # # # # #
    */
-   struct Maze maze = initMaze(4);
+   struct Maze maze = {.maze = NULL};
+   maze = initMaze(maze.maze, 4);
 
    // TOP, BOTTOM, LEFT, RIGHT
    //Box 1
@@ -77,39 +78,41 @@ struct Maze createMaze() {
 
 int main(int argc, char **argv) {
 
-   // Maze 1
-   /*
-   struct QMAZE test1 = init_Qmaze(4);
-   break_Qmaze_Cell_Walls(test1, 0,1, false, true, true, true);
-   break_Qmaze_Cell_Walls(test1, 1,1, true, true, false, true);
-   break_Qmaze_Cell_Walls(test1, 1,2, true, true, false, false);
-   break_Qmaze_Cell_Walls(test1, 1,3, true, false, false, true);
-   break_Qmaze_Cell_Walls(test1, 2,0, true, false, true, false);
-   break_Qmaze_Cell_Walls(test1, 2,1, false, true, false, false);
-   break_Qmaze_Cell_Walls(test1, 2,3, false, false, true, true);
-   break_Qmaze_Cell_Walls(test1, 3,1, false, true, false, true);
-   break_Qmaze_Cell_Walls(test1, 3,2, true, false, false, false);
-
-
-   qLearning(test1);
-   printQueue_XY(QLPath(test1));
-   print_QTable(test1);
-   print_Qmaze(test1);
-   */
-
-
-   struct Maze logicalMaze = createMaze();
-   struct QMAZE test = logical_to_Qmaze(logicalMaze);
+   struct Maze logical_maze = createMaze();
+   struct QMAZE test = logical_to_Qmaze(logical_maze);
    add_Qmaze_Cell_Walls(test, 1,1, false, false, true, false);
    add_Qmaze_Cell_Walls(test, 2,0, false, true, false, false);
 
+   int limit=6*test.QRowCol;
+   int countTotal = 0;
 
-   qLearning(test);
+   struct Box box = {0};
+
+   do
+   {
+      //vote_for_walls(status, &logical_maze, vote_table, 6);
+      //test = logical_to_Qmaze(logical_maze);
+      qLearning(test, &box);
+
+
+      // we reach goal
+      if(box.OY == test.GoalX && box.OX == test.GoalY)
+      {
+         printSleepClear(999, test);
+         countTotal++;
+         if(countTotal!=limit)
+            restart(test, &box);
+      }      
+   }
+   while(countTotal<limit); //while contidion = max restart time
+
+   print_Qmaze(test);
+
    printQueue_XY(QLPath(test));
    print_QTable(test);
 
 
-   freeMaze(&logicalMaze);
+   freeMaze(&logical_maze);
 
    return 0;
 }
