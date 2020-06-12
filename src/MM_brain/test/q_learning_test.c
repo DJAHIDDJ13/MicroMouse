@@ -79,7 +79,10 @@ struct Maze createMaze() {
 int main(int argc, char **argv) {
 
    struct Maze logical_maze = createMaze();
-   struct QMAZE test = logical_to_Qmaze(logical_maze);
+   
+   struct QMAZE test = init_Qmaze(logical_maze.size, 3, 3);
+   logical_to_Qmaze(&test, logical_maze);
+   
    add_Qmaze_Cell_Walls(test, 1,1, false, false, true, false);
    add_Qmaze_Cell_Walls(test, 2,0, false, true, false, false);
 
@@ -93,7 +96,7 @@ int main(int argc, char **argv) {
       //vote_for_walls(status, &logical_maze, vote_table, 6);
       //test = logical_to_Qmaze(logical_maze);
       qLearning(test, &box);
-
+      //update_control(&status, box, 0);
 
       // we reach goal
       if(box.OY == test.GoalX && box.OX == test.GoalY)
@@ -103,15 +106,16 @@ int main(int argc, char **argv) {
          if(countTotal!=limit)
             restart(test, &box);
       }      
-   }
-   while(countTotal<limit); //while contidion = max restart time
+   } while(countTotal<limit); //while contidion = max restart time
+
+   Queue_XY path = QLPath(test);
 
    print_Qmaze(test);
 
-   printQueue_XY(QLPath(test));
+   printQueue_XY(path);
    print_QTable(test);
 
-
+   freeQueue_XY(&path);
    freeMaze(&logical_maze);
 
    return 0;

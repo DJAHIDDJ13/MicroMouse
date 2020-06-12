@@ -63,7 +63,7 @@ void add_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y, bool top, bool right
 
 
 // Init a Qmaze from a given size
-struct QMAZE init_Qmaze(int size)
+struct QMAZE init_Qmaze(int size, int OX, int OY)
 {
    struct QMAZE initial_maze;
    initial_maze.QRowCol = size;
@@ -72,16 +72,8 @@ struct QMAZE init_Qmaze(int size)
    initial_maze.StartX = 0;
    initial_maze.StartY = 0;
 
-   if(initial_maze.QRowCol%2==0) {
-   	initial_maze.GoalX = (initial_maze.QRowCol/2) - 1;
-   	initial_maze.GoalY = (initial_maze.QRowCol/2) - 1;
-   } else {
-   	initial_maze.GoalX = (int) round(initial_maze.QRowCol/2);
-   	initial_maze.GoalY = (int) round(initial_maze.QRowCol/2);
-   }
-
-   initial_maze.GoalX = initial_maze.QRowCol - 1;
-   initial_maze.GoalY = initial_maze.QRowCol - 1;
+   initial_maze.GoalX = OY;
+   initial_maze.GoalY = OX;
 
    // allocate Qmaze structure
    for(int i=0;i<initial_maze.Qsize; i++)
@@ -122,9 +114,8 @@ struct QMAZE init_Qmaze(int size)
 }
 
 
-struct QMAZE logical_to_Qmaze(struct Maze logicalmaze )
+void logical_to_Qmaze(struct QMAZE* Qmaze, struct Maze logicalmaze)
 {
-   struct QMAZE Qmaze = init_Qmaze(logicalmaze.size);
    int currentWallIndicator = 0;
    bool top,  bottom,  left,  right;
    for(int i=0;i<logicalmaze.size;i++) 
@@ -136,25 +127,10 @@ struct QMAZE logical_to_Qmaze(struct Maze logicalmaze )
          bottom = GET_BOTTOM(currentWallIndicator) == 8;
          left = GET_LEFT(currentWallIndicator) == 1;
          right = GET_RIGHT(currentWallIndicator) == 2;
-         /*printf("wall indic %d   ",currentWallIndicator);
-         printf("|top %d  ",GET_TOP(currentWallIndicator));
-         printf("|bottom %d  ",GET_BOTTOM(currentWallIndicator));
-         printf("|left %d  ",GET_LEFT(currentWallIndicator));
-         printf("|right %d  ",GET_RIGHT(currentWallIndicator));*/
 
-         printf("wall indic %d   ",currentWallIndicator);
-         printf("|top %d  ",top);
-         printf("|bottom %d  ",bottom);
-         printf("|left %d  ",left);
-         printf("|right %d  ", right);
-
-         printf("\n");
-         break_Qmaze_Cell_Walls(Qmaze,j, i, !top, !bottom, !left, !right); 
-         //set_Qmaze_cell(Qmaze,'X',i,j);
+         break_Qmaze_Cell_Walls(*Qmaze,j, i, !top, !bottom, !left, !right); 
       }
-     //printf("\n");
    }
-   return Qmaze;
 }
 
 
@@ -317,7 +293,7 @@ void restart(struct QMAZE Qmaze, struct Box* box)
 void printSleepClear(int sleepMS, struct QMAZE Qmaze)
 {
 	print_Qmaze(Qmaze);
-	usleep(50*sleepMS);
+	usleep(500*sleepMS);
 	system("clear");
 }
 
