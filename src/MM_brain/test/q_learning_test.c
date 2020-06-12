@@ -55,7 +55,7 @@ struct Maze createMaze() {
    insertBox(createBox(1, 2, createWallIndicator(false, true, true, true)), maze);
 
    //Box 11
-   insertBox(createBox(2, 2, createWallIndicator(false, false, true, false)), maze);
+   insertBox(createBox(2, 2, createWallIndicator(true, false, true, false)), maze);
 
    //Box 12
    insertBox(createBox(3, 2, createWallIndicator(true, false, false, true)), maze);
@@ -77,34 +77,39 @@ struct Maze createMaze() {
 
 int main(int argc, char **argv) {
 
-   // Partie originelle de q_learning.c
-   struct QMAZE initial_maze = init_Qmaze(4);
-   break_Qmaze_Cell_Walls(initial_maze, 0,0, true, true, true, true);
-   break_Qmaze_Cell_Walls(initial_maze, 1,0, false, true, false, true);
-   break_Qmaze_Cell_Walls(initial_maze, 2,0, true, false, true, true);
-   break_Qmaze_Cell_Walls(initial_maze, 2,1, true, true, true, true);
-   break_Qmaze_Cell_Walls(initial_maze, 2,2, true, true, true, true);
-   break_Qmaze_Cell_Walls(initial_maze, 2,3, true, true, false, false);
-   break_Qmaze_Cell_Walls(initial_maze, 3,3, true, true, false, false);
+   // Maze 1
+   /*
+   struct QMAZE test1 = init_Qmaze(4);
+   break_Qmaze_Cell_Walls(test1, 0,1, false, true, true, true);
+   break_Qmaze_Cell_Walls(test1, 1,1, true, true, false, true);
+   break_Qmaze_Cell_Walls(test1, 1,2, true, true, false, false);
+   break_Qmaze_Cell_Walls(test1, 1,3, true, false, false, true);
+   break_Qmaze_Cell_Walls(test1, 2,0, true, false, true, false);
+   break_Qmaze_Cell_Walls(test1, 2,1, false, true, false, false);
+   break_Qmaze_Cell_Walls(test1, 2,3, false, false, true, true);
+   break_Qmaze_Cell_Walls(test1, 3,1, false, true, false, true);
+   break_Qmaze_Cell_Walls(test1, 3,2, true, false, false, false);
 
 
-  // qLearning(initial_maze);
-  // print_QTable(initial_maze);
-  // print_Qmaze(initial_maze);
+   qLearning(test1);
+   printQueue_XY(QLPath(test1));
+   print_QTable(test1);
+   print_Qmaze(test1);
+   */
+
 
    struct Maze logicalMaze = createMaze();
    struct QMAZE test = logical_to_Qmaze(logicalMaze);
-   break_Qmaze_Cell_Walls(test, 0,0, false, false, false, true);
+   add_Qmaze_Cell_Walls(test, 1,1, false, false, true, false);
+   add_Qmaze_Cell_Walls(test, 2,0, false, true, false, false);
+
 
    qLearning(test);
    printQueue_XY(QLPath(test));
    print_QTable(test);
-   printf("\n\n\n\n\n");
-   print_RValues(test);
 
-   printf(" TOP : .%d.\n",Qmaze_cell_has_wall(test, 3, 3, 0));
-   printf(" RIGHT : .%d.\n",Qmaze_cell_has_wall(test, 3, 3, 1));
 
    freeMaze(&logicalMaze);
+
    return 0;
 }
