@@ -244,7 +244,8 @@ void fwd_PID(struct Micromouse* status, int init)
          (left_middle_sensor > 0 && right_middle_sensor > 0)) {
 
       if(left_middle_sensor > 0 && right_middle_sensor > 0 && 
-            speed.y < 0.05 && fabs(left_middle_sensor - right_middle_sensor) < 200) 
+            speed.y < 0.12 && fabs(ang_diff) <= 0.5
+            && fabs(left_middle_sensor - right_middle_sensor) < 200) 
       {
          printf("USING MIDDLE\n");
          Kp = 1;
@@ -255,8 +256,8 @@ void fwd_PID(struct Micromouse* status, int init)
          printf("Aligning angle\n");
          Kd = 150;
 
-         err1 = ang_diff * 50;
-         err2 = -ang_diff * 50;
+         err1 = 10 + ang_diff * 50;
+         err2 = 10 - ang_diff * 50;
 
          if(fabs(ang_diff) < 0.5) {
             printf("Speeding down\n");
