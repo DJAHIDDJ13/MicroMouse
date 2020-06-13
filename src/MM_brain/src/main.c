@@ -65,15 +65,12 @@ int main(int argc, char const *argv[])
             //dump_header_data(status);
             init_cell(&status);
 
-            logical_maze = initMaze(logical_maze.maze, status.header_data.maze_height / status.header_data.box_height);
-
-//            vertical_walls = init_vote_array((int)((status.header_data.maze_width / status.header_data.box_width) + 1.0));
             vote_table = init_vote_array(vote_table, (int)(status.header_data.maze_width / status.header_data.box_width));
+            logical_maze = initMaze(logical_maze.maze, status.header_data.maze_height / status.header_data.box_height);
             
             floodFill(logical_maze, status.header_data.target_x, status.header_data.target_y);
-            //floodFill(logical_maze, 1, 1);
             box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
-//            printf("%d %d\n",  box.OX, box.OY);
+            
             update_control(&status, box, 1); // initialise values
             break;
 
@@ -84,17 +81,13 @@ int main(int argc, char const *argv[])
             vote_for_walls(status, &logical_maze, vote_table, 6);
 
             floodFill(logical_maze, status.header_data.target_x, status.header_data.target_y);
-            //floodFill(logical_maze, 1, 1);
             box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
-//            printf("%d %d\n",  box.OX, box.OY);
             update_control(&status, box, 0); // initialise values
 
             /* Adjust display time step */
-            //if ((int)time(NULL)%15 == 14) {
                  display_logical_maze(status, 6, vote_table);
-//               displayMaze(logical_maze, true);
-//               displayMaze(logical_maze, false);
-            //}
+//          displayMaze(logical_maze, true);
+//          displayMaze(logical_maze, false);
     
             break;
       }
