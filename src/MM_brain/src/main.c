@@ -108,6 +108,7 @@ int main(int argc, char const *argv[])
                update_control(&status, box, 0); // initialise values
                         
                display_logical_maze(status, 6, vote_table);
+               displayMaze(logical_maze,false);
                 
                break;
          }
@@ -140,7 +141,7 @@ int main(int argc, char const *argv[])
             struct oddpair_XY XY_tmp = summitQueue_XY(path);
 
             box.OX = XY_tmp.OX; box.OY = XY_tmp.OY;
-               
+
             while(box.OX != status.cur_cell.x || box.OY != status.cur_cell.y) {
                read_fifo(&rx_msg);
                format_rx_data_mm(rx_msg, &status);
