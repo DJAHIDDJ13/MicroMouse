@@ -124,7 +124,7 @@ public class DebugPanel {
 
     text(maze.getWalls().size(), 1235, 740);
     text("No", 1250, 780);
-    text("No", 1250, 820);
+    text(simCon.getGoal_reached() ? "Yes" : "No", 1250, 820);
     text("10", 1317, 860);
     
     strokeWeight(1);
