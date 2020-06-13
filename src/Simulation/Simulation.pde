@@ -6,9 +6,6 @@ import org.jbox2d.collision.shapes.*;
 import org.jbox2d.collision.shapes.Shape;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
-import org.jbox2d.dynamics.contacts.*;
-import org.jbox2d.callbacks.ContactListener;
-import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.callbacks.RayCastCallback;
 
@@ -29,8 +26,6 @@ void setup(){
   box2d = new Box2DProcessing(this, 10.0f);
   Vec2 gravity = new Vec2(0, 0);
   box2d.createWorld(gravity);
-  // Turn on collision listening!
-  box2d.listenForCollisions();
   
   simCon = new SimulationController(new ControlP5(this), initialSize);
   simCon.createControllers();
@@ -48,15 +43,6 @@ void draw() {
 
 void controlEvent(ControlEvent event) {
   simCon.controlEventHandler(event);
-}
-
-void beginContact(Contact cp) {
-  println("here");
-  simCon.beginContact(cp);
-}
-
-void endContact(Contact cp) {
-  simCon.endContact(cp);
 }
 
 void mousePressed() {  

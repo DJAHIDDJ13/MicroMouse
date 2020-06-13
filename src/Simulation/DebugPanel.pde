@@ -123,9 +123,9 @@ public class DebugPanel {
     text((simCon.getBotControl()) ? "Bot" : "USER", 1220, 690);
 
     text(maze.getWalls().size(), 1235, 740);
-    text((simCon.getContact()) ? "Yes" : "No", 1250, 780);
+    text("No", 1250, 780);
     text("No", 1250, 820);
-    text("10", 1317, 860);    
+    text("10", 1317, 860);
     
     strokeWeight(1);
   }

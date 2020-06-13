@@ -9,18 +9,13 @@ public class CommunicationController {
   private SensorData sensorMessage;
   private HeaderData headerMessage;
   private ReplyPingData replyPingMessage;
-  /* RX */
-  private MotorData motorMessage;
-  private RequestPingData requestPingMessage;
 
   public CommunicationController() {
     listener = new Listener();
     writer = new Writer();
     sensorMessage = new SensorData();
-    motorMessage = new MotorData();
     headerMessage = new HeaderData();
     replyPingMessage = new ReplyPingData();
-    requestPingMessage = new RequestPingData();
   }
   
   public void setMaze(Maze maze) {

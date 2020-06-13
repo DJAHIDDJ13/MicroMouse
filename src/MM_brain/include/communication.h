@@ -15,8 +15,11 @@
 #define SENSOR_FLAG 10
 #define MOTOR_FLAG 20
 #define PING_FLAG 66
-#define PING_CONTENT_SIZE 40
-#define MOTOR_CONTENT_SIZE 8
+#define GOAL_REACHED_FLAG 33
+
+#define PING_CONTENT_SIZE 		  40
+#define MOTOR_CONTENT_SIZE 		  8
+#define GOAL_REACHED_CONTENT_SIZE 1
 
 typedef struct {
    unsigned char flag;

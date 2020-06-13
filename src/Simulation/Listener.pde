@@ -103,6 +103,10 @@ public class Listener extends Thread {
                     for (i = 0; i < 10; i++)
                         logMsg += this.rxMessage.getRandomSequence()[i] + " ";
                     break;
+                case CommunicationUtility.GOAL_REACHED_FLAG:
+                    simCon.setGoal_reached(true);
+                    println("goal reached");
+                  break;
                 default:
                     CommunicationUtility.logMessage("ERROR", "Listener", "readFifo", "No matching flag found.");
             }

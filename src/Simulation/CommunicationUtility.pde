@@ -13,6 +13,8 @@ public static class CommunicationUtility {
     public static final byte SENSOR_CONTENT_SIZE = 40;
     public static final byte MOTOR_FLAG = 20;
     public static final byte MOTOR_CONTENT_SIZE = 8;
+    public static final byte GOAL_REACHED_FLAG = 33;
+    public static final byte GOAL_REACHED_CONTENT_SIZE = 1; 
     public static String consoleText = "";
 
     public static void logMessage(String logLevel, String process, String function, String msg) {

@@ -34,6 +34,8 @@ int main(int argc, char **argv)
    pushQueue_XY(&queue, XY6);
 
    printQueue_XY(queue);
+   printf("=============\n");
+   printQueueBack_XY(queue);
 
    freeQueue_XY(&queue);
 

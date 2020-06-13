@@ -1,5 +1,6 @@
 #include <math.h>
 #include "q_learning.h"
+
 #define alpha 0.1
 #define gamma 1
 
@@ -24,8 +25,6 @@ void set_QTable_cell(struct QMAZE Qmaze, int i, int j, int dirId, double value) 
    Qmaze.qValues[i][j].directions[dirId] = value;
 }
 
-
-
 // Get rValues (X, Y) + direction value
 double get_rValues_cell(struct QMAZE Qmaze, int i, int j, int dirId) {
    return Qmaze.rValues[i][j].directions[dirId];
@@ -35,7 +34,6 @@ double get_rValues_cell(struct QMAZE Qmaze, int i, int j, int dirId) {
 void set_rValues_cell(struct QMAZE Qmaze, int i, int j, int dirId, double value) {
    Qmaze.rValues[i][j].directions[dirId] = value;
 }
-
 
 // Break Qmaze (X, Y) cell walls top, right, bottom, left
 void break_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y, bool top, bool right, bool bottom, bool left) {
@@ -61,7 +59,6 @@ void add_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y, bool top, bool right
       Qmaze.Qmaze[x*2+1][y*2+2]='|';
 }
 
-
 // Init a Qmaze from a given size
 struct QMAZE init_Qmaze(int size, int OX, int OY)
 {
@@ -82,7 +79,7 @@ struct QMAZE init_Qmaze(int size, int OX, int OY)
    {
       for(int j=0;j<initial_maze.Qsize; j++)
       {
-         if(i%2==0) { initial_maze.Qmaze[i][j]='_';    }
+         if(i%2==0) { initial_maze.Qmaze[i][j]='_'; }
          else if(j%2==0) { initial_maze.Qmaze[i][j]='|'; }
          else { initial_maze.Qmaze[i][j]=' '; }
       }  
@@ -113,7 +110,6 @@ struct QMAZE init_Qmaze(int size, int OX, int OY)
    return initial_maze;
 }
 
-
 void logical_to_Qmaze(struct QMAZE* Qmaze, struct Maze logicalmaze)
 {
    int currentWallIndicator = 0;
@@ -132,8 +128,6 @@ void logical_to_Qmaze(struct QMAZE* Qmaze, struct Maze logicalmaze)
       }
    }
 }
-
-
 
 // Print Qmaze physical maze to the console
 void print_Qmaze(struct QMAZE maze)
@@ -161,7 +155,6 @@ void print_QTable(struct QMAZE maze)
 	}
 }
 
-
 // Print Qmaze rValues table to the console
 void print_RValues(struct QMAZE maze)
 {
@@ -176,7 +169,6 @@ void print_RValues(struct QMAZE maze)
 		}	
 	}
 }
-
 
 // Take a Qmaze (X, Y) cell and print its corresponding walls
 void print_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y) {
@@ -213,7 +205,6 @@ int Qmaze_cell_has_wall(struct QMAZE Qmaze, int x, int y, int wall_id) {
 	}
 	return 0;
 }
-
 
 // Return a path in Queu form using a QTable from a Qmaze
 Queue_XY QLPath(struct QMAZE Qmaze) {

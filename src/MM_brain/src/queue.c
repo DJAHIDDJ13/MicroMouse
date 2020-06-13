@@ -25,7 +25,7 @@ Queue_XY initQueue_XY()
 /* Test if a queue is empty */
 bool emptyQueue_XY(Queue_XY queue)
 {
-   return (queue.head == NULL) ? true : false;
+   return (queue.head == NULL) || (queue.tail == NULL)? true : false;
 }
 
 /* Determine the value of the top of the queue */
@@ -35,6 +35,17 @@ struct oddpair_XY summitQueue_XY(Queue_XY queue)
 
    if(!emptyQueue_XY(queue)) {
       value_XY = queue.head->XY;
+   }
+
+   return value_XY;
+}
+
+struct oddpair_XY tailQueue_XY(Queue_XY queue)
+{
+   struct oddpair_XY value_XY = {0};
+
+   if(!emptyQueue_XY(queue)) {
+      value_XY = queue.tail->XY;
    }
 
    return value_XY;
@@ -53,8 +64,10 @@ void pushQueue_XY(Queue_XY* queue, struct oddpair_XY value)
    cel->next = NULL;
 
    if(emptyQueue_XY(*queue)) {
+      cel->prev = NULL;
       queue->head = queue->tail = cel;
    } else {
+      cel->prev = queue->tail;
       (queue->tail)->next = cel;
       queue->tail = cel;
    }
@@ -93,5 +106,17 @@ void printQueue_XY(Queue_XY queue)
       printf("%hd->(%hd, %hd)\n", XY_tmp.sign, XY_tmp.OX, XY_tmp.OY);
 
       queue.head = (queue.head)->next;
+   }
+}
+
+void printQueueBack_XY(Queue_XY queue)
+{
+
+   while(!emptyQueue_XY(queue)) {
+      struct oddpair_XY XY_tmp = tailQueue_XY(queue);
+
+      printf("%hd->(%hd, %hd)\n", XY_tmp.sign, XY_tmp.OX, XY_tmp.OY);
+
+      queue.tail = (queue.tail)->prev;
    }
 }
