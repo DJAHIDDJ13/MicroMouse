@@ -127,7 +127,7 @@ void readjust_position(struct Micromouse* status, float err, int init)
    }
 
    // If the err_counter is big enough, readjust the coordinates
-   if(err_counter > 10) {
+   if(err_counter > 20) {
       // The orientation of the vehicle
       int direction = round(status->cur_pose.ang.z / (M_PI_2));
 
@@ -205,7 +205,7 @@ void fwd_PID(struct Micromouse* status, int init)
          left_middle_sensor = status->sensor_data.sensors[3];
 
    // Calculating the error
-   const float Kp = 0.6, Kd = 50, Ki = 0.001;
+   float Kp = 0.6, Kd = 50, Ki = 0.001;
    float err1 = (left_sensor - right_sensor) / 4;
    float err2 = -(left_sensor - right_sensor) / 4;
 
@@ -214,8 +214,9 @@ void fwd_PID(struct Micromouse* status, int init)
    // or if we get too close the front wall
    if((direction == 1 && fabs(status->cur_pose.pos.x - target_pos.x) < 1) ||
          (direction == 0 && fabs(status->cur_pose.pos.y - target_pos.y) < 1) ||
-         ((right_middle_sensor > 0 && right_middle_sensor < 200) &&
-          (left_middle_sensor > 0 && left_middle_sensor < 200))) {
+         ((right_middle_sensor > 0 && right_middle_sensor < 300) &&
+          (left_middle_sensor > 0 && left_middle_sensor < 300))) 
+   {
       control_state = DEFAULT;
    }
 
@@ -238,27 +239,43 @@ void fwd_PID(struct Micromouse* status, int init)
    printf("%g\n", speed.y);
 
    // If we only have one side sensor activated, or if have a wall in front
-   if((left_sensor < 0 || left_sensor > 900) || (right_sensor < 0 || right_sensor > 900) ||
+   if((left_sensor < 0 || left_sensor > 700) || 
+         (right_sensor < 0 || right_sensor > 700) ||
          (left_middle_sensor > 0 && right_middle_sensor > 0)) {
-      printf("Aligning angle\n");
-      err1 = ang_diff * 50;
-      err2 = -ang_diff * 50;
 
-      if(fabs(ang_diff)  < 0.5) {
-         // printf("Speeding down\n");
-         err1 -= 150 * speed.y;
-         err2 -= 150 * speed.y;
+      if(left_middle_sensor > 0 && right_middle_sensor > 0 && 
+            speed.y < 0.05 && fabs(left_middle_sensor - right_middle_sensor) < 200) 
+      {
+         printf("USING MIDDLE\n");
+         Kp = 1;
+         Kd = 200;
+         err1 = (right_middle_sensor - 680) / 100;
+         err2 = (left_middle_sensor - 680) / 100;
+      } else {
+         printf("Aligning angle\n");
+         Kd = 150;
+
+         err1 = ang_diff * 50;
+         err2 = -ang_diff * 50;
+
+         if(fabs(ang_diff) < 0.5) {
+            printf("Speeding down\n");
+            err1 -= 100 * speed.y;
+            err2 -= 100 * speed.y;
+         }
       }
 
-      if(right_sensor < 0 || right_sensor > 700) {
-         // printf("Wall on the right\n");
-         err1 += (left_sensor - 500) / 50;
-         err2 -= (left_sensor - 500) / 50;
-      } else if(left_sensor < 0 || left_sensor > 700) {
-         // printf("Wall on the left\n");
-         err1 -= (right_sensor - 500) / 50;
-         err2 += (right_sensor - 500) / 50;
-      }
+      /*
+            if(right_sensor < 0 || right_sensor > 700) {
+               // printf("Wall on the right\n");
+               err1 += (left_sensor - 500) / 50;
+               err2 -= (left_sensor - 500) / 50;
+            } else if(left_sensor < 0 || left_sensor > 700) {
+               // printf("Wall on the left\n");
+               err1 -= (right_sensor - 500) / 50;
+               err2 += (right_sensor - 500) / 50;
+            }
+            */
    }
 
    // Readjusting the position and angle estimation if the vehicle is moving forward
