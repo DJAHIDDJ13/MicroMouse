@@ -13,7 +13,8 @@
 
 struct Maze createMaze() {
 
-   struct Maze maze = initMaze(4);
+   struct Maze maze = {.maze = NULL};
+   maze = initMaze(maze.maze, 4);
 
    //Box 1
    insertBox(createBox(0, 0, createWallIndicator(true, false, true, true)), maze);

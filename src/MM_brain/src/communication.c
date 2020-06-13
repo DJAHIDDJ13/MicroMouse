@@ -115,6 +115,9 @@ int write_fifo(TX_Message tx_msg, unsigned char flag, void* content)
       case PING_FLAG:
          fwrite(tx_msg.content, PING_CONTENT_SIZE, 1, fp);
          break;
+      case GOAL_REACHED_FLAG:
+         fwrite(tx_msg.content, GOAL_REACHED_CONTENT_SIZE, 1, fp);
+         break;
    }
    
 
@@ -316,6 +319,10 @@ void format_tx_data(TX_Message *tx_msg, unsigned char flag, void* content)
          sprintf(numberToStr, "%.6g ", data[i]);
          strcat(logMsg, numberToStr);
       }
+      break;
+
+   case GOAL_REACHED_FLAG:
+      tx_msg->content = malloc(GOAL_REACHED_CONTENT_SIZE);
       break;
 
    default:

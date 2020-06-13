@@ -1,9 +1,8 @@
 #include <math.h>
 #include "q_learning.h"
+
 #define alpha 0.1
 #define gamma 1
-	
-int currentI=0, currentJ=0;
 
 // Get Qmaze (X, Y) cell value
 char get_Qmaze_cell(struct QMAZE Qmaze, int x, int y) {
@@ -26,8 +25,6 @@ void set_QTable_cell(struct QMAZE Qmaze, int i, int j, int dirId, double value) 
    Qmaze.qValues[i][j].directions[dirId] = value;
 }
 
-
-
 // Get rValues (X, Y) + direction value
 double get_rValues_cell(struct QMAZE Qmaze, int i, int j, int dirId) {
    return Qmaze.rValues[i][j].directions[dirId];
@@ -37,7 +34,6 @@ double get_rValues_cell(struct QMAZE Qmaze, int i, int j, int dirId) {
 void set_rValues_cell(struct QMAZE Qmaze, int i, int j, int dirId, double value) {
    Qmaze.rValues[i][j].directions[dirId] = value;
 }
-
 
 // Break Qmaze (X, Y) cell walls top, right, bottom, left
 void break_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y, bool top, bool right, bool bottom, bool left) {
@@ -63,9 +59,8 @@ void add_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y, bool top, bool right
       Qmaze.Qmaze[x*2+1][y*2+2]='|';
 }
 
-
 // Init a Qmaze from a given size
-struct QMAZE init_Qmaze(int size)
+struct QMAZE init_Qmaze(int size, int OX, int OY)
 {
    struct QMAZE initial_maze;
    initial_maze.QRowCol = size;
@@ -74,16 +69,8 @@ struct QMAZE init_Qmaze(int size)
    initial_maze.StartX = 0;
    initial_maze.StartY = 0;
 
-   if(initial_maze.QRowCol%2==0) {
-   	initial_maze.GoalX = (initial_maze.QRowCol/2) - 1;
-   	initial_maze.GoalY = (initial_maze.QRowCol/2) - 1;
-   } else {
-   	initial_maze.GoalX = (int) round(initial_maze.QRowCol/2);
-   	initial_maze.GoalY = (int) round(initial_maze.QRowCol/2);
-   }
-
-   initial_maze.GoalX = initial_maze.QRowCol - 1;
-   initial_maze.GoalY = initial_maze.QRowCol - 1;
+   initial_maze.GoalX = OY;
+   initial_maze.GoalY = OX;
 
    // allocate Qmaze structure
    for(int i=0;i<initial_maze.Qsize; i++)
@@ -92,7 +79,7 @@ struct QMAZE init_Qmaze(int size)
    {
       for(int j=0;j<initial_maze.Qsize; j++)
       {
-         if(i%2==0) { initial_maze.Qmaze[i][j]='_';    }
+         if(i%2==0) { initial_maze.Qmaze[i][j]='_'; }
          else if(j%2==0) { initial_maze.Qmaze[i][j]='|'; }
          else { initial_maze.Qmaze[i][j]=' '; }
       }  
@@ -123,10 +110,8 @@ struct QMAZE init_Qmaze(int size)
    return initial_maze;
 }
 
-
-struct QMAZE logical_to_Qmaze(struct Maze logicalmaze )
+void logical_to_Qmaze(struct QMAZE* Qmaze, struct Maze logicalmaze)
 {
-   struct QMAZE Qmaze = init_Qmaze(logicalmaze.size);
    int currentWallIndicator = 0;
    bool top,  bottom,  left,  right;
    for(int i=0;i<logicalmaze.size;i++) 
@@ -138,28 +123,11 @@ struct QMAZE logical_to_Qmaze(struct Maze logicalmaze )
          bottom = GET_BOTTOM(currentWallIndicator) == 8;
          left = GET_LEFT(currentWallIndicator) == 1;
          right = GET_RIGHT(currentWallIndicator) == 2;
-         /*printf("wall indic %d   ",currentWallIndicator);
-         printf("|top %d  ",GET_TOP(currentWallIndicator));
-         printf("|bottom %d  ",GET_BOTTOM(currentWallIndicator));
-         printf("|left %d  ",GET_LEFT(currentWallIndicator));
-         printf("|right %d  ",GET_RIGHT(currentWallIndicator));*/
 
-         printf("wall indic %d   ",currentWallIndicator);
-         printf("|top %d  ",top);
-         printf("|bottom %d  ",bottom);
-         printf("|left %d  ",left);
-         printf("|right %d  ", right);
-
-         printf("\n");
-         break_Qmaze_Cell_Walls(Qmaze,j, i, !top, !bottom, !left, !right); 
-         //set_Qmaze_cell(Qmaze,'X',i,j);
+         break_Qmaze_Cell_Walls(*Qmaze,j, i, !top, !bottom, !left, !right); 
       }
-     //printf("\n");
    }
-   return Qmaze;
 }
-
-
 
 // Print Qmaze physical maze to the console
 void print_Qmaze(struct QMAZE maze)
@@ -187,7 +155,6 @@ void print_QTable(struct QMAZE maze)
 	}
 }
 
-
 // Print Qmaze rValues table to the console
 void print_RValues(struct QMAZE maze)
 {
@@ -202,7 +169,6 @@ void print_RValues(struct QMAZE maze)
 		}	
 	}
 }
-
 
 // Take a Qmaze (X, Y) cell and print its corresponding walls
 void print_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y) {
@@ -239,7 +205,6 @@ int Qmaze_cell_has_wall(struct QMAZE Qmaze, int x, int y, int wall_id) {
 	}
 	return 0;
 }
-
 
 // Return a path in Queu form using a QTable from a Qmaze
 Queue_XY QLPath(struct QMAZE Qmaze) {
@@ -307,105 +272,105 @@ Queue_XY QLPath(struct QMAZE Qmaze) {
 }
 
 
-void restart(struct QMAZE Qmaze)
+void restart(struct QMAZE Qmaze, struct Box* box)
 {
    set_Qmaze_cell(Qmaze,'*',Qmaze.StartX, Qmaze.StartY);
    set_Qmaze_cell(Qmaze,'G',Qmaze.GoalX, Qmaze.GoalY);
-   currentI = Qmaze.StartX;
-   currentJ = Qmaze.StartY;
+   box->OY = Qmaze.StartX;
+   box->OX = Qmaze.StartY;
 }	
 
 
 void printSleepClear(int sleepMS, struct QMAZE Qmaze)
 {
 	print_Qmaze(Qmaze);
-	usleep(50*sleepMS);
+	usleep(500*sleepMS);
 	system("clear");
 }
 
 
 /*******************************************************************/
 // move to the cell at given directi
-void move(int direction, struct QMAZE Qmaze)
+void move(int direction, struct QMAZE Qmaze, struct Box* box)
 {
 	char value;
 	switch(direction)
 	{
 		// WE GO TOP
 		case 0:
-			if(!Qmaze_cell_has_wall(Qmaze, currentI, currentJ, 0)) {
-				value = get_Qmaze_cell(Qmaze, currentI, currentJ);
-			    set_Qmaze_cell(Qmaze,value, currentI-1, currentJ);
-			    set_Qmaze_cell(Qmaze,' ', currentI, currentJ);
-			    currentI-=1;
+			if(!Qmaze_cell_has_wall(Qmaze, box->OY, box->OX, 0)) {
+				value = get_Qmaze_cell(Qmaze, box->OY, box->OX);
+			    set_Qmaze_cell(Qmaze,value, box->OY-1, box->OX);
+			    set_Qmaze_cell(Qmaze,' ', box->OY, box->OX);
+			    box->OY-=1;
 			} break;
 
 		// WE GO RIGHT
 		case 1:
-			if(!Qmaze_cell_has_wall(Qmaze, currentI, currentJ, 1)) {
-				value = get_Qmaze_cell(Qmaze, currentI, currentJ);
-				set_Qmaze_cell(Qmaze,value, currentI, currentJ+1);
-				set_Qmaze_cell(Qmaze,' ', currentI, currentJ);
-				currentJ+=1;
+			if(!Qmaze_cell_has_wall(Qmaze, box->OY, box->OX, 1)) {
+				value = get_Qmaze_cell(Qmaze, box->OY, box->OX);
+				set_Qmaze_cell(Qmaze,value, box->OY, box->OX+1);
+				set_Qmaze_cell(Qmaze,' ', box->OY, box->OX);
+				box->OX+=1;
 			} break;
 
 	    // WE GO BOTTOM		
 		case 2:
-			if(!Qmaze_cell_has_wall(Qmaze, currentI, currentJ, 2)) {
-				value = get_Qmaze_cell(Qmaze, currentI, currentJ);
-				set_Qmaze_cell(Qmaze,value, currentI+1, currentJ);
-				set_Qmaze_cell(Qmaze,' ', currentI, currentJ);
-				currentI+=1;
+			if(!Qmaze_cell_has_wall(Qmaze, box->OY, box->OX, 2)) {
+				value = get_Qmaze_cell(Qmaze, box->OY, box->OX);
+				set_Qmaze_cell(Qmaze,value, box->OY+1, box->OX);
+				set_Qmaze_cell(Qmaze,' ', box->OY, box->OX);
+				box->OY+=1;
 			} break;
 
 		// WE GO LEFT
 		case 3:
-			if(!Qmaze_cell_has_wall(Qmaze, currentI, currentJ, 3)) {
-				value = get_Qmaze_cell(Qmaze, currentI, currentJ);
-				set_Qmaze_cell(Qmaze,value, currentI, currentJ-1);
-				set_Qmaze_cell(Qmaze,' ', currentI, currentJ);
-				currentJ-=1;
+			if(!Qmaze_cell_has_wall(Qmaze, box->OY, box->OX, 3)) {
+				value = get_Qmaze_cell(Qmaze, box->OY, box->OX);
+				set_Qmaze_cell(Qmaze,value, box->OY, box->OX-1);
+				set_Qmaze_cell(Qmaze,' ', box->OY, box->OX);
+				box->OX-=1;
 			} break;
 	}
 }
 
 
 //find the bestDirection by using q values
-int bestDirection(int *direction, struct QMAZE Qmaze)
+int bestDirection(int *direction, struct QMAZE Qmaze, struct Box box)
 {
 	int count=0,tempDirs[4];
 	double max = -10000;
 
 	for(int i=0;i<4;i++)
 	{
-		if(get_QTable_cell(Qmaze, currentI, currentJ, i)  > max )
+		if(get_QTable_cell(Qmaze, box.OY, box.OX, i)  > max )
 		{
 			//Top
-			if(i==0 && !Qmaze_cell_has_wall(Qmaze, currentI, currentJ, 0)) {
-				max = get_QTable_cell(Qmaze, currentI, currentJ, i);
+			if(i==0 && !Qmaze_cell_has_wall(Qmaze, box.OY, box.OX, 0)) {
+				max = get_QTable_cell(Qmaze, box.OY, box.OX, i);
 				tempDirs[0]=i;
 				count=1;
 			}
 			//Right
-			else if(i==1 && !Qmaze_cell_has_wall(Qmaze, currentI, currentJ, 1)) {
-				max = get_QTable_cell(Qmaze, currentI, currentJ, i);
+			else if(i==1 && !Qmaze_cell_has_wall(Qmaze, box.OY, box.OX, 1)) {
+				max = get_QTable_cell(Qmaze, box.OY, box.OX, i);
 				tempDirs[0]=i;
 				count=1; 
 			}
 			//Bottom
-			else if(i==2 && !Qmaze_cell_has_wall(Qmaze, currentI, currentJ, 2)) {
-				max = get_QTable_cell(Qmaze, currentI, currentJ, i);
+			else if(i==2 && !Qmaze_cell_has_wall(Qmaze, box.OY, box.OX, 2)) {
+				max = get_QTable_cell(Qmaze, box.OY, box.OX, i);
 				tempDirs[0]=i;
 				count=1; 
 			}
 			//Left
-			else if(i==3 && !Qmaze_cell_has_wall(Qmaze, currentI, currentJ, 3)) {
-				max = get_QTable_cell(Qmaze, currentI, currentJ, i);
+			else if(i==3 && !Qmaze_cell_has_wall(Qmaze, box.OY, box.OX, 3)) {
+				max = get_QTable_cell(Qmaze, box.OY, box.OX, i);
 				tempDirs[0]=i;
 				count=1;
 			}
 		}
-		else if(get_QTable_cell(Qmaze, currentI, currentJ, i) == max)
+		else if(get_QTable_cell(Qmaze, box.OY, box.OX, i) == max)
 		{
 			tempDirs[count]=i;
 			count++;
@@ -416,9 +381,9 @@ int bestDirection(int *direction, struct QMAZE Qmaze)
 	return max;
 }
 
-void qLearning(struct QMAZE Qmaze)
+void qLearning(struct QMAZE Qmaze, struct Box *box)
 {
-	int direction,tempI,tempJ,tempDir,tempCount;
+	int direction,tempI,tempJ,tempDir;
 	double max;
 
 	// rewards to the finish
@@ -439,45 +404,21 @@ void qLearning(struct QMAZE Qmaze)
 		set_rValues_cell(Qmaze, Qmaze.GoalX, Qmaze.GoalY-1, 1, 100000);
 	}
 	
-	int count=0,countTotal=0;
-	int limit=6*Qmaze.QRowCol;
 	double new_value =0.0;
-	printSleepClear(500, Qmaze);
 
-	do
-	{
-		max=bestDirection(&direction, Qmaze);
-		tempI=currentI;
-		tempJ=currentJ;
+	max=bestDirection(&direction, Qmaze, *box);
+	tempI=box->OY;
+	tempJ=box->OX;
 
-		tempDir=direction;
-		move(direction, Qmaze);
-		max=bestDirection(&direction, Qmaze);
+	tempDir=direction;
+	move(direction, Qmaze, box);
 
-		// équation de ses morts
-		new_value = (alpha * (get_rValues_cell(Qmaze, tempI, tempJ, tempDir) + gamma * (max - get_QTable_cell(Qmaze, tempI, tempJ, tempDir))));
-		new_value += get_QTable_cell(Qmaze, tempI, tempJ, tempDir);
-		set_QTable_cell(Qmaze, tempI, tempJ, tempDir,  new_value);		
-		printSleepClear(100, Qmaze);
-		count++;
+	max=bestDirection(&direction, Qmaze, *box);
 
-		// we reach goal
-		if(currentI == Qmaze.GoalX && currentJ == Qmaze.GoalY)
-		{
-			printf("#%d Move:%d\n",countTotal+1,count);
-			printSleepClear(999, Qmaze);
-			tempCount=count;
-			count=0;
-			countTotal++;
-			if(countTotal!=limit)
-				restart(Qmaze);
-		}
-	}
-	while(countTotal<limit); //while contidion = max restart time
-
-	printf("#%d Move:%d\n",countTotal,tempCount);
-	print_Qmaze(Qmaze);
+	// équation de ses morts
+	new_value = (alpha * (get_rValues_cell(Qmaze, tempI, tempJ, tempDir) + gamma * (max - get_QTable_cell(Qmaze, tempI, tempJ, tempDir))));
+	new_value += get_QTable_cell(Qmaze, tempI, tempJ, tempDir);
+	set_QTable_cell(Qmaze, tempI, tempJ, tempDir,  new_value);		
+	
+	printSleepClear(100, Qmaze);
 }
-
-
-

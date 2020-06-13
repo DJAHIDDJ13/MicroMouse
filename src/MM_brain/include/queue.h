@@ -37,6 +37,8 @@ typedef struct Cell {
 
    struct oddpair_XY XY;
    struct Cell* next; /* pointer to next cell */
+   struct Cell* prev; /* pointer to prev cell */
+
 } *List_XY;
 
 typedef struct {
@@ -56,9 +58,11 @@ Queue_XY initQueue_XY();
 
 /* Test if a queue is empty */
 bool emptyQueue_XY(Queue_XY queue);
+bool emptyQueueTail_XY(Queue_XY queue);
 
 /* Determine the value of the top of the queue */
 struct oddpair_XY summitQueue_XY(Queue_XY queue);
+struct oddpair_XY tailQueue_XY(Queue_XY queue);
 
 /* Push a value into the queue */
 void pushQueue_XY(Queue_XY* queue, struct oddpair_XY value);
@@ -71,5 +75,6 @@ void freeQueue_XY(Queue_XY* queue);
 
 /* Print a queue */
 void printQueue_XY(Queue_XY queue);
+void printQueueBack_XY(Queue_XY queue);
 
 #endif

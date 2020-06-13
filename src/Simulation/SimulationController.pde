@@ -17,13 +17,8 @@ public class SimulationController {
   private final static float box2d_scalar = 80.0f;
   private final static float user_motor_force = 200;
   
-  private boolean botControl = false;
-  private boolean displaySensors;
-  private boolean debugMode;
-  private boolean contact;
+  private boolean botControl, displaySensors, debugMode, contact, start, goal_reached;
   private int numberOfConsoleTextChange;
-  
-  private boolean start;
   
   public SimulationController(ControlP5 cp5, int size){
     this.cp5 = cp5;
@@ -38,14 +33,19 @@ public class SimulationController {
     debugMode = false;
     start = false;
     contact = false;
+    goal_reached = false;
     
     numberOfConsoleTextChange = 0;
     
     refreshMaze(true);
   }
   
-  public boolean getContact() {
-    return contact;
+  public boolean getGoal_reached() {
+    return goal_reached;
+  }
+  
+  public void setGoal_reached(boolean goal_reached) {
+    this.goal_reached = goal_reached; 
   }
   
   public boolean getDebugMode() {
@@ -189,30 +189,6 @@ public class SimulationController {
     debugPanel.mousePressedHandler();
   }
   
-  // Collision event functions!
-  void beginContact(Contact cp) {
-    // Get both fixtures
-    Fixture f1 = cp.getFixtureA();
-    Fixture f2 = cp.getFixtureB();
-    // Get both bodies
-    Body b1 = f1.getBody();
-    Body b2 = f2.getBody();
-  
-    // Get our objects that reference these bodies
-    Object o1 = b1.getUserData();
-    Object o2 = b2.getUserData();
-    
-    println(o1);
-  
-    if (o1.getClass() == Vehicle.class && o2.getClass() == Wall.class) {
-       contact = true;     
-    }
-  } 
-  
-  void endContact(Contact cp) {
-    
-  }
-
   public void update() {
     controlPanel.update();
     
