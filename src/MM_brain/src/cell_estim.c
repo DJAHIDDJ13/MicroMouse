@@ -62,7 +62,7 @@ void detect_wall(struct Micromouse status)
    Vec2 source = { .x = 0, .y = 0 };
    Vec2 target = { .x = 0, .y = 0 };
    Vec2 relative_cell_pos;
-   float current_vehicle_angle, doubt_range = 1.5;
+   float current_vehicle_angle, doubt_range = 1.3;
 
    for (i = 0; i < NB_SENSOR; i++) {
       int sensor_val = status.sensor_data.sensors[i];
@@ -189,7 +189,7 @@ void vote_for_walls(struct Micromouse status, struct Maze* logical_maze, int **v
 
       //printf("%d (%d %d %d %d) %d\n", i, cell_x, cell_y, wall_ind, wall_decision, width);
 
-      if (wall_positions[i].cell_pos.x >= 0 && wall_positions[i].cell_pos.y >= 0) {
+      if (cell_x >= 0 && cell_y >= 0 && cell_x < width && cell_y < width) {
          switch(wall_ind) {
          case TopIndicator:
             vote_table[cell_y * width + cell_x][0] += wall_decision;

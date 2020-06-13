@@ -80,7 +80,7 @@ int main(int argc, char const *argv[])
                logical_maze = initMaze(logical_maze.maze, 
                               status.header_data.maze_height / status.header_data.box_height);
 
-               vote_table = init_vote_array(vote_table, 
+              vote_table = init_vote_array(vote_table, 
                            (int)(status.header_data.maze_width / status.header_data.box_width));
                         
                X_target = status.header_data.target_x;
