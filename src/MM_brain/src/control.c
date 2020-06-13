@@ -245,17 +245,17 @@ void fwd_PID(struct Micromouse* status, int init)
       err2 = -ang_diff * 50;
 
       if(fabs(ang_diff)  < 0.5) {
-         printf("Speeding down\n");
+         // printf("Speeding down\n");
          err1 -= 150 * speed.y;
          err2 -= 150 * speed.y;
       }
 
       if(right_sensor < 0 || right_sensor > 700) {
-         printf("Wall on the right\n");
+         // printf("Wall on the right\n");
          err1 += (left_sensor - 500) / 50;
          err2 -= (left_sensor - 500) / 50;
       } else if(left_sensor < 0 || left_sensor > 700) {
-         printf("Wall on the left\n");
+         // printf("Wall on the left\n");
          err1 -= (right_sensor - 500) / 50;
          err2 += (right_sensor - 500) / 50;
       }
