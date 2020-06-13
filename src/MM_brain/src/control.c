@@ -236,7 +236,7 @@ void fwd_PID(struct Micromouse* status, int init)
    speed.x = cos(status->cur_pose.ang.z) * speed.x - sin(status->cur_pose.ang.z) * speed.y;
    speed.y = sin(status->cur_pose.ang.z) * speed.x + cos(status->cur_pose.ang.z) * speed.y;
 
-   printf("%g\n", speed.y);
+   //printf("%g\n", speed.y);
 
    // If we only have one side sensor activated, or if have a wall in front
    if((left_sensor < 0 || left_sensor > 700) || 
@@ -247,20 +247,20 @@ void fwd_PID(struct Micromouse* status, int init)
             speed.y < 0.12 && fabs(ang_diff) <= 0.5
             && fabs(left_middle_sensor - right_middle_sensor) < 200) 
       {
-         printf("USING MIDDLE\n");
+         //printf("USING MIDDLE\n");
          Kp = 1;
          Kd = 200;
          err1 = (right_middle_sensor - 680) / 100;
          err2 = (left_middle_sensor - 680) / 100;
       } else {
-         printf("Aligning angle\n");
+         //printf("Aligning angle\n");
          Kd = 150;
 
          err1 = 10 + ang_diff * 50;
          err2 = 10 - ang_diff * 50;
 
          if(fabs(ang_diff) < 0.5) {
-            printf("Speeding down\n");
+            //printf("Speeding down\n");
             err1 -= 100 * speed.y;
             err2 -= 100 * speed.y;
          }
@@ -454,19 +454,19 @@ void update_control(struct Micromouse* status, struct Box box, char init)
    }
 
    if(abs(ang_dist) == 2) {
-      printf("*******************************TURN BACK\n");
+      //printf("*******************************TURN BACK\n");
       control_state = TURN_BACK;
       turn_back_PID(status, 1);
    } else if(abs(ang_dist) == 1) {
-      printf("*******************************TURNING %s\n", (ang_decision > 0) ? "LEFT" : "RIGHT");
+      //printf("*******************************TURNING %s\n", (ang_decision > 0) ? "LEFT" : "RIGHT");
       control_state = TURN;
       turn_PID(status, -ang_decision, 1);
    } else {
-      printf("*******************************FORWARD\n");
+      //printf("*******************************FORWARD\n");
       control_state = MOVE_FWD;
       fwd_PID(status, 1);
    }
 
-   printf("ang = %d, goal = %d\n OX = %d, OY = %d\n", ang, goal, box.OX, box.OY);
-   printf("cur_cell = (%d %d)\n*******************************\n", status->cur_cell.x, status->cur_cell.y);
+   //printf("ang = %d, goal = %d\n OX = %d, OY = %d\n", ang, goal, box.OX, box.OY);
+   //printf("cur_cell = (%d %d)\n*******************************\n", status->cur_cell.x, status->cur_cell.y);
 }
