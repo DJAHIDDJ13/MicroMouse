@@ -136,9 +136,9 @@ void detect_wall(struct Micromouse status)
             wall_positions[i].cell_pos.y = -1;
          }
 
-         printf("DELETING WALL %d %d, %d\n", wall_positions[i].cell_pos.x,
-                wall_positions[i].cell_pos.y,
-                wall_positions[i].wall_pos);
+         //printf("DELETING WALL %d %d, %d\n", wall_positions[i].cell_pos.x,
+                //wall_positions[i].cell_pos.y,
+                //wall_positions[i].wall_pos);
          //wall_positions[i].wall_pos);
          //wall_positions[i].cell_pos.x = -1;
          //wall_positions[i].cell_pos.y = -1;
@@ -159,8 +159,8 @@ void generateBox(struct Maze maze, int16_t cell_x, int16_t cell_y, enum wall_ind
       box.wallIndicator = ADD_INDICATOR(box.wallIndicator, wall_ind);
 
       insertBox(box, maze);
-   } else if(vote <= -threshold) {
-      printf("cell %d %d\n", cell_x, cell_y);
+   } else {
+      //printf("cell %d %d\n", cell_x, cell_y);
       box = get_box(maze, cell_x, cell_y);
       box.OX = cell_x;
       box.OY = cell_y;
@@ -187,7 +187,7 @@ void vote_for_walls(struct Micromouse status, struct Maze* logical_maze, int **v
       wall_ind = wall_positions[i].wall_pos;
       wall_decision = wall_positions[i].wall_present;
 
-      printf("%d (%d %d %d %d) %d\n", i, cell_x, cell_y, wall_ind, wall_decision, width);
+      //printf("%d (%d %d %d %d) %d\n", i, cell_x, cell_y, wall_ind, wall_decision, width);
 
       if (wall_positions[i].cell_pos.x >= 0 && wall_positions[i].cell_pos.y >= 0) {
          switch(wall_ind) {
@@ -284,16 +284,14 @@ void display_logical_maze(struct Micromouse status, int threshold, int **vote_ta
 
    }
 
-   for (i = 0; i < height; i++) {
+   /*for (i = 0; i < height; i++) {
       for (j = 0; j < width; j++) {
          printf("(%d,%d) ", vote_table[i * width + j][0],
                 vote_table[i * width + j][1]);
       }
 
       printf("\n");
-   }
-
-
+   }*/
 
    printf("##################\n");
 }

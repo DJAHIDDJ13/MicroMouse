@@ -119,7 +119,6 @@ int write_fifo(TX_Message tx_msg, unsigned char flag, void* content)
          fwrite(tx_msg.content, GOAL_REACHED_CONTENT_SIZE, 1, fp);
          break;
    }
-   
 
    fclose(fp);
 

@@ -38,6 +38,7 @@ typedef struct {
    float random_sequence[10];
 } PingData;
 
+void init_fifo();
 void init_rx_message(RX_Message* rx_msg, unsigned char flag);
 int get_tx_fifo_path(char *path);
 int get_rx_fifo_path(char *path);

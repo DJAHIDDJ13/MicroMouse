@@ -68,11 +68,13 @@ int main(int argc, char const *argv[])
    int X_target, Y_target;
 
    while(1) {
-      if (mm_mode == MAPPING) {
+      if (mm_mode == MAPPING || mm_mode == BACK_TO_START) {
+         printf("######### MAPPING\n");
          read_fifo(&rx_msg);
          format_rx_data_mm(rx_msg, &status);
          switch(rx_msg.flag) {
             case HEADER_FLAG:
+
                init_cell(&status);
 
                logical_maze = initMaze(logical_maze.maze, 
@@ -92,10 +94,14 @@ int main(int argc, char const *argv[])
             break;
 
             case SENSOR_FLAG:
+
                update_cell(&status); 
                vote_for_walls(status, &logical_maze, vote_table, 6);
 
-               floodFill(logical_maze, X_target, Y_target);
+               if(mm_mode ==MAPPING)
+                  floodFill(logical_maze, X_target, Y_target);
+               else
+                  floodFill(logical_maze, 0, 0);
 
                box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
 
@@ -111,36 +117,25 @@ int main(int argc, char const *argv[])
             && mm_mode == MAPPING) {
 
                mm_mode = BACK_TO_START;
-          
-               path = backwardFloodFill(logical_maze, 0, 0);
 
                write_fifo(tx_msg, GOAL_REACHED_FLAG, NULL);                              
          }
 
-         write_fifo(tx_msg, MOTOR_FLAG, &status);
-      }          
+         else if(status.cur_cell.x == 0 && status.cur_cell.y == 0
+            && mm_mode == BACK_TO_START) {
 
-      else if(mm_mode == BACK_TO_START) {
-         while(!emptyQueueTail_XY(path)) {
-            struct oddpair_XY XY_tmp = tailQueue_XY(path);
+            mm_mode = FAST_RUN;
 
-            box.OX = XY_tmp.OX; box.OY = XY_tmp.OY;
-               
-            while(box.OX != status.cur_cell.x || box.OY != status.cur_cell.y) {
-               read_fifo(&rx_msg);
-               format_rx_data_mm(rx_msg, &status);
-
-               update_control(&status, box, 0); // initialise values
-               write_fifo(tx_msg, MOTOR_FLAG, &status);
-            }
-               
-            path.tail = (path.tail)->prev;
+            floodFill(logical_maze, X_target, Y_target);
+            path = backwardFloodFill(logical_maze, 0, 0);
          }
-         
-         mm_mode = FAST_RUN;         
+
+
+         write_fifo(tx_msg, MOTOR_FLAG, &status);
       }
 
       else if(mm_mode == FAST_RUN) {
+         printf("######### FAST_RUN\n");
          while(!emptyQueue_XY(path)) {
             struct oddpair_XY XY_tmp = summitQueue_XY(path);
 
@@ -150,6 +145,8 @@ int main(int argc, char const *argv[])
                read_fifo(&rx_msg);
                format_rx_data_mm(rx_msg, &status);
 
+               update_cell(&status); 
+               
                update_control(&status, box, 0); // initialise values
                write_fifo(tx_msg, MOTOR_FLAG, &status);
             }
@@ -161,7 +158,7 @@ int main(int argc, char const *argv[])
       }
       
       else if(mm_mode == STOP) {
-            
+         printf("######### STOP\n");
       }
    }
    
