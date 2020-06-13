@@ -58,6 +58,7 @@ Queue_XY initQueue_XY();
 
 /* Test if a queue is empty */
 bool emptyQueue_XY(Queue_XY queue);
+bool emptyQueueTail_XY(Queue_XY queue);
 
 /* Determine the value of the top of the queue */
 struct oddpair_XY summitQueue_XY(Queue_XY queue);

@@ -25,7 +25,12 @@ Queue_XY initQueue_XY()
 /* Test if a queue is empty */
 bool emptyQueue_XY(Queue_XY queue)
 {
-   return (queue.head == NULL) || (queue.tail == NULL)? true : false;
+   return (queue.head == NULL)? true : false;
+}
+
+bool emptyQueueTail_XY(Queue_XY queue)
+{
+   return (queue.tail == NULL)? true : false;  
 }
 
 /* Determine the value of the top of the queue */
