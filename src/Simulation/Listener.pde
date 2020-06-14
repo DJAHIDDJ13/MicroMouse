@@ -105,13 +105,7 @@ public class Listener extends Thread {
                     break;
                 case CommunicationUtility.GOAL_REACHED_FLAG:
                     simCon.setGoal_reached(true);
-                    if(simCon.getQlMode()) {
-                      Vec2 position = simCon.maze.getCellWorldCenterAt(0, 0);
-                      simCon.maze.getVehicle().setTransform(position.x, position.y, PI);
-                      // stop the vehicle from moving
-                      simCon.maze.getVehicle().setLinearVelocity(0, 0);
-                      simCon.maze.getVehicle().setAngularVelocity(0);
-                    }
+                    println("goal reached");
                   break;
                 default:
                     CommunicationUtility.logMessage("ERROR", "Listener", "readFifo", "No matching flag found.");

@@ -42,9 +42,6 @@ public class ControlPanel {
         maze.getVehicle().setAngularVelocity(0);
         comCon.sendPosition();
         
-        simCon.setStart(false);
-        simCon.getComCon().sendHeaders();
-        
       } else if (deleteMode) { // otherwise we're deleting
         maze.removeBodyAt((float) mouseX, (float) mouseY);
       }
@@ -100,14 +97,12 @@ public class ControlPanel {
       switch(bar.hover()) {
         case 1 :
           println("Algorithme Q learning");
-          simCon.setQlMode(true);
           break;
         case 2 :
           println("Algorithme RRT");
           break;
         default :
           println("Algorithme Flood fill");
-          simCon.setQlMode(false);
           break;
       }
     } else if(eventControllerName.equals("Maze type")) {
