@@ -138,11 +138,11 @@ public class SimulationController {
     } else {
       comCon.sendNavigation(0);      
     }
-
+    
+    comCon.sendHeaders();
   }
-  
-  
-    public void clearMaze() {   
+
+  public void clearMaze() {   
    // Creating the box2d world
    Vec2 gravity = new Vec2(0, 0);
    box2d.createWorld(gravity);

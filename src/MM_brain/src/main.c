@@ -68,7 +68,6 @@ int main(int argc, char const *argv[])
    int countTotal = 0;
 
    mm_mode = MAPPING;
-//   status.nav_alg = Q_LEARNING;
    status.nav_alg = FLOOD_FILL;
 
    Queue_XY path;
@@ -128,11 +127,10 @@ int main(int argc, char const *argv[])
             qLearning(qmaze, &box);
 
             print_Qmaze(qmaze);
-            displayMaze(logical_maze, false);
-            display_logical_maze(status, 6, vote_table);
             if(mm_mode == MAPPING) {
                if(status.cur_cell.x == status.header_data.target_x
                      && status.cur_cell.y == status.header_data.target_y) {
+                  
                   countTotal++;
 
                   if(countTotal == limit)  {
@@ -169,10 +167,26 @@ int main(int argc, char const *argv[])
                printf("MAPPING\n");
                floodFill(logical_maze, X_target, Y_target);
                box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
+
+               if(status.cur_cell.x == status.header_data.target_x
+                  && status.cur_cell.y == status.header_data.target_y) 
+               {
+                  mm_mode = BACK_TO_START;
+                  write_fifo(tx_msg, GOAL_REACHED_FLAG, NULL);
+               }             
             } else if(mm_mode == BACK_TO_START) {
                printf("BACK TO START\n");
                floodFill(logical_maze, 0, 0);
                box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
+
+               if(status.cur_cell.x == 0 && status.cur_cell.y == 0) {
+                  mm_mode = FAST_RUN;
+
+                  floodFill(logical_maze, X_target, Y_target);
+                  path = backwardFloodFill(logical_maze, 0, 0);
+                  pop_flag = 1;
+               }
+
             } else if(mm_mode == FAST_RUN) {
                printf("FAST RUN\n");
 
@@ -191,23 +205,12 @@ int main(int argc, char const *argv[])
                   mm_mode = STOP;
                }
             }
-
-            if(status.cur_cell.x == status.header_data.target_x
-                  && status.cur_cell.y == status.header_data.target_y
-                  && mm_mode == MAPPING) {
-               mm_mode = BACK_TO_START;
-               write_fifo(tx_msg, GOAL_REACHED_FLAG, NULL);
-            } else if(status.cur_cell.x == 0 && status.cur_cell.y == 0
-                      && mm_mode == BACK_TO_START) {
-               mm_mode = FAST_RUN;
-
-               floodFill(logical_maze, X_target, Y_target);
-               path = backwardFloodFill(logical_maze, 0, 0);
-               pop_flag = 1;
-            }
-
          }
-            display_logical_maze(status, 6, vote_table);
+         
+         display_logical_maze(status, 6, vote_table);
+         displayMaze(logical_maze, false);
+
+         printf("(%d %d)\n", box.OX, box.OY);
 
          update_control(&status, box, 0); // initialise values
 
@@ -218,7 +221,6 @@ int main(int argc, char const *argv[])
          // Set the new pose
          printf("*************************SETTING NEW POSE\n");
          setPosition = 1;
-//       dump_estimation_data(status);
          break;
 
       case NAVIGATION_FLAG:
