@@ -9,7 +9,6 @@ public class CommunicationController {
   private SensorData sensorMessage;
   private HeaderData headerMessage;
   private ReplyPingData replyPingMessage;
-  private PositionData positionMessage;
 
   public CommunicationController() {
     listener = new Listener();
@@ -17,7 +16,6 @@ public class CommunicationController {
     sensorMessage = new SensorData();
     headerMessage = new HeaderData();
     replyPingMessage = new ReplyPingData();
-    positionMessage = new PositionData();
   }
   
   public void setMaze(Maze maze) {
@@ -69,18 +67,6 @@ public class CommunicationController {
     this.writer.writeFifo(headerMessage);
   }
   
-  public void sendPosition() {
-    Vec2 p = maze.getVehicle().getPosition();
-
-    float a = maze.getVehicle().getAngle();
-    float[] positionArray = {p.x, p.y, a};
-    positionMessage.setPosData(positionArray);
-     
-    println(positionArray);
-    positionMessage.setContent();
-    this.writer.writeFifo(positionMessage);
-  }
-  
   public void update() {
     float[] randomSequence = new float[10]; // PING
     /* SENSORS POSITIONS
@@ -108,10 +94,7 @@ public class CommunicationController {
     sensorMessage.setEncoderData(maze.vehicle.getEncoderData());
     sensorMessage.setTimeStamp(maze.vehicle.getTimeStamp());
     sensorMessage.setContent();
-
     this.writer.writeFifo(sensorMessage);
-    
-    
     /* CODE SNIPET TO USE RX MSG*/
     Message rxMsg = this.listener.getRxMessage();
     if (rxMsg != null && simCon.getBotControl()) {

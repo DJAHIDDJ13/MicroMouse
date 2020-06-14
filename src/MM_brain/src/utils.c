@@ -6,8 +6,6 @@
 
 #include "utils.h"
 
-
-
 int STARTING_TIME = 0;
 
 void set_starting_time()
