@@ -14,7 +14,7 @@ public static Box2DProcessing box2d;
 SimulationController simCon;
 
 public static final long  STARTING_TIME = System.currentTimeMillis();
-private final static int initialSize = 4;
+private final static int initialSize = 8;
 
 void setup(){
   size(1500,910);
