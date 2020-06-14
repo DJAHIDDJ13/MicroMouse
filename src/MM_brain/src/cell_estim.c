@@ -159,13 +159,13 @@ void generateBox(struct Maze maze, int16_t cell_x, int16_t cell_y, enum wall_ind
       box.wallIndicator = ADD_INDICATOR(box.wallIndicator, wall_ind);
 
       insertBox(box, maze);
-   } else if(vote <= threshold) {
+   } else if(vote <= -threshold) {
       //printf("cell %d %d\n", cell_x, cell_y);
       box = get_box(maze, cell_x, cell_y);
       box.OX = cell_x;
       box.OY = cell_y;
 
-      //box.wallIndicator = REMOVE_INDICATOR(box.wallIndicator, wall_ind);
+      box.wallIndicator = REMOVE_INDICATOR(box.wallIndicator, wall_ind);
       insertBox(box, maze);
    }
 }

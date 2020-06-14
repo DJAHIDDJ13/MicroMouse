@@ -17,7 +17,7 @@ public class SimulationController {
   private final static float box2d_scalar = 80.0f;
   private final static float user_motor_force = 200;
   
-  private boolean botControl, displaySensors, debugMode, contact, start, goal_reached;
+  private boolean botControl, displaySensors, debugMode, start, goal_reached, qlMode;
   private int numberOfConsoleTextChange;
   
   public SimulationController(ControlP5 cp5, int size){
@@ -32,12 +32,20 @@ public class SimulationController {
     displaySensors = false;
     debugMode = false;
     start = false;
-    contact = false;
+    qlMode = false;
     goal_reached = false;
     
     numberOfConsoleTextChange = 0;
     
     refreshMaze(true);
+  }
+  
+  public boolean getQlMode() {
+    return qlMode;
+  }
+  
+  public void setQlMode(boolean qlMode) {
+    this.qlMode = qlMode;  
   }
   
   public boolean getGoal_reached() {
