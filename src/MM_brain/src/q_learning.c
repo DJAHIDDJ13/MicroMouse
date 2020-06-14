@@ -141,7 +141,7 @@ void update_maze(struct QMAZE Qmaze, struct Maze logicalmaze, int OX, int OY)
          left = GET_LEFT(currentWallIndicator) == 1;
          right = GET_RIGHT(currentWallIndicator) == 2;
 
-         break_Qmaze_Cell_Walls(Qmaze, i, j, !top, !bottom, !left, !right); 
+         break_Qmaze_Cell_Walls(Qmaze, i, j, !top, !right, !bottom, !left); 
       }
    }
 
