@@ -71,13 +71,13 @@ int main(int argc, char const *argv[])
    while(1) {
       read_fifo(&rx_msg);
       format_rx_data_mm(rx_msg, &status);
-
+/*
       if(setPosition == 1) {
          status.prev_enc[0] = status.sensor_data.encoders[0];
          status.prev_enc[1] = status.sensor_data.encoders[1];
          setPosition = 0;
       }
-
+*/
       switch(rx_msg.flag) {
       case HEADER_FLAG:
          mm_mode = MAPPING;
@@ -182,13 +182,13 @@ int main(int argc, char const *argv[])
 
          break;
 
-      case POSITION_FLAG:
+  /*    case POSITION_FLAG:
          // Set the new pose
          printf("*************************SETTING NEW POSE\n");
          setPosition = 1;
 
          break;
-      }
+  */    }
    }
 
    freeQueue_XY(&path);
