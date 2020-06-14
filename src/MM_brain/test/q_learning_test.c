@@ -79,12 +79,14 @@ struct Maze createMaze() {
 int main(int argc, char **argv) {
 
    struct Maze logical_maze = createMaze();
-   
    struct QMAZE test = init_Qmaze(logical_maze.size, 3, 3);
-   //logical_to_Qmaze(&test, logical_maze);
+   print_Qmaze(test);
+   update_maze(test, logical_maze, 3,3);
+   break_Qmaze_Cell_Walls(test, 0,0, false, false, true, false);
    
-   add_Qmaze_Cell_Walls(test, 1,1, false, false, true, false);
-   add_Qmaze_Cell_Walls(test, 2,0, false, true, false, false);
+   //add_Qmaze_Cell_Walls(test, 1,1, false, false, true, false);
+   //add_Qmaze_Cell_Walls(test, 2,0, false, true, false, false);
+   print_Qmaze(test);
 
    int limit=6*test.QRowCol;
    int countTotal = 0;

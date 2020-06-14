@@ -84,9 +84,7 @@ struct QMAZE init_Qmaze(int size, int OX, int OY)
          else { initial_maze.Qmaze[i][j]=' '; }
       }  
    }
-    // Set Start and Goal Position 
-   set_Qmaze_cell(initial_maze,'*',initial_maze.StartX, initial_maze.StartY);
-   set_Qmaze_cell(initial_maze,'G',initial_maze.GoalX, initial_maze.GoalY);
+
 
    	// allocate Q and reward matrix
 	initial_maze.rValues=(cell**)calloc(initial_maze.QRowCol,sizeof(cell*));
@@ -107,10 +105,15 @@ struct QMAZE init_Qmaze(int size, int OX, int OY)
 				initial_maze.qValues[i][j].directions=(double*)calloc(4,sizeof(double));
 			}
 	}
-
+   
+    // Set Start and Goal Position 
+    set_Qmaze_cell(initial_maze,'*',initial_maze.StartX, initial_maze.StartY);
+    set_Qmaze_cell(initial_maze,'G',initial_maze.GoalX, initial_maze.GoalY);
 	break_Qmaze_Cell_Walls(initial_maze, 0,0, false, false, true, false);
-   return initial_maze;
+    return initial_maze;
 }
+
+
 
 void update_maze(struct QMAZE Qmaze, struct Maze logicalmaze, int OX, int OY)
 {
@@ -449,22 +452,17 @@ void qLearning(struct QMAZE Qmaze, struct Box *box)
 	if(!Qmaze_cell_has_wall(Qmaze, Qmaze.GoalX, Qmaze.GoalY, 3)) {
 		set_rValues_cell(Qmaze, Qmaze.GoalX, Qmaze.GoalY-1, 1, 100000);
 	}
-
-	/*set_rValues_cell(Qmaze, Qmaze.GoalX-1, Qmaze.GoalY, 2, 100000);
-	set_rValues_cell(Qmaze, Qmaze.GoalX, Qmaze.GoalY+1, 3, 100000);
-	set_rValues_cell(Qmaze, Qmaze.GoalX+1, Qmaze.GoalY, 0, 100000);
-	set_rValues_cell(Qmaze, Qmaze.GoalX, Qmaze.GoalY-1, 1, 100000);*/
 	
-	double new_value =0.0;
+	double new_value = 0.0;
 
-	max=bestDirection(&direction, Qmaze, *box);
+	max = bestDirection(&direction, Qmaze, *box);
 	tempI=box->OY;
 	tempJ=box->OX;
 
 	tempDir=direction;
 	move(direction, Qmaze, box);
 
-	max=bestDirection(&direction, Qmaze, *box);
+	max = bestDirection(&direction, Qmaze, *box);
 
 	// équation de ses morts
 	new_value = (alpha * (get_rValues_cell(Qmaze, tempI, tempJ, tempDir) + gamma * (max - get_QTable_cell(Qmaze, tempI, tempJ, tempDir))));
