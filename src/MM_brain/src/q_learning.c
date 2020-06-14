@@ -179,7 +179,7 @@ void logical_to_Qmaze(struct QMAZE Qmaze, struct Maze logicalmaze)
 void print_Qmaze(struct QMAZE maze)
 {
    //system("clear");
-   printf("\e[1;1H\e[2J");
+   // printf("\e[1;1H\e[2J");
    for(int i=0;i<maze.Qsize;i++) {
       for(int j=0;j<maze.Qsize;j++) {
          printf("%2c",maze.Qmaze[i][j]);
