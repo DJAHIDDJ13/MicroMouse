@@ -20,7 +20,7 @@
 #include<stdlib.h>
 #include<unistd.h>
 #include<float.h>
-
+#include <string.h>
 
 typedef struct cell{
 	double *directions;
@@ -46,6 +46,7 @@ void set_rValues_cell(struct QMAZE Qmaze, int i, int j, int dirId, double value)
 void break_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y, bool top, bool bottom, bool left, bool right);
 void add_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y, bool top, bool right, bool bottom, bool left);
 struct QMAZE init_Qmaze(int size, int OX, int OY);
+void update_maze(struct QMAZE* Qmaze, struct Maze logicalmaze, int OX, int OY);
 void logical_to_Qmaze(struct QMAZE* Qmaze, struct Maze logicalmaze);
 void print_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y);
 void print_Qmaze(struct QMAZE maze);

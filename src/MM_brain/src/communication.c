@@ -35,6 +35,10 @@ void init_rx_message(RX_Message* rx_msg, unsigned char flag)
       rx_msg->content.float_array = malloc(sizeof(PingData));
       break;
 
+   case POSITION_FLAG:
+      rx_msg->content.float_array = malloc(sizeof(PositionData));
+      break;      
+
    default:
       log_message("ERROR", "Listener", "init_rx_message", "No matching flag found.");
    }
@@ -223,6 +227,21 @@ int read_fifo(RX_Message* rx_msg)
 
       break;
 
+   case POSITION_FLAG:
+      for (i = 1; i < sizeof(PositionData) + 1; i++) {
+         for (j = 0; j < 4; j++) {
+            byteToFloat.bytesNumber[j] = buffer[i + j];
+         }
+
+         i += 3;
+         sprintf(numberToStr, "%.6g ", byteToFloat.floatNumber);
+         strcat(logMsg, numberToStr);
+         rx_msg->content.float_array[cursor] = byteToFloat.floatNumber;
+         cursor++;
+      }
+
+      break;      
+
    default:
       log_message("ERROR", "Listener", "init_rx_message", "No matching flag found.");
    }
@@ -264,6 +283,16 @@ void format_rx_data_mm(RX_Message rx_msg, struct Micromouse* data)
    case SENSOR_FLAG:
       memcpy(&(data->sensor_data), rx_msg.content.float_array, sizeof(data->sensor_data));
       break;
+
+   case POSITION_FLAG:
+      data->cur_pose.pos.x = rx_msg.content.float_array[0];
+      data->cur_pose.pos.y = rx_msg.content.float_array[1];
+      data->cur_pose.ang.z = rx_msg.content.float_array[2];
+      
+      data->prev_pose.pos.x = rx_msg.content.float_array[0];
+      data->prev_pose.pos.y = rx_msg.content.float_array[1];
+      data->prev_pose.ang.z = rx_msg.content.float_array[2];
+      break;      
 
    default:
       log_message("ERROR", "Listener", "format_rx_data", "No matching flag found.");

@@ -9,6 +9,7 @@ public class CommunicationController {
   private SensorData sensorMessage;
   private HeaderData headerMessage;
   private ReplyPingData replyPingMessage;
+  private PositionData positionMessage; 
 
   public CommunicationController() {
     listener = new Listener();
@@ -16,6 +17,7 @@ public class CommunicationController {
     sensorMessage = new SensorData();
     headerMessage = new HeaderData();
     replyPingMessage = new ReplyPingData();
+    positionMessage = new PositionData(); 
   }
   
   public void setMaze(Maze maze) {
@@ -65,6 +67,18 @@ public class CommunicationController {
 
     headerMessage.setContent();
     this.writer.writeFifo(headerMessage);
+  }
+  
+  public void sendPosition() {
+    Vec2 p = maze.getVehicle().getPosition();
+
+    float a = maze.getVehicle().getAngle();
+    float[] positionArray = {p.x, p.y, a};
+    positionMessage.setPosData(positionArray);
+
+    //println(positionArray);
+    positionMessage.setContent();
+    this.writer.writeFifo(positionMessage);
   }
   
   public void update() {

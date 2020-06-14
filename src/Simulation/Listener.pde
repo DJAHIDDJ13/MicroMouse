@@ -111,6 +111,8 @@ public class Listener extends Thread {
                       // stop the vehicle from moving
                       simCon.maze.getVehicle().setLinearVelocity(0, 0);
                       simCon.maze.getVehicle().setAngularVelocity(0);
+                      
+                      simCon.getComCon().sendPosition();
                     }
                   break;
                 default:

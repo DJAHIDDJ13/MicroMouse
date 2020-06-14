@@ -16,10 +16,12 @@
 #define MOTOR_FLAG 20
 #define PING_FLAG 66
 #define GOAL_REACHED_FLAG 33
+#define POSITION_FLAG 30
 
 #define PING_CONTENT_SIZE 		  40
 #define MOTOR_CONTENT_SIZE 		  8
 #define GOAL_REACHED_CONTENT_SIZE 1
+ #define POSITION_CONTENT_SIZE 	  12 
 
 typedef struct {
    unsigned char flag;
@@ -37,6 +39,11 @@ typedef struct {
 typedef struct {
    float random_sequence[10];
 } PingData;
+
+typedef struct {
+   Vec2 pos;
+   float ang;
+} PositionData;
 
 void init_fifo();
 void init_rx_message(RX_Message* rx_msg, unsigned char flag);

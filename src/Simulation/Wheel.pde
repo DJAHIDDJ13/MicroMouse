@@ -109,6 +109,15 @@ public class Wheel {
      Vec2 new_pos = getPosition();
      float new_ang = getAngle();
      
+     /*float dist = dist(new_pos.x, new_pos.y, prev_pos.x, prev_pos.y);
+     
+     if(dist > 0.9 * simCon.maze.getBoxW()) {
+        prev_pos.set(new_pos);
+        prev_ang = new_ang;
+        
+        return revolutionAngle;
+     }*/
+     
     if(first_value) {
       total_displacement += cos(new_ang - prev_ang) * dist(prev_pos.x, prev_pos.y, new_pos.x, new_pos.y);
       
@@ -116,7 +125,7 @@ public class Wheel {
       Vec2 diff = new_pos.sub(prev_pos); // the movement vector
       // the angle of the vehicle restricted between -PI and PI, the double modulus is necessary to handle negative numbers
       // Here we phase the angle by HALF_PI and then restrict it between 0,2*PI. then back to -PI,PI
-      float restricted_ang = (((new_ang - HALF_PI) % TWO_PI) + TWO_PI) % TWO_PI - PI; 
+      float restricted_ang = (((new_ang - HALF_PI) % TWO_PI) + TWO_PI) % TWO_PI - PI;
       float movement_heading = atan2(diff.y, diff.x); // the angle of the movement vector (heading)
       
       // in order for the wheel to be moving forward, the heading of the movement vector and the direction angle of the wheel

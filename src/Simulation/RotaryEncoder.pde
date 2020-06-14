@@ -11,7 +11,9 @@ public class RotaryEncoder {
   }
   
   public void update(double totalRevolutionAngle) {
-    /** Probably should change the abs to the distance between the two angles in a circle or 10*PI ?*/
+    /*int cumul = round((float)totalRevolutionAngle / (TWO_PI) * linesPerRevolution);
+    if(abs(cumul-lineCumul) < 1024)
+      lineCumul = cumul;*/
     lineCumul = round((float)totalRevolutionAngle / (TWO_PI) * linesPerRevolution);
   }
   

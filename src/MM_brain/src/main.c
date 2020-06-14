@@ -26,6 +26,7 @@
 
 #include "box.h"
 #include "flood_fill.h"
+#include "q_learning.h"
 #include "control.h"
 #include "maze.h"
 #include "position.h"
@@ -41,6 +42,7 @@ SensorData sensor_data;
 HeaderData header_data;
 
 enum MM_MODE {MAPPING, BACK_TO_START, FAST_RUN, STOP} mm_mode;
+enum ALGO_TYPE {FLOOD_FILL, Q_LEARNING} algo_type;
 
 int main(int argc, char const *argv[])
 {
@@ -57,67 +59,112 @@ int main(int argc, char const *argv[])
    
    struct Maze logical_maze = {.maze = NULL};
    logical_maze = initMaze(logical_maze.maze, init_width);
+
+   struct QMAZE qmaze = init_Qmaze(logical_maze.size, 0, 0);
+   logical_to_Qmaze(&qmaze, logical_maze);
    
    struct Micromouse status;
    struct Box box = {0};
+   
+   int limit=6*init_width;
+   int countTotal = 0;
 
    mm_mode = MAPPING;
+   algo_type = Q_LEARNING;
 
    Queue_XY path;
 
    int X_target, Y_target;
+   int setPosition = 0;
 
    while(1) {
       read_fifo(&rx_msg);
       format_rx_data_mm(rx_msg, &status);
-
+      
+      if(setPosition == 1) {
+         status.prev_enc[0] = status.sensor_data.encoders[0];
+         status.prev_enc[1] = status.sensor_data.encoders[1];
+         status.sensor_data.gyro.ypr.z = 0;
+         setPosition = 0;
+      }      
+      
       switch(rx_msg.flag) {
          case HEADER_FLAG:
                mm_mode = MAPPING;
                
                init_cell(&status);
 
-               logical_maze = initMaze(logical_maze.maze, 
-                              status.header_data.maze_height / status.header_data.box_height);
-
-              vote_table = init_vote_array(vote_table, 
-                           (int)(status.header_data.maze_width / status.header_data.box_width));
-                        
                X_target = status.header_data.target_x;
                Y_target = status.header_data.target_y;
 
-               floodFill(logical_maze, X_target, Y_target);
+               logical_maze = initMaze(logical_maze.maze, 
+                              status.header_data.maze_height / status.header_data.box_height);
+               
+               qmaze = init_Qmaze(logical_maze.size, X_target, Y_target);
+               logical_to_Qmaze(&qmaze, logical_maze);
 
-               box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
+               vote_table = init_vote_array(vote_table, 
+                           (int)(status.header_data.maze_width / status.header_data.box_width));
+
+               
+               if(algo_type == FLOOD_FILL) {
+                  floodFill(logical_maze, X_target, Y_target);
+
+                  box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
+               } else {
+                  qLearning(qmaze, &box);
+               }
+
                update_control(&status, box, 1); // initialise values
 
             break;
 
             case SENSOR_FLAG:
-
+               dump_estimation_data(status);
+               dump_sensor_data(status);
                if (mm_mode == MAPPING || mm_mode == BACK_TO_START) {
-                  printf("######### MAPPING\n");
+                  //printf("######### MAPPING\n");
                   update_cell(&status); 
                   vote_for_walls(status, &logical_maze, vote_table, 4);
 
-                  if(mm_mode ==MAPPING)
-                     floodFill(logical_maze, X_target, Y_target);
-                  else
+                  if(mm_mode == MAPPING) {
+                     if(algo_type == FLOOD_FILL) {
+                        floodFill(logical_maze, X_target, Y_target);
+                        
+                        box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
+                     } else {
+                        update_maze(&qmaze, logical_maze, X_target, Y_target);
+                        qLearning(qmaze, &box);
+                     }                     
+                  }
+                  else {
                      floodFill(logical_maze, 0, 0);
+                     box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
+                  }
 
-                  box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
-
+                  printf("%d %d\n", box.OX, box.OY);
                   update_control(&status, box, 0); // initialise values
                         
                   display_logical_maze(status, 6, vote_table);
-                  displayMaze(logical_maze,false);
+                  //displayMaze(logical_maze,false);
                }
 
                if(status.cur_cell.x == status.header_data.target_x 
                   && status.cur_cell.y == status.header_data.target_y
                   && mm_mode == MAPPING) {
 
-                  mm_mode = BACK_TO_START;
+                  if(algo_type == FLOOD_FILL)
+                     mm_mode = BACK_TO_START;
+                  else {
+                     countTotal++;
+                     if(countTotal == limit) {
+                        mm_mode = FAST_RUN;
+
+                        path = QLPath(qmaze);
+                     } else {
+                        restart(qmaze, &box);
+                     }
+                  }
 
                   write_fifo(tx_msg, GOAL_REACHED_FLAG, NULL);                              
                }
@@ -167,6 +214,12 @@ int main(int argc, char const *argv[])
                write_fifo(tx_msg, MOTOR_FLAG, &status);
 
                break;
+         case POSITION_FLAG:
+            // Set the new pose
+            printf("*************************SETTING NEW POSE\n");
+            setPosition = 1;
+            dump_estimation_data(status);
+            break;               
       }
    }
    

@@ -27,7 +27,6 @@ void init_pos(Vec3 i_pos, Vec3 i_vel, Vec3 i_acc,
    status->prev_time_stamp = status->sensor_data.time_stamp;
 }
 
-
 /**
  * m: micrmouse struct containing the micro mouse data
  */

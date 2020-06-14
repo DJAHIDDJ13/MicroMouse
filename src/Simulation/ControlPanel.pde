@@ -40,8 +40,7 @@ public class ControlPanel {
         maze.getVehicle().setLinearVelocity(0, 0);
         maze.getVehicle().setAngularVelocity(0);
         
-        simCon.setStart(false);
-        simCon.getComCon().sendHeaders();
+        simCon.getComCon().sendPosition();
         
       } else if (deleteMode) { // otherwise we're deleting
         maze.removeBodyAt((float) mouseX, (float) mouseY);
