@@ -74,6 +74,8 @@ typedef struct {
    float origin_x, origin_y;
 } HeaderData;
 
+
+enum NAV_ALG_TYPE {FLOOD_FILL, Q_LEARNING};
 /*            Main structure for the micromouse "robot"           */
 struct Micromouse {
    /*     Our robot need two engine and four infrared sensor     */
@@ -90,6 +92,7 @@ struct Micromouse {
    float prev_enc[NB_ENCODER];
    iVec2 cur_cell;
    float prev_time_stamp;
+   enum NAV_ALG_TYPE nav_alg;
 };
 
 #endif

@@ -10,6 +10,7 @@ public class CommunicationController {
   private HeaderData headerMessage;
   private ReplyPingData replyPingMessage;
   private PositionData positionMessage; 
+  private NavigationData navigationMessage; 
 
   public CommunicationController() {
     listener = new Listener();
@@ -18,11 +19,20 @@ public class CommunicationController {
     headerMessage = new HeaderData();
     replyPingMessage = new ReplyPingData();
     positionMessage = new PositionData(); 
+    navigationMessage = new NavigationData(); 
   }
   
   public void setMaze(Maze maze) {
     this.maze = maze;
     sendHeaders();
+  }
+
+  public void sendNavigation(int alg) {
+    float[] positionArray = {(float) alg};
+    navigationMessage.setNavData(positionArray);
+
+    navigationMessage.setContent();
+    this.writer.writeFifo(navigationMessage);
   }
 
   public void sendHeaders() {

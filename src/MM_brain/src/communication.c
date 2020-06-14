@@ -39,6 +39,10 @@ void init_rx_message(RX_Message* rx_msg, unsigned char flag)
       rx_msg->content.float_array = malloc(sizeof(PositionData));
       break;      
 
+   case NAVIGATION_FLAG:
+      rx_msg->content.float_array = malloc(NAVIGATION_CONTENT_SIZE);
+      break;      
+
    default:
       log_message("ERROR", "Listener", "init_rx_message", "No matching flag found.");
    }
@@ -242,6 +246,22 @@ int read_fifo(RX_Message* rx_msg)
 
       break;      
 
+
+   case NAVIGATION_FLAG:
+      for (i = 1; i < sizeof(PositionData) + 1; i++) {
+         for (j = 0; j < 4; j++) {
+            byteToFloat.bytesNumber[j] = buffer[i + j];
+         }
+
+         i += 3;
+         sprintf(numberToStr, "%.6g ", byteToFloat.floatNumber);
+         strcat(logMsg, numberToStr);
+         rx_msg->content.float_array[cursor] = byteToFloat.floatNumber;
+         cursor++;
+      }
+
+      break;      
+
    default:
       log_message("ERROR", "Listener", "init_rx_message", "No matching flag found.");
    }
@@ -293,6 +313,10 @@ void format_rx_data_mm(RX_Message rx_msg, struct Micromouse* data)
       data->prev_pose.pos.y = rx_msg.content.float_array[1];
       data->prev_pose.ang.z = rx_msg.content.float_array[2];
       break;      
+
+   case NAVIGATION_FLAG:
+      data->nav_alg = (rx_msg.content.float_array[0] > 0)? Q_LEARNING: FLOOD_FILL;
+      break;
 
    default:
       log_message("ERROR", "Listener", "format_rx_data", "No matching flag found.");

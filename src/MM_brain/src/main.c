@@ -42,7 +42,6 @@ SensorData sensor_data;
 HeaderData header_data;
 
 enum MM_MODE {MAPPING, BACK_TO_START, FAST_RUN, STOP} mm_mode;
-enum ALGO_TYPE {FLOOD_FILL, Q_LEARNING} algo_type;
 
 int main(int argc, char const *argv[])
 {
@@ -70,7 +69,8 @@ int main(int argc, char const *argv[])
    int countTotal = 0;
 
    mm_mode = MAPPING;
-   algo_type = Q_LEARNING;
+//   algo_type = Q_LEARNING;
+   status.nav_alg = FLOOD_FILL;
 
    Queue_XY path;
 
@@ -107,7 +107,7 @@ int main(int argc, char const *argv[])
                            (int)(status.header_data.maze_width / status.header_data.box_width));
 
                
-               if(algo_type == FLOOD_FILL) {
+               if(status.nav_alg == FLOOD_FILL) {
                   floodFill(logical_maze, X_target, Y_target);
 
                   box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
@@ -120,15 +120,15 @@ int main(int argc, char const *argv[])
             break;
 
             case SENSOR_FLAG:
-               dump_estimation_data(status);
-               dump_sensor_data(status);
+//               dump_estimation_data(status);
+//               dump_sensor_data(status);
                if (mm_mode == MAPPING || mm_mode == BACK_TO_START) {
                   //printf("######### MAPPING\n");
                   update_cell(&status); 
                   vote_for_walls(status, &logical_maze, vote_table, 4);
 
                   if(mm_mode == MAPPING) {
-                     if(algo_type == FLOOD_FILL) {
+                     if(status.nav_alg == FLOOD_FILL) {
                         floodFill(logical_maze, X_target, Y_target);
                         
                         box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
@@ -142,10 +142,10 @@ int main(int argc, char const *argv[])
                      box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
                   }
 
-                  printf("%d %d\n", box.OX, box.OY);
+//                  printf("%d %d\n", box.OX, box.OY);
                   update_control(&status, box, 0); // initialise values
                         
-                  display_logical_maze(status, 6, vote_table);
+//                  display_logical_maze(status, 6, vote_table);
                   //displayMaze(logical_maze,false);
                }
 
@@ -153,7 +153,7 @@ int main(int argc, char const *argv[])
                   && status.cur_cell.y == status.header_data.target_y
                   && mm_mode == MAPPING) {
 
-                  if(algo_type == FLOOD_FILL)
+                  if(status.nav_alg == FLOOD_FILL)
                      mm_mode = BACK_TO_START;
                   else {
                      countTotal++;
@@ -218,8 +218,12 @@ int main(int argc, char const *argv[])
             // Set the new pose
             printf("*************************SETTING NEW POSE\n");
             setPosition = 1;
-            dump_estimation_data(status);
+//            dump_estimation_data(status);
             break;               
+
+         case NAVIGATION_FLAG:
+            printf("Changing algorithm to %s\n", (status.nav_alg == Q_LEARNING)?"Q_LEARNING":"FLOOD_FILL");
+            break;
       }
    }
    

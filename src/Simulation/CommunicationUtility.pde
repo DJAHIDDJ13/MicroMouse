@@ -23,7 +23,10 @@ public static class CommunicationUtility {
     
     public static final byte POSITION_FLAG = 30;
     public static final byte POSITION_CONTENT_SIZE = 12; 
-    
+
+    public static final byte NAVIGATION_FLAG = 40;
+    public static final byte NAVIGATION_CONTENT_SIZE = 4; 
+
     public static String consoleText = "";
 
     public static void logMessage(String logLevel, String process, String function, String msg) {

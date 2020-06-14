@@ -17,11 +17,13 @@
 #define PING_FLAG 66
 #define GOAL_REACHED_FLAG 33
 #define POSITION_FLAG 30
+#define NAVIGATION_FLAG 40
 
 #define PING_CONTENT_SIZE 		  40
 #define MOTOR_CONTENT_SIZE 		  8
 #define GOAL_REACHED_CONTENT_SIZE 1
- #define POSITION_CONTENT_SIZE 	  12 
+#define POSITION_CONTENT_SIZE 	  12 
+#define NAVIGATION_CONTENT_SIZE 	  4
 
 typedef struct {
    unsigned char flag;

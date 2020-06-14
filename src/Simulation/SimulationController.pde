@@ -132,6 +132,13 @@ public class SimulationController {
    comCon.setMaze(maze);
    informationPanel.setMaze(maze);
    controlPanel.setMaze(maze);
+   
+   if(qlMode) {
+      comCon.sendNavigation(1);
+    } else {
+      comCon.sendNavigation(0);      
+    }
+
   }
   
   
