@@ -144,6 +144,7 @@ public class SimulationController {
    comCon.setMaze(maze);
    informationPanel.setMaze(maze);
    controlPanel.setMaze(maze);
+   controlPanel.setComCon(comCon);
   }
   
   public void setController(ControlP5 cp5) {

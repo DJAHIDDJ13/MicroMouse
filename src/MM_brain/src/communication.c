@@ -35,6 +35,10 @@ void init_rx_message(RX_Message* rx_msg, unsigned char flag)
       rx_msg->content.float_array = malloc(sizeof(PingData));
       break;
 
+   case POSITION_FLAG:
+      rx_msg->content.float_array = malloc(sizeof(PositionData));
+      break;
+
    default:
       log_message("ERROR", "Listener", "init_rx_message", "No matching flag found.");
    }
@@ -60,7 +64,7 @@ int get_rx_fifo_path(char *path)
 int create_fifo()
 {
    char 	full_path_tx[BUFFER_SIZE] = "",
-         full_path_rx[BUFFER_SIZE] = "";
+                                     full_path_rx[BUFFER_SIZE] = "";
    struct stat stats = {0};
    get_tx_fifo_path(full_path_tx);
    get_rx_fifo_path(full_path_rx);
@@ -108,16 +112,19 @@ int write_fifo(TX_Message tx_msg, unsigned char flag, void* content)
    format_tx_data(&tx_msg, flag, content);
 
    fwrite(&tx_msg.flag, sizeof(tx_msg.flag), 1, fp);
+
    switch(tx_msg.flag) {
-      case MOTOR_FLAG:
-         fwrite(tx_msg.content, MOTOR_CONTENT_SIZE, 1, fp);
-         break;
-      case PING_FLAG:
-         fwrite(tx_msg.content, PING_CONTENT_SIZE, 1, fp);
-         break;
-      case GOAL_REACHED_FLAG:
-         fwrite(tx_msg.content, GOAL_REACHED_CONTENT_SIZE, 1, fp);
-         break;
+   case MOTOR_FLAG:
+      fwrite(tx_msg.content, MOTOR_CONTENT_SIZE, 1, fp);
+      break;
+
+   case PING_FLAG:
+      fwrite(tx_msg.content, PING_CONTENT_SIZE, 1, fp);
+      break;
+
+   case GOAL_REACHED_FLAG:
+      fwrite(tx_msg.content, GOAL_REACHED_CONTENT_SIZE, 1, fp);
+      break;
    }
 
    fclose(fp);
@@ -189,7 +196,7 @@ int read_fifo(RX_Message* rx_msg)
          strcat(logMsg, numberToStr);
          rx_msg->content.float_array[cursor] = byteToFloat.floatNumber;
          cursor++;
-      }     
+      }
 
       break;
 
@@ -223,6 +230,21 @@ int read_fifo(RX_Message* rx_msg)
 
       break;
 
+   case POSITION_FLAG:
+      for (i = 1; i < sizeof(PositionData) + 1; i++) {
+         for (j = 0; j < 4; j++) {
+            byteToFloat.bytesNumber[j] = buffer[i + j];
+         }
+
+         i += 3;
+         sprintf(numberToStr, "%.6g ", byteToFloat.floatNumber);
+         strcat(logMsg, numberToStr);
+         rx_msg->content.float_array[cursor] = byteToFloat.floatNumber;
+         cursor++;
+      }
+
+      break;
+
    default:
       log_message("ERROR", "Listener", "init_rx_message", "No matching flag found.");
    }
@@ -234,26 +256,6 @@ int read_fifo(RX_Message* rx_msg)
    return 0;
 }
 
-void format_rx_data(RX_Message rx_msg, SensorData* sensor_data, HeaderData* header_data, PingData* ping_data)
-{
-   switch (rx_msg.flag) {
-   case HEADER_FLAG:
-      memcpy(header_data, rx_msg.content.float_array, sizeof(*header_data));
-      break;
-
-   case SENSOR_FLAG:
-      memcpy(sensor_data, rx_msg.content.float_array, sizeof(*sensor_data));
-      break;
-
-   case PING_FLAG:
-      memcpy(ping_data, rx_msg.content.float_array, sizeof(*ping_data));
-      break;
-
-   default:
-      log_message("ERROR", "Listener", "format_rx_data", "No matching flag found.");
-   }
-}
-
 void format_rx_data_mm(RX_Message rx_msg, struct Micromouse* data)
 {
    switch (rx_msg.flag) {
@@ -263,6 +265,15 @@ void format_rx_data_mm(RX_Message rx_msg, struct Micromouse* data)
 
    case SENSOR_FLAG:
       memcpy(&(data->sensor_data), rx_msg.content.float_array, sizeof(data->sensor_data));
+      break;
+
+   case POSITION_FLAG:
+      data->cur_pose.pos.x = rx_msg.content.float_array[0];
+      data->cur_pose.pos.y = rx_msg.content.float_array[1];
+      data->cur_pose.ang.z = rx_msg.content.float_array[2];
+      data->prev_pose.pos.x = rx_msg.content.float_array[0];
+      data->prev_pose.pos.y = rx_msg.content.float_array[1];
+      data->prev_pose.ang.z = rx_msg.content.float_array[2];
       break;
 
    default:
@@ -302,6 +313,7 @@ void format_tx_data(TX_Message *tx_msg, unsigned char flag, void* content)
          sprintf(numberToStr, "%.6g ", data[i]);
          strcat(logMsg, numberToStr);
       }
+
       break;
 
    case PING_FLAG:
@@ -318,6 +330,7 @@ void format_tx_data(TX_Message *tx_msg, unsigned char flag, void* content)
          sprintf(numberToStr, "%.6g ", data[i]);
          strcat(logMsg, numberToStr);
       }
+
       break;
 
    case GOAL_REACHED_FLAG:
@@ -331,68 +344,68 @@ void format_tx_data(TX_Message *tx_msg, unsigned char flag, void* content)
    log_message("INFO", "Writer", "write_fifo", logMsg);
 }
 
-void dump_sensor_data(struct Micromouse data) 
+void dump_sensor_data(struct Micromouse data)
 {
    printf("Sensor Data:\n");
-   printf("\tAccl: %g, %g, %g\n", data.sensor_data.gyro.xyz.x, 
-                                  data.sensor_data.gyro.xyz.y, 
-                                  data.sensor_data.gyro.xyz.z);
-   printf("\tGyro: %g, %g, %g\n", data.sensor_data.gyro.ypr.x, 
-                                  data.sensor_data.gyro.ypr.y, 
-                                  data.sensor_data.gyro.ypr.z);
-   printf("\tSens: %g, %g, %g, %g\n", data.sensor_data.sensors[0], 
-                                      data.sensor_data.sensors[1], 
-                                      data.sensor_data.sensors[2], 
-                                      data.sensor_data.sensors[3]);
-   printf("\tEnc: %g %g\n", data.sensor_data.encoders[0], 
-                            data.sensor_data.encoders[1]);
+   printf("\tAccl: %g, %g, %g\n", data.sensor_data.gyro.xyz.x,
+          data.sensor_data.gyro.xyz.y,
+          data.sensor_data.gyro.xyz.z);
+   printf("\tGyro: %g, %g, %g\n", data.sensor_data.gyro.ypr.x,
+          data.sensor_data.gyro.ypr.y,
+          data.sensor_data.gyro.ypr.z);
+   printf("\tSens: %g, %g, %g, %g\n", data.sensor_data.sensors[0],
+          data.sensor_data.sensors[1],
+          data.sensor_data.sensors[2],
+          data.sensor_data.sensors[3]);
+   printf("\tEnc: %g %g\n", data.sensor_data.encoders[0],
+          data.sensor_data.encoders[1]);
 
 }
 
-void dump_header_data(struct Micromouse data) 
+void dump_header_data(struct Micromouse data)
 {
    printf("Header Data:\n");
-   printf("\tMaze size: %g, %g\n", data.header_data.maze_width, 
-                                   data.header_data.maze_height);
-   printf("\tBox size: %g, %g\n", data.header_data.box_width, 
-                                  data.header_data.box_height);
-   printf("\tInit pose: %g, %g, %g\n", data.header_data.initial_x, 
-                                       data.header_data.initial_y, 
-                                       data.header_data.initial_angle);
-   printf("\tTarget pos: %g, %g\n", data.header_data.target_x, 
-                                    data.header_data.target_y);
+   printf("\tMaze size: %g, %g\n", data.header_data.maze_width,
+          data.header_data.maze_height);
+   printf("\tBox size: %g, %g\n", data.header_data.box_width,
+          data.header_data.box_height);
+   printf("\tInit pose: %g, %g, %g\n", data.header_data.initial_x,
+          data.header_data.initial_y,
+          data.header_data.initial_angle);
+   printf("\tTarget pos: %g, %g\n", data.header_data.target_x,
+          data.header_data.target_y);
    printf("\tLines per revolution: %g\n", data.header_data.lines_per_revolution);
-   printf("\tEncoder data: LPR:%g, circumference: %g\n", data.header_data.lines_per_revolution, 
-                                                         data.header_data.wheel_circumference);
-   printf("\tOrigin pos: %g, %g\n", data.header_data.origin_x, 
-                                    data.header_data.origin_y);
+   printf("\tEncoder data: LPR:%g, circumference: %g\n", data.header_data.lines_per_revolution,
+          data.header_data.wheel_circumference);
+   printf("\tOrigin pos: %g, %g\n", data.header_data.origin_x,
+          data.header_data.origin_y);
    printf("\tSensor placement:\n");
-   printf("\t\tBottom left %g, %g, angle : %g\n",  data.header_data.sensors_position[SensorLeft].x, 
-                                                   data.header_data.sensors_position[SensorLeft].y,
-                                                   data.header_data.sensors_position[SensorLeft].z);
-   printf("\t\tTop left %g, %g, angle : %g\n",     data.header_data.sensors_position[SensorTopLeft].x, 
-                                                   data.header_data.sensors_position[SensorTopLeft].y,
-                                                   data.header_data.sensors_position[SensorTopLeft].z);
-   printf("\t\tTop right %g, %g, angle : %g\n",    data.header_data.sensors_position[SensorTopRight].x, 
-                                                   data.header_data.sensors_position[SensorTopRight].y,
-                                                   data.header_data.sensors_position[SensorTopRight].z);
-   printf("\t\tBottom right %g, %g, angle : %g\n", data.header_data.sensors_position[SensorRight].x, 
-                                                   data.header_data.sensors_position[SensorRight].y,
-                                                   data.header_data.sensors_position[SensorRight].z);
+   printf("\t\tBottom left %g, %g, angle : %g\n",  data.header_data.sensors_position[SensorLeft].x,
+          data.header_data.sensors_position[SensorLeft].y,
+          data.header_data.sensors_position[SensorLeft].z);
+   printf("\t\tTop left %g, %g, angle : %g\n",     data.header_data.sensors_position[SensorTopLeft].x,
+          data.header_data.sensors_position[SensorTopLeft].y,
+          data.header_data.sensors_position[SensorTopLeft].z);
+   printf("\t\tTop right %g, %g, angle : %g\n",    data.header_data.sensors_position[SensorTopRight].x,
+          data.header_data.sensors_position[SensorTopRight].y,
+          data.header_data.sensors_position[SensorTopRight].z);
+   printf("\t\tBottom right %g, %g, angle : %g\n", data.header_data.sensors_position[SensorRight].x,
+          data.header_data.sensors_position[SensorRight].y,
+          data.header_data.sensors_position[SensorRight].z);
 }
 
-void dump_estimation_data(struct Micromouse data) 
+void dump_estimation_data(struct Micromouse data)
 {
    printf("Estimation data:\n");
    printf("\tTime step: %gms\n", data.time_step);
-   printf("\tPosition: (%g, %g, %g)\n", data.cur_pose.pos.x, 
-                                        data.cur_pose.pos.y,
-                                        data.cur_pose.pos.z);
-   printf("\tAngle: (%g, %g, %g)\n", data.cur_pose.ang.x, 
-                                     data.cur_pose.ang.y,
-                                     data.cur_pose.ang.z);
+   printf("\tPosition: (%g, %g, %g)\n", data.cur_pose.pos.x,
+          data.cur_pose.pos.y,
+          data.cur_pose.pos.z);
+   printf("\tAngle: (%g, %g, %g)\n", data.cur_pose.ang.x,
+          data.cur_pose.ang.y,
+          data.cur_pose.ang.z);
    printf("\tCell: (%d, %d)\n", data.cur_cell.x,
-                                data.cur_cell.y);
+          data.cur_cell.y);
 }
 
 void dump_data(struct Micromouse data)

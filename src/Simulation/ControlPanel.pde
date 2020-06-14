@@ -2,7 +2,8 @@ public class ControlPanel {
 
   private ControlP5 cp5;
   private Maze maze;
-
+  private CommunicationController comCon;
+  
   private float toAddX, toAddY, toAddW, toAddH, toAddA;
 
   private boolean showingMovingObject;
@@ -39,6 +40,7 @@ public class ControlPanel {
         // stop the vehicle from moving
         maze.getVehicle().setLinearVelocity(0, 0);
         maze.getVehicle().setAngularVelocity(0);
+        comCon.sendPosition();
         
       } else if (deleteMode) { // otherwise we're deleting
         maze.removeBodyAt((float) mouseX, (float) mouseY);
@@ -306,5 +308,9 @@ public class ControlPanel {
   
   public void setMaze(Maze maze) {
     this.maze = maze;
+  }
+  
+  public void setComCon(CommunicationController comCon) {
+    this.comCon = comCon; 
   }
 }
