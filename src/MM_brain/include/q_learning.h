@@ -43,10 +43,11 @@ double get_QTable_cell(struct QMAZE Qmaze, int i, int j, int dirId);
 void set_QTable_cell(struct QMAZE Qmaze, int i, int j, int dirId, double value);
 double get_rValues_cell(struct QMAZE Qmaze, int i, int j, int dirId);
 void set_rValues_cell(struct QMAZE Qmaze, int i, int j, int dirId, double value);
-void break_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y, bool top, bool bottom, bool left, bool right);
+void break_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y, bool top, bool right, bool bottom, bool left);
 void add_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y, bool top, bool right, bool bottom, bool left);
-struct QMAZE init_Qmaze(int size, int OX, int OY);
-void update_maze(struct QMAZE Qmaze, struct Maze logicalmaze, int OX, int OY);
+
+struct QMAZE init_Qmaze(int size);
+struct QMAZE update_maze(struct QMAZE Qmaze, struct Maze logicalmaze);
 void logical_to_Qmaze(struct QMAZE Qmaze, struct Maze logicalmaze);
 void print_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y);
 void print_Qmaze(struct QMAZE maze);
