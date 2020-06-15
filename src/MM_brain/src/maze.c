@@ -133,14 +133,20 @@ struct Box minValueNeighbour(struct Maze maze, int16_t OX, int16_t OY)
 /* Display a maze */
 void displayMaze(struct Maze maze, bool displayValue)
 {
-   
    for(int16_t y = 0; y < maze.size; y++) {
       for(int16_t x = 0; x < maze.size; x++) {
 
          if(displayValue)
             printf("%d\t", maze.maze[y * maze.size + x].value);
-         else
-            printf("%d\t", maze.maze[y * maze.size + x].wallIndicator);
+         else {
+            if(y >= 1) {
+               printf("%c", GET_LEFT(maze.maze[(y-1) * maze.size + x].wallIndicator) ? '|' : ' ');
+            } else {
+               printf(" ");
+            }
+
+            printf("%c", GET_TOP(maze.maze[y * maze.size + x].wallIndicator) ? '_' : ' ');
+         }
       }
 
       printf("\n");

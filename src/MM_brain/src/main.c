@@ -201,7 +201,7 @@ int main(int argc, char const *argv[])
          }
 
          display_logical_maze(status, 6, vote_table);
-         displayMaze(logical_maze, false);
+         //displayMaze(logical_maze, false);
          
          update_control(&status, box, 0); // initialise values
          write_fifo(tx_msg, MOTOR_FLAG, &status);
