@@ -45,7 +45,7 @@ double get_rValues_cell(struct QMAZE Qmaze, int i, int j, int dirId);
 void set_rValues_cell(struct QMAZE Qmaze, int i, int j, int dirId, double value);
 void break_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y, bool top, bool right, bool bottom, bool left);
 void add_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y, bool top, bool right, bool bottom, bool left);
-
+void reward(struct QMAZE Qmaze);
 struct QMAZE init_Qmaze(int size);
 struct QMAZE update_maze(struct QMAZE Qmaze, struct Maze logicalmaze);
 void logical_to_Qmaze(struct QMAZE Qmaze, struct Maze logicalmaze);
@@ -57,6 +57,7 @@ int bestDirection(int *direction, struct QMAZE Qmaze, struct Box box);
 void restart(struct QMAZE Qmaze, struct Box* box);
 void printSleepClear(int sleepMS, struct QMAZE Qmaze);
 void qLearning(struct QMAZE Qmaze, struct Box *box);
+void complement(struct QMAZE Qmaze);
 Queue_XY QLPath(struct QMAZE Qmaze);
 
 #endif
