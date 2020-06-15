@@ -106,8 +106,12 @@ int main(int argc, char const *argv[])
          vote_for_walls(status, &logical_maze, vote_table, 6);
 
          if(status.nav_alg == Q_LEARNING ) {
+
             // Q-LEARNING ALOGORITHM
+            printf("countTotal %d/%d\n", countTotal, limit);
+            printf("Goal (%d,%d) \n", qmaze.GoalX, qmaze.GoalY);
             printf("(%d,%d) \n", Qbox.OY, Qbox.OX);
+
             qmaze =  update_maze(qmaze, logical_maze);
             qLearning(qmaze, &Qbox);
 
@@ -115,10 +119,16 @@ int main(int argc, char const *argv[])
 
             print_Qmaze(qmaze);
 
-            if(mm_mode == MAPPING) {
+            if(mm_mode == MAPPING) 
+            {
                if(status.cur_cell.x == status.header_data.target_x &&
-                     status.cur_cell.y == status.header_data.target_y) {
+                     status.cur_cell.y == status.header_data.target_y) 
+               {
                   countTotal++;
+                  if(countTotal == 1) 
+                  {
+                     reward(qmaze);
+                  }
 
                   if(countTotal == limit) {
                      mm_mode = FAST_RUN;
@@ -129,7 +139,8 @@ int main(int argc, char const *argv[])
 
                   write_fifo(tx_msg, GOAL_REACHED_FLAG, NULL);
                }
-            } else if(mm_mode == FAST_RUN) {
+            } 
+            else if(mm_mode == FAST_RUN) {
 
                if(!emptyQueue_XY(path)) {
                   if(box.OX == status.cur_cell.x &&
