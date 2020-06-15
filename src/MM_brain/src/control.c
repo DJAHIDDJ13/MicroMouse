@@ -236,8 +236,6 @@ void fwd_PID(struct Micromouse* status, int init)
    speed.x = cos(status->cur_pose.ang.z) * speed.x - sin(status->cur_pose.ang.z) * speed.y;
    speed.y = sin(status->cur_pose.ang.z) * speed.x + cos(status->cur_pose.ang.z) * speed.y;
 
-   //printf("%g\n", speed.y);
-
    // If we only have one side sensor activated, or if have a wall in front
    if((left_sensor < 0 || left_sensor > 700) || 
          (right_sensor < 0 || right_sensor > 700) ||
@@ -247,53 +245,27 @@ void fwd_PID(struct Micromouse* status, int init)
             speed.y < 0.12 && fabs(ang_diff) <= 0.5
             && fabs(left_middle_sensor - right_middle_sensor) < 200) 
       {
-         //printf("USING MIDDLE\n");
          Kp = 1;
          Kd = 200;
          err1 = (right_middle_sensor - 680) / 100;
          err2 = (left_middle_sensor - 680) / 100;
       } else {
-         //printf("Aligning angle\n");
          Kd = 150;
 
          err1 = 10 + ang_diff * 50;
          err2 = 10 - ang_diff * 50;
 
          if(fabs(ang_diff) < 0.5) {
-            //printf("Speeding down\n");
             err1 -= 100 * speed.y;
             err2 -= 100 * speed.y;
          }
       }
-
-      /*
-            if(right_sensor < 0 || right_sensor > 700) {
-               // printf("Wall on the right\n");
-               err1 += (left_sensor - 500) / 50;
-               err2 -= (left_sensor - 500) / 50;
-            } else if(left_sensor < 0 || left_sensor > 700) {
-               // printf("Wall on the left\n");
-               err1 -= (right_sensor - 500) / 50;
-               err2 += (right_sensor - 500) / 50;
-            }
-            */
    }
 
    // Readjusting the position and angle estimation if the vehicle is moving forward
    if(left_sensor > 0 && right_sensor > 0) {
       readjust_position(status, left_sensor - right_sensor, init);
    }
-
-   /*
-    if(left_middle_sensor > 0 && left_middle_sensor < 700 &&
-       right_middle_sensor > 0 && right_middle_sensor < 700 &&
-       speed.y < 0.5)
-    {
-       err1 = -(500 - left_middle_sensor) / 100;
-       err2 = -(500 - right_middle_sensor) / 100;
-       printf("WALL IN FRONT TURNING BACK %g %g\n", err1, err2);
-    }*/
-
 
    // calling the general PID function
    float out1 = PID(status, err1, Kp, Ki, Kd, &old_err1, &cumul_err1);
@@ -307,7 +279,6 @@ void fwd_PID(struct Micromouse* status, int init)
 
 void turn_PID(struct Micromouse* status, int direction, int init)
 {
-   //printf("NEED TO TURN USING POS\n");
    // CHOICE HERE: EITHER (LEFT OR RIGHT OR FORWARD) OR (LEFT OR FORWARD) OR (RIGHT OR FORWARD)
    // keep checking for forward sensors while doing the turning
    // if forward found go to dist_turning state
@@ -316,8 +287,6 @@ void turn_PID(struct Micromouse* status, int direction, int init)
 
    static float turn_dir = 1;
    static float init_ang = 0;
-   //static Vec3 target_pos;
-   //static int direction;
    float right_sensor = status->sensor_data.sensors[1],
          left_sensor = status->sensor_data.sensors[2],
          right_middle_sensor = status->sensor_data.sensors[0],
@@ -339,8 +308,6 @@ void turn_PID(struct Micromouse* status, int direction, int init)
    float ang_dist = fmin(fabs(2 * M_PI - (status->cur_pose.ang.z - init_ang)),
                          fabs(status->cur_pose.ang.z - init_ang));
 
-   // printf("ang_dist = %g\n", ang_dist);
-
    if(ang_dist > 0.9 * M_PI_2) {
       status->cur_pose.pos.x = status->header_data.origin_x + (status->cur_cell.x + 0.5) * status->header_data.box_width;
       status->cur_pose.pos.y = status->header_data.origin_y - (status->cur_cell.y + 0.5) * status->header_data.box_height;
@@ -359,11 +326,9 @@ void turn_PID(struct Micromouse* status, int direction, int init)
    speed.x = cos(status->cur_pose.ang.z) * speed.x - sin(status->cur_pose.ang.z) * speed.y;
    speed.y = sin(status->cur_pose.ang.z) * speed.x + cos(status->cur_pose.ang.z) * speed.y;
 
-   // printf("SPEED %g, %g\n", speed.x, speed.y);
    // shouldn't be too close
    if((left_middle_sensor < 250 || right_middle_sensor < 250) &&
          (left_middle_sensor > 0 && right_middle_sensor > 0)) {
-      //printf("TOO CLOSE");
       err1 = -right_middle_sensor / 100;
       err2 = -left_middle_sensor / 100;
 
@@ -376,8 +341,7 @@ void turn_PID(struct Micromouse* status, int direction, int init)
       }
    }
    // shouldn't be too fast
-   else if(/*fabs(speed.x) > 2 || */fabs(speed.y) > 2) {
-      //printf("TOO FAST");
+   else if(fabs(speed.y) > 2) {
       err1 = -1000 * speed.y;
       err2 = -1000 * speed.y;
    }
@@ -385,10 +349,8 @@ void turn_PID(struct Micromouse* status, int direction, int init)
 
    // start turning when everything else is met
    else {
-      // Kd = 1000;
       err1 = turn_dir * 20 * ang_diff;
       err2 = -turn_dir * 20 * ang_diff;
-      //printf("ACTUALLY TURNING (%g, %g) %g %g\n", err1, err2, turn_dir, ang_diff);
    }
 
    // calling the general PID function
@@ -433,11 +395,11 @@ void update_control(struct Micromouse* status, struct Box box, char init)
    int ang = (int)round(fmod(status->cur_pose.ang.z, 2 * M_PI) / (M_PI_2)) % 4;
    int goal = 0;
 
-   if(status->cur_cell.x == box.OX && status->cur_cell.y - 1 == box.OY ) {
+   if(status->cur_cell.x == box.OX && status->cur_cell.y > box.OY ) {
       goal = 0;
-   } else if(status->cur_cell.x + 1 == box.OX && status->cur_cell.y == box.OY ) {
+   } else if(status->cur_cell.x < box.OX && status->cur_cell.y == box.OY ) {
       goal = 3;
-   } else if(status->cur_cell.x == box.OX && status->cur_cell.y + 1 == box.OY ) {
+   } else if(status->cur_cell.x == box.OX && status->cur_cell.y < box.OY ) {
       goal = 2;
    } else {
       goal = 1;
@@ -454,19 +416,13 @@ void update_control(struct Micromouse* status, struct Box box, char init)
    }
 
    if(abs(ang_dist) == 2) {
-      //printf("*******************************TURN BACK\n");
       control_state = TURN_BACK;
       turn_back_PID(status, 1);
    } else if(abs(ang_dist) == 1) {
-      //printf("*******************************TURNING %s\n", (ang_decision > 0) ? "LEFT" : "RIGHT");
       control_state = TURN;
       turn_PID(status, -ang_decision, 1);
    } else {
-      //printf("*******************************FORWARD\n");
       control_state = MOVE_FWD;
       fwd_PID(status, 1);
    }
-
-   //printf("ang = %d, goal = %d\n OX = %d, OY = %d\n", ang, goal, box.OX, box.OY);
-   //printf("cur_cell = (%d %d)\n*******************************\n", status->cur_cell.x, status->cur_cell.y);
 }

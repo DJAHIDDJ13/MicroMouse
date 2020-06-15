@@ -60,7 +60,6 @@ int main(int argc, char const *argv[])
 
    int X_target, Y_target;
    int setPosition = 0;
-   int pop_flag = 0;
 
    while(1) {
       read_fifo(&rx_msg);
@@ -77,145 +76,145 @@ int main(int argc, char const *argv[])
 
 
       case HEADER_FLAG:
-             mm_mode = MAPPING;
-             init_cell(&status);
-             X_target = status.header_data.target_x;
-             Y_target = status.header_data.target_y;
-             logical_maze = initMaze(logical_maze.maze, 
-                status.header_data.maze_height / status.header_data.box_height);
-             vote_table = init_vote_array(vote_table, 
-                (int)(status.header_data.maze_width / status.header_data.box_width));
-      
-      
-             // FLOOD-FILL ALOGORITHM HEADER PART
-             if(status.nav_alg == FLOOD_FILL) 
-             {
-                floodFill(logical_maze, X_target, Y_target);
-                box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
-             } 
-      
-             // Q-LEARNING ALOGORITHM HEADER PART
-             else 
-             {
-                qmaze = init_Qmaze(logical_maze.size);
-                //qLearning(qmaze, &box);
-             }
-      
-             update_control(&status, box, 1); // initialise values
-             break;
+         mm_mode = MAPPING;
+         init_cell(&status);
+         X_target = status.header_data.target_x;
+         Y_target = status.header_data.target_y;
+         logical_maze = initMaze(logical_maze.maze,
+                                 status.header_data.maze_height / status.header_data.box_height);
+         vote_table = init_vote_array(vote_table,
+                                      (int)(status.header_data.maze_width / status.header_data.box_width));
+
+
+         // FLOOD-FILL ALOGORITHM HEADER PART
+         if(status.nav_alg == FLOOD_FILL) {
+            floodFill(logical_maze, X_target, Y_target);
+            box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
+         }
+
+         // Q-LEARNING ALOGORITHM HEADER PART
+         else {
+            qmaze = init_Qmaze(logical_maze.size);
+            //qLearning(qmaze, &box);
+         }
+
+         update_control(&status, box, 1); // initialise values
+         break;
 
       case SENSOR_FLAG:
-            update_cell(&status);
-            vote_for_walls(status, &logical_maze, vote_table, 6);
-   
-            if(status.nav_alg == Q_LEARNING ) {
-               // Q-LEARNING ALOGORITHM
-                printf("(%d,%d) \n", Qbox.OY, Qbox.OX);
-                qmaze =  update_maze(qmaze, logical_maze);
-                qLearning(qmaze, &Qbox);
+         update_cell(&status);
+         vote_for_walls(status, &logical_maze, vote_table, 6);
 
-               // updating and printing the two types of maze
-               
-               print_Qmaze(qmaze);
-               display_logical_maze(status, 6, vote_table);
-               //displayMaze(logical_maze, false);
-   
-               if(mm_mode == MAPPING) {
-                  if(status.cur_cell.x == status.header_data.target_x  && status.cur_cell.y == status.header_data.target_y) {
-                     countTotal++;
-   
-                     if(countTotal == limit)  
-                     {
-                        mm_mode = FAST_RUN;
-                        path = QLPath(qmaze);
-                        pop_flag = 1;
-                     } 
-                     else 
-                     {
-                        printf("RESTARTING Q MAZE ITERATIONS\n");
-                        restart(qmaze, &Qbox);
-                     }
-   
-                     write_fifo(tx_msg, GOAL_REACHED_FLAG, NULL);
-                  }
-               } else if(mm_mode == FAST_RUN) {
-                  printf("FAST RUN\n");
-   
-                  if(!emptyQueue_XY(path)) {
-                     if(box.OX == status.cur_cell.x && box.OY == status.cur_cell.y && pop_flag == 1) {
-                        pop_flag = 0;
-                        path.head = (path.head)->next;
-                     } else {
-                        struct oddpair_XY XY_tmp = summitQueue_XY(path);
-   
-                        box.OX = XY_tmp.OX;
-                        box.OY = XY_tmp.OY;
-                     }
-                  } else {
-                     printf("STOP\n");
-                     mm_mode = STOP;
-                  }
-               }
-            } else if(status.nav_alg == FLOOD_FILL) {
-               // FLOOD FILL ALGORITHM
-               if (mm_mode == MAPPING) {
-                  printf("MAPPING\n");
-                  floodFill(logical_maze, X_target, Y_target);
-                  box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
-   
-                  if(status.cur_cell.x == status.header_data.target_x
-                     && status.cur_cell.y == status.header_data.target_y) 
-                  {
-                     mm_mode = BACK_TO_START;
-                     write_fifo(tx_msg, GOAL_REACHED_FLAG, NULL);
-                  }             
-               } else if(mm_mode == BACK_TO_START) {
-                  printf("BACK TO START\n");
-                  floodFill(logical_maze, 0, 0);
-                  box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
-   
-                  if(status.cur_cell.x == 0 && status.cur_cell.y == 0) {
+         if(status.nav_alg == Q_LEARNING ) {
+            // Q-LEARNING ALOGORITHM
+            printf("(%d,%d) \n", Qbox.OY, Qbox.OX);
+            qmaze =  update_maze(qmaze, logical_maze);
+            qLearning(qmaze, &Qbox);
+
+            // updating and printing the two types of maze
+
+            print_Qmaze(qmaze);
+
+            if(mm_mode == MAPPING) {
+               if(status.cur_cell.x == status.header_data.target_x &&
+                     status.cur_cell.y == status.header_data.target_y) {
+                  countTotal++;
+
+                  if(countTotal == limit) {
                      mm_mode = FAST_RUN;
-   
-                     floodFill(logical_maze, X_target, Y_target);
-                     path = backwardFloodFill(logical_maze, 0, 0);
-                     pop_flag = 1;
-                  }
-   
-               } else if(mm_mode == FAST_RUN) {
-                  printf("FAST RUN\n");
-   
-                  if(!emptyQueue_XY(path)) {
-                     if(box.OX == status.cur_cell.x && box.OY == status.cur_cell.y && pop_flag == 1) {
-                        pop_flag = 0;
-                        path.head = (path.head)->next;
-                     } else {
-                        struct oddpair_XY XY_tmp = summitQueue_XY(path);
-   
-                        box.OX = XY_tmp.OX;
-                        box.OY = XY_tmp.OY;
-                     }
+                     path = QLPath(qmaze);
                   } else {
-                     printf("STOP\n");
-                     mm_mode = STOP;
+                     restart(qmaze, &Qbox);
                   }
+
+                  write_fifo(tx_msg, GOAL_REACHED_FLAG, NULL);
                }
+            } else if(mm_mode == FAST_RUN) {
+
+               if(!emptyQueue_XY(path)) {
+                  if(box.OX == status.cur_cell.x &&
+                     box.OY == status.cur_cell.y) 
+                  {
+                     path.head = (path.head)->next;
+                  }
+
+                  struct oddpair_XY XY_tmp = summitQueue_XY(path);
+
+                  box.OX = XY_tmp.OX;
+
+                  box.OY = XY_tmp.OY;
+               } else {
+                  mm_mode = STOP;
+                  box.OX = status.cur_cell.x;
+                  box.OY = status.cur_cell.y;
+               }
+            } else if(mm_mode == STOP) {
+               box.OX = status.cur_cell.x;
+               box.OY = status.cur_cell.y;
             }
 
-            //printf("(%d %d)\n", box.OX, box.OY);
-            update_control(&status, box, 0); // initialise values
-            write_fifo(tx_msg, MOTOR_FLAG, &status);
-            break;
+         } else if(status.nav_alg == FLOOD_FILL) {
+            // FLOOD FILL ALGORITHM
+            if (mm_mode == MAPPING) {
+               floodFill(logical_maze, X_target, Y_target);
+               box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
+
+               if(status.cur_cell.x == status.header_data.target_x
+                     && status.cur_cell.y == status.header_data.target_y) {
+                  mm_mode = BACK_TO_START;
+                  write_fifo(tx_msg, GOAL_REACHED_FLAG, NULL);
+               }
+            } else if(mm_mode == BACK_TO_START) {
+               floodFill(logical_maze, 0, 0);
+               box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
+
+               if(status.cur_cell.x == 0 && status.cur_cell.y == 0) {
+                  mm_mode = FAST_RUN;
+
+                  floodFill(logical_maze, X_target, Y_target);
+                  path = backwardFloodFill(logical_maze, 0, 0);
+                  path = reorganise_path(&path);
+               }
+            } else if(mm_mode == FAST_RUN) {
+
+               if(!emptyQueue_XY(path)) {
+                  if(box.OX == status.cur_cell.x &&
+                     box.OY == status.cur_cell.y)
+                  {
+                     path.head = (path.head)->next;
+                  }
+
+                  struct oddpair_XY XY_tmp = summitQueue_XY(path);
+
+                  box.OX = XY_tmp.OX;
+
+                  box.OY = XY_tmp.OY;
+               } else {
+                  mm_mode = STOP;
+                  box.OX = status.cur_cell.x;
+                  box.OY = status.cur_cell.y;
+               }
+            } else if(mm_mode == STOP) {
+               box.OX = status.cur_cell.x;
+               box.OY = status.cur_cell.y;
+            }
+         }
+
+         display_logical_maze(status, 6, vote_table);
+         displayMaze(logical_maze, false);
+         
+         update_control(&status, box, 0); // initialise values
+         write_fifo(tx_msg, MOTOR_FLAG, &status);
+         break;
 
       case POSITION_FLAG:
-            // Set the new pose
-            printf("*************************SETTING NEW POSE\n");
-            setPosition = 1;
-            break;
+         // Set the new pose
+         setPosition = 1;
+         break;
 
       case NAVIGATION_FLAG:
-            printf("Changing algorithm to %s\n", (status.nav_alg == Q_LEARNING) ? "Q_LEARNING" : "FLOOD_FILL");
-            break;
+         printf("Changing algorithm to %s\n", (status.nav_alg == Q_LEARNING) ? "Q_LEARNING" : "FLOOD_FILL");
+         break;
       }
    }
 

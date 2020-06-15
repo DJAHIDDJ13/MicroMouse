@@ -51,6 +51,7 @@ struct QMAZE update_maze(struct QMAZE Qmaze, struct Maze logicalmaze);
 void logical_to_Qmaze(struct QMAZE Qmaze, struct Maze logicalmaze);
 void print_Qmaze_Cell_Walls(struct QMAZE Qmaze, int x, int y);
 void print_Qmaze(struct QMAZE maze);
+void print_RValues(struct QMAZE maze);
 void print_QTable(struct QMAZE maze);
 void move(int direction, struct QMAZE Qmaze, struct Box* box);
 int bestDirection(int *direction, struct QMAZE Qmaze, struct Box box);
