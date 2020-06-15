@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <flood_fill.h>
+#include <brain.h>
 
 struct Maze createMaze() {
 
@@ -86,6 +87,9 @@ int main(int argc, char **argv) {
    }
 
    printf("\nPath1 for the MM :\n");
+   
+   path1 = reorganise_path(&path1);
+
    printQueue_XY(path1);
 
    printf("Flood Fill [Test 1] done\n");
