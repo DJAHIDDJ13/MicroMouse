@@ -133,7 +133,8 @@ int main(int argc, char const *argv[])
 
                if(!emptyQueue_XY(path)) {
                   if(box.OX == status.cur_cell.x &&
-                     box.OY == status.cur_cell.y) {
+                     box.OY == status.cur_cell.y) 
+                  {
                      path.head = (path.head)->next;
                   }
 
@@ -173,13 +174,13 @@ int main(int argc, char const *argv[])
                   floodFill(logical_maze, X_target, Y_target);
                   path = backwardFloodFill(logical_maze, 0, 0);
                   path = reorganise_path(&path);
-                  path.head = (path.head)->next;
                }
             } else if(mm_mode == FAST_RUN) {
 
                if(!emptyQueue_XY(path)) {
                   if(box.OX == status.cur_cell.x &&
-                        box.OY == status.cur_cell.y) {
+                     box.OY == status.cur_cell.y)
+                  {
                      path.head = (path.head)->next;
                   }
 
