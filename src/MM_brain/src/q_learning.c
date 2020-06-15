@@ -319,15 +319,15 @@ struct QMAZE update_maze(struct QMAZE Qmaze, struct Maze logicalmaze)
    }
 
    // Set Start and Goal Position 
-   set_Qmaze_cell(Qmaze,'*',Qmaze.StartX, Qmaze.StartY);
+   //set_Qmaze_cell(Qmaze,'*',Qmaze.StartX, Qmaze.StartY);
    set_Qmaze_cell(Qmaze,'G',Qmaze.GoalX, Qmaze.GoalY);  
+   //complement(Qmaze);	
    break_Qmaze_Cell_Walls(Qmaze, 0,0, false, false, true, false);
    return Qmaze;
 }
 
 
 
-// move to the cell at given directi
 void move(int direction, struct QMAZE Qmaze, struct Box* box)
 {
 	char value;
@@ -335,41 +335,46 @@ void move(int direction, struct QMAZE Qmaze, struct Box* box)
 	{
 		// WE GO TOP
 		case 0:
+		printf("WE GO TOP\n");
 			if(!Qmaze_cell_has_wall(Qmaze, box->OY, box->OX, 0)) {
-				value = get_Qmaze_cell(Qmaze, box->OY, box->OX);
-			    set_Qmaze_cell(Qmaze,value, box->OY-1, box->OX);
-			    set_Qmaze_cell(Qmaze,' ', box->OY, box->OX);
-			    box->OY-=1;
+				set_Qmaze_cell(Qmaze,' ', box->OY, box->OX);
+				box->OY-=1;
+				set_Qmaze_cell(Qmaze,'*', box->OY, box->OX);
+
 			} break;
 
 		// WE GO RIGHT
 		case 1:
+		printf("WE GO RIGHT\n");
 			if(!Qmaze_cell_has_wall(Qmaze, box->OY, box->OX, 1)) {
-				value = get_Qmaze_cell(Qmaze, box->OY, box->OX);
-				set_Qmaze_cell(Qmaze,value, box->OY, box->OX+1);
 				set_Qmaze_cell(Qmaze,' ', box->OY, box->OX);
 				box->OX+=1;
+                set_Qmaze_cell(Qmaze,'*', box->OY, box->OX);
+
+				
 			} break;
 
 	    // WE GO BOTTOM		
 		case 2:
+		printf("WE GO BOTTOM\n");
 			if(!Qmaze_cell_has_wall(Qmaze, box->OY, box->OX, 2)) {
-				value = get_Qmaze_cell(Qmaze, box->OY, box->OX);
-				set_Qmaze_cell(Qmaze,value, box->OY+1, box->OX);
 				set_Qmaze_cell(Qmaze,' ', box->OY, box->OX);
 				box->OY+=1;
+                set_Qmaze_cell(Qmaze,'*', box->OY, box->OX);
+                
 			} break;
 
 		// WE GO LEFT
 		case 3:
+		printf("WE GO LEFT\n");
 			if(!Qmaze_cell_has_wall(Qmaze, box->OY, box->OX, 3)) {
-				value = get_Qmaze_cell(Qmaze, box->OY, box->OX);
-				set_Qmaze_cell(Qmaze,value, box->OY, box->OX-1);
 				set_Qmaze_cell(Qmaze,' ', box->OY, box->OX);
 				box->OX-=1;
+                set_Qmaze_cell(Qmaze,'*', box->OY, box->OX);
 			} break;
 	}
 }
+
 
 
 //find the bestDirection by using q values
@@ -419,18 +424,11 @@ int bestDirection(int *direction, struct QMAZE Qmaze, struct Box box)
 }
 
 
+void reward(struct QMAZE Qmaze) {
 
-
-
-void qLearning(struct QMAZE Qmaze, struct Box *box)
-{
-	int direction,tempI,tempJ,tempDir;
-	double max,new_value = 0.0;
-     
-     
 	// rewards to the finish
     // If target top wall is open, we reward going down to it
-	/*if(!Qmaze_cell_has_wall(Qmaze, Qmaze.GoalX, Qmaze.GoalY, 0)) {
+	if(!Qmaze_cell_has_wall(Qmaze, Qmaze.GoalX, Qmaze.GoalY, 0)) {
 		set_rValues_cell(Qmaze, Qmaze.GoalX-1, Qmaze.GoalY, 2, 100000);
 	}
 	// If target right wall is open, we reward going left to it
@@ -444,14 +442,15 @@ void qLearning(struct QMAZE Qmaze, struct Box *box)
 	// If target left wall is open, we reward goinf right to
 	if(!Qmaze_cell_has_wall(Qmaze, Qmaze.GoalX, Qmaze.GoalY, 3)) {
 		set_rValues_cell(Qmaze, Qmaze.GoalX, Qmaze.GoalY-1, 1, 100000);
-	}*/
+	}
 
-	// rewards to the finish
-	//set_rValues_cell(Qmaze, Qmaze.GoalX-1, Qmaze.GoalY, 2, 100000);
-	//set_rValues_cell(Qmaze, Qmaze.GoalX, Qmaze.GoalY+1, 3, 100000);
-	//set_rValues_cell(Qmaze, Qmaze.GoalX+1, Qmaze.GoalY, 0, 100000);
-	//set_rValues_cell(Qmaze, Qmaze.GoalX, Qmaze.GoalY-1, 1, 100000);
+}
 
+void qLearning(struct QMAZE Qmaze, struct Box *box)
+{
+	int direction,tempI,tempJ,tempDir;
+	double max,new_value = 0.0;
+     
 
 	max = bestDirection(&direction, Qmaze, *box);
 	tempI=box->OY;

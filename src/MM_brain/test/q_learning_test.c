@@ -6,7 +6,7 @@
 void printSleepClear2(int sleepMS, struct QMAZE Qmaze)
 {
    print_Qmaze(Qmaze);
-   usleep(25*sleepMS);
+   usleep(150*sleepMS);
    system("clear");
 }
 
@@ -41,6 +41,7 @@ int main(int argc, char **argv) {
    // logical and Qmaze 
    struct Maze logical_maze = createMaze();
    struct QMAZE test = init_Qmaze(logical_maze.size);
+   test.GoalX = 3; test.GoalY=3;
    test = update_maze(test, logical_maze);
 
 
@@ -50,13 +51,16 @@ int main(int argc, char **argv) {
 
    do
    {
+      printf("countTotal : %d/%d\n", countTotal, limit);
       printf("(%d,%d) \n",box.OY, box.OX);
       qLearning(test, &box);
       printSleepClear2(100, test);
 
       // WE REACH GOAL
-      if(box.OY == test.GoalX && box.OX == test.GoalY)
+      if(box.OY == test.GoalX && box.OX == test.GoalY) 
       {
+         // First time reaching goal 
+         if(countTotal == 0)  {  reward(test);  }
          printSleepClear2(100, test);
          countTotal++;
          if(countTotal!=limit)
