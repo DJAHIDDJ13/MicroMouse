@@ -59,9 +59,6 @@ int main(int argc, char const *argv[])
    int X_target, Y_target;
    int setPosition = 0;
 
-   int cur_x, cur_y;
-   int prev_x, prev_y;
-
    while(1) {
       read_fifo(&rx_msg);
       format_rx_data_mm(rx_msg, &status);
@@ -85,9 +82,6 @@ int main(int argc, char const *argv[])
          vote_table = init_vote_array(vote_table,
                                       (int)(status.header_data.maze_width / status.header_data.box_width));
 
-         prev_x = status.cur_cell.x;
-         prev_y = status.cur_cell.y;
-
          limit = 6 * logical_maze.size;
          
          // FLOOD-FILL ALOGORITHM HEADER PART
@@ -99,7 +93,7 @@ int main(int argc, char const *argv[])
          // Q-LEARNING ALOGORITHM HEADER PART
          else {
             qmaze = init_Qmaze(logical_maze.size);
-            qLearning(qmaze, &box);
+            qLearning(qmaze, &box);         
          }
 
          update_control(&status, box, 1); // initialise values
@@ -110,15 +104,13 @@ int main(int argc, char const *argv[])
          vote_for_walls(status, &logical_maze, vote_table, 6);
 
          if(status.nav_alg == Q_LEARNING ) {
-
+            printf("(%d %d)\n", box.OX, box.OY);
             // Q-LEARNING ALOGORITHM
 
             qmaze =  update_maze(qmaze, logical_maze);
             
-            if(prev_x == cur_x && prev_y == cur_y) {
+            if(status.cur_cell.x == box.OX && status.cur_cell.y == box.OY) {
                qLearning(qmaze, &box);
-               cur_x = box.OX;
-               cur_y = box.OY;
             }
 
             // updating and printing the two types of maze
@@ -187,10 +179,7 @@ int main(int argc, char const *argv[])
                floodFill(logical_maze, 0, 0);
                box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
 
-               printf("*************(%d %d)\n", status.cur_cell.x, status.cur_cell.y);
-
                if(status.cur_cell.x == 0 && status.cur_cell.y == 0) {
-                  printf("######(%d %d)\n", status.cur_cell.x, status.cur_cell.y);
                   mm_mode = FAST_RUN;
 
                   floodFill(logical_maze, X_target, Y_target);
@@ -222,9 +211,6 @@ int main(int argc, char const *argv[])
                box.OY = status.cur_cell.y;
             }
          }
-
-         prev_x = status.cur_cell.x;
-         prev_y = status.cur_cell.y;
 
          display_logical_maze(status, 6, vote_table);
          displayMaze(logical_maze, false);

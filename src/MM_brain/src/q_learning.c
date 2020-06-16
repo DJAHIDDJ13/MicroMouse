@@ -222,10 +222,6 @@ void restart(struct QMAZE Qmaze, struct Box* box)
    box->OX = 0;
 }	
 
-
-
-
-
 /*******************************************************************/
 
 // Init a Qmaze from a given size
@@ -287,10 +283,6 @@ struct QMAZE init_Qmaze(int size)
     return initial_maze;
 }
 
-
-
-
-
 struct QMAZE update_maze(struct QMAZE Qmaze, struct Maze logicalmaze)
 {
     int currentWallIndicator = 0;
@@ -330,7 +322,6 @@ struct QMAZE update_maze(struct QMAZE Qmaze, struct Maze logicalmaze)
 
 void move(int direction, struct QMAZE Qmaze, struct Box* box)
 {
-	char value;
 	switch(direction)
 	{
 		// WE GO TOP
@@ -385,7 +376,7 @@ int bestDirection(int *direction, struct QMAZE Qmaze, struct Box box)
 
 	for(int i=0;i<4;i++)
 	{
-		if(get_QTable_cell(Qmaze, box.OY, box.OX, i)  > max )
+		if(get_QTable_cell(Qmaze, box.OY, box.OX, i)  > max)
 		{
 			//Top
 			if(i==0 && !Qmaze_cell_has_wall(Qmaze, box.OY, box.OX, 0)) {
@@ -464,7 +455,5 @@ void qLearning(struct QMAZE Qmaze, struct Box *box)
 	// bellman fdp nique ta race
 	new_value = (alpha * (get_rValues_cell(Qmaze, tempI, tempJ, tempDir) + gamma * (max - get_QTable_cell(Qmaze, tempI, tempJ, tempDir))));
 	new_value += get_QTable_cell(Qmaze, tempI, tempJ, tempDir);
-	set_QTable_cell(Qmaze, tempI, tempJ, tempDir,  new_value);		
-	
-	//printSleepClear(100, Qmaze);
+	set_QTable_cell(Qmaze, tempI, tempJ, tempDir,  new_value);
 }

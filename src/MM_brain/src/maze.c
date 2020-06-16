@@ -122,7 +122,7 @@ struct Box minValueNeighbour(struct Maze maze, int16_t OX, int16_t OY)
       if(!boxs[(OY + 1)*size + OX].visited) {
          box_visited = box;
          no_visited = true;
-      }      
+      }
    }
 
    //Left neighbour
@@ -136,7 +136,7 @@ struct Box minValueNeighbour(struct Maze maze, int16_t OX, int16_t OY)
       if(!boxs[OY * size + (OX -1)].visited) {
          box_visited = box;
          no_visited = true;
-      }      
+      }
    }
 
    //Right neighbour
@@ -150,7 +150,7 @@ struct Box minValueNeighbour(struct Maze maze, int16_t OX, int16_t OY)
       if(!boxs[OY * size + (OX + 1)].visited) {
          box_visited = box;
          no_visited = true;
-      }            
+      }
    }
 
    return (no_visited) ? box_visited : box;

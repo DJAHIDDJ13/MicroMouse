@@ -266,7 +266,6 @@ void display_logical_maze(struct Micromouse status, int threshold, int **vote_ta
    printf("##################\n");
    int width = (int)(status.header_data.maze_width / status.header_data.box_width) + 1;
    int height = (int)(status.header_data.maze_height / status.header_data.box_height) + 1;
-   printf("%d %d\n", width, height);
 
    for (i = -1; i < height - 1; i++) {
       for (j = 0; j < width; j++) {

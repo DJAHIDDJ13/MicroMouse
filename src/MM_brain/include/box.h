@@ -58,7 +58,6 @@ struct Box {
    int16_t value;			  /* The value of the case */
 
    bool visited;
-
 };
 
 /* Here some primitives for the above structures */

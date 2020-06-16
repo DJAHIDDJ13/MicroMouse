@@ -90,10 +90,10 @@ void turn_back_PID(struct Micromouse* status, int init)
       err2 = -(350 - left_middle_sensor) / 100;
    }
    // If the vehicle is too far, get closer
-   else if(left_middle_sensor > 300 && right_middle_sensor > 300) {
+   /*else if(left_middle_sensor > 300 && right_middle_sensor > 300) {
       err1 = right_middle_sensor / 100;
       err2 = left_middle_sensor / 100;
-   }
+   }*/
    // Otherwise make the turn
    else {
       // Kd = 0;
