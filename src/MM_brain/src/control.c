@@ -89,11 +89,6 @@ void turn_back_PID(struct Micromouse* status, int init)
       err1 = -(350 - right_middle_sensor) / 100;
       err2 = -(350 - left_middle_sensor) / 100;
    }
-   // If the vehicle is too far, get closer
-   /*else if(left_middle_sensor > 300 && right_middle_sensor > 300) {
-      err1 = right_middle_sensor / 100;
-      err2 = left_middle_sensor / 100;
-   }*/
    // Otherwise make the turn
    else {
       // Kd = 0;
@@ -242,8 +237,8 @@ void fwd_PID(struct Micromouse* status, int init)
          (left_middle_sensor > 0 && right_middle_sensor > 0)) {
 
       if(left_middle_sensor > 0 && right_middle_sensor > 0 && 
-            speed.y < 0.12 && fabs(ang_diff) <= 0.5
-            && fabs(left_middle_sensor - right_middle_sensor) < 200) 
+            speed.y < 0.1 && fabs(ang_diff) <= 0.5
+            && fabs(left_middle_sensor - right_middle_sensor) < 200)
       {
          Kp = 1;
          Kd = 200;
@@ -287,9 +282,7 @@ void turn_PID(struct Micromouse* status, int direction, int init)
 
    static float turn_dir = 1;
    static float init_ang = 0;
-   float right_sensor = status->sensor_data.sensors[1],
-         left_sensor = status->sensor_data.sensors[2],
-         right_middle_sensor = status->sensor_data.sensors[0],
+   float right_middle_sensor = status->sensor_data.sensors[0],
          left_middle_sensor = status->sensor_data.sensors[3];
 
    // init is the indicator for when the

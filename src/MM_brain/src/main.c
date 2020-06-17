@@ -104,7 +104,6 @@ int main(int argc, char const *argv[])
          vote_for_walls(status, &logical_maze, vote_table, 6);
 
          if(status.nav_alg == Q_LEARNING ) {
-            printf("(%d %d)\n", box.OX, box.OY);
             // Q-LEARNING ALOGORITHM
 
             qmaze =  update_maze(qmaze, logical_maze);
@@ -165,7 +164,7 @@ int main(int argc, char const *argv[])
          } else if(status.nav_alg == FLOOD_FILL) {
             // FLOOD FILL ALGORITHM
             if (mm_mode == MAPPING) {
-               printf("|||||||||||||||| MAPPING\n");
+               //printf("|||||||||||||||| MAPPING\n");
                floodFill(logical_maze, X_target, Y_target);
                box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
 
@@ -175,7 +174,7 @@ int main(int argc, char const *argv[])
                   write_fifo(tx_msg, GOAL_REACHED_FLAG, NULL);
                }
             } else if(mm_mode == BACK_TO_START) {
-               printf("|||||||||||||||| BACK_TO_START\n");
+               //printf("|||||||||||||||| BACK_TO_START\n");
                floodFill(logical_maze, 0, 0);
                box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
 
@@ -188,7 +187,7 @@ int main(int argc, char const *argv[])
                   //path = reorganise_path(&path);
                }
             } else if(mm_mode == FAST_RUN) {
-               printf("|||||||||||||||| FAST_RUN\n");
+               //printf("|||||||||||||||| FAST_RUN\n");
                if(!emptyQueue_XY(path)) {
                   if(box.OX == status.cur_cell.x &&
                      box.OY == status.cur_cell.y)
@@ -213,7 +212,8 @@ int main(int argc, char const *argv[])
          }
 
          display_logical_maze(status, 6, vote_table);
-         displayMaze(logical_maze, false);
+         if(status.nav_alg == Q_LEARNING)
+            printf("count = %d, limit = %d)\n", countTotal, limit);
          
          update_control(&status, box, 0); // initialise values
          if(!logical_maze.maze[box.OY*logical_maze.size+box.OX].visited)

@@ -145,7 +145,8 @@ public class InformationPanel {
     
     double leftForce = maze.getLeftWheelForce();
     double rightForce = maze.getRightWheelForce();
- 
+    float[] encoderData = maze.getVehicle().getEncoderData();
+    
     // Generic Vehicl Body
     pushMatrix();
       fill(127,127,127);
@@ -244,17 +245,17 @@ public class InformationPanel {
     
     fill(0);
     textSize(16);
-    text("Left motor :",rectX-265,rectY+170);
+    text("Left encoder :",rectX-265,rectY+170);
     textSize(15);
     fill(255);
-    text((int)leftForce, rectX-165,rectY+170);
+    text((int)encoderData[0], rectX-150,rectY+170);
       
     fill(0);
     textSize(16);
-    text("Right motor :",rectX-265,rectY+210);
+    text("Right encoder :",rectX-265,rectY+210);
     textSize(15);
     fill(255);
-    text((int)rightForce, rectX-155,rectY+210);
+    text((int)encoderData[1], rectX-140,rectY+210);
     
     drawEngine();
   }

@@ -254,7 +254,7 @@ public class ControlPanel {
         Vec2 temp = box2d.coordPixelsToWorld(mouseX, mouseY);
         toAddX = temp.x;
         toAddY = temp.y;
-        toAddW = boxW - boxH;
+        toAddW = boxW + boxH;
         toAddH = boxH;
       }
     } else {

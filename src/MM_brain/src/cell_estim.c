@@ -62,7 +62,7 @@ void detect_wall(struct Micromouse status)
    Vec2 source = { .x = 0, .y = 0 };
    Vec2 target = { .x = 0, .y = 0 };
    Vec2 relative_cell_pos;
-   float current_vehicle_angle, doubt_range = 1.3;
+   float current_vehicle_angle, doubt_range = 2;
 
    for (i = 0; i < NB_SENSOR; i++) {
       int sensor_val = status.sensor_data.sensors[i];
@@ -135,14 +135,6 @@ void detect_wall(struct Micromouse status)
             wall_positions[i].cell_pos.x = -1;
             wall_positions[i].cell_pos.y = -1;
          }
-
-         //printf("DELETING WALL %d %d, %d\n", wall_positions[i].cell_pos.x,
-                //wall_positions[i].cell_pos.y,
-                //wall_positions[i].wall_pos);
-         //wall_positions[i].wall_pos);
-         //wall_positions[i].cell_pos.x = -1;
-         //wall_positions[i].cell_pos.y = -1;
-         //wall_positions[i].wall_pos = NoneIndicator;
       }
    }
 }
@@ -263,10 +255,11 @@ int **init_vote_array(int** prev, int size)
 void display_logical_maze(struct Micromouse status, int threshold, int **vote_table)
 {
    int i = 0, j = 0;
-   printf("##################\n");
    int width = (int)(status.header_data.maze_width / status.header_data.box_width) + 1;
    int height = (int)(status.header_data.maze_height / status.header_data.box_height) + 1;
-
+   
+   printf("\e[1;1H\e[2J");
+   printf("##################\n");
    for (i = -1; i < height - 1; i++) {
       for (j = 0; j < width; j++) {
          if(i >= 0) {
@@ -281,15 +274,5 @@ void display_logical_maze(struct Micromouse status, int threshold, int **vote_ta
       printf("\n");
 
    }
-
-   /*for (i = 0; i < height; i++) {
-      for (j = 0; j < width; j++) {
-         printf("(%d,%d) ", vote_table[i * width + j][0],
-                vote_table[i * width + j][1]);
-      }
-
-      printf("\n");
-   }*/
-
    printf("##################\n");
 }
