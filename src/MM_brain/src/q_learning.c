@@ -410,7 +410,9 @@ int bestDirection(int *direction, struct QMAZE Qmaze, struct Box box)
 		}
 	}
 	//if there is more than 1 direction at same value, choose random
-	*direction=tempDirs[rand()%count];
+	if(count != 0)
+		*direction=tempDirs[rand()%count];
+	
 	return max;
 }
 

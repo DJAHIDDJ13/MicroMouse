@@ -84,17 +84,7 @@ int main(int argc, char const *argv[])
 
          limit = 6 * logical_maze.size;
          
-         // FLOOD-FILL ALOGORITHM HEADER PART
-         if(status.nav_alg == FLOOD_FILL) {
-            floodFill(logical_maze, X_target, Y_target);
-            box = minValueNeighbour(logical_maze, status.cur_cell.x, status.cur_cell.y);
-         }
-
-         // Q-LEARNING ALOGORITHM HEADER PART
-         else {
-            qmaze = init_Qmaze(logical_maze.size);
-            qLearning(qmaze, &box);         
-         }
+         qmaze = init_Qmaze(logical_maze.size);
 
          update_control(&status, box, 1); // initialise values
          break;
@@ -163,6 +153,7 @@ int main(int argc, char const *argv[])
 
          } else if(status.nav_alg == FLOOD_FILL) {
             // FLOOD FILL ALGORITHM
+            
             if (mm_mode == MAPPING) {
                //printf("|||||||||||||||| MAPPING\n");
                floodFill(logical_maze, X_target, Y_target);
@@ -173,6 +164,9 @@ int main(int argc, char const *argv[])
                   mm_mode = BACK_TO_START;
                   write_fifo(tx_msg, GOAL_REACHED_FLAG, NULL);
                }
+
+               if(!logical_maze.maze[box.OY*logical_maze.size+box.OX].visited)
+                  logical_maze.maze[box.OY*logical_maze.size+box.OX].visited = true;
             } else if(mm_mode == BACK_TO_START) {
                //printf("|||||||||||||||| BACK_TO_START\n");
                floodFill(logical_maze, 0, 0);
@@ -186,6 +180,9 @@ int main(int argc, char const *argv[])
                   printQueue_XY(path);
                   //path = reorganise_path(&path);
                }
+
+               if(!logical_maze.maze[box.OY*logical_maze.size+box.OX].visited)
+                  logical_maze.maze[box.OY*logical_maze.size+box.OX].visited = true;                              
             } else if(mm_mode == FAST_RUN) {
                //printf("|||||||||||||||| FAST_RUN\n");
                if(!emptyQueue_XY(path)) {
@@ -212,12 +209,14 @@ int main(int argc, char const *argv[])
          }
 
          display_logical_maze(status, 6, vote_table);
-         if(status.nav_alg == Q_LEARNING)
+         if(status.nav_alg == Q_LEARNING) {
             printf("count = %d, limit = %d)\n", countTotal, limit);
+         }
+         else {
+            displayMaze(logical_maze, true);
+         }
          
          update_control(&status, box, 0); // initialise values
-         if(!logical_maze.maze[box.OY*logical_maze.size+box.OX].visited)
-            logical_maze.maze[box.OY*logical_maze.size+box.OX].visited = true;
 
          write_fifo(tx_msg, MOTOR_FLAG, &status);
          break;

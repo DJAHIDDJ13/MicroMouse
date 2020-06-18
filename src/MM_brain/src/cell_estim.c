@@ -235,9 +235,6 @@ int **init_vote_array(int** prev, int size)
    int **vote_array = realloc(prev, size * size * sizeof(int*));
 
    for (int i = 0; i < size * size; i++) {
-      if(prev != NULL) {
-         free(vote_array[i]);
-      }
 
       vote_array[i] = malloc(2 * sizeof(int));
    }
