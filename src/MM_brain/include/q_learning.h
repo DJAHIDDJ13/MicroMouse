@@ -60,5 +60,6 @@ void printSleepClear(int sleepMS, struct QMAZE Qmaze);
 void qLearning(struct QMAZE Qmaze, struct Box *box);
 void complement(struct QMAZE Qmaze);
 Queue_XY QLPath(struct QMAZE Qmaze);
+void Reward(struct QMAZE Qmaze, int x, int y, int reward_value);
 
 #endif

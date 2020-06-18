@@ -1,7 +1,7 @@
 #include <math.h>
 #include "q_learning.h"
 
-#define alpha 0.1
+#define alpha 0.35
 #define gamma 1
 
 // Get Qmaze (X, Y) cell value
@@ -269,7 +269,7 @@ struct QMAZE init_Qmaze(int size)
 				initial_maze.rValues[i][j].directions=(double*)calloc(4,sizeof(double));
 				for(int k=0;k<4;k++) 
 				{
-					initial_maze.rValues[i][j].directions[k]=-0.01;
+					initial_maze.rValues[i][j].directions[k]=-100.0;
 				}
 
 				initial_maze.qValues[i][j].directions=(double*)calloc(4,sizeof(double));
@@ -410,9 +410,7 @@ int bestDirection(int *direction, struct QMAZE Qmaze, struct Box box)
 		}
 	}
 	//if there is more than 1 direction at same value, choose random
-	if(count != 0)
-		*direction=tempDirs[rand()%count];
-	
+	*direction=tempDirs[rand()%count];
 	return max;
 }
 
@@ -435,9 +433,29 @@ void reward(struct QMAZE Qmaze) {
 	// If target left wall is open, we reward goinf right to
 	if(!Qmaze_cell_has_wall(Qmaze, Qmaze.GoalX, Qmaze.GoalY, 3)) {
 		set_rValues_cell(Qmaze, Qmaze.GoalX, Qmaze.GoalY-1, 1, 100000);
-	}
 
 }
+}
+
+void Reward(struct QMAZE Qmaze, int x, int y, int reward_value) {
+	// rewards to the finish
+	int X = Qmaze.GoalX+x;
+	int Y = Qmaze.GoalY+y;
+
+	if( (X>=0 && X<Qmaze.QRowCol ) && (Y>=0 && Y<Qmaze.QRowCol)) {
+        // If target top wall is open, we reward going down to it
+	    if(!Qmaze_cell_has_wall(Qmaze, X, Y, 0)) { set_rValues_cell(Qmaze, X-1, Y, 2, reward_value); }
+	    // If target right wall is open, we reward going left to it
+	    if(!Qmaze_cell_has_wall(Qmaze, X, Y, 1)) { set_rValues_cell(Qmaze, X, Y+1, 3, reward_value); }
+	    // If target bottom wall is open, we reward going uo to it
+	    if(!Qmaze_cell_has_wall(Qmaze, X, Y, 2)) { set_rValues_cell(Qmaze, X+1, Y, 0, reward_value); }
+	    // If target left wall is open, we reward going right to
+	    if(!Qmaze_cell_has_wall(Qmaze, X, Y, 3)) { set_rValues_cell(Qmaze, X, Y-1, 1, reward_value); }
+	}
+}
+
+
+
 
 void qLearning(struct QMAZE Qmaze, struct Box *box)
 {
