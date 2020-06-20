@@ -83,10 +83,10 @@ int main(int argc, char const *argv[])
                                       (int)(status.header_data.maze_width / status.header_data.box_width));
 
          limit = 6 * logical_maze.size;
+         countTotal = 0;
          
          qmaze = init_Qmaze(logical_maze.size);
 
-         update_control(&status, box, 1); // initialise values
          break;
 
       case SENSOR_FLAG:
@@ -103,9 +103,6 @@ int main(int argc, char const *argv[])
             }
 
             // updating and printing the two types of maze
-
-            print_Qmaze(qmaze);
-
             if(mm_mode == MAPPING) 
             {
                if(status.cur_cell.x == status.header_data.target_x &&
@@ -114,7 +111,11 @@ int main(int argc, char const *argv[])
                   countTotal++;
                   if(countTotal == 1) 
                   {
-                     reward(qmaze);
+                     Reward(qmaze, 0,0, 10000000);
+                     Reward(qmaze, 0,1,  0.01);
+                     Reward(qmaze, 0,-1, 0.01);
+                     Reward(qmaze, 1,0,  0.01);
+                     Reward(qmaze, -1,0, 0.01);
                   }
 
                   if(countTotal == limit) {
@@ -210,11 +211,14 @@ int main(int argc, char const *argv[])
 
          display_logical_maze(status, 6, vote_table);
          if(status.nav_alg == Q_LEARNING) {
-            printf("count = %d, limit = %d)\n", countTotal, limit);
+            printf("(count = %d, limit = %d)\n", countTotal, limit);
+            print_Qmaze(qmaze);
          }
          else {
             displayMaze(logical_maze, true);
          }
+
+         printf("(%d %d)\n", box.OX, box.OY);
          
          update_control(&status, box, 0); // initialise values
 

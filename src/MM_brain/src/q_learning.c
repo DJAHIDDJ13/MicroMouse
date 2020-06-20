@@ -472,8 +472,9 @@ void qLearning(struct QMAZE Qmaze, struct Box *box)
 
 	max = bestDirection(&direction, Qmaze, *box);
 
-	// bellman fdp nique ta race
-	new_value = (alpha * (get_rValues_cell(Qmaze, tempI, tempJ, tempDir) + gamma * (max - get_QTable_cell(Qmaze, tempI, tempJ, tempDir))));
+	// bellman equation
+	new_value = (alpha * (get_rValues_cell(Qmaze, tempI, tempJ, tempDir) + 
+				gamma * (max - get_QTable_cell(Qmaze, tempI, tempJ, tempDir))));
 	new_value += get_QTable_cell(Qmaze, tempI, tempJ, tempDir);
 	set_QTable_cell(Qmaze, tempI, tempJ, tempDir,  new_value);
 }
